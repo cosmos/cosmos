@@ -9,6 +9,17 @@
 \usepackage{float}
 \floatstyle{boxed} 
 \restylefloat{figure}
+\usepackage{xfrac}
+
+% Create struct diagrams
+\usepackage{algorithm2e}
+\SetAlgoLined
+\SetKwProg{MyStruct}{Struct}{ contains}{end}
+
+% Tikz directed graphs
+% http://tex.stackexchange.com/questions/208947/how-can-i-draw-the-following-directed-graph
+\usepackage{tikz}
+\usetikzlibrary{positioning}
 
 %\bibliographystyle{IEEEtran}
 \bibliography{}
@@ -16,8 +27,33 @@
   \clearfield{note}%
 }
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}
 
+% Testing a structure
+\begin{algorithm}[H]
+\MyStruct{Node}{
+  Node* parent\;
+  int size\;
+  \tcp{other stuff}
+}
+\end{algorithm}
+
+% Testing a Tikz directed graph
+\begin{tikzpicture}
+\pgfmathsetmacro{\shift}{0.25ex}
+\node [draw] (1) at (0,2) {Shard 1};
+\node [draw] (2) at (2,2) {Shard 2};
+\node [draw] (3) at (4,2) {Shard 3};
+\node [draw] (H) at (2,0) {$GnuClear Hub$};
+\draw [<->] (1) -- (H);
+\draw [<->] (2) -- (H);
+\draw [<->] (3) -- (H);
+%\draw [->,shorten <=-1pt, transform canvas={xshift=-\shift,yshift=-\shift}] (1) -- (3);
+%\draw [->,shorten <=-1pt, transform canvas={xshift=\shift,yshift=\shift}] (3) -- (1);
+\end{tikzpicture}
+
+% Title
 \title{
 	{Ecclesia: A simple approach to self-organized public infrastructure}
 }
@@ -63,17 +99,17 @@ A fault tolerant consensus protocol enables a set of non-faulty processes
 to eventually agree on a value proposed by at least one of them.
 The problem is made more difficult by asynchronous network conditions,
 wherein messages may have arbitrarily long delays, and by Byzantine faults,
-wherein processes may exhibit arbitrary, possibly malicious, behaviour.
+wherein processes may exhibit arbitrary, possibly malicious, behavior.
 In particular, it is well known that deterministic consensus in asynchronous networks in impossible \cite{flp},
 and that consensus protocols can tolerate strictly fewer Byzantine faults than crash faults 
-($\frac{1/3}$ of processes, vs. $\frac{1/2}$).
+($\sfrac{1}{3}$ of processes, vs. $\sfrac{1}{2}$).
 The former results from the inability to distinguish crash failures from asynchronous message delay.
 The latter from the fact that three processes are not enough for a safe majority vote if one of them can lie (you need at least four).
 
 In addition to providing optimal fault tolerance, a well designed consensus protocol
 should provide additional guarantees in the event that the tolerance capacity is exceeded and the
 consensus fails. This is especially necessary in public economic systems, 
-where Byzantine behaviour can have substantial financial reward. 
+where Byzantine behavior can have substantial financial reward. 
 The most important such guarantee is a form of \emph{accountability},
 where the processes that caused the consensus to fail can be identified and punished according to the rules of the protocol, or, possibly, the legal system.
 
@@ -98,7 +134,7 @@ an internet service offered by a corporation.
 Using an atomic broadcast protocol in a public setting, however,
 requires additional considerations, most particularly with regard to
 spam prevention, incentive alignment, and governance.
-In a private consenus environment, access is easily permissioned and rate-limitted,
+In a private consensus environment, access is easily permissioned and rate-limitted,
 and incentives are aligned by the formal structure of the legal entity maintaining the network (ie. a corporation).
 In a public setting, the only known way to manage spam and align incentives is with the introduction of 
 an explicit economics.
