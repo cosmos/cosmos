@@ -1,0 +1,13 @@
+# IBC (inter-blockchain communication) message sequence chart
+
+msc {
+
+   # The entities
+   Shard1, Hub;
+
+   |||;
+
+   Shard1 :> Hub [ label = "IBC Packet"];
+
+   |||;
+}
