@@ -180,3 +180,5 @@ Say that `IBCPacketTx` has the following value:
 Meanwhile, "Shard1" may optimistically assume successful delivery of a "coin" packet unless evidence to the contrary is proven on "Hub".
 In the example above, if "Hub" had not received an `AckSent` status from "Shard2" by block 350, it would have set the status automatically to `Timeout`.
 This evidence of a timeout can get posted back on "Shard1", and any coins can be returned.
+
+![Figure of Shard1, Shard2, and Hub IBC with acknowledgement and timeout](https://raw.githubusercontent.com/gnuclear/gnuclear-whitepaper/master/msc/ibc_with_ack_timeout.png)
