@@ -131,7 +131,7 @@ Say that `IBCPacketTx` has the following value:
     - `Status`: `AckPending`
     - `Type`: "coin"
     - `MaxHeight`: 350 (say "Hub" is currently at height 300)
-  - `Payload`: <The bytes of a "coin" payload>
+  - `Payload`: &lt;The bytes of a "coin" payload&gt;
 
 Next, an `IBCBlockCommit` and `IBCPacketTx` are posted on "Shard2" that proves the existence of an `IBCPacket` on "Hub".
 Say that `IBCPacketTx` has the following value:
@@ -145,7 +145,7 @@ Say that `IBCPacketTx` has the following value:
     - `Status`: `AckPending`
     - `Type`: "coin"
     - `MaxHeight`: 350
-  - `Payload`: <The same bytes of a "coin" payload>
+  - `Payload`: &lt;The same bytes of a "coin" payload&gt;
 
 Next, "Shard2" must include in its app-hash an abbreviated packet that shows the new status of `AckSent`.
 An `IBCBlockCommit` and `IBCPacketTx` are posted back on "Hub" that proves the eexistence of an abbreviated `IBCPacket` on "Shard2".
@@ -160,7 +160,7 @@ Say that `IBCPacketTx` has the following value:
     - `Status`: `AckSent`
     - `Type`: "coin"
     - `MaxHeight`: 350
-  - `PayloadHash`: <The hash bytes of the same "coin" payload>
+  - `PayloadHash`: &lt;The hash bytes of the same "coin" payload&gt;
 
 Finally, "Hub" must update the status of the packet from `AckPending` to `AckReceived`.
 Evidence of this new finalized status should go back to "Shard2".
@@ -175,7 +175,7 @@ Say that `IBCPacketTx` has the following value:
     - `Status`: `AckReceived`
     - `Type`: "coin"
     - `MaxHeight`: 350
-  - `PayloadHash`: <The hash bytes of the same "coin" payload>
+  - `PayloadHash`: &lt;The hash bytes of the same "coin" payload&gt;
 
 Meanwhile, "Shard1" may optimistically assume successful delivery of a "coin" packet unless evidence to the contrary is proven on "Hub".
 In the example above, if "Hub" had not received an `AckSent` status from "Shard2" by block 350, it would have set the status automatically to `Timeout`.
