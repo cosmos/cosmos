@@ -68,12 +68,12 @@ An `IBCBlockCommitTx` transaction is composed of:
 
 An `IBCPacket` is composed of:
 - `Header (IBCPacketHeader)`: The packet header
-- `Payload ([]byte)`: The bytes of the packet payload. __Optional__
-- `PayloadHash ([]byte)`: The hash for the bytes of the packet. __Optional__
+- `Payload ([]byte)`: The bytes of the packet payload. _Optional_
+- `PayloadHash ([]byte)`: The hash for the bytes of the packet. _Optional_
 
 Either one of `Payload` or `PayloadHash` must be present.
 The hash of an `IBCPacket` is a simple Merkle root of the two items, `Header` and `Payload`.
-An `IBCPacket` without the full payload is called a "short packet".
+An `IBCPacket` without the full payload is called an _abbreviated packet_.
 
 An `IBCPacketHeader` is composed of:
 - `SrcChainID (string)`: The source blockchain ID
@@ -81,7 +81,7 @@ An `IBCPacketHeader` is composed of:
 - `Number (int)`: A unique number for all packets
 - `Status (enum)`: Can be one of `AckPending`, `AckSent`, `AckReceived`, `NoAck`, or `Timeout`
 - `Type (string)`: The types are application-dependent.  GnuClear reserves the "coin" packet type
-- `MaxHeight (int)`: If status is not `NoAckWanted` or `AckReceived` by this height, status becomes `Timeout`. __Optional__
+- `MaxHeight (int)`: If status is not `NoAckWanted` or `AckReceived` by this height, status becomes `Timeout`. _Optional_
 
 An `IBCPacketTx` transaction is composed of:
 - `FromChainID (string)`: The ID of the blockchain which is providing this packet; not necessarily the source
@@ -115,7 +115,7 @@ Or, the sender may want to impose a timeout on the packet (with the `MaxHeight` 
 while any destination chain may suffer from a denial-of-service attack with a sudden spike in the number of incoming packets.
 
 In these cases, the sender can require delivery acknowledgement by setting the intial packet status to `AckPending`.
-Then, it is the receiving chain's responsibility to confirm delivery by including an `IBCShortPacket` in the app Merkle hash.
+Then, it is the receiving chain's responsibility to confirm delivery by including an abbreviated`IBCPacket` in the app Merkle hash.
 
 (Figure of Shard1, Shard2, Hub IBC message sequence WITH acknowledgement)
 
@@ -147,8 +147,8 @@ Say that `IBCPacketTx` has the following value:
     - `MaxHeight`: 350
   - `Payload`: <The same bytes of a "coin" payload>
 
-Next, "Shard2" must include in its app-hash a short-packet that shows the new status of `AckSent`.
-An `IBCBlockCommit` and `IBCPacketTx` are posted back on "Hub" that proves the eexistence of a short `IBCPacket` on "Shard2".
+Next, "Shard2" must include in its app-hash an abbreviated packet that shows the new status of `AckSent`.
+An `IBCBlockCommit` and `IBCPacketTx` are posted back on "Hub" that proves the eexistence of an abbreviated `IBCPacket` on "Shard2".
 Say that `IBCPacketTx` has the following value:
 - `FromChainID`: "Shard2"
 - `FromBlockHeight`: 400 (say)
