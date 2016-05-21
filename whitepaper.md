@@ -58,7 +58,7 @@ An `IBCBlockCommitTx` transaction is composed of:
 - `BlockPartsHeader (PartSetHeader)`: The block part-set header bytes, only needed to verify vote signatures
 - `BlockHeight (int)`: The height of the commit
 - `BlockRound (int)`: The round of the commit
-- `Commit ([]Vote)`: The +2/3 Tendermint `Precommit` votes that comprise a blockc commit
+- `Commit ([]Vote)`: The +2/3 Tendermint `Precommit` votes that comprise a block commit
 - `ValidatorsHash ([]byte)`: A Merkle-tree root hash of the new validator set
 - `ValidatorsHashProof (SimpleProof)`: A SimpleTree Merkle-proof for proving the `ValidatorsHash` against the `BlockHash`
 - `AppHash ([]byte)`: A IAVLTree Merkle-tree root hash of the application state
