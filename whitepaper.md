@@ -44,7 +44,7 @@ Say that there are three blockchains, "Shard1", "Shard2", and "Hub", and we wish
 There are two types of transactions that compose the IBC protocol.
 There is the `IBCBlockCommitTx` transaction, and the `IBCPacketProofTx` transaction.
 
-(Figure of Shard1, Shard2, Hub IBC message sequence without acknowledgement)
+![Figure of Shard1, Shard2, and Hub IBC without acknowledgement](https://raw.githubusercontent.com/gnuclear/gnuclear-whitepaper/master/msc/ibc_without_ack.png)
 
 ### IBCBlockCommitTx transaction
 
@@ -117,7 +117,7 @@ while any destination chain may suffer from a denial-of-service attack with a su
 In these cases, the sender can require delivery acknowledgement by setting the intial packet status to `AckPending`.
 Then, it is the receiving chain's responsibility to confirm delivery by including an abbreviated`IBCPacket` in the app Merkle hash.
 
-(Figure of Shard1, Shard2, Hub IBC message sequence WITH acknowledgement)
+![Figure of Shard1, Shard2, and Hub IBC with acknowledgement](https://raw.githubusercontent.com/gnuclear/gnuclear-whitepaper/master/msc/ibc_with_ack.png)
 
 First, an `IBCBlockCommit` and `IBCPacketTx` are posted on "Hub" that proves the existence of an `IBCPacket` on "Shard1".
 Say that `IBCPacketTx` has the following value:
