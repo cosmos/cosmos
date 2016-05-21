@@ -1,24 +1,38 @@
-# Segments (These need to be reorganized)
+# GnuClear: A New Architecture for Scalable Blockchain Decentralization
 
-A Tendermint blockchain can be thought of as a virtual distributed computer.
-If the voting power of the validators were equal, then there is no "center" among the validators.
-So, if you take down say any 2 validators in a 7-validator network, the blockchain would continue to function.
+The combined success of the open-source ecosystem, of decentralized file-sharing, and of public cryptocurrencies,
+has inspired an understanding that decentralized internet protocols can be used to radically improve socio-economic infrastructure.
+We have seen specialized blockchain applications like Bitcoin (a cryptocurrency), Namecoin (a name registry), ZCash (a cryptocurrency for privacy);
+and also generalized smart contract platforms such as Ethereum, with countless distributed applications for the EVM such as Augur (a prediction market) and TheDAO (an investment club).
 
+To date, however, all blockchains have suffered from a number of drawbacks, including their gross energy inefficiency, poor or limited performance, and immature governance mechanisms.
+What is needed is an architecture for a network of parallel blockchains that can work together in concert, while maintaining certain invariances (such as the total amount of coins)
+across these "shards" in a robust way.  Yet, existing blockchain consensus algorithms based on proof-of-work have proven to be difficult (if not impossible) to scale in parallel.
+Existing scalability proposals such as payment channels allow for atomic cross-chain transactions, but do not allow for the transfer of coins from one chain to another.
 
-However, except in special circiumstances, the validators are not be the only actors of a Tendermint blockchain.
-There are also non-validating nodes, non-active validator-toke-holders, and various end-users to consider.
+We present GnuClear, a novel blockchain network architecture that addresses all of these problems.
+The main GnuClear hub blockchain (as well as connected shards) are powered by Tendermint, which provides a high-performance, safe, secure consensus engine,
+where strict accountability guarantees hold over the behaviour of malicious actors.
+The GnuClear hub is a simple multi-asset proof-of-stake cryptocurrency with a simple governance mechanism enabling the network to adapt and upgrade.
+The hub and shards of the GnuClear network communicate with each other via an inter-blockchain communication (IBC) protocol which is formalized here.
+The GnuClear hub utilizes IBC packets to move coins from one shard to another while maintaining the total amount of coins in the network.
 
-There have been several proposed solutions to this "economic decentralization" problem.
-* Casper
+We hope that the GnuClear network can become inspiration for the future internet of blockchains.
+
+## Related Work
 * BitShares delegated stake
 * Stellar
+* Lightning Network
+* BitcoinNG
+* Segregated Witness
+* Casper
 
 (Analysis of each)
 
-# The GnuClear model of decentralized scalability
+## The GnuClear model of scalable decentralization
 
 Here we describe a novel model of decentralization and scalability.
-GnuClear is a network of many blockchains powered by Tendermint via BCGI.
+GnuClear is a network of many blockchains powered by Tendermint via TMSP.
 While existing proposals aim to create a "single blockchain" with total global transaction ordering,
 GnuClear permits many blockchains to run concurrently with one another via a sharding mechanism.
 At the basis, a global hub blockchain manages many independent blockchain shards, allowing interoperability across them in the form of packet communication.
@@ -37,7 +51,7 @@ network partition or a nation-state sponsored attack.
 
 (Link to section on economics)
 
-# GnuClear Inter-blockchain Communication (IBC)
+## GnuClear Inter-blockchain Communication (IBC)
 
 Now we look at how these independent sovereign blockchains (the hub and shards) communicate with each other.
 Say that there are three blockchains, "Shard1", "Shard2", and "Hub", and we wish for "Shard1" to produce a packet destined for "Shard2" going through "Hub".
