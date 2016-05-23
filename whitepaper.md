@@ -215,11 +215,22 @@ This evidence of a timeout can get posted back on "Shard1", and any coins can be
 
 ## GnuClear Shard Use Cases
 
-* **Pegging**
-* **Application integration** - e.g. to Ethereum, ZCash, or Bitcoin
-* **Network partition mitigation** - A global hub with regional autonomous shards can practically mitigate problems that arise from intermittent global network partitions.
-* **Distributed Exchange**
+### Pegging
 
+### Network partition mitigation
+A global hub with regional autonomous shards can practically mitigate problems that arise from intermittent global network partitions.
+
+### Distributed Exchange
+
+### Ethereum Scaling
+An open issue for Ethereum is how to solve the scaling problem.  Currently, Ethereum nodes process every single transaction and also stores all the state.
+[link](https://docs.google.com/presentation/d/1CjD0W4l4-CwHKUvfF5Vlps76fKLEC6pIwu1a_kC_YRQ/mobilepresent?slide=id.gd284b9333_0_28).
+While the GnuClear hub and IBC packet mechanics does not allow for arbitrary contract logic execution as does Ethereum per se,
+it can be used as a foundation for generalized Ethereum scaling via sharding.
+For example, asynchronous contract calls that "send an action" and expect a response in return could be implemented by a sequence of two IBC packets going in opposite directions.
+
+### Application integration
+e.g. to Ethereum, ZCash, or Bitcoin
 
 ## Economics
 
