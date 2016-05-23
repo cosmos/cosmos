@@ -39,9 +39,63 @@ perhaps at the cost of commit speed or implementation complexity.
 
 ## Tendermint
 
+In this section we describe the Tendermint consensus protocol and the interface used to build applications with it.
+
 ### Consensus
+
+A fault tolerant consensus protocol enables a set of non-faulty processes to eventually agree on a value proposed by at least one of them.
+The problem is made more difficult by asynchronous network conditions, wherein messages may have arbitrarily long delays, and by Byzantine faults,
+wherein processes may exhibit arbitrary, possibly malicious, behaviour.
+In particular, it is well known that deterministic consensus in asynchronous networks in impossible \cite{flp}, and that consensus protocols can
+tolerate strictly fewer Byzantine faults than crash faults ($\frac{1/3}$ of processes, vs. $\frac{1/2}$). The former results from the inability
+to distinguish crash failures from asynchronous message delay. The latter from the fact that three processes are not enough for a safe majority
+vote if one of them can lie (you need at least four).
+
+In addition to providing optimal fault tolerance, a well designed consensus protocol should provide additional guarantees in the event that
+the tolerance capacity is exceeded and the consensus fails.
+This is especially necessary in public economic systems, where Byzantine behaviour can have substantial financial reward.
+The most important such guarantee is a form of \emph{accountability}, where the processes that caused the consensus to fail can be identified and
+punished according to the rules of the protocol, or, possibly, the legal system.
+When the legal system is unreliable, validators can be forced to make security deposits in order to participate,
+and those deposits can be revoked when malicious behaviour is detected \cite{slasher}.
+
+Tendermint is a Byzantine Fault Tolerant (BFT) consensus protocol for asynchronous networks, notable for its simplicity, performance, and accountability.
+The protocol requires a fixed, known set of N validators, where the ith validator is identified by its public key, V_i.
+Consensus proceeds in rounds. At each round the round-leader, or proposer, proposes a value to be decided.
+The validators then vote, in two stages, on whether or not to accept the proposal or move to the next round. 
+
+We call the voting stages PreVote and PreCommit. A vote can be for a particular block or for Nil.
+We call a collection of +⅔ PreVotes for a single block in the same round a Polka, and a collection of +⅔ PreCommits for a single block in the same round a Commit.
+If +⅔ PreCommit for Nil in the same round, they move to the next round. 
+
+A PreCommit for a block must come with justification, in the form of a Polka for that block, subject to a few constraints or Locking Rules,
+which ensure that the network will eventually commit just one value. Any malicious attempt to cause more than one value to be committed can be identified.
+
+The proposer at round r is simply r mod N. Note that the strict determinism incurs a weak synchrony assumption as faulty leaders must be detected and skipped.
+Thus, validators wait some amount TimeoutPropose before they Prevote Nil.
+Progression through the rest of the round is fully asychronous, in that progress is only made once a validator hears from +⅔ of the network.
+The full details of the protocol are described in FIGURE.
+
+Tendermint’s security derives simultaneously from its use of optimal Byzantine Fault Tolerance and a locking mechanism.
+The former ensures that ⅓ or more validators must be Byzantine to cause a violation of safety, where more than two values are committed.
+The latter ensures that, if ever any set of validators attempts, or even succeeds, in violating safety , they can be identified by the protocol.
+This includes both voting for conflicting blocks and broadcasting unjustified votes.
+
+TODO: Blockchain from Consensus
+
+TODO: Light Clients.
+
+Despite its strong guarantees, Tendermint provides exceptional performance.
+In benchmarks of 64 nodes distributed across 7 datacenters on 5 continents, on commodity cloud instances,
+Tendermint consensus can process thousands of transactions per second, with commit latencies on the order of one or two seconds.
+Notably, performance of well over a thousand transactions per second is maintained even in harsh adversarial conditions,
+with validators crashing or broadcasting maliciously crafted votes. See FIGURE for details.
+
 ### TMSP
 
+* Specification
+* Flexibility in language, upgradability, compatibility with existing stacks
+* Tx Throughput, compare to IBM Chaincode
 
 ## The GnuClear model of scalable decentralization
 
@@ -49,12 +103,16 @@ Here we describe a novel model of decentralization and scalability.
 GnuClear is a network of many blockchains powered by Tendermint via TMSP.
 While existing proposals aim to create a "single blockchain" with total global transaction ordering,
 GnuClear permits many blockchains to run concurrently with one another via a sharding mechanism.
-At the basis, a global hub blockchain manages many independent blockchain shards, allowing interoperability across them in the form of packet communication.
+
+At the basis, a global hub blockchain manages many independent blockchain shards.
+A constant stream of recent block commits from shards posted on the hub allows the hub to keep up with the state of each shard.
+Likewise, each shard keeps up with the state of the hub (but shards to not keep up with each other except indirectly through the hub).
+Packets of information are then communicated from one chain to another by posting Merkle-proofs to the source's recent block hash.
 This mechanism is called inter-blockchain communication, or IBC for short.
-The hub keeps an account of multiple registered tokens across the shards, and preserves the global invariance of the total amount of each token across the shards.
+
+The GnuClear hub hosts a multi-asset cryptocurrency, where tokens can be held by individual users or by shards themselves.
 These tokens can be moved from one shard to another in a special IBC packet called a "coin packet".
-The blockchain shards can themselves be hubs to form a multi-level hierarchical network,
-but for the sake of clarity we will only describe the simple configuration with one central hub and many shards.
+The hub is responsible for preserving the global invariance of the total amount of each token across the shards.
 
 (Diagram of hub and shards)
 
@@ -64,6 +122,11 @@ must be secured by a globally decentralized set of validators that can withstand
 network partition or a nation-state sponsored attack.
 
 (Link to section on economics)
+
+The blockchain shards can themselves be hubs to form a multi-level hierarchical network,
+but for the sake of clarity we will only describe the simple configuration with one central hub and many shards.
+
+(TODO: "To ensure the hub is always up to date, any updates to the validator set of a shard must be coordinated through the hub."?)
 
 
 ## GnuClear Inter-blockchain Communication (IBC)
