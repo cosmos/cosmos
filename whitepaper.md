@@ -19,15 +19,29 @@ The GnuClear hub utilizes IBC packets to move coins from one shard to another wh
 
 We hope that the GnuClear network can become inspiration for the future internet of blockchains.
 
-## Related Work
-* BitShares delegated stake
-* Stellar
-* Lightning Network
-* BitcoinNG
-* Segregated Witness
-* Casper
 
-(Analysis of each)
+## Related Work
+
+### BitShares delegated stake
+### Stellar
+### Lightning Network
+### BitcoinNG
+### Segregated Witness
+### Casper
+Casper is a proposed Proof-of-Stake consensus algorithm.  Its prime mode of operation is "consensus-by-bet".
+The idea is that by letting validators iteratively bet on which block it believes will become committed into the blockchain based on the other bets that it's seen so far,
+finality can be achieved eventually.
+[link](https://blog.ethereum.org/2015/12/28/understanding-serenity-part-2-casper/).
+This is an active area of research by the Casper team.
+The challenge is in constructing a betting mechanism that can be proven to be an evolutionarily stable strategy.
+The main benefit of Casper as compared to Tendermint may be in offering "availability over consistency" -- consensus does not require a +2/3 quorum from the validators --
+perhaps at the cost of commit speed or implementation complexity.
+
+## Tendermint
+
+### Consensus
+### TMSP
+
 
 ## The GnuClear model of scalable decentralization
 
@@ -50,6 +64,7 @@ must be secured by a globally decentralized set of validators that can withstand
 network partition or a nation-state sponsored attack.
 
 (Link to section on economics)
+
 
 ## GnuClear Inter-blockchain Communication (IBC)
 
@@ -196,3 +211,44 @@ In the example above, if "Hub" had not received an `AckSent` status from "Shard2
 This evidence of a timeout can get posted back on "Shard1", and any coins can be returned.
 
 ![Figure of Shard1, Shard2, and Hub IBC with acknowledgement and timeout](https://raw.githubusercontent.com/gnuclear/gnuclear-whitepaper/master/msc/ibc_with_ack_timeout.png)
+
+
+## GnuClear Shard Use Cases
+
+* **Pegging**
+* **Application integration** - e.g. to Ethereum, ZCash, or Bitcoin
+* **Network partition mitigation** - A global hub with regional autonomous shards can practically mitigate problems that arise from intermittent global network partitions.
+* **Distributed Exchange**
+
+
+## Economics
+
+### Transaction Fees
+### Initial Distribution
+### Inflation Model
+
+
+## Governance
+
+### Coin Issuance
+* Proposals manage inflation by sending new money to an account or shard
+* PoW, Conference, Crowd Sales
+
+### Validator Set Changes
+### Software Upgrades
+
+## Roadmap
+
+### Initial proposals for distribution (PoW, conferences)
+### Shard discovery
+### Tendermint V2
+
+<hr/>
+
+## Appendix
+
+### Merkle tree & proof specification
+
+* SimpleTree
+* IAVLTree
+* Expression langauge
