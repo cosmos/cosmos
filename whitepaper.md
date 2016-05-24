@@ -26,7 +26,17 @@ We hope that the GnuClear network can become inspiration for the future internet
 ### Stellar
 ### Lightning Network
 ### BitcoinNG
+
+
 ### Segregated Witness
+Segregated Witness is a Bitcoin improvement proposal [link](https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki) that aims to
+increase the per-block tranasction throughput 2X or 3X, while simultaneously making block syncing faster for new nodes.
+The brilliance of this solution is in how it works within the limitations of Bitcoin's current protocol and allows for
+a soft-fork upgrade (i.e. clients with older versions of the software will continue to function after the upgrade).
+Tendermint being a new protocol has no design restrictions, so it has a different scaling priorities.
+Primarily, Tendermint uses a BFT round-robin algorithm based on cryptographic signatures instead of mining, which trivially allows horizontal scaling
+through multiple parallel blockchains, while regular, more frequent block commits allow for vertical scaling as well.
+
 ### Casper
 Casper is a proposed Proof-of-Stake consensus algorithm.  Its prime mode of operation is "consensus-by-bet".
 The idea is that by letting validators iteratively bet on which block it believes will become committed into the blockchain based on the other bets that it's seen so far,
