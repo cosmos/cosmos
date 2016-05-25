@@ -550,7 +550,19 @@ BondProposal
 
 ### Penalties for Validators
 There must be some penalty imposed on the validators for when they intentionally
-or unintentionally deviate from the sanctioned protocol. Some evidence can be a
+or unintentionally deviate from the sanctioned protocol. Some evidence is
+immediately admissible, such as a double-sign at the same height and round, or
+a violation of "prevote-the-lock" (a violation of the Tendermint consensus
+protocol).  Such evidence will result in the validator losing its good standing
+and its bonded gnu tokens as well its proportionate share of tokens from the
+reserve pool will get slashed.
+
+Sometimes, validators will not be available, either due to regional network
+disruptions, power failure, or other reasons.  If, at any point in the past
+`ValidatorTimeoutWindowBlocks` blocks, a validator's commit vote is not included
+in the blockchain more than `ValidatorTimeoutMaxMissingBlocks` times, that
+validator will become inactive, and lose 5% of its stake.  Its stake will remain
+bonded for `UnbondingPeriodBlocks` blocks.
 
 ### Transaction Fees
 
