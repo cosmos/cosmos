@@ -35,7 +35,6 @@ in the network.
 We hope that the GnuClear network can become inspiration for the future internet
 of blockchains.
 
-
 ## Related Work
 
 There have been many innovations in blockchain consensus and scalability in the
@@ -237,7 +236,8 @@ broadcasting maliciously crafted votes. See FIGURE for details.
 
 ### TMSP
 
-* Specification Flexibility in language, upgradability, compatibility with
+* Specification
+* Flexibility in language, upgradability, compatibility with
 * existing stacks Tx Throughput, compare to IBM Chaincode
 
 ## The GnuClear model of scalable decentralization
@@ -291,8 +291,7 @@ communicate with each other.  Say that there are three blockchains, "Shard1",
 the IBC protocol.  There is the `IBCBlockCommitTx` transaction, and the
 `IBCPacketProofTx` transaction.
 
-![Figure of Shard1, Shard2, and Hub IBC without
-acknowledgement](https://raw.githubusercontent.com/gnuclear/gnuclear-whitepaper/master/msc/ibc_without_ack.png)
+![Figure of Shard1, Shard2, and Hub IBC without acknowledgement](https://raw.githubusercontent.com/gnuclear/gnuclear-whitepaper/master/msc/ibc_without_ack.png)
 
 ### IBCBlockCommitTx transaction
 
@@ -364,8 +363,8 @@ is included in the app-state of "Shard1".  Then, another `IBCPacketTx` proves to
 procedure, the `IBCPacket` fields are identical: the `SrcChainID` is always
 "Shard1", and the `DstChainID` is always "Shard2".
 
-The `PacketProof` must have the correct Merkle-proof path, as follows: ```
-IBC/<SrcChainID>/<DstChainID>/<Number> ```
+The `PacketProof` must have the correct Merkle-proof path, as follows:
+``` IBC/<SrcChainID>/<DstChainID>/<Number> ```
 
 When "Shard1" wants to send a packet to "Shard2" through "Hub", the `IBCPacket`
 data are identical whether the packet is Merkle-ized on "Shard1", The only
@@ -385,8 +384,7 @@ intial packet status to `AckPending`.  Then, it is the receiving chain's
 responsibility to confirm delivery by including an abbreviated`IBCPacket` in the
 app Merkle hash.
 
-![Figure of Shard1, Shard2, and Hub IBC with
-acknowledgement](https://raw.githubusercontent.com/gnuclear/gnuclear-whitepaper/master/msc/ibc_with_ack.png)
+![Figure of Shard1, Shard2, and Hub IBC with acknowledgement](https://raw.githubusercontent.com/gnuclear/gnuclear-whitepaper/master/msc/ibc_with_ack.png)
 
 First, an `IBCBlockCommit` and `IBCPacketTx` are posted on "Hub" that proves the
 existence of an `IBCPacket` on "Shard1".  Say that `IBCPacketTx` has the
@@ -455,21 +453,24 @@ above, if "Hub" had not received an `AckSent` status from "Shard2" by block 350,
 it would have set the status automatically to `Timeout`.  This evidence of a
 timeout can get posted back on "Shard1", and any coins can be returned.
 
-![Figure of Shard1, Shard2, and Hub IBC with acknowledgement and
-timeout](https://raw.githubusercontent.com/gnuclear/gnuclear-whitepaper/master/msc/ibc_with_ack_timeout.png)
+![Figure of Shard1, Shard2, and Hub IBC with acknowledgement and timeout](https://raw.githubusercontent.com/gnuclear/gnuclear-whitepaper/master/msc/ibc_with_ack_timeout.png)
 
 
 ## GnuClear Shard Use Cases
 
 ### Pegging
 
-### Network partition mitigation A global hub with regional autonomous shards
+### Network partition mitigation
+
+A global hub with regional autonomous shards
 can practically mitigate problems that arise from intermittent global network
 partitions.
 
 ### Distributed Exchange
 
-### Ethereum Scaling An open issue for Ethereum is how to solve the scaling
+### Ethereum Scaling
+
+An open issue for Ethereum is how to solve the scaling
 problem.  Currently, Ethereum nodes process every single transaction and also
 stores all the state.
 [link](https://docs.google.com/presentation/d/1CjD0W4l4-CwHKUvfF5Vlps76fKLEC6pIwu1a_kC_YRQ/mobilepresent?slide=id.gd284b9333_0_28).
@@ -479,24 +480,36 @@ for generalized Ethereum scaling via sharding.  For example, asynchronous
 contract calls that "send an action" and expect a response in return could be
 implemented by a sequence of two IBC packets going in opposite directions.
 
-### Application integration e.g. to Ethereum, ZCash, or Bitcoin
+### Application integration
+
+e.g. to Ethereum, ZCash, or Bitcoin
 
 ## Economics
 
-### Transaction Fees ### Initial Distribution ### Inflation Model
+### Transaction Fees
+
+### Initial Distribution
+
+### Inflation Model
 
 
 ## Governance
 
 ### Coin Issuance
-* Proposals manage inflation by sending new money to an account or shard PoW,
-* Conference, Crowd Sales
 
-### Validator Set Changes ### Software Upgrades
+* Proposals manage inflation by sending new money to an account or shard
+* PoW, Conference, Crowd Sales
+
+### Validator Set Changes
+
+### Software Upgrades
 
 ## Roadmap
 
-### Initial proposals for distribution (PoW, conferences) ### Shard discovery
+### Initial proposals for distribution (PoW, conferences)
+
+### Shard discovery
+
 ### Tendermint V2
 
 <hr/>
@@ -505,4 +518,6 @@ implemented by a sequence of two IBC packets going in opposite directions.
 
 ### Merkle tree & proof specification
 
-* SimpleTree IAVLTree Expression langauge
+* SimpleTree
+* IAVLTree
+* Proof Expression langauge
