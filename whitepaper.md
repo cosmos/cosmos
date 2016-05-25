@@ -22,15 +22,15 @@ one chain to another.
 
 We present GnuClear, a novel blockchain network architecture that addresses all
 of these problems.  The main GnuClear hub blockchain (as well as connected
-shards) are powered by Tendermint, which provides a high-performance, safe,
-secure consensus engine, where strict accountability guarantees hold over the
-behaviour of malicious actors.  The GnuClear hub is a simple multi-asset
-proof-of-stake cryptocurrency with a simple governance mechanism enabling the
-network to adapt and upgrade.  The hub and shards of the GnuClear network
-communicate with each other via an inter-blockchain communication (IBC) protocol
-which is formalized here.  The GnuClear hub utilizes IBC packets to move coins
-from one shard to another while maintaining the total amount of coins in the
-network.
+shards) are powered by Tendermint, which provides a high-performance,
+consistent, secure consensus engine, where strict accountability guarantees hold
+over the behaviour of malicious actors.  The GnuClear hub is a simple
+multi-asset proof-of-stake cryptocurrency with a simple governance mechanism
+enabling the network to adapt and upgrade.  The hub and shards of the GnuClear
+network communicate with each other via an inter-blockchain communication (IBC)
+protocol which is formalized here.  The GnuClear hub utilizes IBC packets to
+move coins from one shard to another while maintaining the total amount of coins
+in the network.
 
 We hope that the GnuClear network can become inspiration for the future internet
 of blockchains.
@@ -38,8 +38,99 @@ of blockchains.
 
 ## Related Work
 
-### BitShares delegated stake ### Stellar ### Lightning Network ### BitcoinNG
+There have been many innovations in blockchain consensus and scalability in the
+past couple of years.  This section provides a brief survey of a select number
+of important ones.
 
+### Classic Byzantine Fault Tolerance
+
+Consensus in the presence of malicious participants is a problem dating back to
+the early 80s, when Leslie Lamport appropriated the phrase "Byzantine fault" to
+refer to processes that might behave arbitrarily, in contrast to a "crash
+fault", wherein a process simply crashes.  Early solutions were discovered for
+synchronous networks, where there is an upper bound on message latency, though
+they only found practical use in highly controlled environments (airplane
+controllers and datacenters synchronized via atomic clock).  It was not until
+the late 90s that Practical Byzantine Fault Tolerance (PBFT) was introduced as
+an asynchronous consensus algorithm able to tolerate up to 1/3 of processes
+behaving arbitrarily.  PBFT became the standard algorithm, spawning many
+variations, including most recently by IBM as part of their contribution to
+Hyperledger. PBFT's most prominent drawback is its lack of accountability - that
+is, in the event that 1/3 of processes behave maliciously and cause the
+consensus to fork, it may not be possible to determine who was responsible.
+Additionally, it may be argued that the algorithm is, like Paxos before it,
+difficult to understand and reason about; consequently, the associated software
+ecosystem has been relatively undeveloped.
+
+### BitShares delegated stake 
+
+While not the first to deploy Proof-of-Stake (PoS), BitShares contributed
+considerably to research and adoption of PoS blockchains, particularly those
+known as "delegated" PoS.  In BitShares, stake holders elect "witnesses",
+responsible for ordering and committing transactions, and "delegates",
+responsible for co-ordinating software updates and parameter changes.  Though
+BitShares achieves high performance (100k tx/s, 1s latency) in ideal conditions,
+it is subject to double spend attacks by malicious witnesses which fork the
+blockchain without suffering an explicit economic punishment - a problem
+referred to as "nothing-at-stake".  BitShares attempts to mitigate the problem
+somewhat by allowing transactions to reference block hashes. Additionally,
+stakeholders can remove or replace misbehaving witnesses on a daily basis,
+though this does nothing to explicitly punish a double-spend attack that was
+successful.
+
+### Stellar 
+
+Building on an approach pioneered by Ripple, Stellar refined a model of
+Federated Byzantine Agreement wherein the the processes participating in
+consensus do not constitute a fixed and globally known set.  Rather, each
+process curates a personal set of "quorum slices", each constituting a set of
+processes it trusts. A set containing a slice from every process is known as a
+quorum.  The security of the mechanism relies on the assumption that the
+intersection of *any* two quorums is non-empty, while the availability of a
+process requires at least one of its quorum slices to consist of entirely of
+correct nodes, creating a trade-off between using large or small quorum-slices
+that may be difficult to balance without imposing significant assumptions about
+trust. The approach is similar to both the Border Gateway Protocol, used by
+top-tier ISPs on the internet to establish global routing tables, and by that
+used by browsers to manage TLS certificates - both notorious for their
+insecurity.
+
+### BigChainDB
+
+Attempting to tilt the balance between security and performance in favor of
+performance, BigChainDB is a modification of the successful SQL-like RethinkDB
+to include additional security guarantees without sacrificing the ability to
+perform over a million txs/s.  RethinkDB uses the Raft consensus algorithm, but
+only to process low-frequency events, like changes to the validator set. Thus
+the system is only eventually consistent, and does not provide Byzantine Fault
+Tolerance.
+
+### Lightning Network 
+
+The lightning network is a proposed message relay network operating at a layer
+above the Bitcoin blockchain, enabling many orders of magnitude improvement in
+transaction throughput by moving the majority of transactions outside of the
+consensus into so-called "payment channels". This is made possible by the
+Bitcoin scripting language, which enables parties to enter into stateful
+contracts where the state can be updated by sharing digital signatures and
+contracts can be closed by publishing evidence back to the blockchain, a
+mechanism first popularized by cross-chain atomic swaps.  By openning payment
+channels with many parties, participants in the lightning network can become
+focal points for routing the payments of others, leading to concerns about
+centralization and censorship.
+
+### BitcoinNG
+
+BitcoinNG is a proposed improvement to Bitcoin that would allow for forms of
+vertical scalability, such as increasing the block size, without the negative
+economic consequences typically associated with such a change, such as the
+disproportionately large impact on small miners.  This improvement is achieved
+by separating leader election from transaction broadcast: leaders are first
+elected by Proof-of-Work in "micro-blocks", and then able to broadcast
+transactions to be committed until a new micro-block is found. This reduces the
+bandwidth requirements necessary to win the PoW race, allowing small miners to
+more fairly compete, and allowing transactions to be committed more regularly
+by the last miner to find a micro-block.
 
 ### Segregated Witness Segregated Witness is a Bitcoin improvement proposal
 [link](https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki) that aims
@@ -79,7 +170,7 @@ eventually agree on a value proposed by at least one of them.  The problem is
 made more difficult by asynchronous network conditions, wherein messages may
 have arbitrarily long delays, and by Byzantine faults, wherein processes may
 exhibit arbitrary, possibly malicious, behaviour.  In particular, it is well
-known that deterministic consensus in asynchronous networks in impossible
+known that deterministic consensus in asynchronous networks is impossible
 \cite{flp}, and that consensus protocols can tolerate strictly fewer Byzantine
 faults than crash faults ($\frac{1/3}$ of processes, vs. $\frac{1/2}$). The
 former results from the inability to distinguish crash failures from
