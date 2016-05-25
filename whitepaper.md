@@ -462,17 +462,15 @@ timeout can get posted back on "Shard1", and any coins can be returned.
 
 ### Network partition mitigation
 
-A global hub with regional autonomous shards
-can practically mitigate problems that arise from intermittent global network
-partitions.
+A global hub with regional autonomous shards can practically mitigate problems
+that arise from intermittent global network partitions.
 
 ### Distributed Exchange
 
 ### Ethereum Scaling
 
-An open issue for Ethereum is how to solve the scaling
-problem.  Currently, Ethereum nodes process every single transaction and also
-stores all the state.
+An open issue for Ethereum is how to solve the scaling problem.  Currently,
+Ethereum nodes process every single transaction and also stores all the state.
 [link](https://docs.google.com/presentation/d/1CjD0W4l4-CwHKUvfF5Vlps76fKLEC6pIwu1a_kC_YRQ/mobilepresent?slide=id.gd284b9333_0_28).
 While the GnuClear hub and IBC packet mechanics does not allow for arbitrary
 contract logic execution as does Ethereum per se, it can be used as a foundation
@@ -484,7 +482,75 @@ implemented by a sequence of two IBC packets going in opposite directions.
 
 e.g. to Ethereum, ZCash, or Bitcoin
 
-## Economics
+## Issuance and Incentives
+
+### The Gnut Token
+While the GnuClear hub is a multi-asset system, there is a native coin for
+staking called _gnuts_.  Unlike Ethereum's ether or Bitcoin's bitcoins,
+GnuClear's gnuts are meant for staking by validators.  To discourage the use of
+gnuts as a store-of-wealth or means of exchange, gnuts that are not held in bond
+decay with a half-life of 2 years (PARAM).  Gnut holders who do not wish to
+validate, or cannot because they do not meet the bonding threshold (PARAM) can
+delegate to any of the existing validators.  Gnut holders who delegate to
+validators do not pay the decay penalty.
+
+### Number of Validators
+Unlike Bitcoin or other proof-of-work blockchains, a Tendermint blockchain gets
+slower with more validators due to the increased communication complexity.
+Fortunately, we can support enough validators to make for a robust globally
+distributed blockchain with very fast blocktimes, and, as bandwidth, storage,
+and parallel compute capacity increases, we will be able to support more
+validators in the future.
+
+On genesis day, the maximum number of validators will be set to 100, and this
+number will increase at a rate of 13% for 10 years, and settle at 300
+validators.
+```
+Year 0: 100
+Year 1: 113
+Year 2: 127
+Year 3: 144
+Year 4: 163
+Year 5: 184
+Year 6: 208
+Year 7: 235
+Year 8: 265
+Year 9: 300
+```
+
+### Validators on Genesis Day
+TODO
+
+### Becoming a Validator
+New validators can be added in a two-step process.
+
+First, the would-be validator must post a bond-proposal and post a collateral
+deposit.  The amount of gnuts posted as collateral is what determines the
+validator's voting power.
+
+Second, the rest of the validators must vote on this proposal.  If more than 1/2
+of the gnu-holders vote yes, the proposal passes, and the candidate becomes a
+validator at the specified block height.
+
+Given the same amount of usage of the GnuClear network, the validators may not
+have a natural inclination to allow more gnu holders to bond, because this
+decreases the amount of fees earned by each validator.  Yet, the network might
+become more profitable if there were more collateral at stake, as it allows for
+more transaction velocity. In that case, it might be rational for validators to
+allow a new gnu holder to bond, as long as it brings more stake to the table.
+Thus, bond proposals can also include any number of non-gnu tokens as collateral.
+These tokens join the blockchain's token reserve pool.
+
+```
+BondProposal
+  BonderAddr   []byte
+  Coins        // Gnuts and other coins
+  StartHeight  int
+```
+
+### Penalties for Validators
+There must be some penalty imposed on the validators for when they intentionally
+or unintentionally deviate from the sanctioned protocol. Some evidence can be a
 
 ### Transaction Fees
 
@@ -511,6 +577,8 @@ e.g. to Ethereum, ZCash, or Bitcoin
 ### Shard discovery
 
 ### Tendermint V2
+
+### Support fees paid for w/ other currenties
 
 <hr/>
 
