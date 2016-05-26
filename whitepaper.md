@@ -35,7 +35,7 @@ in the network.
 We hope that the GnuClear network can become inspiration for the future internet
 of blockchains.
 
-## Related Work
+## Related Work ################################################################
 
 There have been many innovations in blockchain consensus and scalability in the
 past couple of years.  This section provides a brief survey of a select number
@@ -131,7 +131,9 @@ bandwidth requirements necessary to win the PoW race, allowing small miners to
 more fairly compete, and allowing transactions to be committed more regularly
 by the last miner to find a micro-block.
 
-### Segregated Witness Segregated Witness is a Bitcoin improvement proposal
+### Segregated Witness
+
+Segregated Witness is a Bitcoin improvement proposal
 [link](https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki) that aims
 to increase the per-block tranasction throughput 2X or 3X, while simultaneously
 making block syncing faster for new nodes.  The brilliance of this solution is
@@ -144,7 +146,9 @@ instead of mining, which trivially allows horizontal scaling through multiple
 parallel blockchains, while regular, more frequent block commits allow for
 vertical scaling as well.
 
-### Casper Casper is a proposed Proof-of-Stake consensus algorithm.  Its prime
+### Casper
+
+Casper is a proposed Proof-of-Stake consensus algorithm.  Its prime
 mode of operation is "consensus-by-bet".  The idea is that by letting validators
 iteratively bet on which block it believes will become committed into the
 blockchain based on the other bets that it's seen so far, finality can be
@@ -157,7 +161,7 @@ offering "availability over consistency" -- consensus does not require a +2/3
 quorum from the validators -- perhaps at the cost of commit speed or
 implementation complexity.
 
-## Tendermint
+## Tendermint ##################################################################
 
 In this section we describe the Tendermint consensus protocol and the interface
 used to build applications with it.
@@ -240,7 +244,7 @@ broadcasting maliciously crafted votes. See FIGURE for details.
 * Flexibility in language, upgradability, compatibility with
 * existing stacks Tx Throughput, compare to IBM Chaincode
 
-## The GnuClear model of scalable decentralization
+## The GnuClear Hub and Shards #################################################
 
 Here we describe a novel model of decentralization and scalability.  GnuClear is
 a network of many blockchains powered by Tendermint via TMSP.  While existing
@@ -282,7 +286,7 @@ configuration with one central hub and many shards.
 of a shard must be coordinated through the hub."?)
 
 
-## GnuClear Inter-blockchain Communication (IBC)
+## Inter-blockchain Communication (IBC) ########################################
 
 Now we look at how these independent sovereign blockchains (the hub and shards)
 communicate with each other.  Say that there are three blockchains, "Shard1",
@@ -456,7 +460,7 @@ timeout can get posted back on "Shard1", and any coins can be returned.
 ![Figure of Shard1, Shard2, and Hub IBC with acknowledgement and timeout](https://raw.githubusercontent.com/gnuclear/gnuclear-whitepaper/master/msc/ibc_with_ack_timeout.png)
 
 
-## GnuClear Shard Use Cases
+## GnuClear Shard Use Cases ####################################################
 
 ### Pegging
 
@@ -482,19 +486,21 @@ implemented by a sequence of two IBC packets going in opposite directions.
 
 e.g. to Ethereum, ZCash, or Bitcoin
 
-## Issuance and Incentives
+## Issuance and Incentives #####################################################
 
 ### The Gnut Token
+
 While the GnuClear hub is a multi-asset system, there is a native coin for
 staking called _gnuts_.  Unlike Ethereum's ether or Bitcoin's bitcoins,
 GnuClear's gnuts are meant for staking by validators.  To discourage the use of
 gnuts as a store-of-wealth or means of exchange, gnuts that are not held in bond
-decay with a half-life of 2 years (PARAM).  Gnut holders who do not wish to
+decay with a half-life of 5 years (PARAM).  Gnut holders who do not wish to
 validate, or cannot because they do not meet the bonding threshold (PARAM) can
 delegate to any of the existing validators.  Gnut holders who delegate to
 validators do not pay the decay penalty.
 
 ### Number of Validators
+
 Unlike Bitcoin or other proof-of-work blockchains, a Tendermint blockchain gets
 slower with more validators due to the increased communication complexity.
 Fortunately, we can support enough validators to make for a robust globally
@@ -518,10 +524,8 @@ Year 8: 265
 Year 9: 300
 ```
 
-### Validators on Genesis Day
-TODO
-
 ### Becoming a Validator
+
 New validators can be added in a two-step process.
 
 First, the would-be validator must post a bond-proposal and post a collateral
@@ -549,6 +553,7 @@ BondProposal
 ```
 
 ### Penalties for Validators
+
 There must be some penalty imposed on the validators for when they intentionally
 or unintentionally deviate from the sanctioned protocol. Some evidence is
 immediately admissible, such as a double-sign at the same height and round, or
@@ -559,19 +564,39 @@ reserve pool will get slashed.
 
 Sometimes, validators will not be available, either due to regional network
 disruptions, power failure, or other reasons.  If, at any point in the past
-`ValidatorTimeoutWindowBlocks` blocks, a validator's commit vote is not included
-in the blockchain more than `ValidatorTimeoutMaxMissingBlocks` times, that
+`ValidatorTimeoutWindow` blocks, a validator's commit vote is not included
+in the blockchain more than `ValidatorTimeoutMaxAbsent` times, that
 validator will become inactive, and lose 5% of its stake.  Its stake will remain
-bonded for `UnbondingPeriodBlocks` blocks.
+bonded for `UnbondingPeriod` blocks.
+
+Some "malicious" behavior do not produce obviously discernable evidence on the
+blockchain. In these cases, the validators can coordinate out of band to force
+the timeout of a validator.
 
 ### Transaction Fees
 
+GnuClear validators can accept any token type or combination of types as a fee
+for processing a transaction.  Each validator can subjectively set whatever
+exchange rate it wants, and choose whatever transactions it wants, as long as
+the `BlockGasLimit` is not exceeded.  The collected fees are redistributed to
+the holders of bonded gnu tokens, proportionately, every `ValidatorPayoutPeriod`
+blocks.
+
 ### Initial Distribution
 
-### Inflation Model
+The initial distribution of gnut coins and validators on Genesis day is ...
 
+TODO
 
-## Governance
+### Genesis Validator Vesting
+
+Validators on genesis day will be incentivized to continue validating, by virtue
+of a vesting schedule.  All of the initial bonded gnus of the validators on
+genesis day will vest at a rate of 10% a year, per block.  Vesting gnuts can be
+used to the full extent for voting, but disappears after unbonding.  It follows
+that vesting gnuts cannot be transferred.
+
+## Governance ##################################################################
 
 ### Coin Issuance
 
@@ -582,19 +607,16 @@ bonded for `UnbondingPeriodBlocks` blocks.
 
 ### Software Upgrades
 
-## Roadmap
+## Roadmap #####################################################################
 
-### Initial proposals for distribution (PoW, conferences)
-
-### Shard discovery
-
-### Tendermint V2
-
-### Support fees paid for w/ other currenties
+* Initial proposals for distribution (PoW, conferences)
+* Shard discovery
+* Tendermint V2
+* Support fees paid for w/ other currenties
 
 <hr/>
 
-## Appendix
+## Appendix ####################################################################
 
 ### Merkle tree & proof specification
 
