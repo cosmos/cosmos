@@ -566,8 +566,6 @@ security denominated in native terms.
 A global hub with regional autonomous shards can practically mitigate problems
 that arise from intermittent global network partitions.
 
-### Distributed Exchange
-
 ### Ethereum Scaling
 
 An open issue for Ethereum is how to solve the scaling problem.  Currently,
@@ -581,7 +579,10 @@ implemented by a sequence of two IBC packets going in opposite directions.
 
 ### Application integration
 
-e.g. to Ethereum, ZCash, or Bitcoin
+* Ethereum
+* ZCash
+* Bitcoin
+* exchange...
 
 ## Issuance and Incentives #####################################################
 
