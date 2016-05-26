@@ -238,6 +238,42 @@ seconds.  Notably, performance of well over a thousand transactions per second
 is maintained even in harsh adversarial conditions, with validators crashing or
 broadcasting maliciously crafted votes. See FIGURE for details.
 
+### Forks and Censorship Attacks
+
+Due to the definition of a block commit, any 1/3+ coalition of validators can
+halt the blockchain by not broadcasting their votes. Such a coalition can also
+censor particular transactions by rejecting blocks that include these
+transactions, though this would result in a significant proportion of block
+proposals to be rejected, which would slow down the rate of block commits of the
+blockchain, reducing its utility and value. The malicious coalition might also
+broadcast votes in a trickle so as to grind blockchain block commits to a near
+halt, or engage in any combination of these attacks.
+
+If a global active adversary were also involved, it can partition the network
+in such a way that it may appear that the wrong subset of validators were
+responsible for the slowdown. This is not just a limitation of Tendermint, but
+rather a limitation of all consensus protocols whose network is potentially
+controlled by an active adversary.
+
+For both types of attacks, a subset of the validators through means external to
+the blockchain should coordinate to sign a reorg-proposal that chooses a fork
+(and any evidence thereof) and the initial subset of validators with their
+signatures. Clients should verify the signatures on the reorg-proposal, verify
+any evidence, and make a judgement or prompt the end-user for a decision.
+For example, a phone wallet app may prompt the user with a security warning,
+while a refrigerator may accept any reorg-proposal signed by +1/2 of the
+original validators. If we further require that validators who sign such a
+reorg-proposal forego its collateral on all other forks, light-clients can be
+assured by up to 1/6 of the bonded collateral (1/6 == 2/3 - 1/2). Notice that no
+Byzantine fault tolerant algorithm can come to consensus when 1/3+ of validators
+are dishonest, yet a fork assumes that 1/3+ of validators have been dishonest by
+double-signing or lock-changing without justification. So, signing the reorg-
+proposal is a coordination problem that cannot be solved internally by any
+protocol -- not even Tendermint. It must be provided externally.
+
+Assuming that the external coordination medium and protocol is robust, it
+follows that forks are less of a concern than censorship attacks.
+
 ### TMSP
 
 * Specification
@@ -573,6 +609,9 @@ Some "malicious" behavior do not produce obviously discernable evidence on the
 blockchain. In these cases, the validators can coordinate out of band to force
 the timeout of a validator.
 
+A valid re-org (link) can be used to inactivate any 1/3+ coalition of validators
+, e.g. for going offline and halting the GnuClear hub.
+
 ### Transaction Fees
 
 GnuClear validators can accept any token type or combination of types as a fee
@@ -606,6 +645,8 @@ that vesting gnuts cannot be transferred.
 ### Validator Set Changes
 
 ### Software Upgrades
+
+### Penalties for Absenteeism
 
 ## Roadmap #####################################################################
 
