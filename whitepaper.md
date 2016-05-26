@@ -100,12 +100,19 @@ insecurity.
 
 ### BigChainDB
 
-BigChainDB is a modification of the successful RethinkDB (a NoSQL
-datastore for JSON-documents with a query language), to include additional
-security guarantees without sacrificing the ability to perform over a million
-txs/s. RethinkDB achieves high performance with a combination of sharding and 
-primaries, and utilizes the Raft consensus algorithm only for automatic fail-over of 
-primaries. Thus the system does not currently provide Byzantine Fault Tolerance.
+BigChainDB is a modification of the successful RethinkDB (a NoSQL datastore for
+JSON-documents with a query language) to include additional security
+guarantees without sacrificing the ability to perform over a million txs/s.
+RethinkDB achieves high performance with a combination of sharding and
+primaries, and utilizes the Raft consensus algorithm only for automatic
+fail-over of primaries. RethinkDB does not currently provide Byzantine Fault
+Tolerance.
+
+BigChainDB uses RethinkDB as the "underlying DB" to order blocks, and adds a
+layer of validator signatures on top to vote on the block's validity. A block
+is considered valid and committed when a majority of the validators vote in
+favor of it.  If the underlying database forks, it may be possible for a single
+Byzantine validator to induce a double-spend.
 
 ### Lightning Network 
 
@@ -538,18 +545,21 @@ language, we can use an analog of the IBC protocol itself.
 For instance, a GnuClear shard with validator set X could act as an ether-peg,
 where the application on the shard would be the ethereum application state (ie.
 the Ethereum Virtual Machine), but would additionally exchange IBC messages with
-a contract on ethereum itself. This contract would allow ether holders to send ether to the shard by sending it to the contract -
-once in the contract, it can not be withdrawn unless an appropriate IBC packet
-is received from the shard. On the shard, ether is created when an IBC packet is
-received proving ether was received in the contract, and destroyed with a
-special transaction that sends it back out, the result of which can be posted as the IBC packet
-on the ethereum contract as proof the ether should be withdrawn.
+a contract on ethereum itself. This contract would allow ether holders to send
+ether to the shard by sending it to the contract - once in the contract, it can
+not be withdrawn unless an appropriate IBC packet is received from the shard. On
+the shard, ether is created when an IBC packet is received proving ether was
+received in the contract, and destroyed with a special transaction that sends it
+back out, the result of which can be posted as the IBC packet on the ethereum
+contract as proof the ether should be withdrawn.
 
-Of course, the risk of such a pegging contract is that a rogue validator set could steal any ether 
-sent to the contract by publishing false IBC packets. For this reason, it is important that the validators on
-a peg-shard have sufficient capital bonded such that evidence of false IBC packets can be published and their deposits
-destroyed or re-allocated. Staking can happen both on the GnuClear network and in the ethereum contract,
-allowing both systems to have security denominated in native terms.
+Of course, the risk of such a pegging contract is that a rogue validator set
+could steal any ether sent to the contract by publishing false IBC packets. For
+this reason, it is important that the validators on a peg-shard have sufficient
+capital bonded such that evidence of false IBC packets can be published and
+their deposits destroyed or re-allocated. Staking can happen both on the
+GnuClear network and in the ethereum contract, allowing both systems to have
+security denominated in native terms.
 
 ### Network partition mitigation
 
@@ -625,11 +635,11 @@ of the gnu-holders vote yes, the proposal passes, and the candidate becomes a
 validator at the specified block height.
 
 Given the same amount of usage of the GnuClear network, the validators may not
-have a natural inclination to allow more gnu holders to bond, because this
+have a natural inclination to allow more gnut holders to bond, because this
 decreases the amount of fees earned by each validator.  Yet, the network might
 become more profitable if there were more collateral at stake, as it allows for
 more transaction velocity. In that case, it might be rational for validators to
-allow a new gnu holder to bond, as long as it brings more stake to the table.
+allow a new gnut holder to bond, as long as it brings more stake to the table.
 Thus, bond proposals can also include any number of non-gnu tokens as
 collateral. These tokens join the blockchain's token reserve pool.
 
@@ -685,7 +695,7 @@ TODO
 ### Genesis Validator Vesting
 
 Validators on genesis day will be incentivized to continue validating, by virtue
-of a vesting schedule.  All of the initial bonded gnus of the validators on
+of a vesting schedule.  All of the initial bonded gnuts of the validators on
 genesis day will vest at a rate of 10% a year, per block.  Vesting gnuts can be
 used to the full extent for voting, but disappears after unbonding.  It follows
 that vesting gnuts cannot be transferred.
@@ -702,6 +712,10 @@ that vesting gnuts cannot be transferred.
 ### Software Upgrades
 
 ### Penalties for Absenteeism
+
+### Changing parameters
+
+* Changing the BlockGasLimit, e.g. for increasing revenue
 
 ## Roadmap #####################################################################
 
