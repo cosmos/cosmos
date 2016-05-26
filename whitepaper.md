@@ -97,7 +97,8 @@ insecurity.
 ### BigChainDB
 
 Attempting to tilt the balance between security and performance in favor of
-performance, BigChainDB is a modification of the successful SQL-like RethinkDB
+performance, BigChainDB is a modification of the successful RethinkDB
+(a NoSQL datastore for JSON-documents with a query language),
 to include additional security guarantees without sacrificing the ability to
 perform over a million txs/s.  RethinkDB uses the Raft consensus algorithm, but
 only to process low-frequency events, like changes to the validator set. Thus
@@ -131,7 +132,7 @@ bandwidth requirements necessary to win the PoW race, allowing small miners to
 more fairly compete, and allowing transactions to be committed more regularly
 by the last miner to find a micro-block.
 
-### Segregated Witness
+### Segregated Witness 
 
 Segregated Witness is a Bitcoin improvement proposal
 [link](https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki) that aims
@@ -146,7 +147,9 @@ instead of mining, which trivially allows horizontal scaling through multiple
 parallel blockchains, while regular, more frequent block commits allow for
 vertical scaling as well.
 
-### Casper
+### Sidechains
+
+### Casper 
 
 Casper is a proposed Proof-of-Stake consensus algorithm.  Its prime
 mode of operation is "consensus-by-bet".  The idea is that by letting validators
@@ -282,28 +285,39 @@ The blockchain shards can themselves be hubs to form a multi-level hierarchical
 network, but for the sake of clarity we will only describe the simple
 configuration with one central hub and many shards.
 
-(TODO: "To ensure the hub is always up to date, any updates to the validator set
-of a shard must be coordinated through the hub."?)
-
-
 ## Inter-blockchain Communication (IBC) ########################################
 
 Now we look at how these independent sovereign blockchains (the hub and shards)
 communicate with each other.  Say that there are three blockchains, "Shard1",
 "Shard2", and "Hub", and we wish for "Shard1" to produce a packet destined for
-"Shard2" going through "Hub".  There are two types of transactions that compose
-the IBC protocol.  There is the `IBCBlockCommitTx` transaction, and the
-`IBCPacketProofTx` transaction.
+"Shard2" going through "Hub". For a packet to move from one blockchain to another,
+a proof must be posted on the receiving chain that the sending chain 
+knows about a packet with the appropriate destination.
+For the receiving chain to check the proof, it must keep up with the sender's block headers.
+The mechanism is similar to that used by sidechains, requiring two interacting chains to 
+"be aware" of one another.
+
+The IBC protocol can therefore naturally be defined using two types of transaction:
+an `IBCBlockCommitTx` transaction, which allows a blockchain to notify another of its most recent block-hash,
+and an `IBCPacketProofTx` transaction, which allows a sender blockchain to prove to a receiver blockchain
+that a packet destined for the receiver was was included in a recent state of the sender.
+The proof depends on the receiver having received a recent block-hash via an `IBCBlockCommitTx`.
+
+By splitting the IBC mechanics into two separate transactions `IBCBlockCommitTx`
+and `IBCPacketProofTx`, we allow the native fee market-mechanism of the
+receiving chain to determine which packets get committed (i.e. acknowledged),
+while allowing for complete freedom on the sending chain as to how many
+outbound packets are allowed.
 
 ![Figure of Shard1, Shard2, and Hub IBC without acknowledgement](https://raw.githubusercontent.com/gnuclear/gnuclear-whitepaper/master/msc/ibc_without_ack.png)
 
-### IBCBlockCommitTx transaction
-
-The `IBCBlockCommitTx` transaction is used to update the known recent block-hash
-of one blockchain on another blockchain.  In the example above, in order to
+<CAPTION on a figure>
+In the example above, in order to
 update the block-hash of "Shard1" on "Hub" (or of "Hub" on "Shard2"), an
 `IBCBlockCommitTx` transaction must be posted on "Hub" with the block-hash of
 "Shard1" (or on "Shard2" with the block-hash of "Hub").
+
+### IBCBlockCommitTx transaction
 
 An `IBCBlockCommitTx` transaction is composed of:
 - `ChainID (string)`: The ID of the blockchain
@@ -354,12 +368,6 @@ An `IBCPacketTx` transaction is composed of:
 - `PacketProof (IAVLProof)`: A IAVLTree Merkle-proof for proving the packet's
   hash against the `AppHash` of the source chain at given height
 
-By splitting the IBC mechanics into two separate transactions `IBCBlockCommitTx`
-and `IBCPacketProofTx`, we allow the native fee market-mechanism of the
-receiving chain to determine which packets get committed (i.e. acknowledged),
-while allowing for complete freedom on the sending chain as to how many packets
-outbound packets are allowed.
-
 The sequence for sending a packet from "Shard1" to "Shard2" through the "Hub" is
 depicted in {Figure X}.  First, an `IBCPacketTx` proves to "Hub" that the packet
 is included in the app-state of "Shard1".  Then, another `IBCPacketTx` proves to
@@ -368,11 +376,11 @@ procedure, the `IBCPacket` fields are identical: the `SrcChainID` is always
 "Shard1", and the `DstChainID` is always "Shard2".
 
 The `PacketProof` must have the correct Merkle-proof path, as follows:
-``` IBC/<SrcChainID>/<DstChainID>/<Number> ```
+``` IBC/<SrcChainID>/<DstChainID>/<Number> ``` <-- clarify this
 
 When "Shard1" wants to send a packet to "Shard2" through "Hub", the `IBCPacket`
-data are identical whether the packet is Merkle-ized on "Shard1", The only
-mutable field is `Status` for tracking delivery, as shown below.
+data are identical whether the packet is Merkle-ized on "Shard1", the "Hub", or "Shard2".
+The only mutable field is `Status` for tracking delivery, as shown below.
 
 ### IBC Packet Delivery Acknowledgement
 
@@ -422,7 +430,7 @@ following value:
 
 Next, "Shard2" must include in its app-hash an abbreviated packet that shows the
 new status of `AckSent`.  An `IBCBlockCommit` and `IBCPacketTx` are posted back
-on "Hub" that proves the eexistence of an abbreviated `IBCPacket` on "Shard2".
+on "Hub" that proves the existence of an abbreviated `IBCPacket` on "Shard2".
 Say that `IBCPacketTx` has the following value:
 - `FromChainID`: "Shard2"
 - `FromBlockHeight`: 400 (say)
