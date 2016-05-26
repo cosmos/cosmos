@@ -54,12 +54,16 @@ the late 90s that Practical Byzantine Fault Tolerance (PBFT) was introduced as
 an asynchronous consensus algorithm able to tolerate up to 1/3 of processes
 behaving arbitrarily.  PBFT became the standard algorithm, spawning many
 variations, including most recently by IBM as part of their contribution to
-Hyperledger. PBFT's most prominent drawback is its lack of accountability - that
-is, in the event that 1/3 of processes behave maliciously and cause the
-consensus to fork, it may not be possible to determine who was responsible.
-Additionally, it may be argued that the algorithm is, like Paxos before it,
-difficult to understand and reason about; consequently, the associated software
-ecosystem has been relatively undeveloped.
+Hyperledger.
+
+The benefit of Tendermint consensus over PBFT is that Tendermint has a block
+chain structure.  Tendermint blocks must commit in order, which obviates the
+complexity and communication overhead associated with PBFT's view-changes.  In
+addition, the batching of transactions into blocks allows for regular
+Merkle-hashing of the application state, rather than periodic digests as with
+PBFT's checkpointing scheme.  This allows for faster provable transaction
+commits for light-clients, and as we'll later show, faster inter-blockchain
+communication.
 
 ### BitShares delegated stake 
 
@@ -619,9 +623,11 @@ Some "malicious" behavior do not produce obviously discernable evidence on the
 blockchain. In these cases, the validators can coordinate out of band to force
 the timeout of a validator.
 
-In the case of a halt of the GnuClear hub, a valid re-org (link) can be used to
-inactivate any 1/3+ coalition of validators , e.g. for going offline and halting
-the GnuClear hub.
+In situations where the GnuClear hub halts due to a 1/3+ coalition of validators
+going offline, or in situations where a 1/3+ coalition of validators censor
+evidence of malicious behavior from entering the blockchain, as long as there
+are -1/2 such Byzantine validators, the hub will recover with a reorg-proposal.
+(Link to "Forks and Censorship Attacks").
 
 ### Transaction Fees
 
