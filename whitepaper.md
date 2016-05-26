@@ -100,14 +100,12 @@ insecurity.
 
 ### BigChainDB
 
-Attempting to tilt the balance between security and performance in favor of
-performance, BigChainDB is a modification of the successful RethinkDB
-(a NoSQL datastore for JSON-documents with a query language),
-to include additional security guarantees without sacrificing the ability to
-perform over a million txs/s.  RethinkDB uses the Raft consensus algorithm, but
-only to process low-frequency events, like changes to the validator set. Thus
-the system is only eventually consistent, and does not provide Byzantine Fault
-Tolerance.
+BigChainDB is a modification of the successful RethinkDB (a NoSQL
+datastore for JSON-documents with a query language), to include additional
+security guarantees without sacrificing the ability to perform over a million
+txs/s. RethinkDB achieves high performance with a combination of sharding and 
+primaries, and utilizes the Raft consensus algorithm only for automatic fail-over of 
+primaries. Thus the system does not currently provide Byzantine Fault Tolerance.
 
 ### Lightning Network 
 
@@ -133,8 +131,8 @@ by separating leader election from transaction broadcast: leaders are first
 elected by Proof-of-Work in "micro-blocks", and then able to broadcast
 transactions to be committed until a new micro-block is found. This reduces the
 bandwidth requirements necessary to win the PoW race, allowing small miners to
-more fairly compete, and allowing transactions to be committed more regularly
-by the last miner to find a micro-block.
+more fairly compete, and allowing transactions to be committed more regularly by
+the last miner to find a micro-block.
 
 ### Segregated Witness 
 
@@ -155,8 +153,8 @@ vertical scaling as well.
 
 ### Casper 
 
-Casper is a proposed Proof-of-Stake consensus algorithm.  Its prime
-mode of operation is "consensus-by-bet".  The idea is that by letting validators
+Casper is a proposed Proof-of-Stake consensus algorithm.  Its prime mode of
+operation is "consensus-by-bet".  The idea is that by letting validators
 iteratively bet on which block it believes will become committed into the
 blockchain based on the other bets that it's seen so far, finality can be
 achieved eventually.
@@ -283,7 +281,7 @@ follows that forks are less of a concern than censorship attacks.
 
 ### TMSP
 
-* Specification
+* Specification 
 * Flexibility in language, upgradability, compatibility with
 * existing stacks Tx Throughput, compare to IBM Chaincode
 
@@ -298,11 +296,11 @@ via a sharding mechanism.
 At the basis, a global hub blockchain manages many independent blockchain
 shards.  A constant stream of recent block commits from shards posted on the hub
 allows the hub to keep up with the state of each shard.  Likewise, each shard
-keeps up with the state of the hub (but shards to not keep up with each other
+keeps up with the state of the hub (but shards do not keep up with each other
 except indirectly through the hub).  Packets of information are then
-communicated from one chain to another by posting Merkle-proofs to the source's
-recent block hash.  This mechanism is called inter-blockchain communication, or
-IBC for short.
+communicated from one chain to another by posting Merkle-proofs that collide
+with a recent block hash from the source.  This mechanism is called
+inter-blockchain communication, or IBC for short.
 
 The GnuClear hub hosts a multi-asset cryptocurrency, where tokens can be held by
 individual users or by shards themselves.  These tokens can be moved from one
@@ -351,7 +349,8 @@ receiving chain to determine which packets get committed (i.e. acknowledged),
 while allowing for complete freedom on the sending chain as to how many outbound
 packets are allowed.
 
-![Figure of Shard1, Shard2, and Hub IBC without acknowledgement](https://raw.githubusercontent.com/gnuclear/gnuclear-whitepaper/master/msc/ibc_without_ack.png)
+![Figure of Shard1, Shard2, and Hub IBC without
+acknowledgement](https://raw.githubusercontent.com/gnuclear/gnuclear-whitepaper/master/msc/ibc_without_ack.png)
 
 <CAPTION on a figure>
 In the example above, in order to update the block-hash of "Shard1" on "Hub" (or
@@ -438,7 +437,8 @@ intial packet status to `AckPending`.  Then, it is the receiving chain's
 responsibility to confirm delivery by including an abbreviated`IBCPacket` in the
 app Merkle hash.
 
-![Figure of Shard1, Shard2, and Hub IBC with acknowledgement](https://raw.githubusercontent.com/gnuclear/gnuclear-whitepaper/master/msc/ibc_with_ack.png)
+![Figure of Shard1, Shard2, and Hub IBC with
+acknowledgement](https://raw.githubusercontent.com/gnuclear/gnuclear-whitepaper/master/msc/ibc_with_ack.png)
 
 First, an `IBCBlockCommit` and `IBCPacketTx` are posted on "Hub" that proves the
 existence of an `IBCPacket` on "Shard1".  Say that `IBCPacketTx` has the
@@ -507,12 +507,49 @@ above, if "Hub" had not received an `AckSent` status from "Shard2" by block 350,
 it would have set the status automatically to `Timeout`.  This evidence of a
 timeout can get posted back on "Shard1", and any coins can be returned.
 
-![Figure of Shard1, Shard2, and Hub IBC with acknowledgement and timeout](https://raw.githubusercontent.com/gnuclear/gnuclear-whitepaper/master/msc/ibc_with_ack_timeout.png)
+![Figure of Shard1, Shard2, and Hub IBC with acknowledgement and
+timeout](https://raw.githubusercontent.com/gnuclear/gnuclear-whitepaper/master/msc/ibc_with_ack_timeout.png)
 
+## Shards ####################################################
 
-## GnuClear Shard Use Cases ####################################################
+A GnuClear shard is an independent blockchain that exchanges IBC messages with
+the Hub.  From the Hub's perspective, a shard is a multi-asset account that can
+send and receive tokens using IBC packets. Like an account, a shard cannot send
+more tokens than it has, but can receive tokens from others who have them. In
+certain cases, a shard may be granted special priveleges to act as a "source" of
+some token, where, in addition to the shard's balance in that token, 
+it can send up to some maximum rate of additional tokens out to other accounts
+or shards, thereby inflating that token. Such packets are similar to the "coin"
+packet, but have type "issue". Packets of type "issue" for a particular token
+may originate from only one shard - that is, there may be only one priveleged 
+shard per token. On Genesis day, a select number of priveleged shards will be 
+created to act as pegs to other cryptocurrencies. The creation of new priviledged 
+shards is left to governance.
 
 ### Pegging
+
+A priveleged shard can act as the source of a pegged version of another
+cryptocurrency. A peg is in essence similar to the relationship between a "Hub"
+and "Shard", in that both must keep up with the latest blocks of the other in
+order to verify proofs that tokens have moved from one to the other or back.
+In fact, when another cryptocurrency offers a sufficiently strong scripting
+language, we can use an analog of the IBC protocol itself.
+
+For instance, a GnuClear shard with validator set X could act as an ether-peg,
+where the application on the shard would be the ethereum application state (ie.
+the Ethereum Virtual Machine), but would additionally exchange IBC messages with
+a contract on ethereum itself. This contract would allow ether holders to send ether to the shard by sending it to the contract -
+once in the contract, it can not be withdrawn unless an appropriate IBC packet
+is received from the shard. On the shard, ether is created when an IBC packet is
+received proving ether was received in the contract, and destroyed with a
+special transaction that sends it back out, the result of which can be posted as the IBC packet
+on the ethereum contract as proof the ether should be withdrawn.
+
+Of course, the risk of such a pegging contract is that a rogue validator set could steal any ether 
+sent to the contract by publishing false IBC packets. For this reason, it is important that the validators on
+a peg-shard have sufficient capital bonded such that evidence of false IBC packets can be published and their deposits
+destroyed or re-allocated. Staking can happen both on the GnuClear network and in the ethereum contract,
+allowing both systems to have security denominated in native terms.
 
 ### Network partition mitigation
 
@@ -560,8 +597,9 @@ validators in the future.
 
 On genesis day, the maximum number of validators will be set to 100, and this
 number will increase at a rate of 13% for 10 years, and settle at 300
-validators.
-```
+validators.  
+
+``` 
 Year 0: 100
 Year 1: 113
 Year 2: 127
@@ -592,32 +630,32 @@ decreases the amount of fees earned by each validator.  Yet, the network might
 become more profitable if there were more collateral at stake, as it allows for
 more transaction velocity. In that case, it might be rational for validators to
 allow a new gnu holder to bond, as long as it brings more stake to the table.
-Thus, bond proposals can also include any number of non-gnu tokens as collateral.
-These tokens join the blockchain's token reserve pool.
+Thus, bond proposals can also include any number of non-gnu tokens as
+collateral. These tokens join the blockchain's token reserve pool.
 
-```
-BondProposal
-  BonderAddr   []byte
-  Coins        // Gnuts and other coins
-  StartHeight  int
+``` 
+BondProposal 
+	BonderAddr   []byte 
+	Coins        // Gnuts and other coins
+	StartHeight  int 
 ```
 
 ### Penalties for Validators
 
 There must be some penalty imposed on the validators for when they intentionally
 or unintentionally deviate from the sanctioned protocol. Some evidence is
-immediately admissible, such as a double-sign at the same height and round, or
-a violation of "prevote-the-lock" (a violation of the Tendermint consensus
+immediately admissible, such as a double-sign at the same height and round, or a
+violation of "prevote-the-lock" (a violation of the Tendermint consensus
 protocol).  Such evidence will result in the validator losing its good standing
 and its bonded gnu tokens as well its proportionate share of tokens from the
 reserve pool will get slashed.
 
 Sometimes, validators will not be available, either due to regional network
 disruptions, power failure, or other reasons.  If, at any point in the past
-`ValidatorTimeoutWindow` blocks, a validator's commit vote is not included
-in the blockchain more than `ValidatorTimeoutMaxAbsent` times, that
-validator will become inactive, and lose 5% of its stake.  Its stake will remain
-bonded for `UnbondingPeriod` blocks.
+`ValidatorTimeoutWindow` blocks, a validator's commit vote is not included in
+the blockchain more than `ValidatorTimeoutMaxAbsent` times, that validator will
+become inactive, and lose 5% of its stake.  Its stake will remain bonded for
+`UnbondingPeriod` blocks.
 
 Some "malicious" behavior do not produce obviously discernable evidence on the
 blockchain. In these cases, the validators can coordinate out of band to force
@@ -656,7 +694,7 @@ that vesting gnuts cannot be transferred.
 
 ### Coin Issuance
 
-* Proposals manage inflation by sending new money to an account or shard
+* Proposals manage inflation by sending new money to an account or shard 
 * PoW, Conference, Crowd Sales
 
 ### Validator Set Changes
