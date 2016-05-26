@@ -56,7 +56,7 @@ behaving arbitrarily.  PBFT became the standard algorithm, spawning many
 variations, including most recently by IBM as part of their contribution to
 Hyperledger.
 
-The benefit of Tendermint consensus over PBFT is that Tendermint has a block
+The benefit of Tendermint consensus over PBFT is that Tendermint has an improved
 chain structure.  Tendermint blocks must commit in order, which obviates the
 complexity and communication overhead associated with PBFT's view-changes.  In
 addition, the batching of transactions into blocks allows for regular
