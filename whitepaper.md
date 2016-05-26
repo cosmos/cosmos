@@ -326,32 +326,33 @@ configuration with one central hub and many shards.
 Now we look at how these independent sovereign blockchains (the hub and shards)
 communicate with each other.  Say that there are three blockchains, "Shard1",
 "Shard2", and "Hub", and we wish for "Shard1" to produce a packet destined for
-"Shard2" going through "Hub". For a packet to move from one blockchain to another,
-a proof must be posted on the receiving chain that the sending chain 
-knows about a packet with the appropriate destination.
-For the receiving chain to check the proof, it must keep up with the sender's block headers.
-The mechanism is similar to that used by sidechains, requiring two interacting chains to 
-"be aware" of one another.
+"Shard2" going through "Hub". For a packet to move from one blockchain to
+another, a proof must be posted on the receiving chain that the sending chain
+knows about a packet with the appropriate destination. For the receiving chain
+to check the proof, it must keep up with the sender's block headers.  The
+mechanism is similar to that used by sidechains, requiring two interacting
+chains to "be aware" of one another.
 
-The IBC protocol can therefore naturally be defined using two types of transaction:
-an `IBCBlockCommitTx` transaction, which allows a blockchain to notify another of its most recent block-hash,
-and an `IBCPacketProofTx` transaction, which allows a sender blockchain to prove to a receiver blockchain
-that a packet destined for the receiver was was included in a recent state of the sender.
-The proof depends on the receiver having received a recent block-hash via an `IBCBlockCommitTx`.
+The IBC protocol can therefore naturally be defined using two types of
+transaction: an `IBCBlockCommitTx` transaction, which allows a blockchain to
+notify another of its most recent block-hash, and an `IBCPacketProofTx`
+transaction, which allows a sender blockchain to prove to a receiver blockchain
+that a packet destined for the receiver was was included in a recent state of
+the sender.  The proof depends on the receiver having received a recent
+block-hash via an `IBCBlockCommitTx`.
 
 By splitting the IBC mechanics into two separate transactions `IBCBlockCommitTx`
 and `IBCPacketProofTx`, we allow the native fee market-mechanism of the
 receiving chain to determine which packets get committed (i.e. acknowledged),
-while allowing for complete freedom on the sending chain as to how many
-outbound packets are allowed.
+while allowing for complete freedom on the sending chain as to how many outbound
+packets are allowed.
 
 ![Figure of Shard1, Shard2, and Hub IBC without acknowledgement](https://raw.githubusercontent.com/gnuclear/gnuclear-whitepaper/master/msc/ibc_without_ack.png)
 
 <CAPTION on a figure>
-In the example above, in order to
-update the block-hash of "Shard1" on "Hub" (or of "Hub" on "Shard2"), an
-`IBCBlockCommitTx` transaction must be posted on "Hub" with the block-hash of
-"Shard1" (or on "Shard2" with the block-hash of "Hub").
+In the example above, in order to update the block-hash of "Shard1" on "Hub" (or
+of "Hub" on "Shard2"), an `IBCBlockCommitTx` transaction must be posted on "Hub"
+with the block-hash of "Shard1" (or on "Shard2" with the block-hash of "Hub").
 
 ### IBCBlockCommitTx transaction
 
@@ -412,11 +413,12 @@ procedure, the `IBCPacket` fields are identical: the `SrcChainID` is always
 "Shard1", and the `DstChainID` is always "Shard2".
 
 The `PacketProof` must have the correct Merkle-proof path, as follows:
-``` IBC/<SrcChainID>/<DstChainID>/<Number> ``` <-- clarify this
+``` IBC/<SrcChainID>/<DstChainID>/<Number> ``` TODO: CLARIFY
 
 When "Shard1" wants to send a packet to "Shard2" through "Hub", the `IBCPacket`
-data are identical whether the packet is Merkle-ized on "Shard1", the "Hub", or "Shard2".
-The only mutable field is `Status` for tracking delivery, as shown below.
+data are identical whether the packet is Merkle-ized on "Shard1", the "Hub", or
+"Shard2".  The only mutable field is `Status` for tracking delivery, as shown
+below.
 
 ### IBC Packet Delivery Acknowledgement
 
@@ -617,8 +619,9 @@ Some "malicious" behavior do not produce obviously discernable evidence on the
 blockchain. In these cases, the validators can coordinate out of band to force
 the timeout of a validator.
 
-A valid re-org (link) can be used to inactivate any 1/3+ coalition of validators
-, e.g. for going offline and halting the GnuClear hub.
+In the case of a halt of the GnuClear hub, a valid re-org (link) can be used to
+inactivate any 1/3+ coalition of validators , e.g. for going offline and halting
+the GnuClear hub.
 
 ### Transaction Fees
 
