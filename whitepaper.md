@@ -779,6 +779,96 @@ that vesting gnuts cannot be transferred.
 
 ## Appendix ####################################################################
 
+### TMSP specification
+
+TMSP requests/responses are simple Protobuf messages.  Check out the [schema
+file](https://github.com/tendermint/tmsp/blob/master/types/types.proto).
+
+#### AppendTx
+  * __Arguments__:
+    * `Data ([]byte)`: The request transaction bytes
+  * __Returns__:
+    * `Code (uint32)`: Response code
+    * `Data ([]byte)`: Result bytes, if any
+    * `Log (string)`: Debug or error message
+  * __Usage__:<br/>
+    Append and run a transaction.  If the transaction is valid, returns
+CodeType.OK
+
+#### CheckTx
+  * __Arguments__:
+    * `Data ([]byte)`: The request transaction bytes
+  * __Returns__:
+    * `Code (uint32)`: Response code
+    * `Data ([]byte)`: Result bytes, if any
+    * `Log (string)`: Debug or error message
+  * __Usage__:<br/>
+    Validate a transaction.  This message should not mutate the state.
+    Transactions are first run through CheckTx before broadcast to peers in the
+mempool layer.
+    You can make CheckTx semi-stateful and clear the state upon `Commit` or
+`BeginBlock`,
+    to allow for dependent sequences of transactions in the same block.
+
+#### Commit 
+  * __Returns__:
+    * `Data ([]byte)`: The Merkle root hash
+    * `Log (string)`: Debug or error message
+  * __Usage__:<br/>
+    Return a Merkle root hash of the application state.
+
+#### Query
+  * __Arguments__:
+    * `Data ([]byte)`: The query request bytes
+  * __Returns__:
+    * `Code (uint32)`: Response code
+    * `Data ([]byte)`: The query response bytes
+    * `Log (string)`: Debug or error message
+
+#### Flush
+  * __Usage__:<br/>
+    Flush the response queue.  Applications that implement `types.Application`
+need not implement this message -- it's handled by the project.
+
+#### Info
+  * __Returns__:
+    * `Data ([]byte)`: The info bytes
+  * __Usage__:<br/>
+    Return information about the application state.  Application specific.
+
+#### SetOption
+  * __Arguments__:
+    * `Key (string)`: Key to set
+    * `Value (string)`: Value to set for key
+  * __Returns__:
+    * `Log (string)`: Debug or error message
+  * __Usage__:<br/>
+    Set application options.  E.g. Key="mode", Value="mempool" for a mempool
+connection, or Key="mode", Value="consensus" for a consensus connection.
+    Other options are application specific.
+
+#### InitChain
+  * __Arguments__:
+    * `Validators ([]Validator)`: Initial genesis validators
+  * __Usage__:<br/>
+    Called once upon genesis
+
+#### BeginBlock
+  * __Arguments__:
+    * `Height (uint64)`: The block height that is starting
+  * __Usage__:<br/>
+    Signals the beginning of a new block. Called prior to any AppendTxs.
+
+#### EndBlock
+  * __Arguments__:
+    * `Height (uint64)`: The block height that ended
+  * __Returns__:
+    * `Validators ([]Validator)`: Changed validators with new voting powers (0
+      to remove)
+  * __Usage__:<br/>
+    Signals the end of a block.  Called prior to each Commit after all
+transactions
+
 ### Merkle tree & proof specification
 
 * SimpleTree
