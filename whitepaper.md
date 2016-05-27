@@ -288,9 +288,59 @@ follows that forks are less of a concern than censorship attacks.
 
 ### TMSP
 
-* Specification 
-* Flexibility in language, upgradability, compatibility with
-* existing stacks Tx Throughput, compare to IBM Chaincode
+The Tendermint consensus algorithm is implemented in a program called Tendermint
+Core.  Tendermint Core is an application-agnostic "consensus engine" that can
+turn any deterministic (blackbox) application into a distributedly replicated
+blockchain.  As the Apache Web Server or Nginx connects to the Wordpress
+application via CGI or FastCGI, Tendermint Core connects to blockchain
+applications via TMSP.
+
+To draw an analogy, lets talk about a well-known cryptocurrency, Bitcoin.
+Bitcoin is a cryptocurrency blockchain where each node maintains a fully audited
+Unspent Transaction Output (UTXO) database. If one wanted to create a
+Bitcoin-like system on top of TMSP, Tendermint Core would be responsible for
+
+* Sharing blocks and transactions between nodes
+* Establishing a canonical/immutable order of transactions (the blockchain)
+
+Meanwhile, application would be responsible for
+
+* Maintaining the UTXO database
+* Validating cryptographic signatures of transactions
+* Preventing transactions from spending non-existent transactions
+* Allowing clients to query the UTXO database.
+
+Tendermint is able to decompose the blockchain design by offering a very simple
+API between the application process and consensus process.
+
+TMSP consists of 3 primary message types that get delivered from the core to
+the application. The application replies with corresponding response messages.
+
+The `AppendTx` message is the work horse of the application. Each transaction in
+the blockchain is delivered with this message. The application needs to validate
+each transactions received with the AppendTx message against the current state,
+application protocol, and the cryptographic credentials of the transaction. A
+validated transaction then needs to update the application state — by binding a
+value into a key values store, or by updating the UTXO database.
+
+The `CheckTx` message is similar to AppendTx, but it’s only for validating
+transactions. Tendermint Core’s mempool first checks the validity of a
+transaction with CheckTx, and only relays valid transactions to its peers.
+Applications may check an incrementing nonce in the transaction and return an
+error upon CheckTx if the nonce is old.
+
+The `Commit` message is used to compute a cryptographic commitment to the
+current application state, to be placed into the next block header. This has
+some handy properties. Inconsistencies in updating that state will now appear as
+blockchain forks which catches a whole class of programming errors. This also
+simplifies the development of secure lightweight clients, as Merkle-hash proofs
+can be verified by checking against the block hash, and the block hash is signed
+by a quorum of validators.
+
+Additional TMSP messages allow the application to keep track of and change the
+validator set, and for the application to receive the block information, such as
+the height and the commit votes.  The full TMSP specification can be found
+[here](https://github.com/tendermint/tmsp#message-types).
 
 ## The GnuClear Hub and Shards #################################################
 
@@ -734,3 +784,10 @@ that vesting gnuts cannot be transferred.
 * SimpleTree
 * IAVLTree
 * Proof Expression langauge
+
+## Acknowledgements ############################################################
+
+We thank our friends and peers for assistance in conceptualizing, reviewing, and
+providing support for our work with Tendermint and GnuClear.
+
+Zaki Manian provided much of the wording under the TMSP section.
