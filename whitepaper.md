@@ -158,6 +158,20 @@ vertical scaling as well.
 
 ### Sidechains
 
+Sidechains are a proposed mechanism for scaling the Bitcoin network via alternative
+blockchains that are "pegged" to the Bitcoin blockchain.
+Sidechains allow bitcoin to flow from the Bitcoin blockchain to the sidechain and back,
+and allow for experimentation in new features on the sidechain.
+The mechanism, known as a two-way peg, uses the standard Simple Payment Verification (SPV) 
+used by Bitcoin light clients, where proof of a sufficiently long chain of block headers containing a 
+particular transaction serves as evidence for the existence of the transaction. Each
+chain in the peg serves as a light client of the other, using SPV proofs to determine when coins 
+should be transferred across the peg and back.
+Of course, since Bitcoin uses Proof-of-Work, Bitcoin sidechains suffer from the many
+risks of Proof-of-Work as a consensus mechanism, which are particularly exacerbated in a scalability
+context. That said, the core mechanism of the two-way peg is in principle the same as that 
+employed by the GnuClear network, though using a more secure consensus algorithm.
+
 ### Casper 
 
 Casper is a proposed Proof-of-Stake consensus algorithm.  Its prime mode of
@@ -653,14 +667,7 @@ A result of this integration would be, for instance, the ability of anyone with 
 participating bank to move dollars from their bank account, which is on the shard,
 to other accounts on the shard, or to the "Hub", or to another shard entirely.
 In this regard, GnuClear can act as a seamless conduit between the currencies of nation states and the
-cryptocurrency world. Of course, to do that properly, it will need an exchange.
-
-## Exchange ####################################################
-
-
-
-
-
+cryptocurrency world. 
 
 ### Ethereum Scaling
 
@@ -676,17 +683,37 @@ running on different shards, providing a foundation for generalized Ethereum sca
 For example, asynchronous contract calls that "send an action" and expect a response in return could be
 implemented by a sequence of two IBC packets going in opposite directions.
 
+### Application integration #####################################################
+
+GnuClear shards run arbitrary application logic, defined at the beginning of the shard's life,
+and potentially updated over time by governance. Such flexibility allows GnuClear shards to act
+as pegs to other cryptocurrencies, like Ethereum or Bitcoin, but it also permits "forks" of those blockchains,
+utilizing the same codebase but a different validator set and history. This allows many existing cryptocurrency frameworks,
+such as that of ethereum, ZCash, Bitcoin, CryptoNote, and so on to be used with a higher performance consensus engine
+on a common network, openning tremendous opportunity for interoperability across platforms.
+Furthermore, as a multi-asset blockchain, a single transaction may contain multiple inputs and outputs, where each input
+can be any token type, enabling GnuClear to serve directly as a platform for decentralized exchange,
+though orders are assumed to be matched via other platforms. Alternatively, a shard can serve
+as an exchange, including hosting the orderbook, openning up new business opportunities for blockchain
+backed exchanges, which may themselves trade liquidity over the GnuClear network.
+
+Shards can also serve as blockchain-backed versions of enterprise and government systems, 
+where pieces of a particular service, traditionally run by an organization or group of organizations,
+are instead run as a TMSP application on a certain shard, allowing it to inherit the security and interoperability
+of the public GnuClear network, without sacrificing control over the underlying service. 
+Thus, GnuClear may be a best of both worlds for organizations looking to utilize blockchain technology
+that are wary of relinquishing control to an unidentified set of miners.
+
+
 ### Network partition mitigation
 
-A global hub with regional autonomous shards can practically mitigate problems
-that arise from intermittent global network partitions.
-
-### Application integration
-
-* Ethereum
-* ZCash
-* Bitcoin
-* exchange...
+A major problem with consistency favouring consensus algorithms like Tendermint is thought to be that
+any network partition which causes there to be no single partition with 2/3+ validators will
+halt the consensus altogether. The GnuClear architecture can mitigate this problem by using
+a global hub with regional autonomous shards, where 2/3+ validators in a shard are based in a common 
+geographic region. For instance, a common paradigm may be for individual cities, or local clusters of them,
+to operate a given shard for the coordination of finances and infrastructure, enabling municipal activity to persist in
+the event that otherwise remote service providers fail. 
 
 ## Issuance and Incentives #####################################################
 
