@@ -84,13 +84,13 @@ successful.
 ### Stellar 
 
 Building on an approach pioneered by Ripple, Stellar refined a model of
-Federated Byzantine Agreement wherein the the processes participating in
+Federated Byzantine Agreement wherein the processes participating in
 consensus do not constitute a fixed and globally known set.  Rather, each
 process curates a personal set of "quorum slices", each constituting a set of
 processes it trusts. A set containing a slice from every process is known as a
 quorum.  The security of the mechanism relies on the assumption that the
 intersection of *any* two quorums is non-empty, while the availability of a
-process requires at least one of its quorum slices to consist of entirely of
+process requires at least one of its quorum slices to consist entirely of
 correct nodes, creating a trade-off between using large or small quorum-slices
 that may be difficult to balance without imposing significant assumptions about
 trust. The approach is similar to both the Border Gateway Protocol, used by
@@ -101,10 +101,10 @@ insecurity.
 ### BigChainDB
 
 BigChainDB is a modification of the successful RethinkDB (a NoSQL datastore for
-JSON-documents with a query language) to include additional security
+JSON-documents, with a query language) to include additional security
 guarantees without sacrificing the ability to perform over a million txs/s.
 RethinkDB achieves high performance with a combination of sharding and
-primaries, and utilizes the Raft consensus algorithm only for automatic
+leaders, or "primaries"; it utilizes the Raft consensus algorithm only for automatic
 fail-over of primaries. RethinkDB does not currently provide Byzantine Fault
 Tolerance.
 
@@ -139,7 +139,7 @@ elected by Proof-of-Work in "micro-blocks", and then able to broadcast
 transactions to be committed until a new micro-block is found. This reduces the
 bandwidth requirements necessary to win the PoW race, allowing small miners to
 more fairly compete, and allowing transactions to be committed more regularly by
-the last miner to find a micro-block.
+the last miner to find a micro-block. 
 
 ### Segregated Witness 
 
@@ -157,6 +157,20 @@ parallel blockchains, while regular, more frequent block commits allow for
 vertical scaling as well.
 
 ### Sidechains
+
+Sidechains are a proposed mechanism for scaling the Bitcoin network via alternative
+blockchains that are "pegged" to the Bitcoin blockchain.
+Sidechains allow bitcoin to flow from the Bitcoin blockchain to the sidechain and back,
+and allow for experimentation in new features on the sidechain.
+The mechanism, known as a two-way peg, uses the standard Simple Payment Verification (SPV) 
+used by Bitcoin light clients, where proof of a sufficiently long chain of block headers containing a 
+particular transaction serves as evidence for the existence of the transaction. Each
+chain in the peg serves as a light client of the other, using SPV proofs to determine when coins 
+should be transferred across the peg and back.
+Of course, since Bitcoin uses Proof-of-Work, Bitcoin sidechains suffer from the many
+risks of Proof-of-Work as a consensus mechanism, which are particularly exacerbated in a scalability
+context. That said, the core mechanism of the two-way peg is in principle the same as that 
+employed by the GnuClear network, though using a more secure consensus algorithm.
 
 ### Casper 
 
@@ -208,9 +222,9 @@ Tendermint is a Byzantine Fault Tolerant (BFT) consensus protocol for
 asynchronous networks, notable for its simplicity, performance, and
 accountability.  The protocol requires a fixed, known set of N validators, where
 the ith validator is identified by its public key, V_i.  Consensus proceeds in
-rounds. At each round the round-leader, or proposer, proposes a value to be
+rounds. At each round the round-leader, or proposer, proposes a block to be
 decided.  The validators then vote, in two stages, on whether or not to accept
-the proposal or move to the next round. 
+the proposed block or move to the next round. 
 
 We call the voting stages PreVote and PreCommit. A vote can be for a particular
 block or for Nil.  We call a collection of +⅔ PreVotes for a single block in the
@@ -238,8 +252,6 @@ attempts, or even succeeds, in violating safety , they can be identified by the
 protocol.  This includes both voting for conflicting blocks and broadcasting
 unjustified votes.
 
-TODO: Blockchain from Consensus
-
 TODO: Light Clients.
 
 Despite its strong guarantees, Tendermint provides exceptional performance.  In
@@ -259,7 +271,8 @@ transactions, though this would result in a significant proportion of block
 proposals to be rejected, which would slow down the rate of block commits of the
 blockchain, reducing its utility and value. The malicious coalition might also
 broadcast votes in a trickle so as to grind blockchain block commits to a near
-halt, or engage in any combination of these attacks.
+halt, or engage in any combination of these attacks. Finally, it can cause the 
+blockchain to fork, by double-signing or violating the locking rules.
 
 If a global active adversary were also involved, it can partition the network
 in such a way that it may appear that the wrong subset of validators were
@@ -267,7 +280,7 @@ responsible for the slowdown. This is not just a limitation of Tendermint, but
 rather a limitation of all consensus protocols whose network is potentially
 controlled by an active adversary.
 
-For both types of attacks, a subset of the validators through means external to
+For these types of attacks, a subset of the validators through means external to
 the blockchain should coordinate to sign a reorg-proposal that chooses a fork
 (and any evidence thereof) and the initial subset of validators with their
 signatures. Clients should verify the signatures on the reorg-proposal, verify
@@ -285,6 +298,20 @@ protocol -- not even Tendermint. It must be provided externally.
 
 Assuming that the external coordination medium and protocol is robust, it
 follows that forks are less of a concern than censorship attacks.
+
+In addition to forks and censorship, which require 1/3+ Byzantine validators,
+a coalition of 2/3+ validators may commit arbitrary, invalid state.
+This is characteristic of any BFT system. Unlike double-signing, which creates 
+forks with easily verifiable evidence, detecting committment of an invalid state requires non-validating peers to verify whole blocks,
+which implies that they keep a local copy of the state and execute each transaction, computing
+the state root independently for themselves.
+Once detected, the only way to handle such a failure is via social consensus on alternative media.
+For instance, in situations where Bitcoin has failed, whether forking due to software bugs (as in March 2013),
+or committing invalid state due to Byzantine behaviour of miners (as in the July 2016), the well connected community of 
+businesses, developers, miners, and other organizations established a social consensus as to what 
+manual actions were required by participants to heal the network. 
+Furthermore, since validators of a Tendermint blockchain may be expected to be identifiable, 
+commitment of an invalid state may be punishable by law.
 
 ### TMSP
 
@@ -572,67 +599,121 @@ timeout](https://raw.githubusercontent.com/gnuclear/gnuclear-whitepaper/master/m
 A GnuClear shard is an independent blockchain that exchanges IBC messages with
 the Hub.  From the Hub's perspective, a shard is a multi-asset account that can
 send and receive tokens using IBC packets. Like an account, a shard cannot send
-more tokens than it has, but can receive tokens from others who have them. In
-certain cases, a shard may be granted special priveleges to act as a "source" of
+more tokens than it has, but can receive tokens from others who have them. 
+In certain cases, a shard may be granted special priveleges to act as a "source" of
 some token, where, in addition to the shard's balance in that token, 
 it can send up to some maximum rate of additional tokens out to other accounts
-or shards, thereby inflating that token. Such packets are similar to the "coin"
+or shards, thereby inflating that token's supply. Such packets are similar to the "coin"
 packet, but have type "issue". Packets of type "issue" for a particular token
 may originate from only one shard - that is, there may be only one priveleged 
-shard per token. On Genesis day, a select number of priveleged shards will be 
+shard per token type. On Genesis day, a select number of priveleged shards will be 
 created to act as pegs to other cryptocurrencies. The creation of new priviledged 
 shards is left to governance.
 
-### Pegging
+Note that a shard where +2/3 of the validators are Byzantine can commit invalid state.
+Since the very purpose of the "Hub" is to avoid verifying every transaction on a shard,
+detecting such failures must be done by independent observers of the shard,
+which may appeal to social media and to the market to make their detection known
+(for instance, selling/shorting a token that is being artificially inflated
+by a Byzantine source-shard, and writing a blog post about the attack). 
+Additionally, if the validator set of the shard is not the same as that of the "Hub", 
+and shard validators have stake bonded on the "Hub", an explicit alert mechanism may be used on the "Hub"
+to challenge the validity of a block and to slash the deposits of offending validators.
+
+## Pegging ####################################################
 
 A priveleged shard can act as the source of a pegged version of another
 cryptocurrency. A peg is in essence similar to the relationship between a "Hub"
 and "Shard", in that both must keep up with the latest blocks of the other in
 order to verify proofs that tokens have moved from one to the other or back.
 In fact, when another cryptocurrency offers a sufficiently strong scripting
-language, we can use an analog of the IBC protocol itself.
+language, we can use an analog of the IBC protocol itself, and could in principle
+use the other cryptocurrency's blockchain directly as a shard.
+However, utilizing an intermediate Tendermint shard dramatically reduces the complexity of the "Hub"
+and permits more concurrency between the pegged version of the cryptocurrency and the rest of the GnuClear
+network.
 
-For instance, a GnuClear shard with validator set X could act as an ether-peg,
-where the application on the shard would be the ethereum application state (ie.
-the Ethereum Virtual Machine), but would additionally exchange IBC messages with
-a contract on ethereum itself. This contract would allow ether holders to send
-ether to the shard by sending it to the contract - once in the contract, it can
-not be withdrawn unless an appropriate IBC packet is received from the shard. On
-the shard, ether is created when an IBC packet is received proving ether was
-received in the contract, and destroyed with a special transaction that sends it
-back out, the result of which can be posted as the IBC packet on the ethereum
-contract as proof the ether should be withdrawn.
+For instance, a GnuClear shard with some validator set, possibly the same as that of the "Hub",
+could act as an ether-peg, where the TMSP-application on the shard is an Ethereum Virtual Machine, with
+additional native mechanisms to exchange IBC messages with a contract on the ethereum blockchain.
+This contract would allow ether holders to send
+ether to the shard by sending it to the contract - once in the contract, the ether cannot 
+be withdrawn unless an appropriate IBC packet is received from the shard. When a shard 
+receives an IBC packet proving ether was received in the contract for a particular ethereum address,
+a corresponding address is created on the shard with that balance.
+Ether on the shard ("pegged-ether") can then be destroyed with a transaction that sends it
+to a particular "withdrawal" address; an IBC packet proving the transaction occured can be posted to the ethereum
+contract to allow the ether to be withdrawn. 
 
-Of course, the risk of such a pegging contract is that a rogue validator set
-could steal any ether sent to the contract by publishing false IBC packets. For
-this reason, it is important that the validators on a peg-shard have sufficient
-capital bonded such that evidence of false IBC packets can be published and
-their deposits destroyed or re-allocated. Staking can happen both on the
-GnuClear network and in the ethereum contract, allowing both systems to have
-security denominated in native terms.
+Of course, the risk of such a pegging contract is a rogue validator set.
+1/3+ Byzantine validators could cause a fork, withdrawing ether from the contract on 
+ethereum while keeping the pegged-ether on the shard. Worse, 2/3+ Byzantine validators 
+can steal ether from those who sent it to the contract by publishing IBC packets to the contract 
+with an invalid state of the shard.
+For both reasons, it is important that the validators on a peg-shard have 
+capital bonded in the ethereum contract, such that evidence can be posted
+and the bonds destroyed or re-allocated. Detecting invalid state is of course much more expensive that detecting forks,
+and care must be taken to ensure deposits may not be withdrawn for at least as long as the expected
+time to verify a block from the shard on ethereum.
 
-### Network partition mitigation
+While the socio-political atmosphere is not quite evolved enough yet, we can extend the mechanism 
+to allow for shards which peg the currency of a nation state by forming a validator set out of 
+some combination of institutions responsible for the nation's currency, most particularly,
+its banks. Of course, extra precautions must be made to only accept nation states with
+strong legal systems that can enforce auditability of the banks' activities by a sufficiently large group of 
+trusted notaries and institutions.
 
-A global hub with regional autonomous shards can practically mitigate problems
-that arise from intermittent global network partitions.
+A result of this integration would be, for instance, the ability of anyone with a bank account at a
+participating bank to move dollars from their bank account, which is on the shard,
+to other accounts on the shard, or to the "Hub", or to another shard entirely.
+In this regard, GnuClear can act as a seamless conduit between the currencies of nation states and the
+cryptocurrency world. 
 
 ### Ethereum Scaling
 
 An open issue for Ethereum is how to solve the scaling problem.  Currently,
 Ethereum nodes process every single transaction and also stores all the state.
 [link](https://docs.google.com/presentation/d/1CjD0W4l4-CwHKUvfF5Vlps76fKLEC6pIwu1a_kC_YRQ/mobilepresent?slide=id.gd284b9333_0_28).
-While the GnuClear hub and IBC packet mechanics does not allow for arbitrary
-contract logic execution as does Ethereum per se, it can be used as a foundation
-for generalized Ethereum scaling via sharding.  For example, asynchronous
-contract calls that "send an action" and expect a response in return could be
+Since Tendermint can commit blocks much faster than ethereum's Proof-of-Work,
+pegged-ethereum shards using Tendermint for consensus can provide higher performance 
+to ethereum blockchains. 
+Additionally, though the GnuClear hub and IBC packet mechanics does not allow for arbitrary
+contract logic execution per se, it can be used to co-ordinate ethereum contracts
+running on different shards, providing a foundation for generalized Ethereum scaling via sharding.  
+For example, asynchronous contract calls that "send an action" and expect a response in return could be
 implemented by a sequence of two IBC packets going in opposite directions.
 
-### Application integration
+### Application integration #####################################################
 
-* Ethereum
-* ZCash
-* Bitcoin
-* exchange...
+GnuClear shards run arbitrary application logic, defined at the beginning of the shard's life,
+and potentially updated over time by governance. Such flexibility allows GnuClear shards to act
+as pegs to other cryptocurrencies, like Ethereum or Bitcoin, but it also permits "forks" of those blockchains,
+utilizing the same codebase but a different validator set and history. This allows many existing cryptocurrency frameworks,
+such as that of ethereum, ZCash, Bitcoin, CryptoNote, and so on to be used with a higher performance consensus engine
+on a common network, openning tremendous opportunity for interoperability across platforms.
+Furthermore, as a multi-asset blockchain, a single transaction may contain multiple inputs and outputs, where each input
+can be any token type, enabling GnuClear to serve directly as a platform for decentralized exchange,
+though orders are assumed to be matched via other platforms. Alternatively, a shard can serve
+as an exchange, including hosting the orderbook, openning up new business opportunities for blockchain
+backed exchanges, which may themselves trade liquidity over the GnuClear network.
+
+Shards can also serve as blockchain-backed versions of enterprise and government systems, 
+where pieces of a particular service, traditionally run by an organization or group of organizations,
+are instead run as a TMSP application on a certain shard, allowing it to inherit the security and interoperability
+of the public GnuClear network, without sacrificing control over the underlying service. 
+Thus, GnuClear may be a best of both worlds for organizations looking to utilize blockchain technology
+that are wary of relinquishing control to an unidentified set of miners.
+
+
+### Network partition mitigation
+
+A major problem with consistency favouring consensus algorithms like Tendermint is thought to be that
+any network partition which causes there to be no single partition with 2/3+ validators will
+halt the consensus altogether. The GnuClear architecture can mitigate this problem by using
+a global hub with regional autonomous shards, where 2/3+ validators in a shard are based in a common 
+geographic region. For instance, a common paradigm may be for individual cities, or local clusters of them,
+to operate a given shard for the coordination of finances and infrastructure, enabling municipal activity to persist in
+the event that otherwise remote service providers fail. 
 
 ## Issuance and Incentives #####################################################
 
