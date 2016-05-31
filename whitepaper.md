@@ -666,8 +666,8 @@ timeout](https://raw.githubusercontent.com/gnuclear/gnuclear-whitepaper/master/m
 ### Pegging to Other Cryptocurrencies
 
 A priveleged shard can act as the source of a pegged token of another
-cryptocurrency. A peg is in essence similar to the relationship between a "Hub"
-and "Shard", in that both must keep up with the latest blocks of the other in
+cryptocurrency. A peg is in essence similar to the relationship between a hub
+and a shard, in that both must keep up with the latest blocks of the other in
 order to verify proofs that tokens have moved from one to the other or back.  A
 peg-shard on the GnuClear network keeps up with both the hub as well as the
 other cryptocurrency.  The indirection through the peg-shard allows the logic of
@@ -675,7 +675,7 @@ the hub to remain simple by encapsulating any non-Tendermint light-client
 verification logic onto the shard.
 
 For instance, a GnuClear shard with some validator set, possibly the same as
-that of the "Hub", could act as an ether-peg, where the TMSP-application on the
+that of the hub, could act as an ether-peg, where the TMSP-application on the
 shard (the "peg-shard") has mechanisms to exchange IBC messages with a
 peg-contract on the external Ethereum blockchain.  This contract would allow
 ether holders to send ether to the peg-shard by sending it to the peg-contract.
@@ -711,7 +711,7 @@ large group of trusted notaries and institutions.
 
 A result of this integration would be, for instance, the ability of anyone with
 a bank account at a participating bank to move dollars from their bank account,
-which is on the shard, to other accounts on the shard, or to the "Hub", or to
+which is on the shard, to other accounts on the shard, or to the hub, or to
 another shard entirely.  In this regard, GnuClear can act as a seamless conduit
 between the currencies of nation states and the cryptocurrency world. 
 
