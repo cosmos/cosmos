@@ -682,7 +682,7 @@ ether holders to send ether to the peg-shard by sending it to the peg-contract.
 Once ether is received by the peg-contract, the ether cannot be withdrawn unless
 an appropriate IBC packet is received from the peg-shard. When a shard receives
 an IBC packet proving that ether was received in the peg-contract for a
-particular ethereum account, a corresponding account is created on the peg-shard
+particular Ethereum account, a corresponding account is created on the peg-shard
 with that balance.  Ether on the peg-shard ("pegged-ether") can then be
 transferred to and from the hub, and later be destroyed with a transaction that
 sends it to a particular "withdrawal" address on Ethereum; an IBC packet proving
@@ -725,7 +725,7 @@ Since Tendermint can commit blocks much faster than Ethereum's proof-of-work,
 EVM shards powered by Tendermint consensus and operating on pegged-ether can
 provide higher performance to Ethereum blockchains.  Additionally, though the
 GnuClear hub and IBC packet mechanics does not allow for arbitrary contract
-logic execution per se, it can be used to co-ordinate ethereum contracts running
+logic execution per se, it can be used to co-ordinate Ethereum contracts running
 on different shards, providing a foundation for generalized Ethereum scaling via
 sharding.  For example, asynchronous contract calls that "send an action" and
 expect a response in return could be implemented by a sequence of two IBC
@@ -738,7 +738,7 @@ shard's life, and potentially updated over time by governance. Such flexibility
 allows GnuClear shards to act as pegs to other cryptocurrencies, like Ethereum
 or Bitcoin, but it also permits "forks" of those blockchains, utilizing the same
 codebase but a different validator set and history. This allows many existing
-cryptocurrency frameworks, such as that of ethereum, ZCash, Bitcoin, CryptoNote,
+cryptocurrency frameworks, such as that of Ethereum, ZCash, Bitcoin, CryptoNote,
 and so on to be used with a higher performance consensus engine on a common
 network, openning tremendous opportunity for interoperability across platforms.
 Furthermore, as a multi-asset blockchain, a single transaction may contain
