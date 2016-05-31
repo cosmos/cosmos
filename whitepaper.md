@@ -72,6 +72,11 @@ PBFT's checkpointing scheme.  This allows for faster provable transaction
 commits for light-clients, and as we'll later show, faster inter-blockchain
 communication.
 
+### Merged Mining
+
+TODO insert summary and criticism of merged-mining; Link to Bram Cohen
+presentation
+
 ### BitShares delegated stake 
 
 While not the first to deploy Proof-of-Stake (PoS), BitShares contributed
@@ -162,8 +167,6 @@ Tendermint uses a BFT round-robin algorithm based on cryptographic signatures
 instead of mining, which trivially allows horizontal scaling through multiple
 parallel blockchains, while regular, more frequent block commits allow for
 vertical scaling as well.
-
-### Sidechains
 
 ### Casper 
 
