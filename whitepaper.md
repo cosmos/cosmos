@@ -666,46 +666,51 @@ timeout](https://raw.githubusercontent.com/gnuclear/gnuclear-whitepaper/master/m
 ### Pegging to Other Cryptocurrencies
 
 A priveleged shard can act as the source of a pegged token of another
-cryptocurrency. A peg is in essence similar to the relationship between a hub
-and a shard, in that both must keep up with the latest blocks of the other in
-order to verify proofs that tokens have moved from one to the other or back.  A
+cryptocurrency. A peg is in essence similar to the relationship between a
+GnuClear hub and shard, in that both must keep up with the latest blocks of the
+other in order to verify proofs that tokens have moved from one to the other.  A
 peg-shard on the GnuClear network keeps up with both the hub as well as the
 other cryptocurrency.  The indirection through the peg-shard allows the logic of
-the hub to remain simple by encapsulating any non-Tendermint light-client
-verification logic onto the shard.
+the hub to remain simple by encapsulating any non-Tendermint consensus
+light-client verification logic onto the shard.
 
 For instance, a GnuClear shard with some validator set, possibly the same as
 that of the hub, could act as an ether-peg, where the TMSP-application on the
 shard (the "peg-shard") has mechanisms to exchange IBC messages with a
-peg-contract on the external Ethereum blockchain.  This contract would allow
-ether holders to send ether to the peg-shard by sending it to the peg-contract.
-Once ether is received by the peg-contract, the ether cannot be withdrawn unless
-an appropriate IBC packet is received from the peg-shard. When a shard receives
-an IBC packet proving that ether was received in the peg-contract for a
-particular Ethereum account, a corresponding account is created on the peg-shard
-with that balance.  Ether on the peg-shard ("pegged-ether") can then be
-transferred to and from the hub, and later be destroyed with a transaction that
-sends it to a particular "withdrawal" address on Ethereum; an IBC packet proving
-that the transaction occured on the peg-shard can be posted to the Ethereum
-peg-contract to allow the ether to be withdrawn. 
+peg-contract on the external Ethereum blockchain (the "target").  This contract would allow
+ether holders to send ether to the peg-shard by sending it to the peg-contract
+on Ethereum.  Once ether is received by the peg-contract, the ether cannot be
+withdrawn unless an appropriate IBC packet is received by the peg-contract from
+the peg-shard. When a peg-shard receives an IBC packet proving that ether was
+received in the peg-contract for a particular Ethereum account, a corresponding
+account is created on the peg-shard with that balance.  Ether on the peg-shard
+("pegged-ether") can then be transferred to and from the hub, and later be
+destroyed with a transaction that sends it to a particular withdrawal address on
+Ethereum; an IBC packet proving that the transaction occured on the peg-shard
+can be posted to the Ethereum peg-contract to allow the ether to be withdrawn. 
 
 Of course, the risk of such a pegging contract is a rogue validator set.  1/3+
 Byzantine validators could cause a fork, withdrawing ether from the peg-contract
 on Ethereum while keeping the pegged-ether on the peg-shard. Worse, +2/3
-Byzantine validators can steal ether from those who sent it to the peg-contract
-by publishing IBC packets to the peg-contract with an invalid state of the
-shard. For both reasons, it is important that the validators on a peg-shard
-have collateral bonded in the Ethereum peg-contract such that evidence can be
-posted and the bonds destroyed or re-allocated. Detecting invalid state is of
-course much more expensive that detecting forks, and care must be taken to
-ensure collateral deposits may not be withdrawn for at least as long as the
-expected time to verify a block from the shard on Ethereum.
+Byzantine validators can steal ether outright from those who sent it to the
+peg-contract by deviating from the original pegging logic of the peg-shard.
+
+It is possible to address these issues by designing the peg to be "totally
+accountable".  For example, all IBC packets both from the hub as well as from
+the target might require acknowledgement by the peg-shard in such a way that all
+state transitions of the peg-shard can be efficiently challenged and verified by
+either the hub or the target.  The hub and the target (or in the case of
+Ethereum, the peg-contract) should allow the peg-shard validators to post
+collateral, and coin transfers out of the peg-contract should be delayed (and
+collateral unbonding period sufficiently long) to allow for any challenges to be
+made.  We leave the design of the specification and implementation of this
+system open as a future GnuClear improvement proposal.
 
 While the socio-political atmosphere is not quite evolved enough yet, we can
-extend the mechanism to allow for shards which peg the currency of a nation
-state by forming a validator set out of some combination of institutions
+extend the mechanism to allow for shards which peg to the fiat currency of a
+nation states by forming a validator set out of some combination of institutions
 responsible for the nation's currency, most particularly, its banks. Of course,
-extra precautions must be made to only accept nation states with strong legal
+extra precautions must be made to only accept currencies backed by strong legal
 systems that can enforce auditability of the banks' activities by a sufficiently
 large group of trusted notaries and institutions.
 
@@ -713,7 +718,7 @@ A result of this integration would be, for instance, the ability of anyone with
 a bank account at a participating bank to move dollars from their bank account,
 which is on the shard, to other accounts on the shard, or to the hub, or to
 another shard entirely.  In this regard, GnuClear can act as a seamless conduit
-between the currencies of nation states and the cryptocurrency world. 
+between fiat currencies and cryptocurrencies.
 
 ### Ethereum Scaling
 
@@ -731,7 +736,7 @@ sharding.  For example, asynchronous contract calls that "send an action" and
 expect a response in return could be implemented by a sequence of two IBC
 packets going in opposite directions.
 
-### Application integration
+### Multi-Application Integration
 
 GnuClear shards run arbitrary application logic, defined at the beginning of the
 shard's life, and potentially updated over time by governance. Such flexibility
