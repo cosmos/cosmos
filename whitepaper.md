@@ -9,31 +9,38 @@ privacy); and also generalized smart contract platforms such as Ethereum, with
 countless distributed applications for the EVM such as Augur (a prediction
 market) and TheDAO (an investment club).
 
-To date, however, all blockchains have suffered from a number of drawbacks,
+To date, however, these blockchains have suffered from a number of drawbacks,
 including their gross energy inefficiency, poor or limited performance, and
-immature governance mechanisms.  What is needed is an architecture for a network
-of parallel blockchains that can work together in concert, while maintaining
-certain invariances (such as the total amount of coins) across these "shards" in
-a robust way.  Yet, existing blockchain consensus algorithms based on
-proof-of-work have proven to be difficult (if not impossible) to scale in
-parallel.  Existing scalability proposals such as payment channels allow for
-atomic cross-chain transactions, but do not allow for the transfer of coins from
-one chain to another.
+immature governance mechanisms.  A number of proposals have been made to scale
+Bitcoin's transaction throughput such as Segregated-Witness and BitcoinNG, but
+these are limited to vertical scaling, and thus are limited by the capacity of a
+single physical machine, lest we sacrifice the property of complete
+auditability.  Lightning networks can help scale Bitcoin transaction volume by
+leaving some transactions off the ledger completely, but are mostly suited for
+micropayments as it requires too much capital to be locked up.
 
-We present GnuClear, a novel blockchain network architecture that addresses all
-of these problems.  The main GnuClear hub blockchain (as well as connected
-shards) are powered by Tendermint, which provides a high-performance,
-consistent, secure consensus engine, where strict accountability guarantees hold
-over the behaviour of malicious actors.  The GnuClear hub is a simple
-multi-asset proof-of-stake cryptocurrency with a simple governance mechanism
-enabling the network to adapt and upgrade.  The hub and shards of the GnuClear
-network communicate with each other via an inter-blockchain communication (IBC)
-protocol which is formalized here.  The GnuClear hub utilizes IBC packets to
-move coins from one shard to another while maintaining the total amount of coins
-in the network.
+An ideal solution would be one that allows multiple parallel blockchains to
+interoperate while retaining their security properties, but so far this has been
+proven difficult, if not impossible, with proof-of-work.  (Insert note about
+merged-mining).
 
-We hope that the GnuClear network can become inspiration for the future internet
-of blockchains.
+Here we present GnuClear, a novel blockchain network architecture that addresses
+all of these problems.  GnuClear is a network of many independent blockchains,
+called shards, that are connected by a central blockchain, called the hub.  The
+hub and shards are powered by Tendermint core, which provides a
+high-performance, consistent, secure consensus engine, where strict
+accountability guarantees hold over the behaviour of malicious actors.  The
+GnuClear hub is a simple multi-asset proof-of-stake cryptocurrency with a simple
+governance mechanism enabling the network to adapt and upgrade.  The hub and
+shards of the GnuClear network communicate with each other via an
+inter-blockchain communication (IBC) protocol which is formalized here.  The
+GnuClear hub utilizes IBC packets to move coins from one shard to another while
+maintaining the total amount of coins in the network, thus isolating each shard
+from the failure of others.
+
+We hope that the GnuClear network can prove once and for all that blockchain
+based systems can scale as well as any other, and grow to become the foundation
+for the future internet of blockchains.
 
 ## Related Work ################################################################
 
