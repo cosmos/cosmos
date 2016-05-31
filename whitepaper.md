@@ -144,14 +144,21 @@ Byzantine validator to induce a double-spend.
 The lightning network is a proposed message relay network operating at a layer
 above the Bitcoin blockchain, enabling many orders of magnitude improvement in
 transaction throughput by moving the majority of transactions outside of the
-consensus into so-called "payment channels". This is made possible by the
-Bitcoin scripting language, which enables parties to enter into stateful
-contracts where the state can be updated by sharing digital signatures and
-contracts can be closed by publishing evidence back to the blockchain, a
-mechanism first popularized by cross-chain atomic swaps.  By openning payment
-channels with many parties, participants in the lightning network can become
-focal points for routing the payments of others, leading to concerns about
-centralization and censorship.
+consensus ledger into so-called "payment channels". This is made possible (with
+great difficulty) by the Bitcoin scripting language, which enables parties to
+enter into stateful contracts where the state can be updated by sharing digital
+signatures, and contracts can be closed by finally publishing evidence onto the
+blockchain, a mechanism first popularized by cross-chain atomic swaps.  By
+openning payment channels with many parties, participants in the lightning
+network can become focal points for routing the payments of others, leading to a
+fully connected payment channel network, at the cost of much capital being tied
+up on payment channels.
+
+While the lightning network can also easily extend across multiple independent
+blockchains to allow for the transfer of _value_ via an exchange market, it
+cannot be used to transfer _coins_ from one blockchain to another.  The main
+benefit of the GnuClear network described here is to enable such direct coin
+transfers.
 
 ### BitcoinNG
 
