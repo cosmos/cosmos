@@ -51,24 +51,24 @@ of important ones.
 ### Classic Byzantine Fault Tolerance
 
 Consensus in the presence of malicious participants is a problem dating back to
-the early 80s, when Leslie Lamport appropriated the phrase "Byzantine fault" to
-refer to processes that might behave arbitrarily, in contrast to a "crash
-fault", wherein a process simply crashes.  Early solutions were discovered for
-synchronous networks, where there is an upper bound on message latency, though
-they only found practical use in highly controlled environments (airplane
-controllers and datacenters synchronized via atomic clock).  It was not until
-the late 90s that Practical Byzantine Fault Tolerance (PBFT) was introduced as
-an asynchronous consensus algorithm able to tolerate up to 1/3 of processes
-behaving arbitrarily.  PBFT became the standard algorithm, spawning many
-variations, including most recently by IBM as part of their contribution to
-Hyperledger.
+the early 80s, when Leslie Lamport coined the phrase "Byzantine fault" to refer
+to arbitrary process behavior that deviates from the intended behavior, in
+contrast to a "crash fault", wherein a process simply crashes.  Early solutions
+were discovered for synchronous networks where there is an upper bound on
+message latency, though pratical use was limited to highly controlled
+environments such as airplane controllers and datacenters synchronized via
+atomic clocks.  It was not until the late 90s that Practical Byzantine Fault
+Tolerance (PBFT) was introduced as an asynchronous consensus algorithm able to
+tolerate up to 1/3 of processes behaving arbitrarily.  PBFT became the standard
+algorithm, spawning many variations, including most recently by IBM as part of
+their contribution to Hyperledger.
 
-The benefit of Tendermint consensus over PBFT is that Tendermint has an improved
-chain structure.  Tendermint blocks must commit in order, which obviates the
-complexity and communication overhead associated with PBFT's view-changes.  In
-addition, the batching of transactions into blocks allows for regular
-Merkle-hashing of the application state, rather than periodic digests as with
-PBFT's checkpointing scheme.  This allows for faster provable transaction
+The main benefit of Tendermint consensus over PBFT is that Tendermint has an
+improved chain structure.  Tendermint blocks must commit in order, which
+obviates the complexity and communication overhead associated with PBFT's
+view-changes.  In addition, the batching of transactions into blocks allows for
+regular Merkle-hashing of the application state, rather than periodic digests as
+with PBFT's checkpointing scheme.  This allows for faster provable transaction
 commits for light-clients, and as we'll later show, faster inter-blockchain
 communication.
 
@@ -86,9 +86,9 @@ responsible for ordering and committing transactions, and "delegates",
 responsible for co-ordinating software updates and parameter changes.  Though
 BitShares achieves high performance (100k tx/s, 1s latency) in ideal conditions,
 it is subject to double spend attacks by malicious witnesses which fork the
-blockchain without suffering an explicit economic punishment - a problem
-referred to as "nothing-at-stake".  BitShares attempts to mitigate the problem
-somewhat by allowing transactions to reference block hashes. Additionally,
+blockchain without suffering an explicit economic punishment -- it suffers from
+the "nothing-at-stake" problem. BitShares attempts to mitigate the problem by
+allowing transactions to refer to recent block hashes. Additionally,
 stakeholders can remove or replace misbehaving witnesses on a daily basis,
 though this does nothing to explicitly punish a double-spend attack that was
 successful.
@@ -98,30 +98,43 @@ successful.
 Building on an approach pioneered by Ripple, Stellar refined a model of
 Federated Byzantine Agreement wherein the the processes participating in
 consensus do not constitute a fixed and globally known set.  Rather, each
-process curates a personal set of "quorum slices", each constituting a set of
-processes it trusts. A set containing a slice from every process is known as a
-quorum.  The security of the mechanism relies on the assumption that the
-intersection of *any* two quorums is non-empty, while the availability of a
-process requires at least one of its quorum slices to consist of entirely of
-correct nodes, creating a trade-off between using large or small quorum-slices
-that may be difficult to balance without imposing significant assumptions about
-trust. The approach is similar to both the Border Gateway Protocol, used by
-top-tier ISPs on the internet to establish global routing tables, and by that
-used by browsers to manage TLS certificates - both notorious for their
-insecurity.
+process node curates one or more "quorum slices" each constituting a set of
+trusted processes. A "quorum" in Stellar is defined to be a set of nodes that
+contain (is a superset of) at least one quorum slice for each node in the set,
+such that agreement can be reached.
+
+The security of the Stellar mechanism relies on the assumption that the
+intersection of *any* two quorums is non-empty, while the availability of a node
+requires at least one of its quorum slices to consist entirely of correct nodes,
+creating a trade-off between using large or small quorum-slices that may be
+difficult to balance without imposing significant assumptions about trust.
+Ultimately, nodes must somehow choose adequate quorum slices for there to be
+sufficient fault-tolerance (or any "intact nodes" at all, of which much of the
+results of the paper depend on), and the only provided strategy for ensuring
+such a configuration is heirarchical and similar to the Border Gateway Protocol
+(BGP), used by top-tier ISPs on the internet to establish global routing tables,
+and by that used by browsers to manage TLS certificates - both notorious for
+their insecurity.
+
+The criticism in the Stellar paper of the Tendermint-based proof-of-stake
+systems is mitigated by the token strategy described here, wherein a new type of
+token is issued that mostly represents the inherent value of the network,
+without competing with any preexisting currency or store of value.  The
+advantage of Tendermint-based proof-of-stake, then, is its relative simplicity,
+while still providing sufficient, and provable security guarantees.
 
 ### BigChainDB
 
 BigChainDB is a modification of the successful RethinkDB (a NoSQL datastore for
-JSON-documents with a query language) to include additional security
-guarantees without sacrificing the ability to perform over a million txs/s.
-RethinkDB achieves high performance with a combination of sharding and
-primaries, and utilizes the Raft consensus algorithm only for automatic
-fail-over of primaries. RethinkDB does not currently provide Byzantine Fault
-Tolerance.
+JSON-documents with a query language) to include additional security guarantees
+without sacrificing the ability to perform over a million transactions per
+second. RethinkDB achieves this high performance with a combination of sharding
+and replication, and utilizes the Raft consensus algorithm only for automatic
+fail-over of replica primaries. RethinkDB does not currently provide Byzantine
+fault-tolerance.
 
-BigChainDB uses RethinkDB as the "underlying DB" to order blocks, and adds a
-layer of validator signatures on top to vote on the block's validity. A block
+BigChainDB uses RethinkDB as the "underlying DB" to first order blocks, and adds
+a layer of validator signatures on top to vote on the block's validity. A block
 is considered valid and committed when a majority of the validators vote in
 favor of it.  If the underlying database forks, it may be possible for a single
 Byzantine validator to induce a double-spend.
@@ -214,7 +227,7 @@ the legal system.  When the legal system is unreliable, validators can be forced
 to make security deposits in order to participate, and those deposits can be
 revoked when malicious behaviour is detected \cite{slasher}.
 
-Tendermint is a Byzantine Fault Tolerant (BFT) consensus protocol for
+Tendermint is a Byzantine fault-tolerant (BFT) consensus protocol for
 asynchronous networks, notable for its simplicity, performance, and
 accountability.  The protocol requires a fixed, known set of N validators, where
 the ith validator is identified by its public key, V_i.  Consensus proceeds in
@@ -241,7 +254,7 @@ progress is only made once a validator hears from +⅔ of the network.  The full
 details of the protocol are described in FIGURE.
 
 Tendermint’s security derives simultaneously from its use of optimal Byzantine
-Fault Tolerance and a locking mechanism.  The former ensures that ⅓ or more
+fault-tolerance and a locking mechanism.  The former ensures that ⅓ or more
 validators must be Byzantine to cause a violation of safety, where more than two
 values are committed.  The latter ensures that, if ever any set of validators
 attempts, or even succeeds, in violating safety , they can be identified by the
