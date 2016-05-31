@@ -260,7 +260,11 @@ seconds.  Notably, performance of well over a thousand transactions per second
 is maintained even in harsh adversarial conditions, with validators crashing or
 broadcasting maliciously crafted votes. See FIGURE for details.
 
-### Forks and Censorship Attacks
+### Preventing Short Range Attacks
+
+### Preventing Long Range Attacks
+
+### Overcoming Forks and Censorship Attacks
 
 Due to the definition of a block commit, any 1/3+ coalition of validators can
 halt the blockchain by not broadcasting their votes. Such a coalition can also
