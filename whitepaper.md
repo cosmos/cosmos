@@ -13,16 +13,18 @@ To date, however, these blockchains have suffered from a number of drawbacks,
 including their gross energy inefficiency, poor or limited performance, and
 immature governance mechanisms.  A number of proposals have been made to scale
 Bitcoin's transaction throughput such as Segregated-Witness and BitcoinNG, but
-these are limited to vertical scaling, and thus are limited by the capacity of a
-single physical machine, lest we sacrifice the property of complete
-auditability.  Lightning networks can help scale Bitcoin transaction volume by
+these are vertical scaling solutions that remain limited by the capacity of a single physical machine,
+lest we sacrifice the property of complete auditability.
+Lightning networks can help scale Bitcoin transaction volume by
 leaving some transactions off the ledger completely, but are mostly suited for
-micropayments as it requires too much capital to be locked up.
+micropayments as significant capital is required to be locked up.
 
 An ideal solution would be one that allows multiple parallel blockchains to
-interoperate while retaining their security properties, but so far this has been
-proven difficult, if not impossible, with proof-of-work.  (Insert note about
-merged-mining).
+interoperate while retaining their security properties, but this has proven difficult, 
+if not impossible, with proof-of-work. Merged-mining, for instance, allows the work done
+to secure a parent chain to be re-used on a child chain, but transactions still must be validated,
+in order, by each node, and a merge-mined blockchain is vulnerable to attack if
+a majority of the hashing power on the parent is not actively merge-mining the child.
 
 Here we present GnuClear, a novel blockchain network architecture that addresses
 all of these problems.  GnuClear is a network of many independent blockchains,
@@ -58,13 +60,14 @@ were discovered for synchronous networks where there is an upper bound on
 message latency, though pratical use was limited to highly controlled
 environments such as airplane controllers and datacenters synchronized via
 atomic clocks.  It was not until the late 90s that Practical Byzantine Fault
-Tolerance (PBFT) was introduced as an asynchronous consensus algorithm able to
+Tolerance (PBFT) was introduced as an efficient asynchronous consensus algorithm able to
 tolerate up to 1/3 of processes behaving arbitrarily.  PBFT became the standard
 algorithm, spawning many variations, including most recently by IBM as part of
 their contribution to Hyperledger.
 
 The main benefit of Tendermint consensus over PBFT is that Tendermint has an
-improved chain structure.  Tendermint blocks must commit in order, which
+improved and simplified underlying structure, some of which is a result of embracing
+the blockchain paradigm.  Tendermint blocks must commit in order, which
 obviates the complexity and communication overhead associated with PBFT's
 view-changes.  In addition, the batching of transactions into blocks allows for
 regular Merkle-hashing of the application state, rather than periodic digests as
@@ -152,11 +155,11 @@ blockchain, a mechanism first popularized by cross-chain atomic swaps.  By
 openning payment channels with many parties, participants in the lightning
 network can become focal points for routing the payments of others, leading to a
 fully connected payment channel network, at the cost of much capital being tied
-up on payment channels.
+up on payment channels. 
 
 While the lightning network can also easily extend across multiple independent
 blockchains to allow for the transfer of _value_ via an exchange market, it
-cannot be used to transfer _coins_ from one blockchain to another.  The main
+cannot be used to assymetrically transfer _coins_ from one blockchain to another.  The main
 benefit of the GnuClear network described here is to enable such direct coin
 transfers.
 
@@ -203,11 +206,11 @@ the peg and back.  Of course, since Bitcoin uses proof-of-work, Bitcoin
 sidechains suffer from the many risks of proof-of-work as a consensus mechanism,
 which are particularly exacerbated in a scalability context. That said, the core
 mechanism of the two-way peg is in principle the same as that employed by the
-GnuClear network, though using a more scalably secure consensus algorithm.
+GnuClear network, though using a consensus algorithm that scales more securely.
 
 ### Casper 
 
-Casper is a proposed Proof-of-Stake consensus algorithm.  Its prime mode of
+Casper is a proposed Proof-of-Stake consensus algorithm for Ethereum.  Its prime mode of
 operation is "consensus-by-bet".  The idea is that by letting validators
 iteratively bet on which block it believes will become committed into the
 blockchain based on the other bets that it's seen so far, finality can be
@@ -249,7 +252,7 @@ financial reward.  The most important such guarantee is a form of
 be identified and punished according to the rules of the protocol, or, possibly,
 the legal system.  When the legal system is unreliable, validators can be forced
 to make security deposits in order to participate, and those deposits can be
-revoked when malicious behaviour is detected \cite{slasher}.
+revoked, or slashed, when malicious behaviour is detected \cite{slasher}.
 
 Tendermint is a Byzantine fault-tolerant (BFT) consensus protocol for
 asynchronous networks, notable for its simplicity, performance, and
@@ -285,7 +288,15 @@ attempts, or even succeeds, in violating safety , they can be identified by the
 protocol.  This includes both voting for conflicting blocks and broadcasting
 unjustified votes.
 
-TODO: Light Clients.
+A major benefit of Tendermint's consensus algorithm, compared to Proof-of-Work,
+is simplified light client security. Unlike a full node, which runs the consensus algorithm
+and processes every transaction (whether or not they are a validator), a light client's
+only obligation is to stay synced with the latest validator set, checking in frequently enough
+to detect changes. Since the Merkle root hash of the latest state is included in each block,
+given the current validator set, a light client can easily verify an account balance or
+the state of a contract by verifying a Merkle proof to a Merkle root included in a block signed by 2/3+ 
+of current validators. Since double-signing is punishable by slashing deposits,
+the light client can be assured of the cost of being deceived.
 
 Despite its strong guarantees, Tendermint provides exceptional performance.  In
 benchmarks of 64 nodes distributed across 7 datacenters on 5 continents, on
