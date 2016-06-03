@@ -337,8 +337,8 @@ application.
 
 Assuming a sufficiently resilient collection of broadcast networks and a static
 validator set, any fork in the blockchain can be detected and the deposits of
-the offending validators slashed.  This innovation, first suggedt by Vitalik
-Buterin in early 2014, solves the Nothing-at-Stake problem of other
+the offending validators slashed.  This innovation, first suggested by Vitalik
+Buterin in early 2014, solves the nothing-at-stake problem of other
 proof-of-stake cryptocurrencies. However, since validator sets must be able to
 change, over a long range of time the original validators may all become
 unbonded, and hence would be free to create a new chain, from the genesis block,
@@ -372,6 +372,21 @@ authenticate what they hear from the network against trusted sources. Of course,
 this latter requirement can be avoided if they are willing to sync all headers
 from the genesis block, where the genesis block includes the original validator
 set, and just like in Bitcoin, must be obtained from a trusted source.
+
+The above method for prevent LRA is well suited for validators and full nodes of
+a Tendermint-powered blockchain because these nodes are meant to remain
+connected to the network.  The method is also suitable for light clients that
+can be expected to connect to the network frequently.  However, for light
+clients that are not expected to have frequent access to the internet or the
+blockchain network, yet another solution can be used to overcome the LRA.
+Non-validator coin holders can post their coins as collateral with a very long
+unbonding period (e.g. much longer than the unbonding period for validators) and
+serve light clients with a secondary method of attesting to the validity of
+current and past block hashes. While these coins do not count toward the
+security of the blockchain's consensus, they nevertheless can provide strong
+guarantees for light clients.  If historical block-hash querying are supported
+in Ethereum, anyone could bond their coins in a specially designed smart
+contract and provide attestation services for pay.
 
 ### Overcoming Forks and Censorship Attacks
 
