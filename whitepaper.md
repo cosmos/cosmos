@@ -904,28 +904,32 @@ amount of bitcoins either burnt to a specified burn address, or donated to the
 
 ### Becoming a Validator After Genesis Day
 
-New validators not in the genesis validator set can be added in a two-step
-process.
+New validators not already in the genesis validator set can be introduced in a
+two-step process.
 
-First, the would-be validator must post a bond-proposal and post a collateral
-deposit.  The amount of gnuts posted as collateral is what determines the
-validator's voting power.
+First, the candidate validator must submit a `BondProposalTx` transaction
+wherein they can post a collateral deposit of any combination of tokens.  The
+amount of gnuts posted as collateral is what determines the validator's voting
+power.  This creates a `BondProposal` proposal for the current gnut holders to
+vote on.
 
-Second, the rest of the validators must vote on this proposal.  If more than ½
-of the gnu-holders vote yes, the proposal passes, and the candidate becomes a
-validator at the specified block height.
+Next, the rest of the validators must vote on this proposal.  If more than
+`ValidatorBondQuorum` of the gnu-holders vote yes, the proposal passes, and the
+candidate becomes a validator at the specified block height.  If the proposal
+does not pass, all the tokens in the `BondProposalTx` transaction are returned,
+save for the transaction fee.
 
 Given the same amount of usage of the GnuClear network, the validators may not
 have a natural inclination to allow more gnut holders to bond, because this
 decreases the amount of fees earned by each validator.  Yet, the network might
 become more profitable if there were more collateral at stake, as it allows for
-more transaction velocity. In that case, it might be rational for validators to
+more transaction volume. In that case, it might be rational for validators to
 allow a new gnut holder to bond, as long as it brings more stake to the table.
 Thus, bond proposals can also include any number of non-gnu tokens as
 collateral. These tokens join the blockchain's token reserve pool.
 
 ``` 
-BondProposal 
+BondProposal (TODO)
 	BonderAddr   []byte 
 	Coins        // Gnuts and other tokens
 	StartHeight  int 
@@ -997,13 +1001,25 @@ blocks.
 
 TODO: Intro to governance.
 
+* All gnut holders are expected to vote on all proposals
+* All gnut holders are expected to be active on a regular basis, e.g. every 2
+  weeks
+* There will be some mechanism to prevent proposal spam.
+
 ### Validator Bond Proposal
 
-TODO: `ValidatorBondQuorum` (DEFAULT 67%)
+* There is a distinction between identified and anonymous validators.
+* New BondProposals are expected to take into account the ratio of identified to
+  anonymous validators.
+* TODO: `ValidatorBondQuorum` (DEFAULT 67%)
+* TODO: What about delegation from anonymous vs non-anonymous gnut holders? Is
+  delegation also via proposals (probably not)
 
 ### Parameter Change Proposal
 
-TODO: `ParameterChangeQuorum` (DEFAULT 67%)
+* Any of the parameters defined here can be changed by proposal.
+* The minimum quorum needed to change a parameter is itself also a parameter.
+* TODO: `ParameterChangeQuorum` (DEFAULT 67%)
 
 ### Text Proposal
 
@@ -1013,6 +1029,7 @@ coordinated via generic text proposals.
 ### Penalties for Absenteeism
 
 All gnut holders, including validators, are expected to vote on all proposals.
+TODO: Define the penalty for absenteeism
 
 ## Roadmap #####################################################################
 
