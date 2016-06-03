@@ -126,9 +126,9 @@ without competing with any preexisting currency or store of value.  The
 advantage of Tendermint-based proof-of-stake, then, is its relative simplicity,
 while still providing sufficient, and provable security guarantees.
 
-### BigChainDB
+### BigchainDB
 
-BigChainDB is a modification of the successful RethinkDB (a NoSQL datastore for
+BigchainDB is a modification of the successful RethinkDB (a NoSQL datastore for
 JSON-documents, with a query language) to include additional security guarantees
 without sacrificing the ability to perform over a million transactions per
 second. RethinkDB achieves this high performance with a combination of sharding
@@ -136,11 +136,11 @@ and replication, and utilizes the Raft consensus algorithm only for automatic
 fail-over of replica "primaries" (leaders). RethinkDB does not currently provide
 Byzantine fault-tolerance.
 
-BigChainDB uses RethinkDB as the "underlying DB" to first order blocks, and adds
+BigchainDB uses RethinkDB as the "underlying DB" to first order blocks, and adds
 a layer of validator signatures on top to vote on the block's validity. A block
 is considered valid and committed when a majority of the validators vote in
-favor of it.  If the underlying database forks, it may be possible for a single
-Byzantine validator to induce a double-spend.
+favor of it.  Making BigchainDB fully Byzantine fault-tolerant is a work in
+progress.
 
 ### Lightning Network 
 
