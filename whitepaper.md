@@ -40,8 +40,8 @@ GnuClear hub is a simple multi-asset proof-of-stake cryptocurrency with a simple
 governance mechanism enabling the network to adapt and upgrade.  The hub and
 shards of the GnuClear network communicate with each other via an
 inter-blockchain communication (IBC) protocol which is formalized here.  The
-GnuClear hub utilizes IBC packets to move coins from one shard to another while
-maintaining the total amount of coins in the network, thus isolating each shard
+GnuClear hub utilizes IBC packets to move tokens from one shard to another while
+maintaining the total amount of tokens in the network, thus isolating each shard
 from the failure of others.
 
 We hope that the GnuClear network can prove once and for all that blockchain
@@ -162,9 +162,9 @@ up on payment channels.
 
 While the lightning network can also easily extend across multiple independent
 blockchains to allow for the transfer of _value_ via an exchange market, it
-cannot be used to assymetrically transfer _coins_ from one blockchain to
+cannot be used to assymetrically transfer _tokens_ from one blockchain to
 another.  The main benefit of the GnuClear network described here is to enable
-such direct coin transfers.
+such direct token transfers.
 
 TODO also mention ILP here
 
@@ -379,13 +379,13 @@ connected to the network.  The method is also suitable for light clients that
 can be expected to connect to the network frequently.  However, for light
 clients that are not expected to have frequent access to the internet or the
 blockchain network, yet another solution can be used to overcome the LRA.
-Non-validator coin holders can post their coins as collateral with a very long
+Non-validator token holders can post their tokens as collateral with a very long
 unbonding period (e.g. much longer than the unbonding period for validators) and
 serve light clients with a secondary method of attesting to the validity of
-current and past block hashes. While these coins do not count toward the
+current and past block hashes. While these tokens do not count toward the
 security of the blockchain's consensus, they nevertheless can provide strong
 guarantees for light clients.  If historical block-hash querying are supported
-in Ethereum, anyone could bond their coins in a specially designed smart
+in Ethereum, anyone could bond their tokens in a specially designed smart
 contract and provide attestation services for pay.
 
 ### Overcoming Forks and Censorship Attacks
@@ -745,7 +745,7 @@ Meanwhile, "Shard1" may optimistically assume successful delivery of a "coin"
 packet unless evidence to the contrary is proven on "Hub".  In the example
 above, if "Hub" had not received an `AckSent` status from "Shard2" by block 350,
 it would have set the status automatically to `Timeout`.  This evidence of a
-timeout can get posted back on "Shard1", and any coins can be returned.
+timeout can get posted back on "Shard1", and any tokens can be returned.
 
 ![Figure of Shard1, Shard2, and Hub IBC with acknowledgement and
 timeout](https://raw.githubusercontent.com/gnuclear/gnuclear-whitepaper/master/msc/ibc_with_ack_timeout.png)
@@ -791,7 +791,7 @@ the target might require acknowledgement by the peg-shard in such a way that all
 state transitions of the peg-shard can be efficiently challenged and verified by
 either the hub or the target.  The hub and the target (or in the case of
 Ethereum, the peg-contract) should allow the peg-shard validators to post
-collateral, and coin transfers out of the peg-contract should be delayed (and
+collateral, and token transfers out of the peg-contract should be delayed (and
 collateral unbonding period sufficiently long) to allow for any challenges to be
 made.  We leave the design of the specification and implementation of this
 system open as a future GnuClear improvement proposal.
@@ -869,7 +869,7 @@ that otherwise remote service providers fail.
 
 ### The Gnut Token
 
-While the GnuClear hub is a multi-asset system, there is a native coin for
+While the GnuClear hub is a multi-asset system, there is a native token for
 staking called _gnuts_.  Unlike Ethereum's ether or Bitcoin's bitcoins,
 GnuClear's gnuts are meant for staking by validators.  To discourage the use of
 gnuts as a store-of-wealth or means of exchange, gnuts that are not held in bond
@@ -878,35 +878,34 @@ validate, or cannot because they do not meet the bonding threshold (PARAM) can
 delegate to any of the existing validators.  Gnut holders who delegate to
 validators do not pay the decay penalty.
 
-### Number of Validators
+### Initial Gnut Distribution and Issuance
 
-Unlike Bitcoin or other proof-of-work blockchains, a Tendermint blockchain gets
-slower with more validators due to the increased communication complexity.
-Fortunately, we can support enough validators to make for a robust globally
-distributed blockchain with very fast blocktimes, and, as bandwidth, storage,
-and parallel compute capacity increases, we will be able to support more
-validators in the future.
+The initial distribution of gnut tokens and validators on Genesis day will be
+composed of a list of publicly identifiable validators who have already
+contributed toward cryptocurrency, blockchain, and distributed systems research.
+These genesis validators will be incentivized to continue validating, by virtue
+of a vesting schedule.  All of the initial bonded gnuts of the validators on
+genesis day will vest on a block-by-block basis over a period of
+`GenesisVestingYears` years (DEFAULT 6 YEARS).  Unvested gnuts can be
+used to the full extent for voting, but disappears after unbonding.  It follows
+that gnuts cannot be transferred until vested.  There will be a total of
+14,000,000 such allocated gnuts on genesis day.
 
-On genesis day, the maximum number of validators will be set to 100, and this
-number will increase at a rate of 13% for 10 years, and settle at 300
-validators.  
+The genesis validators are only a starting point for further decentralization of
+the GnuClear network.  Anyone can get gnuts and apply to become new bonded
+validators.  There are two ways to get gnuts besides by being a member of the
+genesis validator set.  The first way is to receive vested gnuts from an
+existing validator after they have become unbonded.  In this way, validators can
+partially or wholly transfer their gnuts to others.  The second way is via the
+Bitcoin issuance system.  Over a period of `GenesisVestingYears` years, 33,653
+gnuts will be issued to Bitcoin holders in a weekly basis, in proportion to the
+amount of bitcoins either burnt to a specified burn address, or donated to the
+`GnuClearFoundation` address.
 
-``` 
-Year 0: 100
-Year 1: 113
-Year 2: 127
-Year 3: 144
-Year 4: 163
-Year 5: 184
-Year 6: 208
-Year 7: 235
-Year 8: 265
-Year 9: 300
-```
+### Becoming a Validator After Genesis Day
 
-### Becoming a Validator
-
-New validators can be added in a two-step process.
+New validators not in the genesis validator set can be added in a two-step
+process.
 
 First, the would-be validator must post a bond-proposal and post a collateral
 deposit.  The amount of gnuts posted as collateral is what determines the
@@ -928,8 +927,34 @@ collateral. These tokens join the blockchain's token reserve pool.
 ``` 
 BondProposal 
 	BonderAddr   []byte 
-	Coins        // Gnuts and other coins
+	Coins        // Gnuts and other tokens
 	StartHeight  int 
+```
+
+### Limitations on the Number of Validators
+
+Unlike Bitcoin or other proof-of-work blockchains, a Tendermint blockchain gets
+slower with more validators due to the increased communication complexity.
+Fortunately, we can support enough validators to make for a robust globally
+distributed blockchain with very fast blocktimes, and, as bandwidth, storage,
+and parallel compute capacity increases, we will be able to support more
+validators in the future.
+
+On genesis day, the maximum number of validators will be set to 100, and this
+number will increase at a rate of 13% for 10 years, and settle at 300
+validators.
+
+``` 
+Year 0: 100
+Year 1: 113
+Year 2: 127
+Year 3: 144
+Year 4: 163
+Year 5: 184
+Year 6: 208
+Year 7: 235
+Year 8: 265
+Year 9: 300
 ```
 
 ### Penalties for Validators
@@ -968,36 +993,26 @@ the `BlockGasLimit` is not exceeded.  The collected fees are redistributed to
 the holders of bonded gnu tokens, proportionately, every `ValidatorPayoutPeriod`
 blocks.
 
-### Initial Distribution
-
-The initial distribution of gnut coins and validators on Genesis day is ...
-
-TODO
-
-### Genesis Validator Vesting
-
-Validators on genesis day will be incentivized to continue validating, by virtue
-of a vesting schedule.  All of the initial bonded gnuts of the validators on
-genesis day will vest at a rate of 10% a year, per block.  Vesting gnuts can be
-used to the full extent for voting, but disappears after unbonding.  It follows
-that vesting gnuts cannot be transferred.
-
 ## Governance ##################################################################
 
-### Coin Issuance
+TODO: Intro to governance.
 
-* Proposals manage inflation by sending new money to an account or shard 
-* PoW, Conference, Crowd Sales
+### Validator Bond Proposal
 
-### Validator Set Changes
+TODO: `ValidatorBondQuorum` (DEFAULT 67%)
 
-### Software Upgrades
+### Parameter Change Proposal
+
+TODO: `ParameterChangeQuorum` (DEFAULT 67%)
+
+### Text Proposal
+
+All other proposals, such as a proposal to upgrade the protocol, will be
+coordinated via generic text proposals.
 
 ### Penalties for Absenteeism
 
-### Changing parameters
-
-* Changing the BlockGasLimit, e.g. for increasing revenue
+All gnut holders, including validators, are expected to vote on all proposals.
 
 ## Roadmap #####################################################################
 
