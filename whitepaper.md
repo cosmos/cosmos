@@ -13,16 +13,18 @@ To date, however, these blockchains have suffered from a number of drawbacks,
 including their gross energy inefficiency, poor or limited performance, and
 immature governance mechanisms.  A number of proposals have been made to scale
 Bitcoin's transaction throughput such as Segregated-Witness and BitcoinNG, but
-these are limited to vertical scaling, and thus are limited by the capacity of a
-single physical machine, lest we sacrifice the property of complete
-auditability.  Lightning networks can help scale Bitcoin transaction volume by
+these are vertical scaling solutions that remain limited by the capacity of a single physical machine,
+lest we sacrifice the property of complete auditability.
+Lightning networks can help scale Bitcoin transaction volume by
 leaving some transactions off the ledger completely, but are mostly suited for
-micropayments as it requires too much capital to be locked up.
+micropayments as significant capital is required to be locked up.
 
 An ideal solution would be one that allows multiple parallel blockchains to
-interoperate while retaining their security properties, but so far this has been
-proven difficult, if not impossible, with proof-of-work.  (Insert note about
-merged-mining).
+interoperate while retaining their security properties, but this has proven difficult, 
+if not impossible, with proof-of-work. Merged-mining, for instance, allows the work done
+to secure a parent chain to be re-used on a child chain, but transactions still must be validated,
+in order, by each node, and a merge-mined blockchain is vulnerable to attack if
+a majority of the hashing power on the parent is not actively merge-mining the child.
 
 Here we present GnuClear, a novel blockchain network architecture that addresses
 all of these problems.  GnuClear is a network of many independent blockchains,
@@ -58,13 +60,14 @@ were discovered for synchronous networks where there is an upper bound on
 message latency, though pratical use was limited to highly controlled
 environments such as airplane controllers and datacenters synchronized via
 atomic clocks.  It was not until the late 90s that Practical Byzantine Fault
-Tolerance (PBFT) was introduced as an asynchronous consensus algorithm able to
+Tolerance (PBFT) was introduced as an efficient asynchronous consensus algorithm able to
 tolerate up to 1/3 of processes behaving arbitrarily.  PBFT became the standard
 algorithm, spawning many variations, including most recently by IBM as part of
 their contribution to Hyperledger.
 
 The main benefit of Tendermint consensus over PBFT is that Tendermint has an
-improved chain structure.  Tendermint blocks must commit in order, which
+improved and simplified underlying structure, some of which is a result of embracing
+the blockchain paradigm.  Tendermint blocks must commit in order, which
 obviates the complexity and communication overhead associated with PBFT's
 view-changes.  In addition, the batching of transactions into blocks allows for
 regular Merkle-hashing of the application state, rather than periodic digests as
@@ -152,11 +155,11 @@ blockchain, a mechanism first popularized by cross-chain atomic swaps.  By
 openning payment channels with many parties, participants in the lightning
 network can become focal points for routing the payments of others, leading to a
 fully connected payment channel network, at the cost of much capital being tied
-up on payment channels.
+up on payment channels. 
 
 While the lightning network can also easily extend across multiple independent
 blockchains to allow for the transfer of _value_ via an exchange market, it
-cannot be used to transfer _coins_ from one blockchain to another.  The main
+cannot be used to assymetrically transfer _coins_ from one blockchain to another.  The main
 benefit of the GnuClear network described here is to enable such direct coin
 transfers.
 
@@ -203,11 +206,11 @@ the peg and back.  Of course, since Bitcoin uses proof-of-work, Bitcoin
 sidechains suffer from the many risks of proof-of-work as a consensus mechanism,
 which are particularly exacerbated in a scalability context. That said, the core
 mechanism of the two-way peg is in principle the same as that employed by the
-GnuClear network, though using a more scalably secure consensus algorithm.
+GnuClear network, though using a consensus algorithm that scales more securely.
 
 ### Casper 
 
-Casper is a proposed Proof-of-Stake consensus algorithm.  Its prime mode of
+Casper is a proposed Proof-of-Stake consensus algorithm for Ethereum.  Its prime mode of
 operation is "consensus-by-bet".  The idea is that by letting validators
 iteratively bet on which block it believes will become committed into the
 blockchain based on the other bets that it's seen so far, finality can be
@@ -249,15 +252,16 @@ financial reward.  The most important such guarantee is a form of
 be identified and punished according to the rules of the protocol, or, possibly,
 the legal system.  When the legal system is unreliable, validators can be forced
 to make security deposits in order to participate, and those deposits can be
-revoked when malicious behaviour is detected \cite{slasher}.
+revoked, or slashed, when malicious behaviour is detected \cite{slasher}.
 
 Tendermint is a Byzantine fault-tolerant (BFT) consensus protocol for
 asynchronous networks, notable for its simplicity, performance, and
 accountability.  The protocol requires a fixed, known set of N validators, where
-the ith validator is identified by its public key, V_i.  Consensus proceeds in
-rounds. At each round the round-leader, or proposer, proposes a block (a set of
-transactions) to be decided.  The validators then vote, in stages, on
-whether or not to accept the proposed block or move onto the next round. 
+the ith validator is identified by its public key, V_i. Validators attempt to 
+come to consensus on one block at a time, where a block is a list of transactions. 
+Consensus on a block proceeds in rounds. Each round has a round-leader, or
+proposer, who proposes a block. The validators then vote, in stages, on
+whether or not to accept the proposed block or move onto the next round.
 
 We call the voting stages PreVote and PreCommit. A vote can be for a particular
 block or for Nil.  We call a collection of +⅔ PreVotes for a single block in the
@@ -265,27 +269,32 @@ same round a Polka, and a collection of +⅔ PreCommits for a single block in th
 same round a Commit.  If +⅔ PreCommit for Nil in the same round, they move to
 the next round. 
 
-A PreCommit for a block must come with justification, in the form of a Polka for
-that block, subject to a few constraints or Locking Rules, which ensure that the
-network will eventually commit just one value. Any malicious attempt to cause
-more than one value to be committed can be identified.
-
 The proposer at round r is simply r mod N. Note that the strict determinism
 incurs a weak synchrony assumption as faulty leaders must be detected and
 skipped.  Thus, validators wait some amount TimeoutPropose before they Prevote
 Nil.  Progression through the rest of the round is fully asychronous, in that
-progress is only made once a validator hears from +⅔ of the network.  The full
-details of the protocol are described in FIGURE.
+progress is only made once a validator hears from +⅔ of the network.  
+
+An additional set of constraints, or Locking Rules, ensure that the
+network will eventually commit just one value. Any malicious attempt to cause
+more than one value to be committed can be identified.
+First, a PreCommit for a block must come with justification, in the form of a Polka for
+that block. If the validator has already PreCommit a block at round R_1, we say they are
+"locked" on that block, and the Polka used to justify the new PreCommit at round R_2 must come in a round R_polka where `R_1 < R_polka <= R_2`.
+Second, validators must Propose and/or PreVote the block they are "locked" on.
+Together, these conditions ensure that a validator does not PreCommit without sufficient evidence,
+and that validators which have already PreCommit cannot contribute to evidence to PreCommit something else.
+This ensures both safety and liveness of the consensus algorithm.
+
+The full details of the protocol are described in FIGURE.
 
 Tendermint’s security derives simultaneously from its use of optimal Byzantine
-fault-tolerance and a locking mechanism.  The former ensures that ⅓ or more
+fault-tolerance and the locking mechanism.  The former ensures that ⅓ or more
 validators must be Byzantine to cause a violation of safety, where more than two
 values are committed.  The latter ensures that, if ever any set of validators
 attempts, or even succeeds, in violating safety , they can be identified by the
 protocol.  This includes both voting for conflicting blocks and broadcasting
 unjustified votes.
-
-TODO: Light Clients.
 
 Despite its strong guarantees, Tendermint provides exceptional performance.  In
 benchmarks of 64 nodes distributed across 7 datacenters on 5 continents, on
@@ -295,9 +304,53 @@ seconds.  Notably, performance of well over a thousand transactions per second
 is maintained even in harsh adversarial conditions, with validators crashing or
 broadcasting maliciously crafted votes. See FIGURE for details.
 
-### Preventing Short Range Attacks
+### Light Clients
+
+A major benefit of Tendermint's consensus algorithm is simplified light client security,
+especially as compared to Proof-of-Work, and to protocols like Bitcoin which have no global state.
+Instead of syncing a chain of block headers and verifying the proof of work, 
+light clients, who are assumed to know all public keys in the validator set, 
+need only verify the +2/3 PreCommits in the latest block.
+The need to sync all block headers is eliminated as the existence of an alternative chain (a fork) means at least 1/3 of validator's deposits can be slashed.
+Of course, since slashing requires that _someone_ detects the fork, it would be prudent for light clients,
+or at least those that are able, to sync headers, perhaps more slowly, on a risk adjusted basis,
+where the explicit cost of a fork can be easily calculated at at least +1/3 of the bonded stake.
+Additionally, light clients must stay synced with changes to the validator set, in order
+to avoid certain long range attacks (TODO: link to next section).
+
+In a spirit similar to Ethereum, Tendermint enables applications to embed a 
+global Merkle root hash in each block, allowing easily verifiable state queries for things like account balances, the value stored in a contract,
+or the existence of an unspent transaction output, depending on the nature of the application.
 
 ### Preventing Long Range Attacks
+
+Assuming a sufficiently resilient collection of broadcast networks and a static validator set, 
+any fork in the blockchain can be detected and the deposits of the offending validators slashed.
+This innovation, first suggedt by Vitalik Buterin in early 2014, solves the Nothing-at-Stake 
+problem of other Proof-of-Stake cryptocurrencies. However, since validator sets must be able to change,
+over a long range of time the original validators may all become unbonded, and hence would be free
+to create a new chain, from the genesis block, incurring no cost as they no longer have deposits locked up.
+This attack came to be known as the Long Range Attack (LRA) in contrast to a Short Range Attack, 
+where validators who are currently bonded cause a fork and are hence punishable. Long Range Attacks 
+are often thought to be a critical blow to Proof-of-Stake.
+
+Fortunately, the LRA can be mitigated as follows.
+First, for a validator to unbond, thereby recovering their deposit and no longer
+earning fees to participate in the consensus, the deposit must be made unavailable for an amount of time known as the "unbonding period", which may be on the order of weeks or months. 
+Second, for a light client to be secure, the first time it connects to the network it must verify 
+a recent block hash against a trusted source, or preferably multiple of them.
+This condition is sometimes reffered to as "weak subjectivity".
+Finally, to remain secure, it must sync up with the latest validator set at least as frequently as the length 
+of the unbonding period. This ensures that the light client knows about changes to the validator set before
+a validator has its capital unbonded and thus no longer at stake, which would allow it to deceive the client by carrying out a long range attack by creating new blocks beginning back at a height where it was bonded (assuming it had sufficient validating power then!).
+
+Note that overcoming the LRA in this way requires a practical tweak of the original security model
+of Proof-of-Work. In PoW, it is assumed that a light client can sync to the current height
+from the trusted genesis block at any time simply by processing the Proof-of-Work in every block header.
+To overcome the LRA, however, we require that a light client come online with some regularity, 
+and that the first time they come online they must be particularly careful to authenticate what they
+hear from the network against trusted sources. Of course, this latter requirement can be avoided
+if they are willing to sync all headers from the genesis block, where the genesis block includes the original validator set, and just like in Bitcoin, must be obtained from a trusted source.
 
 ### Overcoming Forks and Censorship Attacks
 
