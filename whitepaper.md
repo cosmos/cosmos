@@ -65,7 +65,7 @@ message latency, though pratical use was limited to highly controlled
 environments such as airplane controllers and datacenters synchronized via
 atomic clocks.  It was not until the late 90s that Practical Byzantine Fault
 Tolerance (PBFT) was introduced as an efficient asynchronous consensus algorithm
-able to tolerate up to 1/3 of processes behaving arbitrarily.  PBFT became the
+able to tolerate up to ⅓ of processes behaving arbitrarily.  PBFT became the
 standard algorithm, spawning many variations, including most recently by IBM as
 part of their contribution to Hyperledger.
 
@@ -81,8 +81,7 @@ communication.
 
 ### Merged Mining
 
-TODO insert summary and criticism of merged-mining; Link to Bram Cohen
-presentation
+TODO insert summary and criticism of merged-mining
 
 ### BitShares delegated stake 
 
@@ -167,6 +166,8 @@ cannot be used to assymetrically transfer _coins_ from one blockchain to
 another.  The main benefit of the GnuClear network described here is to enable
 such direct coin transfers.
 
+TODO also mention ILP here
+
 ### BitcoinNG
 
 BitcoinNG is a proposed improvement to Bitcoin that would allow for forms of
@@ -223,7 +224,7 @@ achieved eventually.
 This is an active area of research by the Casper team.  The challenge is in
 constructing a betting mechanism that can be proven to be an evolutionarily
 stable strategy.  The main benefit of Casper as compared to Tendermint may be in
-offering "availability over consistency" -- consensus does not require a +2/3
+offering "availability over consistency" -- consensus does not require a +⅔
 quorum from the validators -- perhaps at the cost of commit speed or
 implementation complexity.
 
@@ -241,11 +242,10 @@ have arbitrarily long delays, and by Byzantine faults, wherein processes may
 exhibit arbitrary, possibly malicious, behaviour.  In particular, it is well
 known that deterministic consensus in asynchronous networks is impossible
 \cite{flp}, and that consensus protocols can tolerate strictly fewer Byzantine
-faults than crash faults ($\frac{1/3}$ of processes, vs. $\frac{1/2}$). The
-former results from the inability to distinguish crash failures from
-asynchronous message delay. The latter from the fact that three processes are
-not enough for a safe majority vote if one of them can lie (you need at least
-four).
+faults than crash faults (⅓ of processes, vs. ½). The former results from the
+inability to distinguish crash failures from asynchronous message delay. The
+latter from the fact that three processes are not enough for a safe majority
+vote if one of them can lie (you need at least four).
 
 In addition to providing optimal fault tolerance, a well designed consensus
 protocol should provide additional guarantees in the event that the tolerance
@@ -317,13 +317,13 @@ A major benefit of Tendermint's consensus algorithm is simplified light client
 security, especially as compared to Proof-of-Work, and to protocols like Bitcoin
 which have no global state.  Instead of syncing a chain of block headers and
 verifying the proof of work, light clients, who are assumed to know all public
-keys in the validator set, need only verify the +2/3 PreCommits in the latest
+keys in the validator set, need only verify the +⅔ PreCommits in the latest
 block.  The need to sync all block headers is eliminated as the existence of an
-alternative chain (a fork) means at least 1/3 of validator's deposits can be
+alternative chain (a fork) means at least ⅓ of validator's deposits can be
 slashed.  Of course, since slashing requires that _someone_ detects the fork, it
 would be prudent for light clients, or at least those that are able, to sync
 headers, perhaps more slowly, on a risk adjusted basis, where the explicit cost
-of a fork can be easily calculated at at least +1/3 of the bonded stake.
+of a fork can be easily calculated at at least ⅓ of the bonded stake.
 Additionally, light clients must stay synced with changes to the validator set,
 in order to avoid certain long range attacks (TODO: link to next section).
 
@@ -375,7 +375,7 @@ set, and just like in Bitcoin, must be obtained from a trusted source.
 
 ### Overcoming Forks and Censorship Attacks
 
-Due to the definition of a block commit, any 1/3+ coalition of validators can
+Due to the definition of a block commit, any ⅓+ coalition of validators can
 halt the blockchain by not broadcasting their votes. Such a coalition can also
 censor particular transactions by rejecting blocks that include these
 transactions, though this would result in a significant proportion of block
@@ -397,12 +397,12 @@ the blockchain should coordinate to sign a reorg-proposal that chooses a fork
 signatures. Clients should verify the signatures on the reorg-proposal, verify
 any evidence, and make a judgement or prompt the end-user for a decision.
 For example, a phone wallet app may prompt the user with a security warning,
-while a refrigerator may accept any reorg-proposal signed by +1/2 of the
+while a refrigerator may accept any reorg-proposal signed by +½ of the
 original validators. If we further require that validators who sign such a
 reorg-proposal forego its collateral on all other forks, light-clients can be
-assured by up to 1/6 of the bonded collateral (1/6 == 2/3 - 1/2). Notice that no
-Byzantine fault tolerant algorithm can come to consensus when 1/3+ of validators
-are dishonest, yet a fork assumes that 1/3+ of validators have been dishonest by
+assured by up to ⅙ of the bonded collateral (⅙ == ⅔ - ½). Notice that no
+Byzantine fault tolerant algorithm can come to consensus when ⅓+ of validators
+are dishonest, yet a fork assumes that ⅓+ of validators have been dishonest by
 double-signing or lock-changing without justification. So, signing the reorg-
 proposal is a coordination problem that cannot be solved internally by any
 protocol -- not even Tendermint. It must be provided externally.
@@ -410,8 +410,8 @@ protocol -- not even Tendermint. It must be provided externally.
 Assuming that the external coordination medium and protocol is robust, it
 follows that forks are less of a concern than censorship attacks.
 
-In addition to forks and censorship, which require 1/3+ Byzantine validators, a
-coalition of +2/3 validators may commit arbitrary, invalid state.  This is
+In addition to forks and censorship, which require ⅓+ Byzantine validators, a
+coalition of +⅔ validators may commit arbitrary, invalid state.  This is
 characteristic of any (BFT) consensus system. Unlike double-signing, which
 creates forks with easily verifiable evidence, detecting committment of an
 invalid state requires non-validating peers to verify whole blocks, which
@@ -537,7 +537,7 @@ shard per token type.  On Genesis day, a select number of priveleged shards will
 be created to act as pegs to other cryptocurrencies. The creation of new
 priviledged shards is left to governance.
 
-Note that a shard where +2/3 of the validators are Byzantine can commit invalid
+Note that a shard where +⅔ of the validators are Byzantine can commit invalid
 state.  Since the very purpose of the GnuClear hub is to avoid verifying every
 transaction on a shard, detecting such failures must be done by independent
 observers of the shard, which may appeal to social media and to the market to
@@ -592,7 +592,7 @@ An `IBCBlockCommitTx` transaction is composed of:
   needed to verify vote signatures
 - `BlockHeight (int)`: The height of the commit
 - `BlockRound (int)`: The round of the commit
-- `Commit ([]Vote)`: The +2/3 Tendermint `Precommit` votes that comprise a block
+- `Commit ([]Vote)`: The +⅔ Tendermint `Precommit` votes that comprise a block
   commit
 - `ValidatorsHash ([]byte)`: A Merkle-tree root hash of the new validator set
 - `ValidatorsHashProof (SimpleProof)`: A SimpleTree Merkle-proof for proving the
@@ -764,9 +764,9 @@ address on Ethereum; an IBC packet proving that the transaction occured on the
 peg-shard can be posted to the Ethereum peg-contract to allow the ether to be
 withdrawn. 
 
-Of course, the risk of such a pegging contract is a rogue validator set.  1/3+
+Of course, the risk of such a pegging contract is a rogue validator set.  ⅓+
 Byzantine validators could cause a fork, withdrawing ether from the peg-contract
-on Ethereum while keeping the pegged-ether on the peg-shard. Worse, +2/3
+on Ethereum while keeping the pegged-ether on the peg-shard. Worse, +⅔
 Byzantine validators can steal ether outright from those who sent it to the
 peg-contract by deviating from the original pegging logic of the peg-shard.
 
@@ -842,9 +842,9 @@ unidentified set of miners.
 
 A major problem with consistency favouring consensus algorithms like Tendermint
 is thought to be that any network partition which causes there to be no single
-partition with +2/3 validators will halt consensus altogether. The GnuClear
+partition with +⅔ validators will halt consensus altogether. The GnuClear
 architecture can mitigate this problem by using a global hub with regional
-autonomous shards, where +2/3 validators in a shard are based in a common
+autonomous shards, where +⅔ validators in a shard are based in a common
 geographic region. For instance, a common paradigm may be for individual cities,
 or local clusters of them, to operate a given shard for the coordination of
 finances and infrastructure, enabling municipal activity to persist in the event
@@ -897,7 +897,7 @@ First, the would-be validator must post a bond-proposal and post a collateral
 deposit.  The amount of gnuts posted as collateral is what determines the
 validator's voting power.
 
-Second, the rest of the validators must vote on this proposal.  If more than 1/2
+Second, the rest of the validators must vote on this proposal.  If more than ½
 of the gnu-holders vote yes, the proposal passes, and the candidate becomes a
 validator at the specified block height.
 
@@ -938,10 +938,10 @@ Some "malicious" behavior do not produce obviously discernable evidence on the
 blockchain. In these cases, the validators can coordinate out of band to force
 the timeout of a validator.
 
-In situations where the GnuClear hub halts due to a 1/3+ coalition of validators
-going offline, or in situations where a 1/3+ coalition of validators censor
+In situations where the GnuClear hub halts due to a ⅓+ coalition of validators
+going offline, or in situations where a ⅓+ coalition of validators censor
 evidence of malicious behavior from entering the blockchain, as long as there
-are -1/2 such Byzantine validators, the hub will recover with a reorg-proposal.
+are -½ such Byzantine validators, the hub will recover with a reorg-proposal.
 (Link to "Forks and Censorship Attacks").
 
 ### Transaction Fees
