@@ -85,7 +85,7 @@ TODO insert summary and criticism of merged-mining
 
 ### BitShares delegated stake 
 
-While not the first to deploy Proof-of-Stake (PoS), BitShares contributed
+While not the first to deploy proof-of-stake (PoS), BitShares contributed
 considerably to research and adoption of PoS blockchains, particularly those
 known as "delegated" PoS.  In BitShares, stake holders elect "witnesses",
 responsible for ordering and committing transactions, and "delegates",
@@ -175,7 +175,7 @@ vertical scalability, such as increasing the block size, without the negative
 economic consequences typically associated with such a change, such as the
 disproportionately large impact on small miners.  This improvement is achieved
 by separating leader election from transaction broadcast: leaders are first
-elected by Proof-of-Work in "micro-blocks", and then able to broadcast
+elected by proof-of-work in "micro-blocks", and then able to broadcast
 transactions to be committed until a new micro-block is found. This reduces the
 bandwidth requirements necessary to win the PoW race, allowing small miners to
 more fairly compete, and allowing transactions to be committed more regularly by
@@ -215,7 +215,7 @@ GnuClear network, though using a consensus algorithm that scales more securely.
 
 ### Casper 
 
-Casper is a proposed Proof-of-Stake consensus algorithm for Ethereum.  Its prime
+Casper is a proposed proof-of-stake consensus algorithm for Ethereum.  Its prime
 mode of operation is "consensus-by-bet".  The idea is that by letting validators
 iteratively bet on which block it believes will become committed into the
 blockchain based on the other bets that it's seen so far, finality can be
@@ -278,7 +278,7 @@ The proposer at round r is simply r mod N. Note that the strict determinism
 incurs a weak synchrony assumption as faulty leaders must be detected and
 skipped.  Thus, validators wait some amount TimeoutPropose before they Prevote
 Nil.  Progression through the rest of the round is fully asychronous, in that
-progress is only made once a validator hears from +⅔ of the network.  
+progress is only made once a validator hears from +⅔ of the network.
 
 An additional set of constraints, or Locking Rules, ensure that the network will
 eventually commit just one value. Any malicious attempt to cause more than one
@@ -314,7 +314,7 @@ broadcasting maliciously crafted votes. See FIGURE for details.
 ### Light Clients
 
 A major benefit of Tendermint's consensus algorithm is simplified light client
-security, especially as compared to Proof-of-Work, and to protocols like Bitcoin
+security, especially as compared to proof-of-work, and to protocols like Bitcoin
 which have no global state.  Instead of syncing a chain of block headers and
 verifying the proof of work, light clients, who are assumed to know all public
 keys in the validator set, need only verify the +⅔ PreCommits in the latest
@@ -339,13 +339,13 @@ Assuming a sufficiently resilient collection of broadcast networks and a static
 validator set, any fork in the blockchain can be detected and the deposits of
 the offending validators slashed.  This innovation, first suggedt by Vitalik
 Buterin in early 2014, solves the Nothing-at-Stake problem of other
-Proof-of-Stake cryptocurrencies. However, since validator sets must be able to
+proof-of-stake cryptocurrencies. However, since validator sets must be able to
 change, over a long range of time the original validators may all become
 unbonded, and hence would be free to create a new chain, from the genesis block,
 incurring no cost as they no longer have deposits locked up.  This attack came
 to be known as the Long Range Attack (LRA) in contrast to a Short Range Attack,
 where validators who are currently bonded cause a fork and are hence punishable.
-Long Range Attacks are often thought to be a critical blow to Proof-of-Stake.
+Long Range Attacks are often thought to be a critical blow to proof-of-stake.
 
 Fortunately, the LRA can be mitigated as follows.  First, for a validator to
 unbond, thereby recovering their deposit and no longer earning fees to
@@ -363,9 +363,9 @@ new blocks beginning back at a height where it was bonded (assuming it had
 sufficient validating power then!).
 
 Note that overcoming the LRA in this way requires a practical tweak of the
-original security model of Proof-of-Work. In PoW, it is assumed that a light
+original security model of proof-of-work. In PoW, it is assumed that a light
 client can sync to the current height from the trusted genesis block at any time
-simply by processing the Proof-of-Work in every block header.  To overcome the
+simply by processing the proof-of-work in every block header.  To overcome the
 LRA, however, we require that a light client come online with some regularity,
 and that the first time they come online they must be particularly careful to
 authenticate what they hear from the network against trusted sources. Of course,
