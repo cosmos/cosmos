@@ -1,0 +1,25 @@
+# IBC (inter-blockchain communication) message sequence chart
+
+msc {
+
+   # The entities
+   Shard1, Hub, Shard2;
+
+   |||;
+
+   Shard1 -> Hub [ label = "IBCBlockCommitTx\nchainID=Shard1,height=100"];
+   Shard1 -> Hub [ label = "IBCPacketTx\nfrom=Shard1,status=AckPending"];
+
+   Hub -> Shard2 [ label = "IBCBlockCommitTx\nchainID=Hub,height=300"];
+   Hub -> Shard2 [ label = "IBCPacketTx\nfrom=Hub,status=AckPending"];
+
+   |||;
+
+   Shard2 -> Hub [ label = "IBCBlockCommitTx\nchainID=Shard2,height=400"];
+   Shard2 -> Hub [ label = "IBCPacketTx\nfrom=Shard2,status=AckSent"];
+
+   |||;
+
+   Hub -> Shard2 [ label = "IBCBlockCommitTx\nchainID=Hub,height=301"];
+   Hub -> Shard2 [ label = "IBCPacketTx\nfrom=Hub,status=AckReceived"];
+}
