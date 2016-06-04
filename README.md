@@ -1182,4 +1182,6 @@ We thank our friends and peers for assistance in conceptualizing, reviewing, and
 providing support for our work with Tendermint and GnuClear.
 
 * Zaki Manian of SkyChain provided much of the wording under the TMSP section.
+* Jehan Tremback of Althea and Dustin Byington for helping with initial
+  iterations
 * TODO Your name and organization here if you want.
