@@ -1,0 +1,6 @@
+*.aux
+*.log
+*.run.xml
+*-blx.bib
+*.synctex.gz
+\.*
