@@ -880,60 +880,23 @@ validators do not pay the decay penalty.
 
 ### Initial Gnut Distribution and Issuance
 
-The initial distribution of gnut tokens and validators on Genesis day will be
+The initial distribution of gnut tokens and validators on Genesis will be
 composed of a list of publicly identifiable validators who have already
-contributed toward cryptocurrency, blockchain, and distributed systems research.
+contributed toward cryptocurrency, blockchain, and distributed systems research
+and praxis, including research groups, nonprofit foundations, and exchanges.
 These genesis validators will be incentivized to continue validating, by virtue
 of a vesting schedule.  All of the initial bonded gnuts of the validators on
-genesis day will vest on a block-by-block basis over a period of
-`GenesisVestingYears` years (DEFAULT 6 YEARS).  Unvested gnuts can be
-used to the full extent for voting, but disappears after unbonding.  It follows
-that gnuts cannot be transferred until vested.  There will be a total of
-14,000,000 such allocated gnuts on genesis day.
+genesis day will vest on a block-by-block basis over a period of 4 years.
+Unvested gnuts can be used to the full extent for voting, but disappears after
+unbonding.  It follows that gnuts cannot be transferred until vested.  There
+will be a total of 67 total validator addresses with 200,000 vesting gnuts each,
+where each validator may be allocated one or more validator spots.
 
-The genesis validators are only a starting point for further decentralization of
-the GnuClear network.  Anyone can get gnuts and apply to become new bonded
-validators.  There are two ways to get gnuts besides by being a member of the
-genesis validator set.  The first way is to receive vested gnuts from an
-existing validator after they have become unbonded.  In this way, validators can
-partially or wholly transfer their gnuts to others.  The second way is via the
-Bitcoin issuance system.  Over a period of `GenesisVestingYears` years, 33,653
-gnuts will be issued to Bitcoin holders in a weekly basis, in proportion to the
-amount of bitcoins either burnt to a specified burn address, or donated to the
-`GnuClearFoundation` address.
-
-### Becoming a Validator After Genesis Day
-
-New validators not already in the genesis validator set can be introduced in a
-two-step process.
-
-First, the candidate validator must submit a `BondProposalTx` transaction
-wherein they can post a collateral deposit of any combination of tokens.  The
-amount of gnuts posted as collateral is what determines the validator's voting
-power.  This creates a `BondProposal` proposal for the current gnut holders to
-vote on.
-
-Next, the rest of the validators must vote on this proposal.  If more than
-`ValidatorBondQuorum` of the gnu-holders vote yes, the proposal passes, and the
-candidate becomes a validator at the specified block height.  If the proposal
-does not pass, all the tokens in the `BondProposalTx` transaction are returned,
-save for the transaction fee.
-
-Given the same amount of usage of the GnuClear network, the validators may not
-have a natural inclination to allow more gnut holders to bond, because this
-decreases the amount of fees earned by each validator.  Yet, the network might
-become more profitable if there were more collateral at stake, as it allows for
-more transaction volume. In that case, it might be rational for validators to
-allow a new gnut holder to bond, as long as it brings more stake to the table.
-Thus, bond proposals can also include any number of non-gnu tokens as
-collateral. These tokens join the blockchain's token reserve pool.
-
-``` 
-BondProposal (TODO)
-	BonderAddr   []byte 
-	Coins        // Gnuts and other tokens
-	StartHeight  int 
-```
+In addition to the 67 * 200,000 vesting gnuts by the genesis validators, there
+will also be 21474 gnuts that are issued through Bitcoin every week for 52\*6
+weeks.  Bitcoin accounts that send bitcoins to either the `GnuClearBurnAddress`
+or `GnuClearFoundationAddress` will receive the 21474 gnuts in proportion to the
+amount of bitcoins burnt or donated.
 
 ### Limitations on the Number of Validators
 
@@ -961,6 +924,21 @@ Year 8: 265
 Year 9: 300
 ```
 
+### Becoming a Validator After Genesis Day
+
+Gnut holders who are not already validators can become one by signing and
+submitting a `BondTx` transaction.  The amount of gnuts provided as
+collateral must be nonzero.  Anyone can become a validator at any
+time, except when the size of the current validator set is greater than the
+maximum number of validators allowed.  In that case, the transaction is only
+valid if the amount of gnuts is greater than the amount of effective gnuts held
+by the smallest validator, where effective gnuts include yet-unvested and
+delegated gnuts.  When a new validator replaces an existing validator in such a
+way, the existing validator becomes inactive and all the gnuts and delegated
+gnuts enter the unbonding state.  Note that, given the distribution of genesis
+validators, the 33 available validator spots, and the issuance schedule, it is
+impossible for any genesis validators to become unbonded by this mechanism.
+
 ### Penalties for Validators
 
 There must be some penalty imposed on the validators for when they intentionally
@@ -968,15 +946,14 @@ or unintentionally deviate from the sanctioned protocol. Some evidence is
 immediately admissible, such as a double-sign at the same height and round, or a
 violation of "prevote-the-lock" (a violation of the Tendermint consensus
 protocol).  Such evidence will result in the validator losing its good standing
-and its bonded gnu tokens as well its proportionate share of tokens from the
-reserve pool will get slashed.
+and its bonded gnu tokens as well its proportionate share of tokens in the
+reserve pool -- collectively called its "stake" -- will get slashed.
 
 Sometimes, validators will not be available, either due to regional network
 disruptions, power failure, or other reasons.  If, at any point in the past
 `ValidatorTimeoutWindow` blocks, a validator's commit vote is not included in
 the blockchain more than `ValidatorTimeoutMaxAbsent` times, that validator will
-become inactive, and lose 5% of its stake.  Its stake will remain bonded for
-`UnbondingPeriod` blocks.
+become inactive, and lose `ValidatorTimeoutPenalty` (DEFAULT 1%) of its stake.
 
 Some "malicious" behavior do not produce obviously discernable evidence on the
 blockchain. In these cases, the validators can coordinate out of band to force
@@ -993,50 +970,68 @@ are -½ such Byzantine validators, the hub will recover with a reorg-proposal.
 GnuClear validators can accept any token type or combination of types as a fee
 for processing a transaction.  Each validator can subjectively set whatever
 exchange rate it wants, and choose whatever transactions it wants, as long as
-the `BlockGasLimit` is not exceeded.  The collected fees are redistributed to
-the holders of bonded gnu tokens, proportionately, every `ValidatorPayoutPeriod`
-blocks.
+the `BlockGasLimit` is not exceeded.  The collected fees minus any taxes
+specified below are redistributed to the holders of bonded gnu tokens,
+proportionately, every `ValidatorPayoutPeriod` blocks.
+
+Of the collected transaction fees, `ReserveTaxRatio` (DEFAULT 2%) will go toward
+the reserve pool to increase the reserve pool and increase the security and
+value of the GnuCler network.  Also, a `CommonsTaxRatio` (DEFAULT 3%) will go
+toward the funding of common goods.  These funds will go to the
+`CustodianAddress` to be distributed in accordance with whatever is decided by
+the governance system.
+
+Gnut holders who delegate their voting power to other validators pay
+`DelegationCommision` (DEFAULT 15%) to the delegated validator.
 
 ## Governance ##################################################################
 
-TODO: Intro to governance.
+The GnuClear hub blockchain is a distributed organization that requires a
+well defined governance mechanism in order to coordinate various changes to the
+blockchain, such as the validator set, predefined parameters of the system, as
+well as software and wetware protocol upgrades.
 
-* All gnut holders are expected to vote on all proposals
-* All gnut holders are expected to be active on a regular basis, e.g. every 2
-  weeks
-* There will be some mechanism to prevent proposal spam.
+All gnut holders are responsible for voting on all proposals.  Failing to vote
+on a proposal in a timely manner will result in the gnut holder losing
+`AbsenteeismPenalty` (DEFAULT 0.5%) of its gnuts at most once per
+`AbsenteeismPenaltyWindow` (DEFAULT 1 week) time period.
 
-### Validator Bond Proposal
+Each proposal requires a deposit of `MinimumProposalDeposit` tokens, which may
+be a combination one or more tokens include gnuts.  For each proposal, the voter
+may opt to take the deposit. If more than half of the voters choose to take the
+proposal (e.g. because the proposal was spam), the deposit goes to the reserve
+pool, except any gnuts which are burned.
 
-* There is a distinction between identified and anonymous validators.
-* New BondProposals are expected to take into account the ratio of identified to
-  anonymous validators.
-* TODO: `ValidatorBondQuorum` (DEFAULT 67%)
-* TODO: What about delegation from anonymous vs non-anonymous gnut holders? Is
-  delegation also via proposals (probably not)
+For each proposal, voters may vote with the following options:
+* Yay
+* YayWithForce
+* Nay
+* NayWithForce
+* Abstain
+
+A strict majority of Yay or YayWithForce votes (or Nay or NayWithForce votes) is
+required for the proposal to be decided as passed (or decided as failed), but
+1/3+ can veto the majority decision by voting with force.  When a strict
+majority is vetoed, everyone gets punished by losing `VetoPenaltyFeeBlocks`
+(DEFAULT 1 day's worth of blocks) worth of fees (except taxes which will not be
+affected), and the party that vetoed the majority decision will be additionally
+punished by losing `VetoPenalty` (DEFAULT 0.1%) of its gnuts.
 
 ### Parameter Change Proposal
 
-* Any of the parameters defined here can be changed by proposal.
-* The minimum quorum needed to change a parameter is itself also a parameter.
-* TODO: `ParameterChangeQuorum` (DEFAULT 67%)
+Any of the parameters defined here can be changed with the successful passing of
+a `ParameterChangeProposal`.
 
 ### Text Proposal
 
 All other proposals, such as a proposal to upgrade the protocol, will be
-coordinated via generic text proposals.
-
-### Penalties for Absenteeism
-
-All gnut holders, including validators, are expected to vote on all proposals.
-TODO: Define the penalty for absenteeism
+coordinated via the generic `TextProposal`.
 
 ## Roadmap #####################################################################
 
-* Initial proposals for distribution (PoW, conferences)
+* Initial validator set
 * Shard discovery
 * Tendermint V2
-* Support fees paid for w/ other currenties
 
 <hr/>
 
