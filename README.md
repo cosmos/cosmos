@@ -3,6 +3,72 @@
 Jae Kwon jae@tendermint.com
 Ethan Buchman ethan@tendermint.com
 
+Table of Contents
+=================
+
+  * [GnuClear: A New Architecture for Scalable Blockchain Decentralization](#gnuclear-a-new-architecture-for-scalable-blockchain-decentralization)
+    * [Related Work](#related-work)
+      * [Consensus systems](#consensus-systems)
+        * [Classic Byzantine Fault Tolerance](#classic-byzantine-fault-tolerance)
+        * [BitShares delegated stake](#bitshares-delegated-stake)
+        * [Stellar](#stellar)
+        * [BitcoinNG](#bitcoinng)
+      * [Casper](#casper)
+      * [Sharded blockchain state](#sharded-blockchain-state)
+        * [BigchainDB](#bigchaindb)
+        * [Interledger Protocol](#interledger-protocol)
+        * [Sidechains](#sidechains)
+        * [Ethereum Scalability Efforts](#ethereum-scalability-efforts)
+      * [General Scalability research](#general-scalability-research)
+        * [Lightning Network](#lightning-network)
+        * [Segregated Witness](#segregated-witness)
+    * [Tendermint](#tendermint)
+      * [Consensus](#consensus)
+      * [Light Clients](#light-clients)
+      * [Preventing Long Range Attacks](#preventing-long-range-attacks)
+      * [Overcoming Forks and Censorship Attacks](#overcoming-forks-and-censorship-attacks)
+      * [TMSP](#tmsp)
+    * [The GnuClear Hub and Shards](#the-gnuclear-hub-and-shards)
+      * [The GnuClear Hub](#the-gnuclear-hub)
+      * [GnuClear Shards](#gnuclear-shards)
+    * [Inter-blockchain Communication (IBC)](#inter-blockchain-communication-ibc)
+      * [IBCBlockCommitTx transaction](#ibcblockcommittx-transaction)
+      * [IBCPacketTx transaction](#ibcpackettx-transaction)
+      * [IBC Packet Delivery Acknowledgement](#ibc-packet-delivery-acknowledgement)
+    * [Use Cases](#use-cases)
+      * [Pegging to Other Cryptocurrencies](#pegging-to-other-cryptocurrencies)
+      * [Ethereum Scaling](#ethereum-scaling)
+      * [Multi-Application Integration](#multi-application-integration)
+      * [Network Partition Mitigation](#network-partition-mitigation)
+    * [Issuance and Incentives](#issuance-and-incentives)
+      * [The Gnut Token](#the-gnut-token)
+      * [Initial Gnut Distribution and Issuance](#initial-gnut-distribution-and-issuance)
+      * [Limitations on the Number of Validators](#limitations-on-the-number-of-validators)
+      * [Becoming a Validator After Genesis Day](#becoming-a-validator-after-genesis-day)
+      * [Penalties for Validators](#penalties-for-validators)
+      * [Transaction Fees](#transaction-fees)
+    * [Governance](#governance)
+      * [Parameter Change Proposal](#parameter-change-proposal)
+      * [Text Proposal](#text-proposal)
+    * [Roadmap](#roadmap)
+    * [Citations](#citations)
+    * [Appendix](#appendix)
+      * [Gas Fees for Transactions](#gas-fees-for-transactions)
+      * [TMSP specification](#tmsp-specification)
+        * [AppendTx](#appendtx)
+        * [CheckTx](#checktx)
+        * [Commit](#commit)
+        * [Query](#query)
+        * [Flush](#flush)
+        * [Info](#info)
+        * [SetOption](#setoption)
+        * [InitChain](#initchain)
+        * [BeginBlock](#beginblock)
+        * [EndBlock](#endblock)
+      * [Merkle tree &amp; proof specification](#merkle-tree--proof-specification)
+    * [Acknowledgements](#acknowledgements)
+
+
 The combined success of the open-source ecosystem, of decentralized
 file-sharing, and of public cryptocurrencies, has inspired an understanding that
 decentralized internet protocols can be used to radically improve socio-economic
@@ -54,7 +120,9 @@ There have been many innovations in blockchain consensus and scalability in the
 past couple of years.  This section provides a brief survey of a select number
 of important ones.
 
-### Classic Byzantine Fault Tolerance
+### Consensus systems
+
+#### Classic Byzantine Fault Tolerance
 
 Consensus in the presence of malicious participants is a problem dating back to
 the early 80s, when Leslie Lamport coined the phrase "Byzantine fault" to refer
@@ -79,11 +147,7 @@ with PBFT's checkpointing scheme.  This allows for faster provable transaction
 commits for light-clients, and as we'll later show, faster inter-blockchain
 communication.
 
-### Merged Mining
-
-TODO insert summary and criticism of merged-mining
-
-### BitShares delegated stake 
+#### BitShares delegated stake
 
 While not the first to deploy proof-of-stake (PoS), BitShares contributed
 considerably to research and adoption of PoS blockchains, particularly those
@@ -99,7 +163,7 @@ stakeholders can remove or replace misbehaving witnesses on a daily basis,
 though this does nothing to explicitly punish a double-spend attack that was
 successful.
 
-### Stellar 
+#### Stellar
 
 Building on an approach pioneered by Ripple, Stellar refined a model of
 Federated Byzantine Agreement wherein the processes participating in
@@ -129,7 +193,41 @@ the network, without competing with any preexisting currency or store of value.
 The advantage of Tendermint-based proof-of-stake, then, is its relative
 simplicity, while still providing sufficient, and provable security guarantees.
 
-### BigchainDB
+#### BitcoinNG
+
+BitcoinNG is a proposed improvement to Bitcoin that would allow for forms of
+vertical scalability, such as increasing the block size, without the negative
+economic consequences typically associated with such a change, such as the
+disproportionately large impact on small miners.  This improvement is achieved
+by separating leader election from transaction broadcast: leaders are first
+elected by proof-of-work in "micro-blocks", and then able to broadcast
+transactions to be committed until a new micro-block is found. This reduces the
+bandwidth requirements necessary to win the PoW race, allowing small miners to
+more fairly compete, and allowing transactions to be committed more regularly by
+the last miner to find a micro-block.
+
+
+### Casper
+
+Casper is a proposed proof-of-stake consensus algorithm for Ethereum.  Its prime
+mode of operation is "consensus-by-bet".  The idea is that by letting validators
+iteratively bet on which block it believes will become committed into the
+blockchain based on the other bets that it's seen so far, finality can be
+achieved eventually.
+[link](https://blog.ethereum.org/2015/12/28/understanding-serenity-part-2-casper/).
+This is an active area of research by the Casper team.  The challenge is in
+constructing a betting mechanism that can be proven to be an evolutionarily
+stable strategy.  The main benefit of Casper as compared to Tendermint may be in
+offering "availability over consistency" -- consensus does not require a +⅔
+quorum from the validators -- perhaps at the cost of commit speed or
+implementation complexity.
+
+
+
+### Sharded blockchain state
+
+
+#### BigchainDB
 
 BigchainDB is a modification of the successful RethinkDB (a NoSQL datastore for
 JSON-documents, with a query language) to include additional security guarantees
@@ -145,60 +243,11 @@ is considered valid and committed when a majority of the validators vote in
 favor of it.  Making BigchainDB fully Byzantine fault-tolerant is a work in
 progress.
 
-### Lightning Network 
+#### Interledger Protocol
+//TODO
 
-The lightning network is a proposed message relay network operating at a layer
-above the Bitcoin blockchain, enabling many orders of magnitude improvement in
-transaction throughput by moving the majority of transactions outside of the
-consensus ledger into so-called "payment channels". This is made possible (with
-great difficulty) by the Bitcoin scripting language, which enables parties to
-enter into stateful contracts where the state can be updated by sharing digital
-signatures, and contracts can be closed by finally publishing evidence onto the
-blockchain, a mechanism first popularized by cross-chain atomic swaps.  By
-openning payment channels with many parties, participants in the lightning
-network can become focal points for routing the payments of others, leading to a
-fully connected payment channel network, at the cost of capital being tied up on
-payment channels. 
 
-While the lightning network can also easily extend across multiple independent
-blockchains to allow for the transfer of _value_ via an exchange market, it
-cannot be used to assymetrically transfer _tokens_ from one blockchain to
-another.  The main benefit of the GnuClear network described here is to enable
-such direct token transfers.  That said, we expect payment channels and
-lightning networks to become widely adopted along with our token transfer
-mechanism, for cost-saving and privacy reasons.
-
-TODO also mention ILP here
-
-### BitcoinNG
-
-BitcoinNG is a proposed improvement to Bitcoin that would allow for forms of
-vertical scalability, such as increasing the block size, without the negative
-economic consequences typically associated with such a change, such as the
-disproportionately large impact on small miners.  This improvement is achieved
-by separating leader election from transaction broadcast: leaders are first
-elected by proof-of-work in "micro-blocks", and then able to broadcast
-transactions to be committed until a new micro-block is found. This reduces the
-bandwidth requirements necessary to win the PoW race, allowing small miners to
-more fairly compete, and allowing transactions to be committed more regularly by
-the last miner to find a micro-block.
-
-### Segregated Witness 
-
-Segregated Witness is a Bitcoin improvement proposal
-[link](https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki) that aims
-to increase the per-block tranasction throughput 2X or 3X, while simultaneously
-making block syncing faster for new nodes.  The brilliance of this solution is
-in how it works within the limitations of Bitcoin's current protocol and allows
-for a soft-fork upgrade (i.e. clients with older versions of the software will
-continue to function after the upgrade).  Tendermint being a new protocol has no
-design restrictions, so it has a different scaling priorities.  Primarily,
-Tendermint uses a BFT round-robin algorithm based on cryptographic signatures
-instead of mining, which trivially allows horizontal scaling through multiple
-parallel blockchains, while regular, more frequent block commits allow for
-vertical scaling as well.
-
-### Sidechains
+#### Sidechains
 
 Sidechains are a proposed mechanism for scaling the Bitcoin network via
 alternative blockchains that are "pegged" to the Bitcoin blockchain.  Sidechains
@@ -215,20 +264,59 @@ which are particularly exacerbated in a scalability context. That said, the core
 mechanism of the two-way peg is in principle the same as that employed by the
 GnuClear network, though using a consensus algorithm that scales more securely.
 
-### Casper 
 
-Casper is a proposed proof-of-stake consensus algorithm for Ethereum.  Its prime
-mode of operation is "consensus-by-bet".  The idea is that by letting validators
-iteratively bet on which block it believes will become committed into the
-blockchain based on the other bets that it's seen so far, finality can be
-achieved eventually.
-[link](https://blog.ethereum.org/2015/12/28/understanding-serenity-part-2-casper/).
-This is an active area of research by the Casper team.  The challenge is in
-constructing a betting mechanism that can be proven to be an evolutionarily
-stable strategy.  The main benefit of Casper as compared to Tendermint may be in
-offering "availability over consistency" -- consensus does not require a +⅔
-quorum from the validators -- perhaps at the cost of commit speed or
-implementation complexity.
+#### Ethereum Scalability Efforts
+
+Ethereum is currently researching a number of different strategies to shard the
+state of the Ethereum blockchain to address scalability needs. These efforts have
+the goal of maintaining the abstraction layer offered by the current Ethereum
+Virtual Machine across the shared state space. Research efforts are being
+conducted by the Ethereum Foundation under Serenity, the Consensus organizations
+and the Dfinity project.
+
+
+### General Scalability research
+
+
+#### Lightning Network
+
+The lightning network is a proposed message relay network operating at a layer
+above the Bitcoin blockchain, enabling many orders of magnitude improvement in
+transaction throughput by moving the majority of transactions outside of the
+consensus ledger into so-called "payment channels". This is made possible (with
+great difficulty) by the Bitcoin scripting language, which enables parties to
+enter into stateful contracts where the state can be updated by sharing digital
+signatures, and contracts can be closed by finally publishing evidence onto the
+blockchain, a mechanism first popularized by cross-chain atomic swaps.  By
+openning payment channels with many parties, participants in the lightning
+network can become focal points for routing the payments of others, leading to a
+fully connected payment channel network, at the cost of capital being tied up on
+payment channels.
+
+While the lightning network can also easily extend across multiple independent
+blockchains to allow for the transfer of _value_ via an exchange market, it
+cannot be used to assymetrically transfer _tokens_ from one blockchain to
+another.  The main benefit of the GnuClear network described here is to enable
+such direct token transfers.  That said, we expect payment channels and
+lightning networks to become widely adopted along with our token transfer
+mechanism, for cost-saving and privacy reasons.
+
+
+#### Segregated Witness
+
+Segregated Witness is a Bitcoin improvement proposal
+[link](https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki) that aims
+to increase the per-block tranasction throughput 2X or 3X, while simultaneously
+making block syncing faster for new nodes.  The brilliance of this solution is
+in how it works within the limitations of Bitcoin's current protocol and allows
+for a soft-fork upgrade (i.e. clients with older versions of the software will
+continue to function after the upgrade).  Tendermint being a new protocol has no
+design restrictions, so it has a different scaling priorities.  Primarily,
+Tendermint uses a BFT round-robin algorithm based on cryptographic signatures
+instead of mining, which trivially allows horizontal scaling through multiple
+parallel blockchains, while regular, more frequent block commits allow for
+vertical scaling as well.
+
 
 ## Tendermint ##################################################################
 
@@ -274,7 +362,7 @@ We call the voting stages PreVote and PreCommit. A vote can be for a particular
 block or for Nil.  We call a collection of +⅔ PreVotes for a single block in the
 same round a Polka, and a collection of +⅔ PreCommits for a single block in the
 same round a Commit.  If +⅔ PreCommit for Nil in the same round, they move to
-the next round. 
+the next round.
 
 The proposer at round r is simply r mod N. Note that the strict determinism
 incurs a weak synchrony assumption as faulty leaders must be detected and
@@ -780,7 +868,7 @@ the peg-shard ("pegged-ether") can then be transferred to and from the hub, and
 later be destroyed with a transaction that sends it to a particular withdrawal
 address on Ethereum; an IBC packet proving that the transaction occured on the
 peg-shard can be posted to the Ethereum peg-contract to allow the ether to be
-withdrawn. 
+withdrawn.
 
 Of course, the risk of such a pegging contract is a rogue validator set.  ⅓+
 Byzantine validators could cause a fork, withdrawing ether from the peg-contract
@@ -917,7 +1005,7 @@ On genesis day, the maximum number of validators will be set to 100, and this
 number will increase at a rate of 13% for 10 years, and settle at 300
 validators.
 
-``` 
+```
 Year 0: 100
 Year 1: 113
 Year 2: 127
@@ -1111,7 +1199,7 @@ mempool layer.
 `BeginBlock`,
     to allow for dependent sequences of transactions in the same block.
 
-#### Commit 
+#### Commit
   * __Returns__:
     * `Data ([]byte)`: The Merkle root hash
     * `Log (string)`: Debug or error message
