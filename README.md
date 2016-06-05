@@ -444,7 +444,7 @@ participate in the consensus, the deposit must be made unavailable for an amount
 of time known as the "unbonding period", which may be on the order of weeks or
 months.  Second, for a light client to be secure, the first time it connects to
 the network it must verify a recent block-hash against a trusted source, or
-preferably multiple of them.  This condition is sometimes reffered to as "weak
+preferably multiple of them.  This condition is sometimes referred to as "weak
 subjectivity".  Finally, to remain secure, it must sync up with the latest
 validator set at least as frequently as the length of the unbonding period. This
 ensures that the light client knows about changes to the validator set before a
@@ -526,7 +526,7 @@ computing the state root independently for themselves.  Once detected, the only
 way to handle such a failure is via social consensus on alternative media.  For
 instance, in situations where Bitcoin has failed, whether forking due to
 software bugs (as in March 2013), or committing invalid state due to Byzantine
-behaviour of miners (as in the July 2016), the well connected community of
+behavior of miners (as in the July 2016), the well connected community of
 businesses, developers, miners, and other organizations established a social
 consensus as to what manual actions were required by participants to heal the
 network.  Furthermore, since validators of a Tendermint blockchain may be
@@ -764,7 +764,7 @@ while any destination chain may suffer from a denial-of-service attack with a
 sudden spike in the number of incoming packets.
 
 In these cases, the sender can require delivery acknowledgement by setting the
-intial packet status to `AckPending`.  Then, it is the receiving chain's
+initial packet status to `AckPending`.  Then, it is the receiving chain's
 responsibility to confirm delivery by including an abbreviated`IBCPacket` in the
 app Merkle hash.
 
