@@ -383,7 +383,7 @@ validators which have already PreCommit cannot contribute to evidence to
 PreCommit something else.  This ensures both safety and liveness of the
 consensus algorithm.
 
-The full details of the protocol are described in LINK.
+The full details of the protocol are described [here](https://github.com/tendermint/tmsp).
 
 Tendermint’s security derives simultaneously from its use of optimal Byzantine
 fault-tolerance and the locking mechanism.  The former ensures that ⅓ or more
