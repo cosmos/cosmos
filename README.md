@@ -244,7 +244,10 @@ favor of it.  Making BigchainDB fully Byzantine fault-tolerant is a work in
 progress.
 
 #### Interledger Protocol
-//TODO
+
+The Interledger protocol is not strictly a scalability solution. It provides a
+adhoc interoperation between different ledger systems through a loosely couple
+bilateral relationship network.
 
 
 #### Sidechains
