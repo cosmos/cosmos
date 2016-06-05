@@ -415,7 +415,7 @@ would be prudent for light clients, or at least those that are able, to sync
 headers, perhaps more slowly, on a risk adjusted basis, where the explicit cost
 of a fork can be easily calculated at at least ⅓ of the bonded stake.
 Additionally, light clients must stay synced with changes to the validator set,
-in order to avoid certain long range attacks (TODO: link to next section).
+in order to avoid certain [long range attacks](https://github.com/gnuclear/gnuclear-whitepaper/README.md#LRA).
 
 In a spirit similar to Ethereum, Tendermint enables applications to embed a
 global Merkle root hash in each block, allowing easily verifiable state queries
@@ -424,6 +424,7 @@ existence of an unspent transaction output, depending on the nature of the
 application.
 
 ### Preventing Long Range Attacks
+<a>name="LRA"</a>
 
 Assuming a sufficiently resilient collection of broadcast networks and a static
 validator set, any fork in the blockchain can be detected and the deposits of
