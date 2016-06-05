@@ -94,7 +94,9 @@ difficult, if not impossible, with proof-of-work. Merged-mining, for instance,
 allows the work done to secure a parent chain to be re-used on a child chain,
 but transactions still must be validated, in order, by each node, and a
 merge-mined blockchain is vulnerable to attack if a majority of the hashing
-power on the parent is not actively merge-mining the child.
+power on the parent is not actively merge-mining the child.  An academic review
+of [alternative blockchain network architectures](http://vukolic.com/iNetSec_2015.pdf) 
+is provided for additional context.
 
 Here we present GnuClear, a novel blockchain network architecture that addresses
 all of these problems.  GnuClear is a network of many independent blockchains,
