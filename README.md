@@ -1,7 +1,70 @@
 # GnuClear: A New Architecture for Scalable Blockchain Decentralization
 
+
 Jae Kwon jae@tendermint.com
 Ethan Buchman ethan@tendermint.com
+
+Table of Contents
+=================
+
+  * [GnuClear: A New Architecture for Scalable Blockchain Decentralization](#gnuclear-a-new-architecture-for-scalable-blockchain-decentralization)
+    * [Related Work](#related-work)
+      * [Classic Byzantine Fault Tolerance](#classic-byzantine-fault-tolerance)
+      * [Merged Mining](#merged-mining)
+      * [BitShares delegated stake](#bitshares-delegated-stake)
+      * [Stellar](#stellar)
+      * [BigchainDB](#bigchaindb)
+      * [Lightning Network](#lightning-network)
+      * [BitcoinNG](#bitcoinng)
+      * [Segregated Witness](#segregated-witness)
+      * [Sidechains](#sidechains)
+      * [Casper](#casper)
+    * [Tendermint](#tendermint)
+      * [Consensus](#consensus)
+      * [Light Clients](#light-clients)
+      * [Preventing Long Range Attacks](#preventing-long-range-attacks)
+      * [Overcoming Forks and Censorship Attacks](#overcoming-forks-and-censorship-attacks)
+      * [TMSP](#tmsp)
+    * [The GnuClear Hub and Shards](#the-gnuclear-hub-and-shards)
+      * [The GnuClear Hub](#the-gnuclear-hub)
+      * [GnuClear Shards](#gnuclear-shards)
+    * [Inter-blockchain Communication (IBC)](#inter-blockchain-communication-ibc)
+      * [IBCBlockCommitTx transaction](#ibcblockcommittx-transaction)
+      * [IBCPacketTx transaction](#ibcpackettx-transaction)
+      * [IBC Packet Delivery Acknowledgement](#ibc-packet-delivery-acknowledgement)
+    * [Use Cases](#use-cases)
+      * [Pegging to Other Cryptocurrencies](#pegging-to-other-cryptocurrencies)
+      * [Ethereum Scaling](#ethereum-scaling)
+      * [Multi-Application Integration](#multi-application-integration)
+      * [Network Partition Mitigation](#network-partition-mitigation)
+    * [Issuance and Incentives](#issuance-and-incentives)
+      * [The Gnut Token](#the-gnut-token)
+      * [Initial Gnut Distribution and Issuance](#initial-gnut-distribution-and-issuance)
+      * [Limitations on the Number of Validators](#limitations-on-the-number-of-validators)
+      * [Becoming a Validator After Genesis Day](#becoming-a-validator-after-genesis-day)
+      * [Penalties for Validators](#penalties-for-validators)
+      * [Transaction Fees](#transaction-fees)
+    * [Governance](#governance)
+      * [Parameter Change Proposal](#parameter-change-proposal)
+      * [Text Proposal](#text-proposal)
+    * [Roadmap](#roadmap)
+    * [Citations](#citations)
+    * [Appendix](#appendix)
+      * [Gas Fees for Transactions](#gas-fees-for-transactions)
+      * [TMSP specification](#tmsp-specification)
+        * [AppendTx](#appendtx)
+        * [CheckTx](#checktx)
+        * [Commit](#commit)
+        * [Query](#query)
+        * [Flush](#flush)
+        * [Info](#info)
+        * [SetOption](#setoption)
+        * [InitChain](#initchain)
+        * [BeginBlock](#beginblock)
+        * [EndBlock](#endblock)
+      * [Merkle tree &amp; proof specification](#merkle-tree--proof-specification)
+    * [Acknowledgements](#acknowledgements)
+
 
 The combined success of the open-source ecosystem, of decentralized
 file-sharing, and of public cryptocurrencies, has inspired an understanding that
