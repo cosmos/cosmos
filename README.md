@@ -385,7 +385,7 @@ validators which have already PreCommit cannot contribute to evidence to
 PreCommit something else.  This ensures both safety and liveness of the
 consensus algorithm.
 
-The full details of the protocol are described in LINK.
+The full details of the protocol are described [here](https://github.com/tendermint/tmsp).
 
 Tendermint’s security derives simultaneously from its use of optimal Byzantine
 fault-tolerance and the locking mechanism.  The former ensures that ⅓ or more
@@ -417,7 +417,7 @@ would be prudent for light clients, or at least those that are able, to sync
 headers, perhaps more slowly, on a risk adjusted basis, where the explicit cost
 of a fork can be easily calculated at at least ⅓ of the bonded stake.
 Additionally, light clients must stay synced with changes to the validator set,
-in order to avoid certain long range attacks (TODO: link to next section).
+in order to avoid certain [long range attacks](#preventing-long-range-attacks).
 
 In a spirit similar to Ethereum, Tendermint enables applications to embed a
 global Merkle root hash in each block, allowing easily verifiable state queries
