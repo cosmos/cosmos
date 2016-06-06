@@ -217,10 +217,10 @@ implementation complexity.
 
 #### Interledger Protocol
 
-The Interledger Protocol (ILP) is a suite of protocols that might be described
-as a generalization of the Lightning Network for all ledgers, including
-blockchain and centralized ledgers.  Like the Lightning Network, the purpose of
-ILP is to facilitate payments, but it specifically focuses on payments across
+The Interledger protocol is not strictly a scalability solution. It provides an
+adhoc interoperation between different ledger systems through a loosely coupled
+bilateral relationship network.  Like the Lightning Network, the purpose of ILP
+is to facilitate payments, but it specifically focuses on payments across
 disparate ledger types, and extends the atomic transaction mechanism to include
 not only hash-locks, but also a quroum of notaries (called the Universal
 Transport Protocol).  The latter mechanism for enforcing atomicity in
@@ -1269,7 +1269,8 @@ transactions
 We thank our friends and peers for assistance in conceptualizing, reviewing, and
 providing support for our work with Tendermint and GnuClear.
 
-* Zaki Manian of SkyChain provided much of the wording under the TMSP section.
+* Zaki Manian of SkyChain provided much help in formatting and wording,
+  especially under the TMSP section.
 * Jehan Tremback of Althea and Dustin Byington for helping with initial
   iterations
 * TODO Your name and organization here if you want.
