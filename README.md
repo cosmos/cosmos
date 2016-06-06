@@ -747,7 +747,12 @@ procedure, the `IBCPacket` fields are identical: the `SrcChainID` is always
 "Shard1", and the `DstChainID` is always "Shard2".
 
 The `PacketProof` must have the correct Merkle-proof path, as follows:
-``` IBC/<SrcChainID>/<DstChainID>/<Number> ``` TODO: CLARIFY
+
+```
+IBC/<SrcChainID>/<DstChainID>/<Number>
+
+``` 
+TODO: CLARIFY
 
 When "Shard1" wants to send a packet to "Shard2" through "Hub", the `IBCPacket`
 data are identical whether the packet is Merkle-ized on "Shard1", the "Hub", or
