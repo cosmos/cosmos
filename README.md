@@ -215,7 +215,7 @@ implementation complexity.
 
 ### Sharded Scaling
 
-#### Interledger Protocol (ILP)
+#### Interledger Protocol
 
 The Interledger Protocol (ILP) is a suite of protocols that might be described
 as a generalization of the Lightning Network for all ledgers, including
