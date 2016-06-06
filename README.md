@@ -227,25 +227,42 @@ implementation complexity.
 ### Sharded blockchain state
 
 
-#### BigchainDB
+#### Interledger Protocol (ILP)
 
-BigchainDB is a modification of the successful RethinkDB (a NoSQL datastore for
-JSON-documents, with a query language) to include additional security guarantees
-without sacrificing the ability to perform over a million transactions per
-second. RethinkDB achieves this high performance with a combination of sharding
-and replication, and utilizes the Raft consensus algorithm only for automatic
-fail-over of replica "primaries" (leaders). RethinkDB does not currently provide
-Byzantine fault-tolerance.
+The Interledger Protocol (ILP) is a suite of protocols that might be described
+as a generalization of the Lightning Network for all ledgers, including
+blockchain and centralized ledgers.  Like the Lightning Network, the purpose of
+ILP is to facilitate payments, but it specifically focuses on payments across
+disparate ledger types, and extends the atomic transaction mechanism to include
+not only hash-locks, but also a quroum of notaries (called the Universal
+Transport Protocol).  The latter mechanism for enforcing atomicity in
+inter-ledger transactions is similar to Tendermint's light-client SPV echanism,
+so an illustration of the distinction between ILP and GnuClear/IBC is warranted,
+and provided below.
 
-BigchainDB uses RethinkDB as the "underlying DB" to first order blocks, and adds
-a layer of validator signatures on top to vote on the block's validity. A block
-is considered valid and committed when a majority of the validators vote in
-favor of it.  Making BigchainDB fully Byzantine fault-tolerant is a work in
-progress.
+1. The notaries of a connector in ILP does not support membership changes, and
+   does not allow for flexible weighting between notaries.  On the other hand,
+IBC is designed specifically for blockchains, where validators can have
+different weights, and where membership can change over the course of the
+blockchain.
 
-#### Interledger Protocol
-//TODO
+2. As in the Lightning Network, the receiver of payment in ILP must online to
+   send a confirmation back to the sender.  In a token transfer over IBC, the
+validator-set of the receiver's blockchain is responsible for providing
+confirmation, not the receiving user.
 
+3. The most striking difference is that ILP's connectors are not responsible or
+   keeping authoritative state about payments, whereas in GnuClear, the
+validators of the GnuClear hub are the authority of the state of IBC token
+transfers as well as the authority of the amount of tokens held by each shard
+(but not the amount of tokens held by each account within a shard).  This is he
+fundamental innovation that allows for secure asymmetric tranfer of tokens from
+shard to shard; the analog to ILP's connector in GnuClear is a persistent and
+maximally secure blockchain ledger.
+
+4. The inter-ledger payments in ILP need to be backed by an exchange orderbook,
+   as there is no asymmetric transfer of coins from one ledger to another, only
+the transfer of value or market equivalents.
 
 #### Sidechains
 
@@ -1144,6 +1161,7 @@ TODO: Link throughout text as appropriate
 * Stellar: https://www.stellar.org/papers/stellar-consensus-protocol.pdf
 * BigchainDB: https://www.bigchaindb.com/whitepaper/bigchaindb-whitepaper.pdf
 * Lightning Network: https://lightning.network/lightning-network-paper-DRAFT-0.5.pdf
+* Interledger: https://interledger.org/rfcs/0001-interledger-architecture/
 * Segregated Witness: https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki
 * Sidechains: https://blockstream.com/sidechains.pdf
 * Casper: https://blog.ethereum.org/2015/08/01/introducing-casper-friendly-ghost/
