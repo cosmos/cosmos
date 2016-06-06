@@ -332,7 +332,10 @@ Core.  Tendermint Core is an application-agnostic "consensus engine" that can
 turn any deterministic (blackbox) application into a distributedly replicated
 blockchain.  As the Apache Web Server or Nginx connects to the Wordpress
 application via CGI or FastCGI, Tendermint Core connects to blockchain
-applications via TMSP.
+applications via TMSP.  Thus, TMSP allows for blockchain applications to be
+programmed in any language, not just the programming language that the consensus
+engine is written in.  Additionally, TMSP makes it possible to easily swap out
+the consensus layer of any existing blockchain stack.
 
 To draw an analogy, we will draw an analogy with a well-known cryptocurrency,
 Bitcoin.  Bitcoin is a cryptocurrency blockchain where each node maintains a
