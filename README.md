@@ -10,18 +10,17 @@ Ethan Buchman ethan@tendermint.com
 
   * [Introduction](#introduction)
   * [Related Work](#related-work)
-    * [Consensus systems](#consensus-systems)
+    * [Consensus Systems](#consensus-systems)
       * [Classic Byzantine Fault Tolerance](#classic-byzantine-fault-tolerance)
       * [BitShares delegated stake](#bitshares-delegated-stake)
       * [Stellar](#stellar)
       * [BitcoinNG](#bitcoinng)
-    * [Casper](#casper)
-    * [Sharded blockchain state](#sharded-blockchain-state)
-      * [BigchainDB](#bigchaindb)
+      * [Casper](#casper)
+    * [Sharded Scaling](#sharded-scaling)
       * [Interledger Protocol](#interledger-protocol)
       * [Sidechains](#sidechains)
       * [Ethereum Scalability Efforts](#ethereum-scalability-efforts)
-    * [General Scalability research](#general-scalability-research)
+    * [General Scaling](#general-scaling)
       * [Lightning Network](#lightning-network)
       * [Segregated Witness](#segregated-witness)
   * [Tendermint](#tendermint)
@@ -34,8 +33,8 @@ Ethan Buchman ethan@tendermint.com
     * [The GnuClear Hub](#the-gnuclear-hub)
     * [GnuClear Shards](#gnuclear-shards)
   * [Inter-blockchain Communication (IBC)](#inter-blockchain-communication-ibc)
-    * [IBCBlockCommitTx transaction](#ibcblockcommittx-transaction)
-    * [IBCPacketTx transaction](#ibcpackettx-transaction)
+    * [IBCBlockCommitTx Transaction](#ibcblockcommittx-transaction)
+    * [IBCPacketTx Transaction](#ibcpackettx-transaction)
     * [IBC Packet Delivery Acknowledgement](#ibc-packet-delivery-acknowledgement)
   * [Use Cases](#use-cases)
     * [Pegging to Other Cryptocurrencies](#pegging-to-other-cryptocurrencies)
@@ -113,7 +112,7 @@ There have been many innovations in blockchain consensus and scalability in the
 past couple of years.  This section provides a brief survey of a select number
 of important ones.
 
-### Consensus systems
+### Consensus Systems
 
 #### Classic Byzantine Fault Tolerance
 
@@ -199,7 +198,7 @@ bandwidth requirements necessary to win the PoW race, allowing small miners to
 more fairly compete, and allowing transactions to be committed more regularly by
 the last miner to find a micro-block.
 
-### Casper
+#### Casper
 
 Casper is a proposed proof-of-stake consensus algorithm for Ethereum.  Its prime
 mode of operation is "consensus-by-bet".  The idea is that by letting validators
@@ -214,7 +213,7 @@ offering "availability over consistency" -- consensus does not require a +⅔
 quorum from the validators -- perhaps at the cost of commit speed or
 implementation complexity.
 
-### Sharded blockchain state
+### Sharded Scaling
 
 #### Interledger Protocol (ILP)
 
@@ -279,7 +278,7 @@ Virtual Machine across the shared state space. Research efforts are being
 conducted by the Ethereum Foundation under Serenity, the Consensus organizations
 and the Dfinity project.
 
-### General Scalability research
+### General Scaling
 
 #### Lightning Network
 
@@ -689,7 +688,7 @@ In the example above, in order to update the block-hash of "Shard1" on "Hub" (or
 of "Hub" on "Shard2"), an `IBCBlockCommitTx` transaction must be posted on "Hub"
 with the block-hash of "Shard1" (or on "Shard2" with the block-hash of "Hub").
 
-### IBCBlockCommitTx transaction
+### IBCBlockCommitTx Transaction
 
 An `IBCBlockCommitTx` transaction is composed of:
 - `ChainID (string)`: The ID of the blockchain
@@ -708,7 +707,7 @@ An `IBCBlockCommitTx` transaction is composed of:
 - `AppHashProof (SimpleProof)`: A SimpleTree Merkle-proof for proving the
   `AppHash` against the `BlockHash`
 
-### IBCPacketTx transaction
+### IBCPacketTx Transaction
 
 An `IBCPacket` is composed of:
 - `Header (IBCPacketHeader)`: The packet header
@@ -1143,7 +1142,6 @@ TODO: Link throughout text as appropriate
 * PBFT: http://pmg.csail.mit.edu/papers/osdi99.pdf
 * BitShares: https://bitshares.org/technology/delegated-proof-of-stake-consensus/
 * Stellar: https://www.stellar.org/papers/stellar-consensus-protocol.pdf
-* BigchainDB: https://www.bigchaindb.com/whitepaper/bigchaindb-whitepaper.pdf
 * Lightning Network: https://lightning.network/lightning-network-paper-DRAFT-0.5.pdf
 * Interledger: https://interledger.org/rfcs/0001-interledger-architecture/
 * Segregated Witness: https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki
