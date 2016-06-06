@@ -1277,8 +1277,11 @@ transactions
 We thank our friends and peers for assistance in conceptualizing, reviewing, and
 providing support for our work with Tendermint and GnuClear.
 
-* Zaki Manian of SkyChain provided much help in formatting and wording,
-  especially under the TMSP section.
-* Jehan Tremback of Althea and Dustin Byington for helping with initial
-  iterations
+* [Zaki Manian](https://github.com/zmanian) of
+  [SkuChain](https://www.skuchain.com/) provided much help in formatting and
+wording, especially under the TMSP section.
+* [Jehan Tremback](https://github.com/jtremback) of Althea and Dustin Byington
+  for helping with initial iterations
+* Also thanks to [Bill Gleim](https://github.com/gleim) for various
+  contributions.
 * TODO Your name and organization here if you want.
