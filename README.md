@@ -615,11 +615,12 @@ configuration with one central hub and many shards.
 
 ### The GnuClear Hub
 
-The GnuClear hub hosts a multi-asset cryptocurrency, where tokens can be held by
-individual users or by shards themselves.  These tokens can be moved from one
-shard to another in a special IBC packet called a "coin packet".  The hub is
-responsible for preserving the global invariance of the total amount of each
-token across the shards.
+The GnuClear hub is a blockchain that hosts a multi-asset cryptocurrency, where
+tokens can be held by individual users or by shards themselves.  These tokens can
+be moved from one shard to another in a special IBC packet called a "coin packet".
+The hub is responsible for preserving the global invariance of the total amount
+of each token across the shards. Coin packet IBC messages must be committed by
+the sender, hub and reciever blockchains.
 
 Since the GnuClear hub acts as a central ledger of tokens for the whole system,
 the security of the hub is of paramount importance.  While each shard may be a
@@ -751,7 +752,7 @@ The `PacketProof` must have the correct Merkle-proof path, as follows:
 ```
 IBC/<SrcChainID>/<DstChainID>/<Number>
 
-``` 
+```
 TODO: CLARIFY
 
 When "Shard1" wants to send a packet to "Shard2" through "Hub", the `IBCPacket`
