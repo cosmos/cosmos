@@ -98,7 +98,7 @@ all of these problems.  GnuClear is a network of many independent blockchains,
 called shards, that are connected by a central blockchain, called the hub.  The
 hub and shards are powered by Tendermint Core, which provides a
 high-performance, consistent, secure [PBFT-similar](http://tendermint.com/blog/tendermint-vs-pbft/) consensus engine, where strict
-accountability guarantees hold over the behaviour of malicious actors.  The
+fork-accountability guarantees hold over the behaviour of malicious actors.  The
 GnuClear hub is a simple multi-asset proof-of-stake cryptocurrency with a simple
 governance mechanism enabling the network to adapt and upgrade.  The hub and
 shards of the GnuClear network communicate with each other via an
@@ -147,9 +147,9 @@ revoked, or slashed, when malicious behaviour is detected \cite{slasher}.
 
 Tendermint is a Byzantine fault-tolerant (BFT) consensus protocol for
 asynchronous networks, notable for its simplicity, performance, and
-accountability.  The protocol requires a fixed, known set of N validators, where
-the ith validator is identified by its public key, V_i. Validators attempt to
-come to consensus on one block at a time, where a block is a list of
+fork-accountability.  The protocol requires a fixed, known set of N validators,
+where the ith validator is identified by its public key, V_i. Validators attempt
+to come to consensus on one block at a time, where a block is a list of
 transactions.  Consensus on a block proceeds in rounds. Each round has a
 round-leader, or proposer, who proposes a block. The validators then vote, in
 stages, on whether or not to accept the proposed block or move onto the next
@@ -232,8 +232,8 @@ unbonded, and hence would be free to create a new chain, from the genesis block,
 incurring no cost as they no longer have deposits locked up.  This attack came
 to be known as the Long Range Attack (LRA) in contrast to a Short Range Attack,
 where validators who are currently bonded cause a fork and are hence punishable
-(assuming an accountable BFT algorithm like Tendermint consensus). Long Range
-Attacks are often thought to be a critical blow to proof-of-stake.
+(assuming a fork-accountable BFT algorithm like Tendermint consensus). Long
+Range Attacks are often thought to be a critical blow to proof-of-stake.
 
 Fortunately, the LRA can be mitigated as follows.  First, for a validator to
 unbond, thereby recovering their deposit and no longer earning fees to
