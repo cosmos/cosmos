@@ -104,9 +104,11 @@ GnuClear hub utilizes IBC packets to move tokens from one shard to another while
 maintaining the total amount of tokens in the network, thus isolating each shard
 from the failure of others.
 
-We hope that the GnuClear network can prove once and for all that blockchain
-based systems can scale as well as any other, and grow to become the foundation
-for the future internet of blockchains.
+We believe that GnuClear proves that Tendermint BFT consensus is well suited for
+scaling public proof-of-stake blockchains, and that it can compete with
+proof-of-work in speed, security, and scalability.  Above all, we hope it grows
+into a platform that works for everyone interested in distributed ledger
+systems.
 
 ## Tendermint ##################################################################
 
