@@ -1,7 +1,9 @@
 # GnuClear: A New Architecture for Scalable Blockchain Decentralization
 
+```
 Jae Kwon jae@tendermint.com
 Ethan Buchman ethan@tendermint.com
+```
 
 Table of Contents
 =================
@@ -83,7 +85,7 @@ immature governance mechanisms.  A number of proposals have been made to scale
 Bitcoin's transaction throughput such as Segregated-Witness and BitcoinNG, but
 these are vertical scaling solutions that remain limited by the capacity of a
 single physical machine, lest we sacrifice the property of complete
-auditability.  Lightning networks can help scale Bitcoin transaction volume by
+auditability.  The Lightning Network can help scale Bitcoin transaction volume by
 leaving some transactions off the ledger completely and is well suited for
 micropayments and privacy preserving payment rails, but may not be suitable for
 more generalized scaling needs.
@@ -297,7 +299,7 @@ and the Dfinity project.
 
 #### Lightning Network
 
-The lightning network is a proposed message relay network operating at a layer
+The Lightning Network is a proposed message relay network operating at a layer
 above the Bitcoin blockchain, enabling many orders of magnitude improvement in
 transaction throughput by moving the majority of transactions outside of the
 consensus ledger into so-called "payment channels". This is made possible (with
@@ -305,19 +307,18 @@ great difficulty) by the Bitcoin scripting language, which enables parties to
 enter into stateful contracts where the state can be updated by sharing digital
 signatures, and contracts can be closed by finally publishing evidence onto the
 blockchain, a mechanism first popularized by cross-chain atomic swaps.  By
-openning payment channels with many parties, participants in the lightning
-network can become focal points for routing the payments of others, leading to a
+openning payment channels with many parties, participants in the Lightning
+Network can become focal points for routing the payments of others, leading to a
 fully connected payment channel network, at the cost of capital being tied up on
 payment channels.
 
-While the lightning network can also easily extend across multiple independent
+While the Lightning Network can also easily extend across multiple independent
 blockchains to allow for the transfer of _value_ via an exchange market, it
 cannot be used to assymetrically transfer _tokens_ from one blockchain to
 another.  The main benefit of the GnuClear network described here is to enable
-such direct token transfers.  That said, we expect payment channels and
-lightning networks to become widely adopted along with our token transfer
+such direct token transfers.  That said, we expect payment channels and the
+Lightning Network to become widely adopted along with our token transfer
 mechanism, for cost-saving and privacy reasons.
-
 
 #### Segregated Witness
 
@@ -333,7 +334,6 @@ Tendermint uses a BFT round-robin algorithm based on cryptographic signatures
 instead of mining, which trivially allows horizontal scaling through multiple
 parallel blockchains, while regular, more frequent block commits allow for
 vertical scaling as well.
-
 
 ## Tendermint ##################################################################
 
