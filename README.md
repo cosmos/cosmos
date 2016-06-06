@@ -6,6 +6,9 @@ Jae Kwon jae@tendermint.com
 Ethan Buchman ethan@tendermint.com
 ```
 
+_NOTE: If you can read this on GitHub, then we're still actively developing this
+document.  Please check regularly for updates._
+
 ## Table of Contents ###########################################################
 
   * [Introduction](#introduction)
@@ -116,6 +119,8 @@ In this section we describe the Tendermint consensus protocol and the interface
 used to build applications with it.
 
 ### Consensus
+
+_NOTE:  +⅔ means "more than ⅔", while ⅓+ means "⅓ or more"._
 
 A fault-tolerant consensus protocol enables a set of non-faulty processes to
 eventually agree on a value proposed by at least one of them.  The problem is
