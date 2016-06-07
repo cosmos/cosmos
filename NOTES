@@ -1,4 +1,0 @@
-To compile whitepaper.md to README.mediawiki,
-
-pandoc -f markdown -t mediawiki whitepaper.md > README.mediawiki
-patch README.mediawiki 0001-Fix-images.patch
