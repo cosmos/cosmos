@@ -4,7 +4,7 @@
 
 <pre>Jae Kwon jae@tendermint.com
 Ethan Buchman ethan@tendermint.com</pre>
-''NOTE: If you can read this on GitHub, then we're still actively developing this document. Please check regularly for updates.''
+''NOTE: If you can read this on GitHub, then we're still actively developing this document. Please check regularly for updates!.''
 
 == Introduction ==
 
