@@ -744,12 +744,12 @@ pool.
 
 #### Genesis Validators
 
-Of the 100 genesis validator spots, 50 of them will be occupied by distinct
-genesis validators around the globe.  Each gensesis-validator will have 200,000
-vesting gnuts, and will begin as active validators.  Vesting gnuts are gnuts
-with the restriction that they cannot be transferred.  Vesting gnuts will vest
-at every block over a period of 4 years.  Unvested gnuts can be used to the full
-extent for voting.
+Of the 100 initial available validator spots, 50 of them will be occupied by
+distinct genesis-validators around the globe.  Each gensesis-validator will have
+200,000 vesting gnuts, and will begin as active validators.  Vesting gnuts are
+gnuts with the restriction that they cannot be transferred.  Vesting gnuts will
+vest at every block over a period of 4 years.  Unvested gnuts can be used to the
+full extent for voting.
 
 #### GnuClear Foundation
 
@@ -827,9 +827,9 @@ valid if the amount of gnuts is greater than the amount of effective gnuts held
 by the smallest validator, where effective gnuts include vesting and delegated
 gnuts.  When a new validator replaces an existing validator in such a way, the
 existing validator becomes inactive and all the gnuts and delegated gnuts enter
-the unbonding state.  Note that, given the distribution of genesis validators,
+the unbonding state.  Note that, given the distribution of genesis-validators,
 the 33 available validator spots, and the issuance schedule, it is impossible
-for any genesis validators to become unbonded by this mechanism.
+for any genesis-validators to become unbonded by this mechanism.
 
 ### Penalties for Validators
 
@@ -1221,7 +1221,7 @@ connection, or Key="mode", Value="consensus" for a consensus connection.
 
 #### InitChain
   * __Arguments__:
-    * `Validators ([]Validator)`: Initial genesis validators
+    * `Validators ([]Validator)`: Initial genesis-validators
   * __Usage__:<br/>
     Called once upon genesis
 
