@@ -137,17 +137,44 @@ In the example above, in order to update the block-hash of &quot;Shard1&quot; on
 
 === IBCBlockCommitTx Transaction ===
 
-An <code>IBCBlockCommitTx</code> transaction is composed of: - <code>ChainID (string)</code>: The ID of the blockchain - <code>BlockHash ([]byte)</code>: The block-hash bytes, the Merkle root which includes the app-hash - <code>BlockPartsHeader (PartSetHeader)</code>: The block part-set header bytes, only needed to verify vote signatures - <code>BlockHeight (int)</code>: The height of the commit - <code>BlockRound (int)</code>: The round of the commit - <code>Commit ([]Vote)</code>: The +⅔ Tendermint <code>Precommit</code> votes that comprise a block commit - <code>ValidatorsHash ([]byte)</code>: A Merkle-tree root hash of the new validator set - <code>ValidatorsHashProof (SimpleProof)</code>: A SimpleTree Merkle-proof for proving the <code>ValidatorsHash</code> against the <code>BlockHash</code> - <code>AppHash ([]byte)</code>: A IAVLTree Merkle-tree root hash of the application state - <code>AppHashProof (SimpleProof)</code>: A SimpleTree Merkle-proof for proving the <code>AppHash</code> against the <code>BlockHash</code>
+An <code>IBCBlockCommitTx</code> transaction is composed of:
+
+* <code>ChainID (string)</code>: The ID of the blockchain
+* <code>BlockHash ([]byte)</code>: The block-hash bytes, the Merkle root which includes the app-hash
+* <code>BlockPartsHeader (PartSetHeader)</code>: The block part-set header bytes, only needed to verify vote signatures
+* <code>BlockHeight (int)</code>: The height of the commit
+* <code>BlockRound (int)</code>: The round of the commit
+* <code>Commit ([]Vote)</code>: The +⅔ Tendermint <code>Precommit</code> votes that comprise a block commit
+* <code>ValidatorsHash ([]byte)</code>: A Merkle-tree root hash of the new validator set
+* <code>ValidatorsHashProof (SimpleProof)</code>: A SimpleTree Merkle-proof for proving the <code>ValidatorsHash</code> against the <code>BlockHash</code>
+* <code>AppHash ([]byte)</code>: A IAVLTree Merkle-tree root hash of the application state
+* <code>AppHashProof (SimpleProof)</code>: A SimpleTree Merkle-proof for proving the <code>AppHash</code> against the <code>BlockHash</code>
 
 === IBCPacketTx Transaction ===
 
-An <code>IBCPacket</code> is composed of: - <code>Header (IBCPacketHeader)</code>: The packet header - <code>Payload ([]byte)</code>: The bytes of the packet payload. ''Optional'' - <code>PayloadHash ([]byte)</code>: The hash for the bytes of the packet. ''Optional''
+An <code>IBCPacket</code> is composed of:
+
+* <code>Header (IBCPacketHeader)</code>: The packet header
+* <code>Payload ([]byte)</code>: The bytes of the packet payload. ''Optional''
+* <code>PayloadHash ([]byte)</code>: The hash for the bytes of the packet. ''Optional''
 
 Either one of <code>Payload</code> or <code>PayloadHash</code> must be present. The hash of an <code>IBCPacket</code> is a simple Merkle root of the two items, <code>Header</code> and <code>Payload</code>. An <code>IBCPacket</code> without the full payload is called an ''abbreviated packet''.
 
-An <code>IBCPacketHeader</code> is composed of: - <code>SrcChainID (string)</code>: The source blockchain ID - <code>DstChainID (string)</code>: The destination blockchain ID - <code>Number (int)</code>: A unique number for all packets - <code>Status (enum)</code>: Can be one of <code>AckPending</code>, <code>AckSent</code>, <code>AckReceived</code>, <code>NoAck</code>, or <code>Timeout</code> - <code>Type (string)</code>: The types are application-dependent. GnuClear reserves the &quot;coin&quot; packet type - <code>MaxHeight (int)</code>: If status is not <code>NoAckWanted</code> or <code>AckReceived</code> by this height, status becomes <code>Timeout</code>. ''Optional''
+An <code>IBCPacketHeader</code> is composed of:
 
-An <code>IBCPacketTx</code> transaction is composed of: - <code>FromChainID (string)</code>: The ID of the blockchain which is providing this packet; not necessarily the source - <code>FromBlockHeight (int)</code>: The blockchain height in which the following packet is included (Merkle-ized) in the block-hash of the source chain - <code>Packet (IBCPacket)</code>: A packet of data, whose status may be one of <code>AckPending</code>, <code>AckSent</code>, <code>AckReceived</code>, <code>NoAck</code>, or <code>Timeout</code> - <code>PacketProof (IAVLProof)</code>: A IAVLTree Merkle-proof for proving the packet's hash against the <code>AppHash</code> of the source chain at given height
+* <code>SrcChainID (string)</code>: The source blockchain ID
+* <code>DstChainID (string)</code>: The destination blockchain ID
+* <code>Number (int)</code>: A unique number for all packets
+* <code>Status (enum)</code>: Can be one of <code>AckPending</code>, <code>AckSent</code>, <code>AckReceived</code>, <code>NoAck</code>, or <code>Timeout</code>
+* <code>Type (string)</code>: The types are application-dependent. GnuClear reserves the &quot;coin&quot; packet type
+* <code>MaxHeight (int)</code>: If status is not <code>NoAckWanted</code> or <code>AckReceived</code> by this height, status becomes <code>Timeout</code>. ''Optional''
+
+An <code>IBCPacketTx</code> transaction is composed of:
+
+* <code>FromChainID (string)</code>: The ID of the blockchain which is providing this packet; not necessarily the source
+* <code>FromBlockHeight (int)</code>: The blockchain height in which the following packet is included (Merkle-ized) in the block-hash of the source chain
+* <code>Packet (IBCPacket)</code>: A packet of data, whose status may be one of <code>AckPending</code>, <code>AckSent</code>, <code>AckReceived</code>, <code>NoAck</code>, or <code>Timeout</code>
+* <code>PacketProof (IAVLProof)</code>: A IAVLTree Merkle-proof for proving the packet's hash against the <code>AppHash</code> of the source chain at given height
 
 The sequence for sending a packet from &quot;Shard1&quot; to &quot;Shard2&quot; through the &quot;Hub&quot; is depicted in {Figure X}. First, an <code>IBCPacketTx</code> proves to &quot;Hub&quot; that the packet is included in the app-state of &quot;Shard1&quot;. Then, another <code>IBCPacketTx</code> proves to &quot;Shard2&quot; that the packet is included in the app-state of &quot;Hub&quot;. During this procedure, the <code>IBCPacket</code> fields are identical: the <code>SrcChainID</code> is always &quot;Shard1&quot;, and the <code>DstChainID</code> is always &quot;Shard2&quot;.
 
@@ -167,13 +194,61 @@ In these cases, the sender can require delivery acknowledgement by setting the i
 
 [[File:https://raw.githubusercontent.com/gnuclear/gnuclear-whitepaper/master/msc/ibc_with_ack.png|frame|none|alt=|caption Figure of Shard1, Shard2, and Hub IBC with acknowledgement]]
 
-First, an <code>IBCBlockCommit</code> and <code>IBCPacketTx</code> are posted on &quot;Hub&quot; that proves the existence of an <code>IBCPacket</code> on &quot;Shard1&quot;. Say that <code>IBCPacketTx</code> has the following value: - <code>FromChainID</code>: &quot;Shard1&quot; - <code>FromBlockHeight</code>: 100 (say) - <code>Packet</code>: an <code>IBCPacket</code>: - <code>Header</code>: an <code>IBCPacketHeader</code>: - <code>SrcChainID</code>: &quot;Shard1&quot; - <code>DstChainID</code>: &quot;Shard2&quot; - <code>Number</code>: 200 (say) - <code>Status</code>: <code>AckPending</code> - <code>Type</code>: &quot;coin&quot; - <code>MaxHeight</code>: 350 (say &quot;Hub&quot; is currently at height 300) - <code>Payload</code>: &lt;The bytes of a &quot;coin&quot; payload&gt;
+First, an <code>IBCBlockCommit</code> and <code>IBCPacketTx</code> are posted on &quot;Hub&quot; that proves the existence of an <code>IBCPacket</code> on &quot;Shard1&quot;. Say that <code>IBCPacketTx</code> has the following value:
 
-Next, an <code>IBCBlockCommit</code> and <code>IBCPacketTx</code> are posted on &quot;Shard2&quot; that proves the existence of an <code>IBCPacket</code> on &quot;Hub&quot;. Say that <code>IBCPacketTx</code> has the following value: - <code>FromChainID</code>: &quot;Hub&quot; - <code>FromBlockHeight</code>: 300 - <code>Packet</code>: an <code>IBCPacket</code>: - <code>Header</code>: an <code>IBCPacketHeader</code>: - <code>SrcChainID</code>: &quot;Shard1&quot; - <code>DstChainID</code>: &quot;Shard2&quot; - <code>Number</code>: 200 - <code>Status</code>: <code>AckPending</code> - <code>Type</code>: &quot;coin&quot; - <code>MaxHeight</code>: 350 - <code>Payload</code>: &lt;The same bytes of a &quot;coin&quot; payload&gt;
+* <code>FromChainID</code>: &quot;Shard1&quot;
+* <code>FromBlockHeight</code>: 100 (say)
+* <code>Packet</code>: an <code>IBCPacket</code>:
+* <code>Header</code>: an <code>IBCPacketHeader</code>:
+** <code>SrcChainID</code>: &quot;Shard1&quot;
+** <code>DstChainID</code>: &quot;Shard2&quot;
+** <code>Number</code>: 200 (say)
+** <code>Status</code>: <code>AckPending</code>
+** <code>Type</code>: &quot;coin&quot;
+** <code>MaxHeight</code>: 350 (say &quot;Hub&quot; is currently at height 300)
+* <code>Payload</code>: &lt;The bytes of a &quot;coin&quot; payload&gt;
 
-Next, &quot;Shard2&quot; must include in its app-hash an abbreviated packet that shows the new status of <code>AckSent</code>. An <code>IBCBlockCommit</code> and <code>IBCPacketTx</code> are posted back on &quot;Hub&quot; that proves the existence of an abbreviated <code>IBCPacket</code> on &quot;Shard2&quot;. Say that <code>IBCPacketTx</code> has the following value: - <code>FromChainID</code>: &quot;Shard2&quot; - <code>FromBlockHeight</code>: 400 (say) - <code>Packet</code>: an <code>IBCPacket</code>: - <code>Header</code>: an <code>IBCPacketHeader</code>: - <code>SrcChainID</code>: &quot;Shard1&quot; - <code>DstChainID</code>: &quot;Shard2&quot; - <code>Number</code>: 200 - <code>Status</code>: <code>AckSent</code> - <code>Type</code>: &quot;coin&quot; - <code>MaxHeight</code>: 350 - <code>PayloadHash</code>: &lt;The hash bytes of the same &quot;coin&quot; payload&gt;
+Next, an <code>IBCBlockCommit</code> and <code>IBCPacketTx</code> are posted on &quot;Shard2&quot; that proves the existence of an <code>IBCPacket</code> on &quot;Hub&quot;. Say that <code>IBCPacketTx</code> has the following value:
 
-Finally, &quot;Hub&quot; must update the status of the packet from <code>AckPending</code> to <code>AckReceived</code>. Evidence of this new finalized status should go back to &quot;Shard2&quot;. Say that <code>IBCPacketTx</code> has the following value: - <code>FromChainID</code>: &quot;Hub&quot; - <code>FromBlockHeight</code>: 301 - <code>Packet</code>: an <code>IBCPacket</code>: - <code>Header</code>: an <code>IBCPacketHeader</code>: - <code>SrcChainID</code>: &quot;Shard1&quot; - <code>DstChainID</code>: &quot;Shard2&quot; - <code>Number</code>: 200 - <code>Status</code>: <code>AckReceived</code> - <code>Type</code>: &quot;coin&quot; - <code>MaxHeight</code>: 350 - <code>PayloadHash</code>: &lt;The hash bytes of the same &quot;coin&quot; payload&gt;
+* <code>FromChainID</code>: &quot;Hub&quot;
+* <code>FromBlockHeight</code>: 300
+* <code>Packet</code>: an <code>IBCPacket</code>:
+* <code>Header</code>: an <code>IBCPacketHeader</code>:
+** <code>SrcChainID</code>: &quot;Shard1&quot;
+** <code>DstChainID</code>: &quot;Shard2&quot;
+** <code>Number</code>: 200
+** <code>Status</code>: <code>AckPending</code>
+** <code>Type</code>: &quot;coin&quot;
+** <code>MaxHeight</code>: 350
+* <code>Payload</code>: &lt;The same bytes of a &quot;coin&quot; payload&gt;
+
+Next, &quot;Shard2&quot; must include in its app-hash an abbreviated packet that shows the new status of <code>AckSent</code>. An <code>IBCBlockCommit</code> and <code>IBCPacketTx</code> are posted back on &quot;Hub&quot; that proves the existence of an abbreviated <code>IBCPacket</code> on &quot;Shard2&quot;. Say that <code>IBCPacketTx</code> has the following value:
+
+* <code>FromChainID</code>: &quot;Shard2&quot;
+* <code>FromBlockHeight</code>: 400 (say)
+* <code>Packet</code>: an <code>IBCPacket</code>:
+* <code>Header</code>: an <code>IBCPacketHeader</code>:
+** <code>SrcChainID</code>: &quot;Shard1&quot;
+** <code>DstChainID</code>: &quot;Shard2&quot;
+** <code>Number</code>: 200
+** <code>Status</code>: <code>AckSent</code>
+** <code>Type</code>: &quot;coin&quot;
+** <code>MaxHeight</code>: 350
+* <code>PayloadHash</code>: &lt;The hash bytes of the same &quot;coin&quot; payload&gt;
+
+Finally, &quot;Hub&quot; must update the status of the packet from <code>AckPending</code> to <code>AckReceived</code>. Evidence of this new finalized status should go back to &quot;Shard2&quot;. Say that <code>IBCPacketTx</code> has the following value:
+
+* <code>FromChainID</code>: &quot;Hub&quot;
+* <code>FromBlockHeight</code>: 301
+* <code>Packet</code>: an <code>IBCPacket</code>:
+* <code>Header</code>: an <code>IBCPacketHeader</code>:
+** <code>SrcChainID</code>: &quot;Shard1&quot;
+** <code>DstChainID</code>: &quot;Shard2&quot;
+** <code>Number</code>: 200
+** <code>Status</code>: <code>AckReceived</code>
+** <code>Type</code>: &quot;coin&quot;
+** <code>MaxHeight</code>: 350
+* <code>PayloadHash</code>: &lt;The hash bytes of the same &quot;coin&quot; payload&gt;
 
 Meanwhile, &quot;Shard1&quot; may optimistically assume successful delivery of a &quot;coin&quot; packet unless evidence to the contrary is proven on &quot;Hub&quot;. In the example above, if &quot;Hub&quot; had not received an <code>AckSent</code> status from &quot;Shard2&quot; by block 350, it would have set the status automatically to <code>Timeout</code>. This evidence of a timeout can get posted back on &quot;Shard1&quot;, and any tokens can be returned.
 

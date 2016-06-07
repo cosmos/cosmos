@@ -439,6 +439,7 @@ with the block-hash of "Shard1" (or on "Shard2" with the block-hash of "Hub").
 ### IBCBlockCommitTx Transaction
 
 An `IBCBlockCommitTx` transaction is composed of:
+
 - `ChainID (string)`: The ID of the blockchain
 - `BlockHash ([]byte)`: The block-hash bytes, the Merkle root which includes the
   app-hash
@@ -458,6 +459,7 @@ An `IBCBlockCommitTx` transaction is composed of:
 ### IBCPacketTx Transaction
 
 An `IBCPacket` is composed of:
+
 - `Header (IBCPacketHeader)`: The packet header
 - `Payload ([]byte)`: The bytes of the packet payload. _Optional_
 - `PayloadHash ([]byte)`: The hash for the bytes of the packet. _Optional_
@@ -467,6 +469,7 @@ Either one of `Payload` or `PayloadHash` must be present.  The hash of an
 An `IBCPacket` without the full payload is called an _abbreviated packet_.
 
 An `IBCPacketHeader` is composed of:
+
 - `SrcChainID (string)`: The source blockchain ID
 - `DstChainID (string)`: The destination blockchain ID
 - `Number (int)`: A unique number for all packets
@@ -478,6 +481,7 @@ An `IBCPacketHeader` is composed of:
   height, status becomes `Timeout`. _Optional_
 
 An `IBCPacketTx` transaction is composed of:
+
 - `FromChainID (string)`: The ID of the blockchain which is providing this
   packet; not necessarily the source
 - `FromBlockHeight (int)`: The blockchain height in which the following packet
@@ -527,6 +531,7 @@ acknowledgement](https://raw.githubusercontent.com/gnuclear/gnuclear-whitepaper/
 First, an `IBCBlockCommit` and `IBCPacketTx` are posted on "Hub" that proves the
 existence of an `IBCPacket` on "Shard1".  Say that `IBCPacketTx` has the
 following value:
+
 - `FromChainID`: "Shard1"
 - `FromBlockHeight`: 100 (say)
 - `Packet`: an `IBCPacket`:
@@ -542,6 +547,7 @@ following value:
 Next, an `IBCBlockCommit` and `IBCPacketTx` are posted on "Shard2" that proves
 the existence of an `IBCPacket` on "Hub".  Say that `IBCPacketTx` has the
 following value:
+
 - `FromChainID`: "Hub"
 - `FromBlockHeight`: 300
 - `Packet`: an `IBCPacket`:
@@ -558,6 +564,7 @@ Next, "Shard2" must include in its app-hash an abbreviated packet that shows the
 new status of `AckSent`.  An `IBCBlockCommit` and `IBCPacketTx` are posted back
 on "Hub" that proves the existence of an abbreviated `IBCPacket` on "Shard2".
 Say that `IBCPacketTx` has the following value:
+
 - `FromChainID`: "Shard2"
 - `FromBlockHeight`: 400 (say)
 - `Packet`: an `IBCPacket`:
@@ -573,6 +580,7 @@ Say that `IBCPacketTx` has the following value:
 Finally, "Hub" must update the status of the packet from `AckPending` to
 `AckReceived`.  Evidence of this new finalized status should go back to
 "Shard2".  Say that `IBCPacketTx` has the following value:
+
 - `FromChainID`: "Hub"
 - `FromBlockHeight`: 301
 - `Packet`: an `IBCPacket`:
