@@ -130,7 +130,7 @@ The IBC protocol can therefore naturally be defined using two types of transacti
 
 By splitting the IBC mechanics into two separate transactions <code>IBCBlockCommitTx</code> and <code>IBCPacketTx</code>, we allow the native fee market-mechanism of the receiving chain to determine which packets get committed (i.e. acknowledged), while allowing for complete freedom on the sending chain as to how many outbound packets are allowed.
 
-[[File:https://raw.githubusercontent.com/gnuclear/gnuclear-whitepaper/master/msc/ibc_without_ack.png|frame|none|alt=|caption Figure of Shard1, Shard2, and Hub IBC without acknowledgement]]
+<img src="https://raw.githubusercontent.com/gnuclear/gnuclear-whitepaper/master/msc/ibc_without_ack.png" title="Figure of Shard1, Shard2, and Hub IBC without acknowledgement"/>
 
 <CAPTION on a figure>
 In the example above, in order to update the block-hash of &quot;Shard1&quot; on &quot;Hub&quot; (or of &quot;Hub&quot; on &quot;Shard2&quot;), an <code>IBCBlockCommitTx</code> transaction must be posted on &quot;Hub&quot; with the block-hash of &quot;Shard1&quot; (or on &quot;Shard2&quot; with the block-hash of &quot;Hub&quot;).
@@ -192,7 +192,7 @@ There are several reasons why a sender may want the acknowledgement of delivery 
 
 In these cases, the sender can require delivery acknowledgement by setting the initial packet status to <code>AckPending</code>. Then, it is the receiving chain's responsibility to confirm delivery by including an abbreviated<code>IBCPacket</code> in the app Merkle hash.
 
-[[File:https://raw.githubusercontent.com/gnuclear/gnuclear-whitepaper/master/msc/ibc_with_ack.png|frame|none|alt=|caption Figure of Shard1, Shard2, and Hub IBC with acknowledgement]]
+<img src="https://raw.githubusercontent.com/gnuclear/gnuclear-whitepaper/master/msc/ibc_with_ack.png" title="Figure of Shard1, Shard2, and Hub IBC with acknowledgement"/>
 
 First, an <code>IBCBlockCommit</code> and <code>IBCPacketTx</code> are posted on &quot;Hub&quot; that proves the existence of an <code>IBCPacket</code> on &quot;Shard1&quot;. Say that <code>IBCPacketTx</code> has the following value:
 
@@ -252,7 +252,7 @@ Finally, &quot;Hub&quot; must update the status of the packet from <code>AckPend
 
 Meanwhile, &quot;Shard1&quot; may optimistically assume successful delivery of a &quot;coin&quot; packet unless evidence to the contrary is proven on &quot;Hub&quot;. In the example above, if &quot;Hub&quot; had not received an <code>AckSent</code> status from &quot;Shard2&quot; by block 350, it would have set the status automatically to <code>Timeout</code>. This evidence of a timeout can get posted back on &quot;Shard1&quot;, and any tokens can be returned.
 
-[[File:https://raw.githubusercontent.com/gnuclear/gnuclear-whitepaper/master/msc/ibc_with_ack_timeout.png|frame|none|alt=|caption Figure of Shard1, Shard2, and Hub IBC with acknowledgement and timeout]]
+<img src="https://raw.githubusercontent.com/gnuclear/gnuclear-whitepaper/master/msc/ibc_with_ack_timeout.png" title="Figure of Shard1, Shard2, and Hub IBC with acknowledgement and timeout"/>
 
 == Use Cases ==
 
