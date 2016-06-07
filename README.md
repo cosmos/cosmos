@@ -782,7 +782,7 @@ In addition to the 13,400,000 preallotted gnuts as described above, there will
 also be will also be 21,474 gnuts that are issued through Ethereum every week
 for 52\*6 weeks.  Ethereum accounts that send ether to either the
 `GnuClearBurnAddress` or `GnuClearDonationAddress` will receive the 21474 gnuts
-in proportion to the amount of bitcoins burned or donated.  With such a
+in proportion to the amount of ether burned or donated.  With such a
 recurring donation system, it should be noted that the receiver may recycle the
 funds to receive more than its fair share of gnuts through this issuance system.
 Thus, as in the bounty pool, the GnuClear foundation has the obligation to
