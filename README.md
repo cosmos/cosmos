@@ -738,23 +738,55 @@ validators do not pay the decay penalty.
 
 ### Initial Gnut Distribution and Issuance
 
-The initial distribution of gnut tokens and validators on Genesis will be
-composed of a list of publicly identifiable validators who have already
-contributed toward cryptocurrency, blockchain, and distributed systems research
-and praxis, including research groups, nonprofit foundations, and exchanges.
-These genesis validators will be incentivized to continue validating, by virtue
-of a vesting schedule.  All of the initial bonded gnuts of the validators on
-genesis day will vest on a block-by-block basis over a period of 4 years.
-Unvested gnuts can be used to the full extent for voting, but disappears after
-unbonding.  It follows that gnuts cannot be transferred until vested.  There
-will be a total of 67 total validator spots with 200,000 vesting gnuts each,
-where each validating entity may be allocated one or more validator spots.
+The initial distribution of gnut tokens and validators on Genesis will go to the
+genesis-validators, the GnuClear foundation, GnuClear supporters, and a bounty
+pool.
 
-In addition to the 67 * 200,000 vesting gnuts by the genesis validators, there
-will also be 21,474 gnuts that are issued through Bitcoin every week for 52\*6
-weeks.  Bitcoin accounts that send bitcoins to either the `GnuClearBurnAddress`
-or `GnuClearFoundationAddress` will receive the 21474 gnuts in proportion to the
-amount of bitcoins burned or donated.
+#### Genesis Validators
+
+Of the 100 genesis validator spots, 50 of them will be occupied by distinct
+genesis validators around the globe.  Each gensesis-validator will have 200,000
+vesting gnuts, and will begin as active validators.  Vesting gnuts are gnuts
+with the restriction that they cannot be transferred.  Vesting gnuts will vest
+at every block over a period of 4 years.  Unvested gnuts can be used to the full
+extent for voting.
+
+#### GnuClear Foundation
+
+The GnuClear foundation is an external entity that is hired to develop the
+GnuClear network.  Gnut holders can vote to change the foundation by changing
+the `GnuClearFoundationAddress` parameter.  This foundation shall have 1,200,000
+gnuts vesting over a period of 4 years, and can be used to the full extent for
+voting.
+
+#### GnuClear Supporters
+
+At genesis, another 1,200,000 (fully vested) gnuts will be distributed to the
+early supporters of GnuClear.  These gnuts, like any other, will incur the decay
+penalty unless bonded or delegated, and the absenteeism penalty unless actively
+engaged in voting on proposals.
+
+#### Bounty Pool
+
+At genesis, 1,000,000 gnuts will be under the control of the GnuClear foundation
+in order to reward and incentivize contributions from outside the GnuClear
+foundation.  Some may be allotted or rewarded even before genesis day.  The
+GnuClear foundation has the obligation to transparently publish the usage of
+these the reward bounty gnuts.  If the GnuClear foundation does not perform its
+duty, it is the job of the gnut holders to change the
+`GnuClearFoundationAddress`.
+
+#### Ethereum Issuance
+
+In addition to the 13,400,000 preallotted gnuts as described above, there will
+also be will also be 21,474 gnuts that are issued through Ethereum every week
+for 52\*6 weeks.  Ethereum accounts that send ether to either the
+`GnuClearBurnAddress` or `GnuClearDonationAddress` will receive the 21474 gnuts
+in proportion to the amount of bitcoins burned or donated.  With such a
+recurring donation system, it should be noted that the receiver may recycle the
+funds to receive more than its fair share of gnuts through this issuance system.
+Thus, as in the bounty pool, the GnuClear foundation has the obligation to
+transparenty publish the usage of the donated ether.
 
 ### Limitations on the Number of Validators
 
