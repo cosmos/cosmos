@@ -16,7 +16,7 @@ file-sharing, and of public cryptocurrencies, has inspired an understanding that
 decentralized internet protocols can be used to radically improve socio-economic
 infrastructure.  We have seen specialized blockchain applications like Bitcoin
 [\[1\]][1] (a cryptocurrency), Zerocash [\[2\]][2] (a cryptocurrency for
-privacy), and generalized smart contract platforms such as Ethereum[\[3\]][3],
+privacy), and generalized smart contract platforms such as Ethereum [\[3\]][3],
 with countless distributed applications for the EVM such as Augur (a prediction
 market) and TheDAO (an investment club).
 
@@ -45,11 +45,12 @@ Here we present GnuClear, a novel blockchain network architecture that addresses
 all of these problems.  GnuClear is a network of many independent blockchains,
 called shards, that are connected by a central blockchain, called the hub.  The
 hub and shards are powered by Tendermint Core, which provides a
-high-performance, consistent, secure [PBFT-similar](http://tendermint.com/blog/tendermint-vs-pbft/) consensus engine, where strict
-fork-accountability guarantees hold over the behaviour of malicious actors.  The
-GnuClear hub is a simple multi-asset proof-of-stake cryptocurrency with a simple
-governance mechanism enabling the network to adapt and upgrade.  The hub and
-shards of the GnuClear network communicate with each other via an
+high-performance, consistent, secure
+[PBFT-like](http://tendermint.com/blog/tendermint-vs-pbft/) consensus engine,
+where strict fork-accountability guarantees hold over the behaviour of malicious
+actors.  The GnuClear hub is a simple multi-asset proof-of-stake cryptocurrency
+with a simple governance mechanism enabling the network to adapt and upgrade.
+The hub and shards of the GnuClear network communicate with each other via an
 inter-blockchain communication (IBC) protocol which is formalized here.  The
 GnuClear hub utilizes IBC packets to move tokens from one shard to another while
 maintaining the total amount of tokens in the network, thus isolating each shard
@@ -355,7 +356,8 @@ are then communicated from one chain to another by posting Merkle-proofs that
 collide with a recent block-hash from the source.  This mechanism is called
 inter-blockchain communication, or IBC for short.
 
-(Diagram of hub and shards)
+![Figure of hub and shards
+acknowledgement](https://raw.githubusercontent.com/gnuclear/gnuclear-whitepaper/master/images/hub_and_shards.png)
 
 Any of the shards can themselves be hubs to form a multi-level hierarchical
 network, but for the sake of clarity we will only describe the simple
