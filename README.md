@@ -15,9 +15,10 @@ The combined success of the open-source ecosystem, of decentralized
 file-sharing, and of public cryptocurrencies, has inspired an understanding that
 decentralized internet protocols can be used to radically improve socio-economic
 infrastructure.  We have seen specialized blockchain applications like Bitcoin
-(a cryptocurrency), ZCash (a cryptocurrency for privacy), and generalized smart
-contract platforms such as Ethereum, with countless distributed applications for
-the EVM such as Augur (a prediction market) and TheDAO (an investment club).
+[\[1\]][1] (a cryptocurrency), Zerocash [\[2\]][2] (a cryptocurrency for
+privacy), and generalized smart contract platforms such as Ethereum[\[3\]][3],
+with countless distributed applications for the EVM such as Augur (a prediction
+market) and TheDAO (an investment club).
 
 To date, however, these blockchains have suffered from a number of drawbacks,
 including their gross energy inefficiency, poor or limited performance, and
@@ -685,7 +686,7 @@ shard's life, and potentially updated over time by governance. Such flexibility
 allows GnuClear shards to act as pegs to other cryptocurrencies, like Ethereum
 or Bitcoin, but it also permits derlivatives of those blockchains, utilizing the
 same codebase but a different validator set and history. This allows many
-existing cryptocurrency frameworks, such as that of Ethereum, ZCash, Bitcoin,
+existing cryptocurrency frameworks, such as that of Ethereum, Zerocash, Bitcoin,
 CryptoNote, and so on to be used with a higher performance consensus engine on a
 common network, openning tremendous opportunity for interoperability across
 platforms.  Furthermore, as a multi-asset blockchain, a single transaction may
@@ -1106,27 +1107,6 @@ vertical scaling as well.
 
 <hr/>
 
-## Citations ###################################################################
-
-TODO: Link throughout text as appropriate
-
-* Bitcoin: https://bitcoin.org/bitcoin.pdf
-* BitcoinNG: https://arxiv.org/pdf/1510.02037v2.pdf
-* PBFT: http://pmg.csail.mit.edu/papers/osdi99.pdf
-* BitShares: https://bitshares.org/technology/delegated-proof-of-stake-consensus/
-* Stellar: https://www.stellar.org/papers/stellar-consensus-protocol.pdf
-* Lightning Network: https://lightning.network/lightning-network-paper-DRAFT-0.5.pdf
-* Interledger: https://interledger.org/rfcs/0001-interledger-architecture/
-* Segregated Witness: https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki
-* Sidechains: https://blockstream.com/sidechains.pdf
-* Casper: https://blog.ethereum.org/2015/08/01/introducing-casper-friendly-ghost/
-* Tendermint: https://github.com/tendermint/tendermint/wiki
-* TMSP: https://github.com/tendermint/tmsp
-* Ethereum: http://gavwood.com/paper.pdf
-* Ethereum Sharding: https://github.com/ethereum/EIPs/issues/53
-* FLP Impossibility: https://groups.csail.mit.edu/tds/papers/Lynch/jacm85.pdf
-* https://www.docdroid.net/ec7xGzs/314477721-ethereum-platform-review-opportunities-and-challenges-for-private-and-consortium-blockchains.pdf.html
-
 ## Appendix ####################################################################
 
 ### Gas Fees for Transactions
@@ -1246,3 +1226,26 @@ wording, especially under the TMSP section.
 * Also thanks to [Bill Gleim](https://github.com/gleim) for various
   contributions.
 * TODO Your name and organization here if you want.
+
+## Citations ###################################################################
+
+TODO: Link throughout text as appropriate
+
+[1]: https://bitcoin.org/bitcoin.pdf
+[2]: http://zerocash-project.org/paper
+[3]: http://gavwood.com/paper.pdf
+* BitcoinNG: https://arxiv.org/pdf/1510.02037v2.pdf
+* PBFT: http://pmg.csail.mit.edu/papers/osdi99.pdf
+* BitShares: https://bitshares.org/technology/delegated-proof-of-stake-consensus/
+* Stellar: https://www.stellar.org/papers/stellar-consensus-protocol.pdf
+* Lightning Network: https://lightning.network/lightning-network-paper-DRAFT-0.5.pdf
+* Interledger: https://interledger.org/rfcs/0001-interledger-architecture/
+* Segregated Witness: https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki
+* Sidechains: https://blockstream.com/sidechains.pdf
+* Casper: https://blog.ethereum.org/2015/08/01/introducing-casper-friendly-ghost/
+* Tendermint: https://github.com/tendermint/tendermint/wiki
+* TMSP: https://github.com/tendermint/tmsp
+* Ethereum Sharding: https://github.com/ethereum/EIPs/issues/53
+* FLP Impossibility: https://groups.csail.mit.edu/tds/papers/Lynch/jacm85.pdf
+* https://www.docdroid.net/ec7xGzs/314477721-ethereum-platform-review-opportunities-and-challenges-for-private-and-consortium-blockchains.pdf.html
+
