@@ -748,7 +748,7 @@ Of the 100 initial available validator spots, 50 of them will be occupied by
 distinct genesis-validators around the globe.  Each gensesis-validator will have
 200,000 vesting gnuts, and will begin as active validators.  Vesting gnuts are
 gnuts with the restriction that they cannot be transferred.  Vesting gnuts will
-vest at every block over a period of 4 years.  Unvested gnuts can be used to the
+vest every block over a period of 4 years.  Unvested gnuts can be used to the
 full extent for voting.
 
 #### GnuClear Foundation
@@ -764,7 +764,7 @@ voting.
 At genesis, another 1,200,000 (fully vested) gnuts will be distributed to the
 early supporters of GnuClear.  These gnuts, like any other, will incur the decay
 penalty unless bonded or delegated, and the absenteeism penalty unless actively
-engaged in voting on proposals.
+engaged in the voting of proposals.
 
 #### Bounty Pool
 
