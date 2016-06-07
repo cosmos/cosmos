@@ -98,7 +98,8 @@ revoked, or slashed, when malicious behaviour is detected [\[10\]][10].
 Note this is much unlike Bitcoin, where forking is a regular occurence due to network asynchrony
 and the probabilistic nature of finding partial hash collissions. 
 Since in many cases, a malicious fork is indistinguishable from a fork due to asynchrony,
-Bitcoin can not reliably implement fork-accountability.
+Bitcoin can not reliably implement fork-accountability, other than the implicit opportunity
+cost paid by miners for mining an orphaned block.
 
 Tendermint is a Byzantine fault-tolerant (BFT) consensus protocol
 notable for its simplicity, performance, and fork-accountability.  
@@ -131,7 +132,7 @@ eventually commit just one value. Any malicious attempt to cause more than one
 value to be committed can be identified.  First, a PreCommit for a block must
 come with justification, in the form of a Polka for that block. If the validator
 has already PreCommit a block at round `R_1`, we say they are "locked" on that
-block, and the Polka used to justify the new PreCommit at round R_2 must come in
+block, and the Polka used to justify the new PreCommit at round `R_2` must come in
 a round `R_polka` where `R_1 < R_polka <= R_2`.  Second, validators must Propose
 and/or PreVote the block they are locked on.  Together, these conditions
 ensure that a validator does not PreCommit without sufficient evidence, and that
@@ -141,10 +142,11 @@ consensus algorithm.
 
 The full details of the protocol are described [here](https://github.com/tendermint/tendermint/https://github.com/tendermint/tendermint/wiki/Byzantine-Consensus-Algorithm).
 
-Tendermint’s security derives simultaneously from its use of optimal Byzantine
-fault-tolerance and the locking mechanism.  Together, they ensure that:
+Tendermint’s security derives from its use of optimal Byzantine
+fault-tolerance via super-majority (+⅔) voting and the locking mechanism.  
+Together, they ensure that:
 * ⅓+ validators must be Byzantine to cause a violation of safety, where more than two
-values are committed.  The latter ensures that, 
+values are committed.  
 * if ever any set of validators succeeds in violating safety, or even attempts to do so, 
 they can be identified by the protocol.  This includes both voting for conflicting blocks and broadcasting
 unjustified votes.
