@@ -24,12 +24,12 @@ To date, however, these blockchains have suffered from a number of drawbacks,
 including their gross energy inefficiency, poor or limited performance, and
 immature governance mechanisms.  A number of proposals have been made to scale
 Bitcoin's transaction throughput such as Segregated-Witness [\[5\]][5] and
-BitcoinNG, but these are vertical scaling solutions that remain limited by the
-capacity of a single physical machine, lest we sacrifice the property of
-complete auditability.  The Lightning Network can help scale Bitcoin transaction
-volume by leaving some transactions off the ledger completely and is well suited
-for micropayments and privacy preserving payment rails, but may not be suitable
-for more generalized scaling needs.
+BitcoinNG [\[6\]][6], but these are vertical scaling solutions that remain
+limited by the capacity of a single physical machine, lest we sacrifice the
+property of complete auditability.  The Lightning Network [\[7\]][7] can help
+scale Bitcoin transaction volume by leaving some transactions off the ledger
+completely and is well suited for micropayments and privacy preserving payment
+rails, but may not be suitable for more generalized scaling needs.
 
 An ideal solution would be one that allows multiple parallel blockchains to
 interoperate while retaining their security properties, but this has proven
@@ -38,13 +38,14 @@ allows the work done to secure a parent chain to be re-used on a child chain,
 but transactions still must be validated, in order, by each node, and a
 merge-mined blockchain is vulnerable to attack if a majority of the hashing
 power on the parent is not actively merge-mining the child.  An academic review
-of [alternative blockchain network architectures](http://vukolic.com/iNetSec_2015.pdf) 
-is provided for additional context.
+of [alternative blockchain network
+architectures](http://vukolic.com/iNetSec_2015.pdf) is provided for additional
+context.
 
 Here we present GnuClear, a novel blockchain network architecture that addresses
 all of these problems.  GnuClear is a network of many independent blockchains,
 called shards, that are connected by a central blockchain, called the hub.  The
-hub and shards are powered by Tendermint Core, which provides a
+hub and shards are powered by Tendermint Core [\[8\]][8], which provides a
 high-performance, consistent, secure
 [PBFT-like](http://tendermint.com/blog/tendermint-vs-pbft/) consensus engine,
 where strict fork-accountability guarantees hold over the behaviour of malicious
@@ -77,7 +78,7 @@ made more difficult by asynchronous network conditions, wherein messages may
 have arbitrarily long delays, and by Byzantine faults, wherein processes may
 exhibit arbitrary, possibly malicious, behaviour.  In particular, it is well
 known that deterministic consensus in asynchronous networks is impossible
-\cite{flp}, and that consensus protocols can tolerate strictly fewer Byzantine
+[\[9\]][9], and that consensus protocols can tolerate strictly fewer Byzantine
 faults than crash faults (⅓ of processes, vs. ½). The former results from the
 inability to distinguish crash failures from asynchronous message delay. The
 latter from the fact that three processes are not enough for a safe majority
@@ -88,29 +89,29 @@ protocol should provide additional guarantees in the event that the tolerance
 capacity is exceeded and the consensus fails.  This is especially necessary in
 public economic systems, where Byzantine behaviour can have substantial
 financial reward.  The most important such guarantee is a form of
-\emph{accountability}, where the processes that caused the consensus to fail can
+_accountability_, where the processes that caused the consensus to fail can
 be identified and punished according to the rules of the protocol, or, possibly,
 the legal system.  When the legal system is unreliable, validators can be forced
 to make security deposits in order to participate, and those deposits can be
-revoked, or slashed, when malicious behaviour is detected \cite{slasher}.
+revoked, or slashed, when malicious behaviour is detected [\[10\]][10].
 
 Tendermint is a Byzantine fault-tolerant (BFT) consensus protocol for
 asynchronous networks, notable for its simplicity, performance, and
 fork-accountability.  The protocol requires a fixed, known set of N validators,
-where the ith validator is identified by its public key, V_i. Validators attempt
-to come to consensus on one block at a time, where a block is a list of
+where the ith validator is identified by its public key, `V_i`. Validators
+attempt to come to consensus on one block at a time, where a block is a list of
 transactions.  Consensus on a block proceeds in rounds. Each round has a
 round-leader, or proposer, who proposes a block. The validators then vote, in
 stages, on whether or not to accept the proposed block or move onto the next
 round.
 
-We call the voting stages PreVote and PreCommit. A vote can be for a particular
-block or for Nil.  We call a collection of +⅔ PreVotes for a single block in the
-same round a Polka, and a collection of +⅔ PreCommits for a single block in the
-same round a Commit.  If +⅔ PreCommit for Nil in the same round, they move to
-the next round.
+We call the voting stages _PreVote_ and _PreCommit_. A vote can be for a
+particular block or for Nil.  We call a collection of +⅔ PreVotes for a single
+block in the same round a Polka, and a collection of +⅔ PreCommits for a single
+block in the same round a Commit.  If +⅔ PreCommit for Nil in the same round,
+they move to the next round.
 
-The proposer at round r is simply r mod N. Note that the strict determinism
+The proposer at round `r` is simply `r mod N`. Note that the strict determinism
 incurs a weak synchrony assumption as faulty leaders must be detected and
 skipped.  Thus, validators wait some amount TimeoutPropose before they Prevote
 Nil.  Progression through the rest of the round is fully asychronous, in that
@@ -120,22 +121,20 @@ An additional set of constraints, or Locking Rules, ensure that the network will
 eventually commit just one value. Any malicious attempt to cause more than one
 value to be committed can be identified.  First, a PreCommit for a block must
 come with justification, in the form of a Polka for that block. If the validator
-has already PreCommit a block at round R_1, we say they are "locked" on that
-block, and the Polka used to justify the new PreCommit at round R_2 must come in
-a round R_polka where `R_1 < R_polka <= R_2`.  Second, validators must Propose
-and/or PreVote the block they are "locked" on.  Together, these conditions
-ensure that a validator does not PreCommit without sufficient evidence, and that
-validators which have already PreCommit cannot contribute to evidence to
-PreCommit something else.  This ensures both safety and liveness of the
-consensus algorithm.
-
-The full details of the protocol are described [here](https://github.com/tendermint/tmsp).
+has already PreCommit a block at round `R_1`, we say they are "locked" on that
+block, and the Polka used to justify the new PreCommit at round `R_2` must come
+in a round `R_polka` where `R_1 < R_polka <= R_2`.  Second, validators must
+Propose and/or PreVote the block they are "locked" on.  Together, these
+conditions ensure that a validator does not PreCommit without sufficient
+evidence, and that validators which have already PreCommit cannot contribute to
+evidence to PreCommit something else.  This ensures both safety and liveness of
+the consensus algorithm.
 
 Tendermint’s security derives simultaneously from its use of optimal Byzantine
 fault-tolerance and the locking mechanism.  The former ensures that ⅓ or more
 validators must be Byzantine to cause a violation of safety, where more than two
 values are committed.  The latter ensures that, if ever any set of validators
-attempts, or even succeeds, in violating safety , they can be identified by the
+attempts, or even succeeds, in violating safety, they can be identified by the
 protocol.  This includes both voting for conflicting blocks and broadcasting
 unjustified votes.
 
@@ -145,7 +144,7 @@ commodity cloud instances, Tendermint consensus can process thousands of
 transactions per second, with commit latencies on the order of one or two
 seconds.  Notably, performance of well over a thousand transactions per second
 is maintained even in harsh adversarial conditions, with validators crashing or
-broadcasting maliciously crafted votes. See FIGURE for details.
+broadcasting maliciously crafted votes. See FIGURE (TODO) for details.
 
 ### Light Clients
 
@@ -286,10 +285,11 @@ Core.  Tendermint Core is an application-agnostic "consensus engine" that can
 turn any deterministic (blackbox) application into a distributedly replicated
 blockchain.  As the Apache Web Server or Nginx connects to the Wordpress
 application via CGI or FastCGI, Tendermint Core connects to blockchain
-applications via TMSP.  Thus, TMSP allows for blockchain applications to be
-programmed in any language, not just the programming language that the consensus
-engine is written in.  Additionally, TMSP makes it possible to easily swap out
-the consensus layer of any existing blockchain stack.
+applications via the Tendermint Socket Protocol (TMSP) [\[17\]][17]. Thus, TMSP
+allows for blockchain applications to be programmed in any language, not just
+the programming language that the consensus engine is written in.  Additionally,
+TMSP makes it possible to easily swap out the consensus layer of any existing
+blockchain stack.
 
 To draw an analogy, we will draw an analogy with a well-known cryptocurrency,
 Bitcoin.  Bitcoin is a cryptocurrency blockchain where each node maintains a
@@ -945,10 +945,10 @@ were discovered for synchronous networks where there is an upper bound on
 message latency, though pratical use was limited to highly controlled
 environments such as airplane controllers and datacenters synchronized via
 atomic clocks.  It was not until the late 90s that Practical Byzantine Fault
-Tolerance (PBFT) was introduced as an efficient asynchronous consensus algorithm
-able to tolerate up to ⅓ of processes behaving arbitrarily.  PBFT became the
-standard algorithm, spawning many variations, including most recently by IBM as
-part of their contribution to Hyperledger.
+Tolerance (PBFT) [\[11\]][11] was introduced as an efficient asynchronous
+consensus algorithm able to tolerate up to ⅓ of processes behaving arbitrarily.
+PBFT became the standard algorithm, spawning many variations, including most
+recently by IBM as part of their contribution to Hyperledger.
 
 The main benefit of Tendermint consensus over PBFT is that Tendermint has an
 improved and simplified underlying structure, some of which is a result of
@@ -962,24 +962,24 @@ communication.
 
 #### BitShares delegated stake
 
-While not the first to deploy proof-of-stake (PoS), BitShares contributed
-considerably to research and adoption of PoS blockchains, particularly those
-known as "delegated" PoS.  In BitShares, stake holders elect "witnesses",
-responsible for ordering and committing transactions, and "delegates",
-responsible for co-ordinating software updates and parameter changes.  Though
-BitShares achieves high performance (100k tx/s, 1s latency) in ideal conditions,
-it is subject to double spend attacks by malicious witnesses which fork the
-blockchain without suffering an explicit economic punishment -- it suffers from
-the "nothing-at-stake" problem. BitShares attempts to mitigate the problem by
-allowing transactions to refer to recent block-hashes. Additionally,
-stakeholders can remove or replace misbehaving witnesses on a daily basis,
-though this does nothing to explicitly punish a double-spend attack that was
-successful.
+While not the first to deploy proof-of-stake (PoS), BitShares [\[12\]][12]
+contributed considerably to research and adoption of PoS blockchains,
+particularly those known as "delegated" PoS.  In BitShares, stake holders elect
+"witnesses", responsible for ordering and committing transactions, and
+"delegates", responsible for co-ordinating software updates and parameter
+changes.  Though BitShares achieves high performance (100k tx/s, 1s latency) in
+ideal conditions, it is subject to double spend attacks by malicious witnesses
+which fork the blockchain without suffering an explicit economic punishment --
+it suffers from the "nothing-at-stake" problem. BitShares attempts to mitigate
+the problem by allowing transactions to refer to recent block-hashes.
+Additionally, stakeholders can remove or replace misbehaving witnesses on a
+daily basis, though this does nothing to explicitly punish a double-spend attack
+that was successful.
 
 #### Stellar
 
-Building on an approach pioneered by Ripple, Stellar refined a model of
-Federated Byzantine Agreement wherein the processes participating in
+Building on an approach pioneered by Ripple, Stellar [\[13\]][13] refined a
+model of Federated Byzantine Agreement wherein the processes participating in
 consensus do not constitute a fixed and globally known set.  Rather, each
 process node curates one or more "quorum slices" each constituting a set of
 trusted processes. A "quorum" in Stellar is defined to be a set of nodes that
@@ -1021,11 +1021,11 @@ the last miner to find a micro-block.
 
 #### Casper
 
-Casper is a proposed proof-of-stake consensus algorithm for Ethereum.  Its prime
-mode of operation is "consensus-by-bet".  The idea is that by letting validators
-iteratively bet on which block it believes will become committed into the
-blockchain based on the other bets that it's seen so far, finality can be
-achieved eventually.
+Casper [\[16\]][16] is a proposed proof-of-stake consensus algorithm for
+Ethereum.  Its prime mode of operation is "consensus-by-bet".  The idea is that
+by letting validators iteratively bet on which block it believes will become
+committed into the blockchain based on the other bets that it's seen so far,
+finality can be achieved eventually.
 [link](https://blog.ethereum.org/2015/12/28/understanding-serenity-part-2-casper/).
 This is an active area of research by the Casper team.  The challenge is in
 constructing a betting mechanism that can be proven to be an evolutionarily
@@ -1038,16 +1038,16 @@ implementation complexity.
 
 #### Interledger Protocol
 
-The Interledger protocol is not strictly a scalability solution. It provides an
-adhoc interoperation between different ledger systems through a loosely coupled
-bilateral relationship network.  Like the Lightning Network, the purpose of ILP
-is to facilitate payments, but it specifically focuses on payments across
-disparate ledger types, and extends the atomic transaction mechanism to include
-not only hash-locks, but also a quroum of notaries (called the Universal
-Transport Protocol).  The latter mechanism for enforcing atomicity in
-inter-ledger transactions is similar to Tendermint's light-client SPV echanism,
-so an illustration of the distinction between ILP and GnuClear/IBC is warranted,
-and provided below.
+The Interledger protocol [\[14\]][14] is not strictly a scalability solution. It
+provides an adhoc interoperation between different ledger systems through a
+loosely coupled bilateral relationship network.  Like the Lightning Network, the
+purpose of ILP is to facilitate payments, but it specifically focuses on
+payments across disparate ledger types, and extends the atomic transaction
+mechanism to include not only hash-locks, but also a quroum of notaries (called
+the Universal Transport Protocol).  The latter mechanism for enforcing atomicity
+in inter-ledger transactions is similar to Tendermint's light-client SPV
+echanism, so an illustration of the distinction between ILP and GnuClear/IBC is
+warranted, and provided below.
 
 1. The notaries of a connector in ILP does not support membership changes, and
    does not allow for flexible weighting between notaries.  On the other hand,
@@ -1075,20 +1075,21 @@ the transfer of value or market equivalents.
 
 #### Sidechains
 
-Sidechains are a proposed mechanism for scaling the Bitcoin network via
-alternative blockchains that are "pegged" to the Bitcoin blockchain.  Sidechains
-allow bitcoins to effectively move from the Bitcoin blockchain to the sidechain
-and back, and allow for experimentation in new features on the sidechain.  The
-mechanism, known as a two-way peg, uses the standard Simple Payment Verification
-(SPV) used by Bitcoin light clients, where proof of a sufficiently long chain of
-block headers containing a particular transaction serves as evidence for the
-existence of the transaction. Each chain in the peg serves as a light client of
-the other, using SPV proofs to determine when coins should be transferred across
-the peg and back.  Of course, since Bitcoin uses proof-of-work, Bitcoin
-sidechains suffer from the many risks of proof-of-work as a consensus mechanism,
-which are particularly exacerbated in a scalability context. That said, the core
-mechanism of the two-way peg is in principle the same as that employed by the
-GnuClear network, though using a consensus algorithm that scales more securely.
+Sidechains [\[15\]][15] are a proposed mechanism for scaling the Bitcoin network
+via alternative blockchains that are "pegged" to the Bitcoin blockchain.
+Sidechains allow bitcoins to effectively move from the Bitcoin blockchain to the
+sidechain and back, and allow for experimentation in new features on the
+sidechain.  The mechanism, known as a two-way peg, uses the standard Simple
+Payment Verification (SPV) used by Bitcoin light clients, where proof of a
+sufficiently long chain of block headers containing a particular transaction
+serves as evidence for the existence of the transaction. Each chain in the peg
+serves as a light client of the other, using SPV proofs to determine when coins
+should be transferred across the peg and back.  Of course, since Bitcoin uses
+proof-of-work, Bitcoin sidechains suffer from the many risks of proof-of-work as
+a consensus mechanism, which are particularly exacerbated in a scalability
+context. That said, the core mechanism of the two-way peg is in principle the
+same as that employed by the GnuClear network, though using a consensus
+algorithm that scales more securely.
 
 #### Ethereum Scalability Efforts
 
@@ -1097,7 +1098,7 @@ state of the Ethereum blockchain to address scalability needs. These efforts hav
 the goal of maintaining the abstraction layer offered by the current Ethereum
 Virtual Machine across the shared state space. Research efforts are being
 conducted by the Ethereum Foundation under Serenity, the Consensus organizations
-and the Dfinity project.
+and the Dfinity project. [\[18\]][18]
 
 ### General Scaling
 
@@ -1263,30 +1264,45 @@ wording, especially under the TMSP section.
 
 ## Citations ###################################################################
 
-TODO: Link throughout text as appropriate
-
 [1]: https://bitcoin.org/bitcoin.pdf
 [2]: http://zerocash-project.org/paper
 [3]: https://github.com/ethereum/wiki/wiki/White-Paper
 [4]: https://download.slock.it/public/DAO/WhitePaper.pdf
 [5]: https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki
+[6]: https://arxiv.org/pdf/1510.02037v2.pdf
+[7]: https://lightning.network/lightning-network-paper-DRAFT-0.5.pdf
+[8]: https://github.com/tendermint/tendermint/wiki
+[9]: https://groups.csail.mit.edu/tds/papers/Lynch/jacm85.pdf
+[10]: https://blog.ethereum.org/2014/01/15/slasher-a-punitive-proof-of-stake-algorithm/
+[11]: http://pmg.csail.mit.edu/papers/osdi99.pdf
+[12]: https://bitshares.org/technology/delegated-proof-of-stake-consensus/
+[13]: https://www.stellar.org/papers/stellar-consensus-protocol.pdf
+[14]: https://interledger.org/rfcs/0001-interledger-architecture/
+[15]: https://blockstream.com/sidechains.pdf
+[16]: https://blog.ethereum.org/2015/08/01/introducing-casper-friendly-ghost/
+[17]: https://github.com/tendermint/tmsp
+[18]: https://github.com/ethereum/EIPs/issues/53
 
 * [1] Bitcoin: https://bitcoin.org/bitcoin.pdf
 * [2] ZeroCash: http://zerocash-project.org/paper
 * [3] Ethereum: https://github.com/ethereum/wiki/wiki/White-Paper
 * [4] TheDAO: https://download.slock.it/public/DAO/WhitePaper.pdf
 * [5] Segregated Witness: https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki
-* BitcoinNG: https://arxiv.org/pdf/1510.02037v2.pdf
-* PBFT: http://pmg.csail.mit.edu/papers/osdi99.pdf
-* BitShares: https://bitshares.org/technology/delegated-proof-of-stake-consensus/
-* Stellar: https://www.stellar.org/papers/stellar-consensus-protocol.pdf
-* Lightning Network: https://lightning.network/lightning-network-paper-DRAFT-0.5.pdf
-* Interledger: https://interledger.org/rfcs/0001-interledger-architecture/
-* Sidechains: https://blockstream.com/sidechains.pdf
-* Casper: https://blog.ethereum.org/2015/08/01/introducing-casper-friendly-ghost/
-* Tendermint: https://github.com/tendermint/tendermint/wiki
-* TMSP: https://github.com/tendermint/tmsp
-* Ethereum Sharding: https://github.com/ethereum/EIPs/issues/53
-* FLP Impossibility: https://groups.csail.mit.edu/tds/papers/Lynch/jacm85.pdf
+* [6] BitcoinNG: https://arxiv.org/pdf/1510.02037v2.pdf
+* [7] Lightning Network: https://lightning.network/lightning-network-paper-DRAFT-0.5.pdf
+* [8] Tendermint: https://github.com/tendermint/tendermint/wiki
+* [9] FLP Impossibility: https://groups.csail.mit.edu/tds/papers/Lynch/jacm85.pdf
+* [10] Slasher: https://blog.ethereum.org/2014/01/15/slasher-a-punitive-proof-of-stake-algorithm/
+* [11] PBFT: http://pmg.csail.mit.edu/papers/osdi99.pdf
+* [12] BitShares: https://bitshares.org/technology/delegated-proof-of-stake-consensus/
+* [13] Stellar: https://www.stellar.org/papers/stellar-consensus-protocol.pdf
+* [14] Interledger: https://interledger.org/rfcs/0001-interledger-architecture/
+* [15] Sidechains: https://blockstream.com/sidechains.pdf
+* [16] Casper: https://blog.ethereum.org/2015/08/01/introducing-casper-friendly-ghost/
+* [17] TMSP: https://github.com/tendermint/tmsp
+* [18] Ethereum Sharding: https://github.com/ethereum/EIPs/issues/53
+
+#### Unsorted links
+
 * https://www.docdroid.net/ec7xGzs/314477721-ethereum-platform-review-opportunities-and-challenges-for-private-and-consortium-blockchains.pdf.html
 
