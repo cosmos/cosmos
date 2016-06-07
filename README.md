@@ -18,18 +18,18 @@ infrastructure.  We have seen specialized blockchain applications like Bitcoin
 [\[1\]][1] (a cryptocurrency), Zerocash [\[2\]][2] (a cryptocurrency for
 privacy), and generalized smart contract platforms such as Ethereum [\[3\]][3],
 with countless distributed applications for the EVM such as Augur (a prediction
-market) and TheDAO (an investment club).
+market) and TheDAO [\[4\]][4] (an investment club).
 
 To date, however, these blockchains have suffered from a number of drawbacks,
 including their gross energy inefficiency, poor or limited performance, and
 immature governance mechanisms.  A number of proposals have been made to scale
-Bitcoin's transaction throughput such as Segregated-Witness and BitcoinNG, but
-these are vertical scaling solutions that remain limited by the capacity of a
-single physical machine, lest we sacrifice the property of complete
-auditability.  The Lightning Network can help scale Bitcoin transaction volume by
-leaving some transactions off the ledger completely and is well suited for
-micropayments and privacy preserving payment rails, but may not be suitable for
-more generalized scaling needs.
+Bitcoin's transaction throughput such as Segregated-Witness [\[5\]][5] and
+BitcoinNG, but these are vertical scaling solutions that remain limited by the
+capacity of a single physical machine, lest we sacrifice the property of
+complete auditability.  The Lightning Network can help scale Bitcoin transaction
+volume by leaving some transactions off the ledger completely and is well suited
+for micropayments and privacy preserving payment rails, but may not be suitable
+for more generalized scaling needs.
 
 An ideal solution would be one that allows multiple parallel blockchains to
 interoperate while retaining their security properties, but this has proven
@@ -1235,14 +1235,21 @@ TODO: Link throughout text as appropriate
 
 [1]: https://bitcoin.org/bitcoin.pdf
 [2]: http://zerocash-project.org/paper
-[3]: http://gavwood.com/paper.pdf
+[3]: https://github.com/ethereum/wiki/wiki/White-Paper
+[4]: https://download.slock.it/public/DAO/WhitePaper.pdf
+[5]: https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki
+
+* [1] Bitcoin: https://bitcoin.org/bitcoin.pdf
+* [2] ZeroCash: http://zerocash-project.org/paper
+* [3] Ethereum: https://github.com/ethereum/wiki/wiki/White-Paper
+* [4] TheDAO: https://download.slock.it/public/DAO/WhitePaper.pdf
+* [5] Segregated Witness: https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki
 * BitcoinNG: https://arxiv.org/pdf/1510.02037v2.pdf
 * PBFT: http://pmg.csail.mit.edu/papers/osdi99.pdf
 * BitShares: https://bitshares.org/technology/delegated-proof-of-stake-consensus/
 * Stellar: https://www.stellar.org/papers/stellar-consensus-protocol.pdf
 * Lightning Network: https://lightning.network/lightning-network-paper-DRAFT-0.5.pdf
 * Interledger: https://interledger.org/rfcs/0001-interledger-architecture/
-* Segregated Witness: https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki
 * Sidechains: https://blockstream.com/sidechains.pdf
 * Casper: https://blog.ethereum.org/2015/08/01/introducing-casper-friendly-ghost/
 * Tendermint: https://github.com/tendermint/tendermint/wiki
