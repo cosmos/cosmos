@@ -38,23 +38,25 @@ allows the work done to secure a parent chain to be re-used on a child chain,
 but transactions still must be validated, in order, by each node, and a
 merge-mined blockchain is vulnerable to attack if a majority of the hashing
 power on the parent is not actively merge-mining the child.  An academic review
-of [alternative blockchain network architectures](http://vukolic.com/iNetSec_2015.pdf) 
-is provided for additional context, and we provide more summaries of some proposals and their drawbacks 
-in [Related Work](#related-work).
+of [alternative blockchain network
+architectures](http://vukolic.com/iNetSec_2015.pdf) is provided for additional
+context, and we provide more summaries of some proposals and their drawbacks in
+[Related Work](#related-work).
 
 Here we present GnuClear, a novel blockchain network architecture that addresses
 all of these problems.  GnuClear is a network of many independent blockchains,
 called shards, that are connected by a central blockchain, called the hub.  The
 hub and shards are powered by Tendermint Core [\[8\]][8], which provides a
-high-performance, consistent, secure [PBFT-like](http://tendermint.com/blog/tendermint-vs-pbft/) consensus engine, where strict
-fork-accountability guarantees hold over the behaviour of malicious actors.  The
-GnuClear hub, also known as Gnucleus, is a simple multi-asset proof-of-stake cryptocurrency with a simple
-governance mechanism enabling the network to adapt and upgrade.  The hub and
-shards of the GnuClear network communicate with each other via an
-inter-blockchain communication (IBC) protocol which is formalized here.  The
-GnuClear hub utilizes IBC packets to move tokens from one shard to another while
-maintaining the total amount of tokens in the network, thus isolating each shard
-from the failure of others.
+high-performance, consistent, secure
+[PBFT-like](http://tendermint.com/blog/tendermint-vs-pbft/) consensus engine,
+where strict fork-accountability guarantees hold over the behaviour of malicious
+actors.  The GnuClear hub, also known as Gnucleus, is a simple multi-asset
+proof-of-stake cryptocurrency with a simple governance mechanism enabling the
+network to adapt and upgrade.  The hub and shards of the GnuClear network
+communicate with each other via an inter-blockchain communication (IBC) protocol
+which is formalized here.  The GnuClear hub utilizes IBC packets to move tokens
+from one shard to another while maintaining the total amount of tokens in the
+network, thus isolating each shard from the failure of others.
 
 We believe that GnuClear proves that Tendermint BFT consensus is well suited for
 scaling public proof-of-stake blockchains, and that it can compete with
@@ -76,80 +78,84 @@ eventually agree on a value proposed by at least one of them.  The problem is
 made more difficult by asynchronous network conditions, wherein messages may
 have arbitrarily long delays, and by Byzantine faults, wherein processes may
 exhibit arbitrary, possibly malicious, behaviour.  In particular, it is well
-known that deterministic consensus in asynchronous networks is impossible
-[\[9\]][9], and that consensus protocols can tolerate strictly fewer Byzantine
-faults than crash faults (⅓ of processes, vs. ½). The former results from the
-inability to distinguish crash failures from asynchronous message delay. The
-latter from the fact that three processes are not enough for a safe majority
-vote if one of them can lie (you need at least four).
+known that deterministic consensus in asynchronous networks is impossible with
+any fail-stop faults [\[9\]][9], and that consensus protocols in non-synchronous
+systems can tolerate strictly fewer Byzantine faults than crash faults (⅓ of
+processes, vs. ½). The former results from the inability to distinguish crash
+failures from asynchronous message delay. The latter from the fact that three
+processes are not enough for a safe majority vote if one of them can lie (you
+need at least four).
 
 In addition to providing optimal fault tolerance, a well designed consensus
 protocol should provide additional guarantees in the event that the tolerance
 capacity is exceeded and the consensus fails.  This is especially necessary in
-public economic systems, where Byzantine behaviour can have substantial
-financial reward.  The most important such guarantee is a form of
-_fork-accountability_, where the processes that caused the consensus to fail (ie. 
-caused clients of the protocol to accept different values - a fork) can
-be identified and punished according to the rules of the protocol, or, possibly,
-the legal system.  When the legal system is unreliable, validators can be forced
-to make security deposits in order to participate, and those deposits can be
-revoked, or slashed, when malicious behaviour is detected [\[10\]][10].
+economic systems, where Byzantine behaviour can have substantial financial
+reward.  The most important such guarantee is a form of _fork-accountability_,
+where the processes that caused the consensus to fail (ie.  caused clients of
+the protocol to accept different values - a fork) can be identified and punished
+according to the rules of the protocol, or, possibly, the legal system.  When
+the legal system is unreliable, validators can be forced to make security
+deposits in order to participate, and those deposits can be revoked, or slashed,
+when malicious behaviour is detected [\[10\]][10].
 
-Note this is much unlike Bitcoin, where forking is a regular occurence due to network asynchrony
-and the probabilistic nature of finding partial hash collissions. 
-Since in many cases, a malicious fork is indistinguishable from a fork due to asynchrony,
-Bitcoin can not reliably implement fork-accountability, other than the implicit opportunity
-cost paid by miners for mining an orphaned block.
+Note this is much unlike Bitcoin, where forking is a regular occurence due to
+network asynchrony and the probabilistic nature of finding partial hash
+collissions.  Since in many cases, a malicious fork is indistinguishable from a
+fork due to asynchrony, Bitcoin can not reliably implement fork-accountability,
+other than the implicit opportunity cost paid by miners for mining an orphaned
+block.
 
-Tendermint is a Byzantine fault-tolerant (BFT) consensus protocol
-notable for its simplicity, performance, and fork-accountability.  
-The protocol requires a fixed, known set of N validators,
-where the ith validator is identified by its public key. Validators attempt
-to come to consensus on one block at a time, where a block is a list of
-transactions. Consensus on a block proceeds in rounds. Each round has a
-round-leader, or proposer, who proposes a block. The validators then vote, in
-stages, on whether or not to accept the proposed block or move on to the next
-round.
+Tendermint is a Byzantine fault-tolerant (BFT) consensus protocol notable for
+its simplicity, performance, and fork-accountability.  The protocol requires a
+fixed, known set of <em>N</em> validators, where the <em>i</em>th validator is
+identified by its public key. Validators attempt to come to consensus on one
+block at a time, where a block is a list of transactions. Consensus on a block
+proceeds in rounds. Each round has a round-leader, or proposer, who proposes a
+block. The validators then vote, in stages, on whether or not to accept the
+proposed block or move on to the next round.
 
 We call the voting stages _PreVote_ and _PreCommit_. A vote can be for a
-particular block or for Nil.  We call a collection of +⅔ PreVotes for a single
-block in the same round a Polka, and a collection of +⅔ PreCommits for a single
-block in the same round a Commit.  If +⅔ PreCommit for Nil in the same round,
-they move to the next round.
+particular block or for _Nil_.  We call a collection of +⅔ PreVotes for a single
+block in the same round a _Polka_, and a collection of +⅔ PreCommits for a
+single block in the same round a _Commit_.  If +⅔ PreCommit for Nil in the same
+round, they move to the next round.
 
-The proposer for a round is chosen deterministically from the ordered list of validators.
-Note that strict determinism in the protocol incurs a weak synchrony assumption as faulty leaders must be detected and
-skipped.  Thus, validators wait some amount TimeoutPropose before they Prevote
-Nil, and the value of TimeoutPropose increases with each round.  
-Progression through the rest of a round is fully asychronous, in that
-progress is only made once a validator hears from +⅔ of the network.
-In practice, it would take an extremely strong adversary to indefinetely thwart the weak synchrony assumption 
-(causing the consensus to fail to ever commit a block), and doing so can be made even more difficult by 
-using randomized values of TimeoutPropose on each validator.
+The proposer for a round is chosen deterministically from the ordered list of
+validators.  Note that strict determinism in the protocol incurs a weak
+synchrony assumption as faulty leaders must be detected and skipped.  Thus,
+validators wait some amount _TimeoutPropose_ before they Prevote Nil, and the
+value of TimeoutPropose increases with each round.  Progression through the rest
+of a round is fully asychronous, in that progress is only made once a validator
+hears from +⅔ of the network.  In practice, it would take an extremely strong
+adversary to indefinetely thwart the weak synchrony assumption (causing the
+consensus to fail to ever commit a block), and doing so can be made even more
+difficult by using randomized values of TimeoutPropose on each validator.
 
 An additional set of constraints, or Locking Rules, ensure that the network will
 eventually commit just one value. Any malicious attempt to cause more than one
 value to be committed can be identified.  First, a PreCommit for a block must
 come with justification, in the form of a Polka for that block. If the validator
-has already PreCommit a block at round `R_1`, we say they are "locked" on that
-block, and the Polka used to justify the new PreCommit at round `R_2` must come in
-a round `R_polka` where `R_1 < R_polka <= R_2`.  Second, validators must Propose
-and/or PreVote the block they are locked on.  Together, these conditions
-ensure that a validator does not PreCommit without sufficient evidence, and that
-validators which have already PreCommit cannot contribute to evidence to
-PreCommit something else.  This ensures both safety and liveness of the
-consensus algorithm.
+has already PreCommit a block at round <em>R_1</em>, we say they are _locked_ on
+that block, and the Polka used to justify the new PreCommit at round
+<em>R_2</em> must come in a round <em>R_polka</em> where <em>R_1 &lt; R_polka
+&lt;= R_2</em>.  Second, validators must Propose and/or PreVote the block they
+are locked on.  Together, these conditions ensure that a validator does not
+PreCommit without sufficient evidence, and that validators which have already
+PreCommit cannot contribute to evidence to PreCommit something else.  This
+ensures both safety and liveness of the consensus algorithm.
 
-The full details of the protocol are described [here](https://github.com/tendermint/tendermint/https://github.com/tendermint/tendermint/wiki/Byzantine-Consensus-Algorithm).
+The full details of the protocol are described
+[here](https://github.com/tendermint/tendermint/https://github.com/tendermint/tendermint/wiki/Byzantine-Consensus-Algorithm).
 
-Tendermint’s security derives from its use of optimal Byzantine
-fault-tolerance via super-majority (+⅔) voting and the locking mechanism.  
-Together, they ensure that:
-* ⅓+ validators must be Byzantine to cause a violation of safety, where more than two
-values are committed.  
-* if ever any set of validators succeeds in violating safety, or even attempts to do so, 
-they can be identified by the protocol.  This includes both voting for conflicting blocks and broadcasting
-unjustified votes.
+Tendermint’s security derives from its use of optimal Byzantine fault-tolerance
+via super-majority (+⅔) voting and the locking mechanism.  Together, they ensure
+that:
+
+* ⅓+ validators must be Byzantine to cause a violation of safety, where more
+  than two values are committed.  
+* if ever any set of validators succeeds in violating safety, or even attempts
+  to do so, they can be identified by the protocol.  This includes both voting
+for conflicting blocks and broadcasting unjustified votes.
 
 Despite its strong guarantees, Tendermint provides exceptional performance.  In
 benchmarks of 64 nodes distributed across 7 datacenters on 5 continents, on
@@ -187,14 +193,15 @@ Assuming a sufficiently resilient collection of broadcast networks and a static
 validator set, any fork in the blockchain can be detected and the deposits of
 the offending validators slashed.  This innovation, first suggested by Vitalik
 Buterin in early 2014, solves the nothing-at-stake problem of other
-proof-of-stake cryptocurrencies (see [Related Work](#related-work)). However, since validator sets must be able to
-change, over a long range of time the original validators may all become
-unbonded, and hence would be free to create a new chain, from the genesis block,
-incurring no cost as they no longer have deposits locked up.  This attack came
-to be known as the Long Range Attack (LRA) in contrast to a Short Range Attack,
-where validators who are currently bonded cause a fork and are hence punishable
-(assuming a fork-accountable BFT algorithm like Tendermint consensus). Long
-Range Attacks are often thought to be a critical blow to proof-of-stake.
+proof-of-stake cryptocurrencies (see [Related Work](#related-work)). However,
+since validator sets must be able to change, over a long range of time the
+original validators may all become unbonded, and hence would be free to create a
+new chain, from the genesis block, incurring no cost as they no longer have
+deposits locked up.  This attack came to be known as the Long Range Attack (LRA)
+in contrast to a Short Range Attack, where validators who are currently bonded
+cause a fork and are hence punishable (assuming a fork-accountable BFT algorithm
+like Tendermint consensus). Long Range Attacks are often thought to be a
+critical blow to proof-of-stake.
 
 Fortunately, the LRA can be mitigated as follows.  First, for a validator to
 unbond, thereby recovering their deposit and no longer earning fees to
@@ -221,8 +228,8 @@ authenticate what they hear from the network against trusted sources. Of course,
 this latter requirement is similar to that of Bitcoin, where the protocol and
 software must also be obtained from a trusted source.
 
-The above method for preventing LRA is well suited for validators and full nodes of
-a Tendermint-powered blockchain because these nodes are meant to remain
+The above method for preventing LRA is well suited for validators and full nodes
+of a Tendermint-powered blockchain because these nodes are meant to remain
 connected to the network.  The method is also suitable for light clients that
 can be expected to sync with the network frequently.  However, for light clients
 that are not expected to have frequent access to the internet or the blockchain
