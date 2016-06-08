@@ -1178,7 +1178,7 @@ loosely coupled bilateral relationship network.  Like the Lightning Network, the
 purpose of ILP is to facilitate payments, but it specifically focuses on
 payments across disparate ledger types, and extends the atomic transaction
 mechanism to include not only hash-locks, but also a quroum of notaries (called
-the Universal Transport Protocol).  The latter mechanism for enforcing atomicity
+the Atomic Transport Protocol).  The latter mechanism for enforcing atomicity
 in inter-ledger transactions is similar to Tendermint's light-client SPV
 echanism, so an illustration of the distinction between ILP and GnuClear/IBC is
 warranted, and provided below.
