@@ -1255,11 +1255,66 @@ connection, or Key="mode", Value="consensus" for a consensus connection.
     Signals the end of a block.  Called prior to each Commit after all
 transactions
 
-### Merkle tree & proof specification
+### Merkle Tree & Proof Specification
 
-* SimpleTree
-* IAVLTree
-* Proof Expression langauge
+There are two types of Merkle trees supported in the Tendermint/GnuClear
+ecosystem: The Simple Tree, and the IAVL+ Tree.
+
+### Simple Tree
+
+The Simple Tree is a Merkle tree for a static list of elements.  If the number
+of items is not a power of two, some leaves will be at different levels.  Simple
+Tree tries to keep both sides of the tree the same height, but the left may be
+one greater.  This Merkle tree is used to Merkle-ize the transactions of a
+block, and the top level elements of the application state root.
+
+```
+                *
+               / \
+             /     \
+           /         \
+         /             \
+        *               *
+       / \             / \
+      /   \           /   \
+     /     \         /     \
+    *       *       *       h6
+   / \     / \     / \
+  h0  h1  h2  h3  h4  h5
+
+  A SimpleTree with 7 elements
+```
+
+## IAVL+ Tree
+
+The purpose of the IAVL+ data structure is to provide persistent storage for
+key-value pairs in the application state such that a deterministic Merkle root
+hash can be computed efficiently.  The tree is balanced using a variant of the
+[AVL algortihm](http://en.wikipedia.org/wiki/AVL_tree), and all operations are
+O(log(n)).
+
+In an AVL tree, the heights of the two child subtrees of any node differ by at
+most one.  Whenever this condition is violated upon an update, the tree is
+rebalanced by creating O(log(n)) new nodes that point to unmodified nodes of the
+old tree.  In the original AVL algorithm, inner nodes can also hold key-value
+pairs.  The AVL+ algorithm (note the plus) modifies the AVL algorithm to keep
+all values on leaf nodes, while only using branch-nodes to store keys.  This
+simplifies the algorithm while keeping the merkle hash trail short.
+
+The AVL+ Tree is analogous to Ethereum's [Patricia
+tries](http://en.wikipedia.org/wiki/Radix_tree).  There are tradeoffs.  Keys do
+not need to be hashed prior to insertion in IAVL+ trees, so this provides faster
+ordered iteration in the key space which may benefit some applications.  The
+logic is simpler to implement, requiring only two types of nodes -- inner nodes
+and leaf nodes.  The Merkle proof is on average shorter, being a balanced binary
+tree.  On the other hand, the Merkle root of an IAVL+ tree depends on the order
+of updates.
+
+TODO Replace with Ethereum's Patricia Trie if there is a binary variant.
+
+#### Merkle Proof Path Expression
+
+TODO
 
 ## Acknowledgements ############################################################
 
