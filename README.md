@@ -1350,9 +1350,10 @@ providing support for our work with Tendermint and GnuClear.
 
 * [Zaki Manian](https://github.com/zmanian) of
   [SkuChain](https://www.skuchain.com/) provided much help in formatting and
-wording, especially under the TMSP section.
+wording, especially under the TMSP section
 * [Jehan Tremback](https://github.com/jtremback) of Althea and Dustin Byington
   for helping with initial iterations
+* [Andrew Miller](http://soc1024.com/) for feedback on consensus
 * Also thanks to [Bill Gleim](https://github.com/gleim) for various
   contributions.
 * TODO Your name and organization here if you want.
@@ -1404,5 +1405,3 @@ wording, especially under the TMSP section.
 #### Unsorted links
 
 * https://www.docdroid.net/ec7xGzs/314477721-ethereum-platform-review-opportunities-and-challenges-for-private-and-consortium-blockchains.pdf.html
-
-
