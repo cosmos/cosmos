@@ -106,14 +106,14 @@ other than the implicit opportunity cost paid by miners for mining an orphaned
 block.
 
 Tendermint is a partially synchronous Byzantine fault-tolerant (BFT) consensus
-protocol notable for its simplicity, performance, and fork-accountability.  The
-protocol requires a fixed, known set of <em>N</em> validators, where the
-<em>i</em>th validator is identified by its public key. Validators attempt to
-come to consensus on one block at a time, where a block is a list of
-transactions. Consensus on a block proceeds in rounds. Each round has a
-round-leader, or proposer, who proposes a block. The validators then vote, in
-stages, on whether or not to accept the proposed block or move on to the next
-round.
+protocol derived from the DLS consensus algorithm [\[20\]][20]. Tendermint is
+notable for its simplicity, performance, and fork-accountability.  The protocol
+requires a fixed, known set of <em>N</em> validators, where the <em>i</em>th
+validator is identified by its public key.  Validators attempt to come to
+consensus on one block at a time, where a block is a list of transactions.
+Consensus on a block proceeds in rounds. Each round has a round-leader, or
+proposer, who proposes a block. The validators then vote, in stages, on whether
+or not to accept the proposed block or move on to the next round.
 
 We call the voting stages _PreVote_ and _PreCommit_. A vote can be for a
 particular block or for _Nil_.  We call a collection of +⅔ PreVotes for a single
@@ -1378,6 +1378,7 @@ wording, especially under the TMSP section.
 [17]: https://github.com/tendermint/tmsp
 [18]: https://github.com/ethereum/EIPs/issues/53
 [19]: http://www.ds.ewi.tudelft.nl/fileadmin/pds/papers/PerformanceAnalysisOfLibswift.pdf
+[20]: http://groups.csail.mit.edu/tds/papers/Lynch/jacm88.pdf
 
 * [1] Bitcoin: https://bitcoin.org/bitcoin.pdf
 * [2] ZeroCash: http://zerocash-project.org/paper
@@ -1398,6 +1399,7 @@ wording, especially under the TMSP section.
 * [17] TMSP: https://github.com/tendermint/tmsp
 * [18] Ethereum Sharding: https://github.com/ethereum/EIPs/issues/53
 * [19] LibSwift: http://www.ds.ewi.tudelft.nl/fileadmin/pds/papers/PerformanceAnalysisOfLibswift.pdf
+* [20] DLS: http://groups.csail.mit.edu/tds/papers/Lynch/jacm88.pdf
 
 #### Unsorted links
 
