@@ -32,6 +32,7 @@ document.  Please check regularly for updates!._
     * [Ethereum Scaling](#ethereum-scaling)
     * [Multi-Application Integration](#multi-application-integration)
     * [Network Partition Mitigation](#network-partition-mitigation)
+    * [Federated Name Resolution System](#federated-name-resolution-system)
   * [Issuance and Incentives](#issuance-and-incentives)
     * [The Gnut Token](#the-gnut-token)
     * [Initial Gnut Distribution and
@@ -60,13 +61,13 @@ document.  Please check regularly for updates!._
     * [General Scaling](#general-scaling)
       * [Lightning Network](#lightning-network)
       * [Segregated Witness](#segregated-witness)
-  * [Citations](#citations)
   * [Appendix](#appendix)
     * [Gas Fees for Transactions](#gas-fees-for-transactions)
     * [TMSP specification](#tmsp-specification)
     * [Merkle tree &amp; proof
     specification](#merkle-tree--proof-specification)
   * [Acknowledgements](#acknowledgements)
+  * [Citations](#citations)
 
 ## Introduction ################################################################
 
