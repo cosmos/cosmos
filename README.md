@@ -9,6 +9,65 @@ Ethan Buchman ethan@tendermint.com
 _NOTE: If you can read this on GitHub, then we're still actively developing this
 document.  Please check regularly for updates!._
 
+## Table of Contents ###########################################################
+
+  * [Introduction](#introduction)
+  * [Tendermint](#tendermint)
+    * [Consensus](#consensus)
+    * [Light Clients](#light-clients)
+    * [Preventing Long Range Attacks](#preventing-long-range-attacks)
+    * [Overcoming Forks and Censorship
+    Attacks](#overcoming-forks-and-censorship-attacks)
+    * [TMSP](#tmsp)
+  * [The GnuClear Hub and Shards](#the-gnuclear-hub-and-shards)
+    * [The GnuClear Hub](#the-gnuclear-hub)
+    * [GnuClear Shards](#gnuclear-shards)
+  * [Inter-blockchain Communication (IBC)](#inter-blockchain-communication-ibc)
+    * [IBCBlockCommitTx Transaction](#ibcblockcommittx-transaction)
+    * [IBCPacketTx Transaction](#ibcpackettx-transaction)
+    * [IBC Packet Delivery
+    Acknowledgement](#ibc-packet-delivery-acknowledgement)
+  * [Use Cases](#use-cases)
+    * [Pegging to Other Cryptocurrencies](#pegging-to-other-cryptocurrencies)
+    * [Ethereum Scaling](#ethereum-scaling)
+    * [Multi-Application Integration](#multi-application-integration)
+    * [Network Partition Mitigation](#network-partition-mitigation)
+  * [Issuance and Incentives](#issuance-and-incentives)
+    * [The Gnut Token](#the-gnut-token)
+    * [Initial Gnut Distribution and
+    Issuance](#initial-gnut-distribution-and-issuance)
+    * [Limitations on the Number of
+    Validators](#limitations-on-the-number-of-validators)
+    * [Becoming a Validator After Genesis
+    Day](#becoming-a-validator-after-genesis-day)
+    * [Penalties for Validators](#penalties-for-validators)
+    * [Transaction Fees](#transaction-fees)
+  * [Governance](#governance)
+    * [Parameter Change Proposal](#parameter-change-proposal)
+    * [Text Proposal](#text-proposal)
+  * [Roadmap](#roadmap)
+  * [Related Work](#related-work)
+    * [Consensus Systems](#consensus-systems)
+      * [Classic Byzantine Fault Tolerance](#classic-byzantine-fault-tolerance)
+      * [BitShares delegated stake](#bitshares-delegated-stake)
+      * [Stellar](#stellar)
+      * [BitcoinNG](#bitcoinng)
+      * [Casper](#casper)
+    * [Sharded Scaling](#sharded-scaling)
+      * [Interledger Protocol](#interledger-protocol)
+      * [Sidechains](#sidechains)
+      * [Ethereum Scalability Efforts](#ethereum-scalability-efforts)
+    * [General Scaling](#general-scaling)
+      * [Lightning Network](#lightning-network)
+      * [Segregated Witness](#segregated-witness)
+  * [Citations](#citations)
+  * [Appendix](#appendix)
+    * [Gas Fees for Transactions](#gas-fees-for-transactions)
+    * [TMSP specification](#tmsp-specification)
+    * [Merkle tree &amp; proof
+    specification](#merkle-tree--proof-specification)
+  * [Acknowledgements](#acknowledgements)
+
 ## Introduction ################################################################
 
 The combined success of the open-source ecosystem, of decentralized
