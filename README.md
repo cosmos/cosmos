@@ -748,6 +748,40 @@ otherwise remote service providers fail.  Note that this allows real geological,
 political, and network-topological features to be considered in designing robust
 federated fault-tolerant systems.
 
+### Federated Name Resolution System
+
+NameCoin was one of the first blockchains to attempt to solve the
+name-resolution problem by adapting the Bitcoin blockchain.  Unfortunately there
+have been several issues with this approach.
+
+With Namecoin, we can verify that say, <em>@satoshi</em> was registered with a
+particular public key at some point in the past, but we wouldn’t know whether
+the public key had since been updated recently unless we download all the blocks
+since the last update of that name.  This is due to the limitation of Bitcoin's
+UTXO transaction Merkle-ization model where only the transactions (but not
+mutable application state) is Merkle-ized into the block-hash -- which lets us
+prove existence, but not the non-existence of updates.  Thus, we can't know for
+certain the most recent value of a name without trusting a full node, or
+incurring significant costs in bandwidth.
+
+Even if a Merkle-ized search tree were implemented in NameCoin, its dependency
+on proof-of-work makes light client verification problematic. Light clients must
+download a complete copy of the headers for all blocks in the entire blockchain
+(or at least all the headers since the last update to a name).  This means that
+the bandwidth requirements scale linearly with the amount of time [\[21\]][21].
+
+With Tendermint, all we need is the most recent block-hash signed by a quorum of
+validators, and a Merkle proof to the current value associated with the name.
+This makes it possible to have an efficient and secure light-client verification
+of _the current value of_ a name.
+
+On GnuClear, we can take this concept and extend it further. Each
+name-registration shard in GnuClear can have an associated top-level-domain
+(TLD) name such as ".com" or ".org", and each name-registration shard can have
+its own governance and registration rules.
+
+TODO: note on integration with shard discovery, see roadmap
+
 ## Issuance and Incentives #####################################################
 
 ### The Gnut Token
@@ -1380,6 +1414,7 @@ wording, especially under the TMSP section
 [18]: https://github.com/ethereum/EIPs/issues/53
 [19]: http://www.ds.ewi.tudelft.nl/fileadmin/pds/papers/PerformanceAnalysisOfLibswift.pdf
 [20]: http://groups.csail.mit.edu/tds/papers/Lynch/jacm88.pdf
+[21]: https://en.bitcoin.it/wiki/Thin_Client_Security
 
 * [1] Bitcoin: https://bitcoin.org/bitcoin.pdf
 * [2] ZeroCash: http://zerocash-project.org/paper
@@ -1401,6 +1436,7 @@ wording, especially under the TMSP section
 * [18] Ethereum Sharding: https://github.com/ethereum/EIPs/issues/53
 * [19] LibSwift: http://www.ds.ewi.tudelft.nl/fileadmin/pds/papers/PerformanceAnalysisOfLibswift.pdf
 * [20] DLS: http://groups.csail.mit.edu/tds/papers/Lynch/jacm88.pdf
+* [21] Thin Client Security: https://en.bitcoin.it/wiki/Thin_Client_Security
 
 #### Unsorted links
 
