@@ -38,20 +38,19 @@ allows the work done to secure a parent chain to be re-used on a child chain,
 but transactions still must be validated, in order, by each node, and a
 merge-mined blockchain is vulnerable to attack if a majority of the hashing
 power on the parent is not actively merge-mining the child.  An academic review
-of [alternative blockchain network
-architectures](http://vukolic.com/iNetSec_2015.pdf) is provided for additional
-context.
+of [alternative blockchain network architectures](http://vukolic.com/iNetSec_2015.pdf) 
+is provided for additional context, and we provide more summaries of some proposals and their drawbacks 
+in [Related Work](#related-work).
 
 Here we present GnuClear, a novel blockchain network architecture that addresses
 all of these problems.  GnuClear is a network of many independent blockchains,
 called shards, that are connected by a central blockchain, called the hub.  The
 hub and shards are powered by Tendermint Core [\[8\]][8], which provides a
-high-performance, consistent, secure
-[PBFT-like](http://tendermint.com/blog/tendermint-vs-pbft/) consensus engine,
-where strict fork-accountability guarantees hold over the behaviour of malicious
-actors.  The GnuClear hub is a simple multi-asset proof-of-stake cryptocurrency
-with a simple governance mechanism enabling the network to adapt and upgrade.
-The hub and shards of the GnuClear network communicate with each other via an
+high-performance, consistent, secure [PBFT-like](http://tendermint.com/blog/tendermint-vs-pbft/) consensus engine, where strict
+fork-accountability guarantees hold over the behaviour of malicious actors.  The
+GnuClear hub, also known as Gnucleus, is a simple multi-asset proof-of-stake cryptocurrency with a simple
+governance mechanism enabling the network to adapt and upgrade.  The hub and
+shards of the GnuClear network communicate with each other via an
 inter-blockchain communication (IBC) protocol which is formalized here.  The
 GnuClear hub utilizes IBC packets to move tokens from one shard to another while
 maintaining the total amount of tokens in the network, thus isolating each shard
@@ -89,20 +88,27 @@ protocol should provide additional guarantees in the event that the tolerance
 capacity is exceeded and the consensus fails.  This is especially necessary in
 public economic systems, where Byzantine behaviour can have substantial
 financial reward.  The most important such guarantee is a form of
-_accountability_, where the processes that caused the consensus to fail can
+_fork-accountability_, where the processes that caused the consensus to fail (ie. 
+caused clients of the protocol to accept different values - a fork) can
 be identified and punished according to the rules of the protocol, or, possibly,
 the legal system.  When the legal system is unreliable, validators can be forced
 to make security deposits in order to participate, and those deposits can be
 revoked, or slashed, when malicious behaviour is detected [\[10\]][10].
 
-Tendermint is a Byzantine fault-tolerant (BFT) consensus protocol for
-asynchronous networks, notable for its simplicity, performance, and
-fork-accountability.  The protocol requires a fixed, known set of N validators,
-where the ith validator is identified by its public key, `V_i`. Validators
-attempt to come to consensus on one block at a time, where a block is a list of
-transactions.  Consensus on a block proceeds in rounds. Each round has a
+Note this is much unlike Bitcoin, where forking is a regular occurence due to network asynchrony
+and the probabilistic nature of finding partial hash collissions. 
+Since in many cases, a malicious fork is indistinguishable from a fork due to asynchrony,
+Bitcoin can not reliably implement fork-accountability, other than the implicit opportunity
+cost paid by miners for mining an orphaned block.
+
+Tendermint is a Byzantine fault-tolerant (BFT) consensus protocol
+notable for its simplicity, performance, and fork-accountability.  
+The protocol requires a fixed, known set of N validators,
+where the ith validator is identified by its public key. Validators attempt
+to come to consensus on one block at a time, where a block is a list of
+transactions. Consensus on a block proceeds in rounds. Each round has a
 round-leader, or proposer, who proposes a block. The validators then vote, in
-stages, on whether or not to accept the proposed block or move onto the next
+stages, on whether or not to accept the proposed block or move on to the next
 round.
 
 We call the voting stages _PreVote_ and _PreCommit_. A vote can be for a
@@ -111,31 +117,38 @@ block in the same round a Polka, and a collection of +⅔ PreCommits for a singl
 block in the same round a Commit.  If +⅔ PreCommit for Nil in the same round,
 they move to the next round.
 
-The proposer at round `r` is simply `r mod N`. Note that the strict determinism
-incurs a weak synchrony assumption as faulty leaders must be detected and
+The proposer for a round is chosen deterministically from the ordered list of validators.
+Note that strict determinism in the protocol incurs a weak synchrony assumption as faulty leaders must be detected and
 skipped.  Thus, validators wait some amount TimeoutPropose before they Prevote
-Nil.  Progression through the rest of the round is fully asychronous, in that
+Nil, and the value of TimeoutPropose increases with each round.  
+Progression through the rest of a round is fully asychronous, in that
 progress is only made once a validator hears from +⅔ of the network.
+In practice, it would take an extremely strong adversary to indefinetely thwart the weak synchrony assumption 
+(causing the consensus to fail to ever commit a block), and doing so can be made even more difficult by 
+using randomized values of TimeoutPropose on each validator.
 
 An additional set of constraints, or Locking Rules, ensure that the network will
 eventually commit just one value. Any malicious attempt to cause more than one
 value to be committed can be identified.  First, a PreCommit for a block must
 come with justification, in the form of a Polka for that block. If the validator
 has already PreCommit a block at round `R_1`, we say they are "locked" on that
-block, and the Polka used to justify the new PreCommit at round `R_2` must come
-in a round `R_polka` where `R_1 < R_polka <= R_2`.  Second, validators must
-Propose and/or PreVote the block they are "locked" on.  Together, these
-conditions ensure that a validator does not PreCommit without sufficient
-evidence, and that validators which have already PreCommit cannot contribute to
-evidence to PreCommit something else.  This ensures both safety and liveness of
-the consensus algorithm.
+block, and the Polka used to justify the new PreCommit at round `R_2` must come in
+a round `R_polka` where `R_1 < R_polka <= R_2`.  Second, validators must Propose
+and/or PreVote the block they are locked on.  Together, these conditions
+ensure that a validator does not PreCommit without sufficient evidence, and that
+validators which have already PreCommit cannot contribute to evidence to
+PreCommit something else.  This ensures both safety and liveness of the
+consensus algorithm.
 
-Tendermint’s security derives simultaneously from its use of optimal Byzantine
-fault-tolerance and the locking mechanism.  The former ensures that ⅓ or more
-validators must be Byzantine to cause a violation of safety, where more than two
-values are committed.  The latter ensures that, if ever any set of validators
-attempts, or even succeeds, in violating safety, they can be identified by the
-protocol.  This includes both voting for conflicting blocks and broadcasting
+The full details of the protocol are described [here](https://github.com/tendermint/tendermint/https://github.com/tendermint/tendermint/wiki/Byzantine-Consensus-Algorithm).
+
+Tendermint’s security derives from its use of optimal Byzantine
+fault-tolerance via super-majority (+⅔) voting and the locking mechanism.  
+Together, they ensure that:
+* ⅓+ validators must be Byzantine to cause a violation of safety, where more than two
+values are committed.  
+* if ever any set of validators succeeds in violating safety, or even attempts to do so, 
+they can be identified by the protocol.  This includes both voting for conflicting blocks and broadcasting
 unjustified votes.
 
 Despite its strong guarantees, Tendermint provides exceptional performance.  In
@@ -154,11 +167,11 @@ which have no global state.  Instead of syncing a chain of block headers and
 verifying the proof of work, light clients, who are assumed to know all public
 keys in the validator set, need only verify the +⅔ PreCommits in the latest
 block.  The need to sync all block headers is eliminated as the existence of an
-alternative chain (a fork) means at least ⅓ of validator's deposits can be
+alternative chain (a fork) means ⅓+ of validator deposits can be
 slashed.  Of course, since slashing requires that _someone_ detects the fork, it
 would be prudent for light clients, or at least those that are able, to sync
 headers, perhaps more slowly, on a risk adjusted basis, where the explicit cost
-of a fork can be easily calculated at at least ⅓ of the bonded stake.
+of a fork can be easily calculated at ⅓+ of the bonded stake.
 Additionally, light clients must stay synced with changes to the validator set,
 in order to avoid certain [long range attacks](#preventing-long-range-attacks).
 
@@ -174,7 +187,7 @@ Assuming a sufficiently resilient collection of broadcast networks and a static
 validator set, any fork in the blockchain can be detected and the deposits of
 the offending validators slashed.  This innovation, first suggested by Vitalik
 Buterin in early 2014, solves the nothing-at-stake problem of other
-proof-of-stake cryptocurrencies. However, since validator sets must be able to
+proof-of-stake cryptocurrencies (see [Related Work](#related-work)). However, since validator sets must be able to
 change, over a long range of time the original validators may all become
 unbonded, and hence would be free to create a new chain, from the genesis block,
 incurring no cost as they no longer have deposits locked up.  This attack came
@@ -195,8 +208,8 @@ validator set at least as frequently as the length of the unbonding period. This
 ensures that the light client knows about changes to the validator set before a
 validator has its capital unbonded and thus no longer at stake, which would
 allow it to deceive the client by carrying out a long range attack by creating
-new blocks beginning back at a height where it was bonded (assuming it had
-sufficient validating power then!).
+new blocks beginning back at a height where it was bonded (assuming it has
+control of sufficiently many of the early private keys).
 
 Note that overcoming the LRA in this way requires a practical tweak of the
 original security model of proof-of-work. In PoW, it is assumed that a light
@@ -208,7 +221,7 @@ authenticate what they hear from the network against trusted sources. Of course,
 this latter requirement is similar to that of Bitcoin, where the protocol and
 software must also be obtained from a trusted source.
 
-The above method for prevent LRA is well suited for validators and full nodes of
+The above method for preventing LRA is well suited for validators and full nodes of
 a Tendermint-powered blockchain because these nodes are meant to remain
 connected to the network.  The method is also suitable for light clients that
 can be expected to sync with the network frequently.  However, for light clients
@@ -219,7 +232,7 @@ period (e.g. much longer than the unbonding period for validators) and serve
 light clients with a secondary method of attesting to the validity of current
 and past block-hashes. While these tokens do not count toward the security of
 the blockchain's consensus, they nevertheless can provide strong guarantees for
-light clients.  If historical block-hash querying are supported in Ethereum,
+light clients.  If historical block-hash querying were supported in Ethereum,
 anyone could bond their tokens in a specially designed smart contract and
 provide attestation services for pay, effectively creating a market for
 light-client LRA security.
@@ -1097,7 +1110,7 @@ Ethereum is currently researching a number of different strategies to shard the
 state of the Ethereum blockchain to address scalability needs. These efforts have
 the goal of maintaining the abstraction layer offered by the current Ethereum
 Virtual Machine across the shared state space. Research efforts are being
-conducted by the Ethereum Foundation under Serenity, the Consensus organizations
+conducted by the Ethereum Foundation under Serenity, the Consensys organizations
 and the Dfinity project. [\[18\]][18]
 
 ### General Scaling
@@ -1305,4 +1318,5 @@ wording, especially under the TMSP section.
 #### Unsorted links
 
 * https://www.docdroid.net/ec7xGzs/314477721-ethereum-platform-review-opportunities-and-challenges-for-private-and-consortium-blockchains.pdf.html
+
 
