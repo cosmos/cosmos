@@ -980,11 +980,25 @@ The main benefit of Tendermint consensus over PBFT is that Tendermint has an
 improved and simplified underlying structure, some of which is a result of
 embracing the blockchain paradigm.  Tendermint blocks must commit in order,
 which obviates the complexity and communication overhead associated with PBFT's
-view-changes.  In addition, the batching of transactions into blocks allows for
-regular Merkle-hashing of the application state, rather than periodic digests as
-with PBFT's checkpointing scheme.  This allows for faster provable transaction
-commits for light-clients, and as we'll later show, faster inter-blockchain
-communication.
+view-changes.  In GnuClear and many cryptocurrencies, there is no need to allow
+for block <em>N+i</em> where <em>i >= 1</em> to commit, when block <em>N</em>
+itself hasn't yet committed. If bandwidth is the reason why block <em>N</em>
+hasn't committed in GnuClear, then it doesn't help to use bandwidth sharing
+votes for blocks <em>N+i</em>. If a network partition or offline nodes is the
+reason why block <em>N</em> hasn't committed, then <em>N+i</em> won't commit
+anyway.
+
+In addition, the batching of transactions into blocks allows for regular
+Merkle-hashing of the application state, rather than periodic digests as with
+PBFT's checkpointing scheme.  This allows for faster provable transaction
+commits for light-clients and faster inter-blockchain communication.
+
+Tendermint Core also includes many optimizations and features that go above and
+beyond what is specified in PBFT.  For example, the blocks proposed by
+validators are split into parts, Merkle-ized, and gossipped in such a way that
+improves broadcasting performance (see LibSwift [\[19\]][19] for inspiration).
+Also, Tendermint Core doesn't make any assumption about point-to-point
+connectivity, and functions for as long as the P2P network is weakly connected.
 
 #### BitShares delegated stake
 
@@ -1363,6 +1377,7 @@ wording, especially under the TMSP section.
 [16]: https://blog.ethereum.org/2015/08/01/introducing-casper-friendly-ghost/
 [17]: https://github.com/tendermint/tmsp
 [18]: https://github.com/ethereum/EIPs/issues/53
+[19]: http://www.ds.ewi.tudelft.nl/fileadmin/pds/papers/PerformanceAnalysisOfLibswift.pdf
 
 * [1] Bitcoin: https://bitcoin.org/bitcoin.pdf
 * [2] ZeroCash: http://zerocash-project.org/paper
@@ -1382,6 +1397,7 @@ wording, especially under the TMSP section.
 * [16] Casper: https://blog.ethereum.org/2015/08/01/introducing-casper-friendly-ghost/
 * [17] TMSP: https://github.com/tendermint/tmsp
 * [18] Ethereum Sharding: https://github.com/ethereum/EIPs/issues/53
+* [19] LibSwift: http://www.ds.ewi.tudelft.nl/fileadmin/pds/papers/PerformanceAnalysisOfLibswift.pdf
 
 #### Unsorted links
 
