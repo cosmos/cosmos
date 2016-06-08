@@ -105,14 +105,15 @@ fork due to asynchrony, Bitcoin can not reliably implement fork-accountability,
 other than the implicit opportunity cost paid by miners for mining an orphaned
 block.
 
-Tendermint is a Byzantine fault-tolerant (BFT) consensus protocol notable for
-its simplicity, performance, and fork-accountability.  The protocol requires a
-fixed, known set of <em>N</em> validators, where the <em>i</em>th validator is
-identified by its public key. Validators attempt to come to consensus on one
-block at a time, where a block is a list of transactions. Consensus on a block
-proceeds in rounds. Each round has a round-leader, or proposer, who proposes a
-block. The validators then vote, in stages, on whether or not to accept the
-proposed block or move on to the next round.
+Tendermint is a partially synchronous Byzantine fault-tolerant (BFT) consensus
+protocol notable for its simplicity, performance, and fork-accountability.  The
+protocol requires a fixed, known set of <em>N</em> validators, where the
+<em>i</em>th validator is identified by its public key. Validators attempt to
+come to consensus on one block at a time, where a block is a list of
+transactions. Consensus on a block proceeds in rounds. Each round has a
+round-leader, or proposer, who proposes a block. The validators then vote, in
+stages, on whether or not to accept the proposed block or move on to the next
+round.
 
 We call the voting stages _PreVote_ and _PreCommit_. A vote can be for a
 particular block or for _Nil_.  We call a collection of +⅔ PreVotes for a single
@@ -277,12 +278,11 @@ No non-synchronous Byzantine fault-tolerant algorithm can come to consensus when
 already been dishonest by double-signing or lock-changing without justification.
 So, signing the reorg-proposal is a coordination problem that cannot be solved
 by any non-synchronous protocol (i.e. automatically, and without making
-assumptions about the reliability of the underlying network). It must be
-provided by means external to the weakly-synchronous Tendermint consensus
-algorithm.  For now, we leave the problem of reorg-proposal coordination to
-human coordination via internet media.  Validators must take care to ensure that
-there are no significant network partitions, to avoid situations where two
-conflicting reorg-proposals are signed.
+assumptions about the reliability of the underlying network).  For now, we leave
+the problem of reorg-proposal coordination to human coordination via internet
+media.  Validators must take care to ensure that there are no significant
+network partitions, to avoid situations where two conflicting reorg-proposals
+are signed.
 
 Assuming that the external coordination medium and protocol is robust, it
 follows that forks are less of a concern than censorship attacks.
@@ -971,10 +971,10 @@ were discovered for synchronous networks where there is an upper bound on
 message latency, though pratical use was limited to highly controlled
 environments such as airplane controllers and datacenters synchronized via
 atomic clocks.  It was not until the late 90s that Practical Byzantine Fault
-Tolerance (PBFT) [\[11\]][11] was introduced as an efficient asynchronous
-consensus algorithm able to tolerate up to ⅓ of processes behaving arbitrarily.
-PBFT became the standard algorithm, spawning many variations, including most
-recently by IBM as part of their contribution to Hyperledger.
+Tolerance (PBFT) [\[11\]][11] was introduced as an efficient partially
+synchronous consensus algorithm able to tolerate up to ⅓ of processes behaving
+arbitrarily.  PBFT became the standard algorithm, spawning many variations,
+including most recently by IBM as part of their contribution to Hyperledger.
 
 The main benefit of Tendermint consensus over PBFT is that Tendermint has an
 improved and simplified underlying structure, some of which is a result of
