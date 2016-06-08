@@ -257,19 +257,25 @@ controlled by an active adversary.
 
 For these types of attacks, a subset of the validators through external means
 should coordinate to sign a reorg-proposal that chooses a fork (and any evidence
-thereof) and the initial subset of validators with their signatures. Clients
-should verify the signatures on the reorg-proposal, verify any evidence, and
-make a judgement or prompt the end-user for a decision.  For example, a phone
-wallet app may prompt the user with a security warning, while a refrigerator may
-accept any reorg-proposal signed by +½ of the original validators. If we further
-require that validators who sign such a reorg-proposal forego its collateral on
-all other forks, light-clients can be assured by up to ⅙ of the bonded
-collateral (⅙ == ⅔ - ½). Notice that no Byzantine fault-tolerant algorithm can
-come to consensus when ⅓+ of validators are dishonest, yet a fork assumes that
-⅓+ of validators have been dishonest by double-signing or lock-changing without
-justification. So, signing the reorg- proposal is a coordination problem that
-cannot be solved internally by any protocol -- not even Tendermint. It must be
-provided externally.
+thereof) and the initial subset of validators with their signatures. Validators
+who sign such a reorg-proposal forego its collateral on all other forks.
+Clients should verify the signatures on the reorg-proposal, verify any evidence,
+and make a judgement or prompt the end-user for a decision.  For example, a
+phone wallet app may prompt the user with a security warning, while a
+refrigerator may accept any reorg-proposal signed by +½ of the original
+validators.
+
+No non-synchronous Byzantine fault-tolerant algorithm can come to consensus when
+⅓+ of validators are dishonest, yet a fork assumes that ⅓+ of validators have
+already been dishonest by double-signing or lock-changing without justification.
+So, signing the reorg-proposal is a coordination problem that cannot be solved
+by any non-synchronous protocol (i.e. automatically, and without making
+assumptions about the reliability of the underlying network). It must be
+provided by means external to the weakly-synchronous Tendermint consensus
+algorithm.  For now, we leave the problem of reorg-proposal coordination to
+human coordination via internet media.  Validators must take care to ensure that
+there are no significant network partitions, to avoid situations where two
+conflicting reorg-proposals are signed.
 
 Assuming that the external coordination medium and protocol is robust, it
 follows that forks are less of a concern than censorship attacks.
