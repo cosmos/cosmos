@@ -89,7 +89,7 @@ limited by the capacity of a single physical machine, lest we sacrifice the
 property of complete auditability.  The Lightning Network [\[7\]][7] can help
 scale Bitcoin transaction volume by leaving some transactions off the ledger
 completely and is well suited for micropayments and privacy preserving payment
-rails, but may not be suitable for more generalized scaling needs.
+rails, so it is suitable for more generalized scaling needs. <!-- state-channels allow for generalized smart contracts in the lightning network  -->
 
 An ideal solution would be one that allows multiple parallel blockchains to
 interoperate while retaining their security properties, but this has proven
@@ -206,7 +206,7 @@ PreCommit cannot contribute to evidence to PreCommit something else.  This
 ensures both safety and liveness of the consensus algorithm.
 
 The full details of the protocol are described
-[here](https://github.com/tendermint/tendermint/wiki/Byzantine-Consensus-Algorithm).
+[here](https://github.com/tendermint/tendermint/https://github.com/tendermint/tendermint/wiki/Byzantine-Consensus-Algorithm).
 
 Tendermint’s security derives from its use of optimal Byzantine fault-tolerance
 via super-majority (+⅔) voting and the locking mechanism.  Together, they ensure
@@ -1241,23 +1241,25 @@ and the Dfinity project. [\[18\]][18]
 The Lightning Network is a proposed message relay network operating at a layer
 above the Bitcoin blockchain, enabling many orders of magnitude improvement in
 transaction throughput by moving the majority of transactions outside of the
-consensus ledger into so-called "payment channels". This is made possible (with
-great difficulty) by the Bitcoin scripting language, which enables parties to
+consensus ledger into so-called "payment channels". <!-- lightning network exists beyond bitcoin -->
+Which enables parties to
 enter into stateful contracts where the state can be updated by sharing digital
 signatures, and contracts can be closed by finally publishing evidence onto the
 blockchain, a mechanism first popularized by cross-chain atomic swaps.  By
 openning payment channels with many parties, participants in the Lightning
-Network can become focal points for routing the payments of others, leading to a
-fully connected payment channel network, at the cost of capital being tied up on
-payment channels.
+Network can become focal points for routing the payments, and contracts of others, leading to a
+fully connected channel network, at the cost of capital being tied up on
+payment channels. This cost can be completely removed by making it into
+a useful proof of work. Like the [lightning consensus protocol](https://github.com/BumblebeeBat/FlyingFox/blob/master/docs/lightning_consensus.md)
 
-While the Lightning Network can also easily extend across multiple independent
-blockchains to allow for the transfer of _value_ via an exchange market, it
-cannot be used to assymetrically transfer _tokens_ from one blockchain to
-another.  The main benefit of the GnuClear network described here is to enable
-such direct token transfers.  That said, we expect payment channels and the
-Lightning Network to become widely adopted along with our token transfer
-mechanism, for cost-saving and privacy reasons.
+The Lightning Network can also easily extend across multiple independent
+blockchains to allow for the transfer of value via an exchange market, _and_
+it's state-channels 
+can be used to assymetrically transfer _tokens_ from one blockchain to
+another, and to extend a single smart contract over multiple blockchains.
+
+We expect payment channels and the
+Lightning Network to become widely adopted, for cost-saving and privacy reasons.
 
 #### Segregated Witness
 
