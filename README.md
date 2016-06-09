@@ -206,7 +206,7 @@ PreCommit cannot contribute to evidence to PreCommit something else.  This
 ensures both safety and liveness of the consensus algorithm.
 
 The full details of the protocol are described
-[here](https://github.com/tendermint/tendermint/https://github.com/tendermint/tendermint/wiki/Byzantine-Consensus-Algorithm).
+[here](https://github.com/tendermint/tendermint/wiki/Byzantine-Consensus-Algorithm).
 
 Tendermint’s security derives from its use of optimal Byzantine fault-tolerance
 via super-majority (+⅔) voting and the locking mechanism.  Together, they ensure
