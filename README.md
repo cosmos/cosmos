@@ -89,7 +89,7 @@ limited by the capacity of a single physical machine, lest we sacrifice the
 property of complete auditability.  The Lightning Network [\[7\]][7] can help
 scale Bitcoin transaction volume by leaving some transactions off the ledger
 completely and is well suited for micropayments and privacy preserving payment
-rails, so it is suitable for more generalized scaling needs.
+rails, and it is suitable for more generalized scaling needs.
 <!---
 state-channels allow for generalized smart contracts in the lightning network
 --->
@@ -209,7 +209,7 @@ PreCommit cannot contribute to evidence to PreCommit something else.  This
 ensures both safety and liveness of the consensus algorithm.
 
 The full details of the protocol are described
-[here](https://github.com/tendermint/tendermint/https://github.com/tendermint/tendermint/wiki/Byzantine-Consensus-Algorithm).
+[here](https://github.com/tendermint/tendermint/wiki/Byzantine-Consensus-Algorithm).
 
 Tendermint’s security derives from its use of optimal Byzantine fault-tolerance
 via super-majority (+⅔) voting and the locking mechanism.  Together, they ensure
