@@ -89,7 +89,7 @@ limited by the capacity of a single physical machine, lest we sacrifice the
 property of complete auditability.  The Lightning Network [\[7\]][7] can help
 scale Bitcoin transaction volume by leaving some transactions off the ledger
 completely and is well suited for micropayments and privacy preserving payment
-rails, so it is suitable for more generalized scaling needs. <!-- state-channels allow for generalized smart contracts in the lightning network  -->
+rails, so it is suitable for more generalized scaling needs. <!--- state-channels allow for generalized smart contracts in the lightning network  --->
 
 An ideal solution would be one that allows multiple parallel blockchains to
 interoperate while retaining their security properties, but this has proven
@@ -1241,7 +1241,7 @@ and the Dfinity project. [\[18\]][18]
 The Lightning Network is a proposed message relay network operating at a layer
 above the Bitcoin blockchain, enabling many orders of magnitude improvement in
 transaction throughput by moving the majority of transactions outside of the
-consensus ledger into so-called "payment channels". <!-- lightning network exists beyond bitcoin -->
+consensus ledger into so-called "payment channels". <!--- lightning network exists beyond bitcoin --->
 Which enables parties to
 enter into stateful contracts where the state can be updated by sharing digital
 signatures, and contracts can be closed by finally publishing evidence onto the
