@@ -1,6 +1,9 @@
 # GnuClear
 **A New Architecture for Scalable Blockchain Decentralization**
 
+Jae Kwon jae@tendermint.com<br/>
+Ethan Buchman ethan@tendermint.com
+
 For discussions, check out the [gnuclear forum](http://forum.tendermint.com/c/gnuclear)
 and also see the [issues](https://github.com/gnuclear/gnuclear-whitepaper/issues)
 
