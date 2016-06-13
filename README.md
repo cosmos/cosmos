@@ -1023,9 +1023,16 @@ coordinated via the generic `TextProposal`.
 
 ## Roadmap #####################################################################
 
-* Initial validator set
-* Shard discovery
-* Tendermint V2
+* Decide on genesis-validators
+* Decide on crowdfund event details
+* Address shard attributes and discovery
+* Launch GnuClear crowdfunding event
+* Develop GnuClear and Tendermint
+* Develop EVM shards
+* Develop CryptoNote(\?) shard
+* Launch GnuClear blockchain
+* Develop Tendermint V2
+* ...
 
 ## Related Work ################################################################
 
@@ -1221,15 +1228,15 @@ and the Dfinity project. [\[18\]][18]
 The Lightning Network is a proposed message relay network operating at a layer
 above the Bitcoin blockchain, enabling many orders of magnitude improvement in
 transaction throughput by moving the majority of transactions outside of the
-consensus ledger into so-called "payment channels". This is made possible (with
-great difficulty) by the Bitcoin scripting language, which enables parties to
-enter into stateful contracts where the state can be updated by sharing digital
-signatures, and contracts can be closed by finally publishing evidence onto the
-blockchain, a mechanism first popularized by cross-chain atomic swaps.  By
-openning payment channels with many parties, participants in the Lightning
-Network can become focal points for routing the payments of others, leading to a
-fully connected payment channel network, at the cost of capital being tied up on
-payment channels.
+consensus ledger into so-called "payment channels". This is made possible by
+on-chain cryptocurrency scripts, which enables parties to enter into stateful
+contracts where the state can be updated by sharing digital signatures, and
+contracts can be closed by finally publishing evidence onto the blockchain, a
+mechanism first popularized by cross-chain atomic swaps.  By openning payment
+channels with many parties, participants in the Lightning Network can become
+focal points for routing the payments of others, leading to a fully connected
+payment channel network, at the cost of capital being tied up on payment
+channels.
 
 While the Lightning Network can also easily extend across multiple independent
 blockchains to allow for the transfer of _value_ via an exchange market, it
