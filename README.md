@@ -4,8 +4,8 @@
 Jae Kwon jae@tendermint.com<br/>
 Ethan Buchman ethan@tendermint.com
 
-For discussions, check out the [gnuglear forum](http://forum.tendermint.com/c/gnuglear)
-and also see the [issues](https://github.com/gnuglear/gnuglear-whitepaper/issues)
+For discussions, check out the [gnuclear forum](http://forum.tendermint.com/c/gnuclear)
+and also see the [issues](https://github.com/gnuclear/gnuclear-whitepaper/issues)
 
 _NOTE: If you can read this on GitHub, then we're still actively developing this
 document.  Please check regularly for updates!._
@@ -20,9 +20,9 @@ document.  Please check regularly for updates!._
     * [Overcoming Forks and Censorship
     Attacks](#overcoming-forks-and-censorship-attacks)
     * [TMSP](#tmsp)
-  * [The GnuClear Hub and Shards](#the-gnuglear-hub-and-shards)
-    * [The GnuClear Hub](#the-gnuglear-hub)
-    * [GnuClear Shards](#gnuglear-shards)
+  * [The GnuClear Hub and Shards](#the-gnuclear-hub-and-shards)
+    * [The GnuClear Hub](#the-gnuclear-hub)
+    * [GnuClear Shards](#gnuclear-shards)
   * [Inter-blockchain Communication (IBC)](#inter-blockchain-communication-ibc)
     * [IBCBlockCommitTx Transaction](#ibcblockcommittx-transaction)
     * [IBCPacketTx Transaction](#ibcpackettx-transaction)
@@ -35,9 +35,9 @@ document.  Please check regularly for updates!._
     * [Network Partition Mitigation](#network-partition-mitigation)
     * [Federated Name Resolution System](#federated-name-resolution-system)
   * [Issuance and Incentives](#issuance-and-incentives)
-    * [The Gnug Token](#the-gnug-token)
-    * [Initial Gnug Distribution and
-    Issuance](#initial-gnug-distribution-and-issuance)
+    * [The Quark Token](#the-quark-token)
+    * [Initial Quark Distribution and
+    Issuance](#initial-quark-distribution-and-issuance)
     * [Limitations on the Number of
     Validators](#limitations-on-the-number-of-validators)
     * [Becoming a Validator After Genesis
@@ -111,13 +111,13 @@ hub and shards are powered by Tendermint Core [\[8\]][8], which provides a
 high-performance, consistent, secure
 [PBFT-like](http://tendermint.com/blog/tendermint-vs-pbft/) consensus engine,
 where strict fork-accountability guarantees hold over the behaviour of malicious
-actors.  The GnuClear hub, also known as Gnugleus, is a simple multi-asset
-proof-of-stake cryptocurrency with a simple governance mechanism enabling the
-network to adapt and upgrade.  The hub and shards of the GnuClear network
-communicate with each other via an inter-blockchain communication (IBC) protocol
-which is formalized here.  The GnuClear hub utilizes IBC packets to move tokens
-from one shard to another while maintaining the total amount of tokens in the
-network, thus isolating each shard from the failure of others.
+actors.  The GnuClear hub is a simple multi-asset proof-of-stake cryptocurrency
+with a simple governance mechanism enabling the network to adapt and upgrade.
+The hub and shards of the GnuClear network communicate with each other via an
+inter-blockchain communication (IBC) protocol which is formalized here.  The
+GnuClear hub utilizes IBC packets to move tokens from one shard to another while
+maintaining the total amount of tokens in the network, thus isolating each shard
+from the failure of others.
 
 We believe that GnuClear proves that Tendermint BFT consensus is well suited for
 scaling public proof-of-stake blockchains, and that it can compete with
@@ -235,13 +235,13 @@ which have no global state.  Instead of syncing a chain of block headers and
 verifying the proof of work, light clients, who are assumed to know all public
 keys in the validator set, need only verify the +⅔ PreCommits in the latest
 block.  The need to sync all block headers is eliminated as the existence of an
-alternative chain (a fork) means ⅓+ of validator deposits can be
-slashed.  Of course, since slashing requires that _someone_ detects the fork, it
-would be prudent for light clients, or at least those that are able, to sync
-headers, perhaps more slowly, on a risk adjusted basis, where the explicit cost
-of a fork can be easily calculated at ⅓+ of the bonded stake.
-Additionally, light clients must stay synced with changes to the validator set,
-in order to avoid certain [long range attacks](#preventing-long-range-attacks).
+alternative chain (a fork) means ⅓+ of validator deposits can be slashed.  Of
+course, since slashing requires that _someone_ detects the fork, it would be
+prudent for light clients, or at least those that are able, to sync headers,
+perhaps more slowly, on a risk adjusted basis, where the explicit cost of a fork
+can be easily calculated at ⅓+ of the bonded stake.  Additionally, light clients
+must stay synced with changes to the validator set, in order to avoid certain
+[long range attacks](#preventing-long-range-attacks).
 
 In a spirit similar to Ethereum, Tendermint enables applications to embed a
 global Merkle root hash in each block, allowing easily verifiable state queries
@@ -308,18 +308,18 @@ light-client LRA security.
 
 ### Overcoming Forks and Censorship Attacks
 
-Due to the definition of a block commit, any ⅓+ coalition of validators can
-halt the blockchain by not broadcasting their votes. Such a coalition can also
-censor particular transactions by rejecting blocks that include these
-transactions, though this would result in a significant proportion of block
-proposals to be rejected, which would slow down the rate of block commits of the
-blockchain, reducing its utility and value. The malicious coalition might also
-broadcast votes in a trickle so as to grind blockchain block commits to a near
-halt, or engage in any combination of these attacks.  Finally, it can cause the
+Due to the definition of a block commit, any ⅓+ coalition of validators can halt
+the blockchain by not broadcasting their votes. Such a coalition can also censor
+particular transactions by rejecting blocks that include these transactions,
+though this would result in a significant proportion of block proposals to be
+rejected, which would slow down the rate of block commits of the blockchain,
+reducing its utility and value. The malicious coalition might also broadcast
+votes in a trickle so as to grind blockchain block commits to a near halt, or
+engage in any combination of these attacks.  Finally, it can cause the
 blockchain to fork, by double-signing or violating the locking rules.
 
-If a global active adversary were also involved, it can partition the network
-in such a way that it may appear that the wrong subset of validators were
+If a global active adversary were also involved, it can partition the network in
+such a way that it may appear that the wrong subset of validators were
 responsible for the slowdown. This is not just a limitation of Tendermint, but
 rather a limitation of all consensus protocols whose network is potentially
 controlled by an active adversary.
@@ -397,8 +397,8 @@ Meanwhile, the TMSP application would be responsible for
 Tendermint is able to decompose the blockchain design by offering a very simple
 API between the application process and consensus process.
 
-TMSP consists of 3 primary message types that get delivered from the core to
-the application. The application replies with corresponding response messages.
+TMSP consists of 3 primary message types that get delivered from the core to the
+application. The application replies with corresponding response messages.
 
 The `AppendTx` message is the work horse of the application. Each transaction in
 the blockchain is delivered with this message. The application needs to validate
@@ -444,7 +444,7 @@ collide with a recent block-hash from the source.  This mechanism is called
 inter-blockchain communication, or IBC for short.
 
 ![Figure of hub and shards
-acknowledgement](https://raw.githubusercontent.com/gnuglear/gnuglear-whitepaper/master/images/hub_and_shards.png)
+acknowledgement](https://raw.githubusercontent.com/gnuclear/gnuclear-whitepaper/master/images/hub_and_shards.png)
 
 Any of the shards can themselves be hubs to form a multi-level hierarchical
 network, but for the sake of clarity we will only describe the simple
@@ -519,12 +519,12 @@ allowing for complete freedom on the sending chain as to how many outbound
 packets are allowed.
 
 ![Figure of Shard1, Shard2, and Hub IBC without
-acknowledgement](https://raw.githubusercontent.com/gnuglear/gnuglear-whitepaper/master/msc/ibc_without_ack.png)
+acknowledgement](https://raw.githubusercontent.com/gnuclear/gnuclear-whitepaper/master/msc/ibc_without_ack.png)
 
-<CAPTION on a figure>
-In the example above, in order to update the block-hash of "Shard1" on "Hub" (or
-of "Hub" on "Shard2"), an `IBCBlockCommitTx` transaction must be posted on "Hub"
-with the block-hash of "Shard1" (or on "Shard2" with the block-hash of "Hub").
+<CAPTION on a figure> In the example above, in order to update the block-hash of
+"Shard1" on "Hub" (or of "Hub" on "Shard2"), an `IBCBlockCommitTx` transaction
+must be posted on "Hub" with the block-hash of "Shard1" (or on "Shard2" with the
+block-hash of "Hub").
 
 ### IBCBlockCommitTx Transaction
 
@@ -616,7 +616,7 @@ responsibility to confirm delivery by including an abbreviated`IBCPacket` in the
 app Merkle hash.
 
 ![Figure of Shard1, Shard2, and Hub IBC with
-acknowledgement](https://raw.githubusercontent.com/gnuglear/gnuglear-whitepaper/master/msc/ibc_with_ack.png)
+acknowledgement](https://raw.githubusercontent.com/gnuclear/gnuclear-whitepaper/master/msc/ibc_with_ack.png)
 
 First, an `IBCBlockCommit` and `IBCPacketTx` are posted on "Hub" that proves the
 existence of an `IBCPacket` on "Shard1".  Say that `IBCPacketTx` has the
@@ -690,7 +690,7 @@ it would have set the status automatically to `Timeout`.  This evidence of a
 timeout can get posted back on "Shard1", and any tokens can be returned.
 
 ![Figure of Shard1, Shard2, and Hub IBC with acknowledgement and
-timeout](https://raw.githubusercontent.com/gnuglear/gnuglear-whitepaper/master/msc/ibc_with_ack_timeout.png)
+timeout](https://raw.githubusercontent.com/gnuclear/gnuclear-whitepaper/master/msc/ibc_with_ack_timeout.png)
 
 ## Use Cases ###################################################################
 
@@ -698,8 +698,8 @@ timeout](https://raw.githubusercontent.com/gnuglear/gnuglear-whitepaper/master/m
 
 A priveleged shard can act as the source of a pegged token of another
 cryptocurrency. A peg is in essence similar to the relationship between a
-GnuClear hub and shard; both must keep up with the latest blocks of the
-other in order to verify proofs that tokens have moved from one to the other.  A
+GnuClear hub and shard; both must keep up with the latest blocks of the other in
+order to verify proofs that tokens have moved from one to the other.  A
 peg-shard on the GnuClear network keeps up with both the hub as well as the
 other cryptocurrency.  The indirection through the peg-shard allows the logic of
 the hub to remain simple by encapsulating any non-Tendermint consensus
@@ -723,9 +723,9 @@ withdrawn.
 
 Of course, the risk of such a pegging contract is a rogue validator set.  ⅓+
 Byzantine validators could cause a fork, withdrawing ether from the peg-contract
-on Ethereum while keeping the pegged-ether on the peg-shard. Worse, +⅔
-Byzantine validators can steal ether outright from those who sent it to the
-peg-contract by deviating from the original pegging logic of the peg-shard.
+on Ethereum while keeping the pegged-ether on the peg-shard. Worse, +⅔ Byzantine
+validators can steal ether outright from those who sent it to the peg-contract
+by deviating from the original pegging logic of the peg-shard.
 
 It is possible to address these issues by designing the peg to be "totally
 accountable".  For example, all IBC packets both from the hub as well as from
@@ -845,42 +845,49 @@ TODO: note on integration with shard discovery, see roadmap
 
 ## Issuance and Incentives #####################################################
 
-### The Gnug Token
+### The Quark Token
 
 While the GnuClear hub is a multi-asset system, there is a native token called
-_gnugs_.  Gnugs are the only staking token of GnuClear.  Gnugs are a license for
-the holder to vote, validate, or delegate to other validators.  Like Ethereum's
-ether, gnugs are also used to pay for transaction fees to mitigate spam.
-Additional gnugs are issued to validators and those who delegate to validators.
+_quarks_.  Quarks are the only staking token of GnuClear.  Quarks are a license
+for the holder to vote, validate, or delegate to other validators.  Like
+Ethereum's ether, quarks are also used to pay for transaction fees to mitigate
+spam.  Additional quarks are issued to validators and those who delegate to
+validators.
 
-The initial distribution of gnug tokens and validators on Genesis will go to the
-funders of the GnuClear crowdsale (80%), and the GnuClear foundation (20%).
-From genesis onward, 30% of the initial gnug distribution will be rewarded to
+The initial distribution of quark tokens and validators on Genesis will go to
+the funders of the GnuClear crowdsale (80%), and the GnuClear foundation (20%).
+From genesis onward, 30% of the initial quark distribution will be rewarded to
 active validators and delegators.
 
 #### Crowdfund
 
-16,000,000 gnugs will be sold in an Ethereum-style crowdsale. The crowdsale will
-last 42 days, in which the first 14 days will have the best price, and the price
-will decrease linearly to 2/3 of the initial price in the following 28 days.
-The price will be determined by dividing 16,000,000 by the total effective
-purchasing power of all the bids.
+16,000,000 quarks will be sold in an Ethereum-style crowdsale. The crowdsale
+will last 42 days, in which the first 14 days will have the best price, and the
+price will decrease linearly to 2/3 of the initial price in the following 28
+days.  The price will be determined by dividing 16,000,000 by the total
+effective purchasing power of all the bids.
 
 #### GnuClear Foundation
 
 The GnuClear foundation is an external entity that is hired to develop the
-GnuClear network.  Gnug holders can vote to change the foundation by changing
+GnuClear network.  Quark holders can vote to change the foundation by changing
 the `GnuClearFoundationAddress` parameter.  This foundation will have 4,000,000
-gnugs, of which 1,200,000 are pre-vested, and the rest will vest over a period
+quarks, of which 1,200,000 are pre-vested, and the rest will vest over a period
 of 4 years, all of which can be used to the full extent for voting.
 
 #### GnuClear Hub Block Reward
 
 Every block rewards all the active validators and delegators in proportion to
-their bonded gnugs (before commissions).  There will be roughly 6,000,000 gnugs
-rewarded every year, forever.  The number is not exact, because the number of
-blocks per year is not exact.  As with transaction fees, delegators pay the
-delegated validator a commission of 10%.
+their bonded quarks (before commissions).  There will be roughly 6,000,000
+quarks rewarded every year, forever.  The number is not exact, because the
+number of blocks per year is not exact.  As with transaction fees, delegators
+pay the delegated validator a commission of 10%.
+
+#### Incentivizing Hackers
+
+TODO: Note about automatic bounties for hackers, to incentivize hackers to
+publish evidence (like capture-the-flag) that rewards some of the validator's
+quarks to the hacker, and burns some as well.
 
 ### Limitations on the Number of Validators
 
@@ -912,18 +919,18 @@ Year 10: 300
 
 ### Becoming a Validator After Genesis Day
 
-Gnug holders who are not already validators can become one by signing and
-submitting a `BondTx` transaction.  The amount of gnugs provided as
-collateral must be nonzero.  Anyone can become a validator at any
-time, except when the size of the current validator set is greater than the
-maximum number of validators allowed.  In that case, the transaction is only
-valid if the amount of gnugs is greater than the amount of effective gnugs held
-by the smallest validator, where effective gnugs include vesting and delegated
-gnugs.  When a new validator replaces an existing validator in such a way, the
-existing validator becomes inactive and all the gnugs and delegated gnugs enter
-the unbonding state.  Note that, given the distribution of genesis-validators,
-the 33 available validator spots, and the issuance schedule, it is impossible
-for any genesis-validators to become unbonded by this mechanism.
+Quark holders who are not already validators can become one by signing and
+submitting a `BondTx` transaction.  The amount of quarks provided as collateral
+must be nonzero.  Anyone can become a validator at any time, except when the
+size of the current validator set is greater than the maximum number of
+validators allowed.  In that case, the transaction is only valid if the amount
+of quarks is greater than the amount of effective quarks held by the smallest
+validator, where effective quarks include vesting and delegated quarks.  When a
+new validator replaces an existing validator in such a way, the existing
+validator becomes inactive and all the quarks and delegated quarks enter the
+unbonding state.  Note that, given the distribution of genesis-validators, the
+33 available validator spots, and the issuance schedule, it is impossible for
+any genesis-validators to become unbonded by this mechanism.
 
 ### Penalties for Validators
 
@@ -968,26 +975,31 @@ toward the funding of common goods.  These funds will go to the
 `CustodianAddress` to be distributed in accordance with whatever is decided by
 the governance system.
 
-Gnug holders who delegate their voting power to other validators pay 10%
+Quark holders who delegate their voting power to other validators pay 10%
 commission to the delegated validator.
 
 ## Governance ##################################################################
 
-The GnuClear hub blockchain is a distributed organization that requires a
-well defined governance mechanism in order to coordinate various changes to the
+The GnuClear hub blockchain is a distributed organization that requires a well
+defined governance mechanism in order to coordinate various changes to the
 blockchain, such as the validator set, predefined parameters of the system, as
 well as software and wetware protocol upgrades.
 
-All gnug holders are responsible for voting on all proposals.  Failing to vote
-on a proposal in a timely manner will result in the gnug holder losing
-`AbsenteeismPenalty` (DEFAULT 0.5%) of its gnugs at most once per
+_TODO: Remove AbsenteeismPenalty: This will go away, and we'll either create an
+artificial incentive for voting, or, we'll say that only the validators and the
+delegators' votes count, and specify how delegators can override the validator's
+vote._
+
+All quark holders are responsible for voting on all proposals.  Failing to vote
+on a proposal in a timely manner will result in the quark holder losing
+`AbsenteeismPenalty` (DEFAULT 0.5%) of its quarks at most once per
 `AbsenteeismPenaltyWindow` (DEFAULT 1 week) time period.
 
 Each proposal requires a deposit of `MinimumProposalDeposit` tokens, which may
-be a combination one or more tokens include gnugs.  For each proposal, the voter
-may vote to take the deposit. If more than half of the voters choose to take the
-deposit (e.g. because the proposal was spam), the deposit goes to the reserve
-pool, except any gnugs which are burned.
+be a combination one or more tokens include quarks.  For each proposal, the
+voter may vote to take the deposit. If more than half of the voters choose to
+take the deposit (e.g. because the proposal was spam), the deposit goes to the
+reserve pool, except any quarks which are burned.
 
 For each proposal, voters may vote with the following options:
 
@@ -1003,12 +1015,12 @@ required for the proposal to be decided as accepted (or decided as failed), but
 majority is vetoed, everyone gets punished by losing `VetoPenaltyFeeBlocks`
 (DEFAULT 1 day's worth of blocks) worth of fees (except taxes which will not be
 affected), and the party that vetoed the majority decision will be additionally
-punished by losing `VetoPenaltyGnugs` (DEFAULT 0.1%) of its gnugs.
+punished by losing `VetoPenaltyQuarks` (DEFAULT 0.1%) of its quarks.
 
 ### Parameter Change Proposal
 
-Any of the parameters defined here can be changed with the acceptance of
-a `ParameterChangeProposal`.
+Any of the parameters defined here can be changed with the acceptance of a
+`ParameterChangeProposal`.
 
 ### Text Proposal
 
@@ -1116,10 +1128,10 @@ their insecurity.
 
 The criticism in the Stellar paper of the Tendermint-based proof-of-stake
 systems is mitigated by the token strategy described here, wherein a new type of
-token called the _gnug_ is issued that (mostly) represents the inherent value of
-the network, without competing with any preexisting currency or store of value.
-The advantage of Tendermint-based proof-of-stake, then, is its relative
-simplicity, while still providing sufficient, and provable security guarantees.
+token called the _quark_ is issued that represent claims to future portions of
+fees and rewards. The advantage of Tendermint-based proof-of-stake, then, is its
+relative simplicity, while still providing sufficient, and provable security
+guarantees.
 
 #### BitcoinNG
 
@@ -1159,10 +1171,10 @@ loosely coupled bilateral relationship network.  Like the Lightning Network, the
 purpose of ILP is to facilitate payments, but it specifically focuses on
 payments across disparate ledger types, and extends the atomic transaction
 mechanism to include not only hash-locks, but also a quroum of notaries (called
-the Atomic Transport Protocol).  The latter mechanism for enforcing atomicity
-in inter-ledger transactions is similar to Tendermint's light-client SPV
-echanism, so an illustration of the distinction between ILP and GnuClear/IBC is
-warranted, and provided below.
+the Atomic Transport Protocol).  The latter mechanism for enforcing atomicity in
+inter-ledger transactions is similar to Tendermint's light-client SPV echanism,
+so an illustration of the distinction between ILP and GnuClear/IBC is warranted,
+and provided below.
 
 1. The notaries of a connector in ILP does not support membership changes, and
    does not allow for flexible weighting between notaries.  On the other hand,
@@ -1209,11 +1221,11 @@ algorithm that scales more securely.
 #### Ethereum Scalability Efforts
 
 Ethereum is currently researching a number of different strategies to shard the
-state of the Ethereum blockchain to address scalability needs. These efforts have
-the goal of maintaining the abstraction layer offered by the current Ethereum
-Virtual Machine across the shared state space. Research efforts are being
-conducted by the Ethereum Foundation under Serenity, the Consensys organizations
-and the Dfinity project. [\[18\]][18]
+state of the Ethereum blockchain to address scalability needs. These efforts
+have the goal of maintaining the abstraction layer offered by the current
+Ethereum Virtual Machine across the shared state space. Research efforts are
+being conducted by the Ethereum Foundation under Serenity, the Consensys
+organizations and the Dfinity project. [\[18\]][18]
 
 ### General Scaling
 
