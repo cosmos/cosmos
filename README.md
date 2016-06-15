@@ -4,8 +4,8 @@
 Jae Kwon jae@tendermint.com<br/>
 Ethan Buchman ethan@tendermint.com
 
-For discussions, check out the [gnuclear forum](http://forum.tendermint.com/c/gnuclear)
-and also see the [issues](https://github.com/gnuclear/gnuclear-whitepaper/issues)
+For discussions, check out the [gnuglear forum](http://forum.tendermint.com/c/gnuglear)
+and also see the [issues](https://github.com/gnuglear/gnuglear-whitepaper/issues)
 
 _NOTE: If you can read this on GitHub, then we're still actively developing this
 document.  Please check regularly for updates!._
@@ -20,9 +20,9 @@ document.  Please check regularly for updates!._
     * [Overcoming Forks and Censorship
     Attacks](#overcoming-forks-and-censorship-attacks)
     * [TMSP](#tmsp)
-  * [The GnuClear Hub and Shards](#the-gnuclear-hub-and-shards)
-    * [The GnuClear Hub](#the-gnuclear-hub)
-    * [GnuClear Shards](#gnuclear-shards)
+  * [The GnuClear Hub and Shards](#the-gnuglear-hub-and-shards)
+    * [The GnuClear Hub](#the-gnuglear-hub)
+    * [GnuClear Shards](#gnuglear-shards)
   * [Inter-blockchain Communication (IBC)](#inter-blockchain-communication-ibc)
     * [IBCBlockCommitTx Transaction](#ibcblockcommittx-transaction)
     * [IBCPacketTx Transaction](#ibcpackettx-transaction)
@@ -35,9 +35,9 @@ document.  Please check regularly for updates!._
     * [Network Partition Mitigation](#network-partition-mitigation)
     * [Federated Name Resolution System](#federated-name-resolution-system)
   * [Issuance and Incentives](#issuance-and-incentives)
-    * [The Gnut Token](#the-gnut-token)
-    * [Initial Gnut Distribution and
-    Issuance](#initial-gnut-distribution-and-issuance)
+    * [The Gnug Token](#the-gnug-token)
+    * [Initial Gnug Distribution and
+    Issuance](#initial-gnug-distribution-and-issuance)
     * [Limitations on the Number of
     Validators](#limitations-on-the-number-of-validators)
     * [Becoming a Validator After Genesis
@@ -111,7 +111,7 @@ hub and shards are powered by Tendermint Core [\[8\]][8], which provides a
 high-performance, consistent, secure
 [PBFT-like](http://tendermint.com/blog/tendermint-vs-pbft/) consensus engine,
 where strict fork-accountability guarantees hold over the behaviour of malicious
-actors.  The GnuClear hub, also known as Gnucleus, is a simple multi-asset
+actors.  The GnuClear hub, also known as Gnugleus, is a simple multi-asset
 proof-of-stake cryptocurrency with a simple governance mechanism enabling the
 network to adapt and upgrade.  The hub and shards of the GnuClear network
 communicate with each other via an inter-blockchain communication (IBC) protocol
@@ -444,7 +444,7 @@ collide with a recent block-hash from the source.  This mechanism is called
 inter-blockchain communication, or IBC for short.
 
 ![Figure of hub and shards
-acknowledgement](https://raw.githubusercontent.com/gnuclear/gnuclear-whitepaper/master/images/hub_and_shards.png)
+acknowledgement](https://raw.githubusercontent.com/gnuglear/gnuglear-whitepaper/master/images/hub_and_shards.png)
 
 Any of the shards can themselves be hubs to form a multi-level hierarchical
 network, but for the sake of clarity we will only describe the simple
@@ -519,7 +519,7 @@ allowing for complete freedom on the sending chain as to how many outbound
 packets are allowed.
 
 ![Figure of Shard1, Shard2, and Hub IBC without
-acknowledgement](https://raw.githubusercontent.com/gnuclear/gnuclear-whitepaper/master/msc/ibc_without_ack.png)
+acknowledgement](https://raw.githubusercontent.com/gnuglear/gnuglear-whitepaper/master/msc/ibc_without_ack.png)
 
 <CAPTION on a figure>
 In the example above, in order to update the block-hash of "Shard1" on "Hub" (or
@@ -616,7 +616,7 @@ responsibility to confirm delivery by including an abbreviated`IBCPacket` in the
 app Merkle hash.
 
 ![Figure of Shard1, Shard2, and Hub IBC with
-acknowledgement](https://raw.githubusercontent.com/gnuclear/gnuclear-whitepaper/master/msc/ibc_with_ack.png)
+acknowledgement](https://raw.githubusercontent.com/gnuglear/gnuglear-whitepaper/master/msc/ibc_with_ack.png)
 
 First, an `IBCBlockCommit` and `IBCPacketTx` are posted on "Hub" that proves the
 existence of an `IBCPacket` on "Shard1".  Say that `IBCPacketTx` has the
@@ -690,7 +690,7 @@ it would have set the status automatically to `Timeout`.  This evidence of a
 timeout can get posted back on "Shard1", and any tokens can be returned.
 
 ![Figure of Shard1, Shard2, and Hub IBC with acknowledgement and
-timeout](https://raw.githubusercontent.com/gnuclear/gnuclear-whitepaper/master/msc/ibc_with_ack_timeout.png)
+timeout](https://raw.githubusercontent.com/gnuglear/gnuglear-whitepaper/master/msc/ibc_with_ack_timeout.png)
 
 ## Use Cases ###################################################################
 
@@ -845,48 +845,42 @@ TODO: note on integration with shard discovery, see roadmap
 
 ## Issuance and Incentives #####################################################
 
-### The Gnut Token
+### The Gnug Token
 
 While the GnuClear hub is a multi-asset system, there is a native token called
-_gnuts_.  Unlike Ethereum's ether or Bitcoin's bitcoins, GnuClear's gnuts are
-meant for staking by validators, and voting on proposals to improve and maintain
-the GnuClear network.  To discourage the use of gnuts as a store-of-wealth or
-means of exchange, gnuts that are not held in bond decay at a rate of
-`GnutDecay` (DEFAULT: a half-life of 5 years).  Gnut holders who do not wish to
-validate, or cannot because they do not meet the bonding threshold can delegate
-to any combination of existing validators.  Gnut holders who delegate to
-validators do not pay the decay penalty.
+_gnugs_.  Gnugs are the only staking token of GnuClear.  Gnugs are a license for
+the holder to vote, validate, or delegate to other validators.  Like Ethereum's
+ether, gnugs are also used to pay for transaction fees to mitigate spam.
+Additional gnugs are issued to validators and those who delegate to validators.
 
-### Initial Gnut Distribution and Issuance
+The initial distribution of gnug tokens and validators on Genesis will go to the
+funders of the GnuClear crowdsale (80%), and the GnuClear foundation (20%).
+From genesis onward, 30% of the initial gnug distribution will be rewarded to
+active validators and delegators.
 
-The initial distribution of gnut tokens and validators on Genesis will go to the
-genesis-validators (33%), the GnuClear foundation (17%), and funders of a
-crowdsale (50%).
+#### Crowdfund
 
-#### Genesis Validators
-
-Of the 100 initial available validator spots, 33 of them will be occupied by
-distinct genesis-validators around the globe.  Each gensesis-validator will have
-200,000 vesting gnuts, and will begin as active validators.  Vesting gnuts are
-gnuts with the restriction that they cannot be transferred.  Vesting gnuts will
-vest every block over a period of 4 years.  Unvested gnuts can be used to the
-full extent for voting.
+16,000,000 gnugs will be sold in an Ethereum-style crowdsale. The crowdsale will
+last 42 days, in which the first 14 days will have the best price, and the price
+will decrease linearly to 2/3 of the initial price in the following 28 days.
+The price will be determined by dividing 16,000,000 by the total effective
+purchasing power of all the bids.
 
 #### GnuClear Foundation
 
 The GnuClear foundation is an external entity that is hired to develop the
-GnuClear network.  Gnut holders can vote to change the foundation by changing
-the `GnuClearFoundationAddress` parameter.  This foundation shall have 3,400,000
-gnuts, of which 1,100,000 are pre-vested, and 2,300,000 will vest over a period
+GnuClear network.  Gnug holders can vote to change the foundation by changing
+the `GnuClearFoundationAddress` parameter.  This foundation will have 4,000,000
+gnugs, of which 1,200,000 are pre-vested, and the rest will vest over a period
 of 4 years, all of which can be used to the full extent for voting.
 
-#### Crowdfund
+#### GnuClear Hub Block Reward
 
-In addition to the 10,000,000 allotted gnuts as described above, another
-10,000,000 will be distributed via a crowdsale modeled after the Ethereum
-crowdsale.  The crowdsale will last 42 days, in which the first 14 days will
-have the best price, and the price will decrease linearly to 2/3 of the initial
-price in the following 28 days.
+Every block rewards all the active validators and delegators in proportion to
+their bonded gnugs (before commissions).  There will be roughly 6,000,000 gnugs
+rewarded every year, forever.  The number is not exact, because the number of
+blocks per year is not exact.  As with transaction fees, delegators pay the
+delegated validator a commission of 10%.
 
 ### Limitations on the Number of Validators
 
@@ -918,15 +912,15 @@ Year 10: 300
 
 ### Becoming a Validator After Genesis Day
 
-Gnut holders who are not already validators can become one by signing and
-submitting a `BondTx` transaction.  The amount of gnuts provided as
+Gnug holders who are not already validators can become one by signing and
+submitting a `BondTx` transaction.  The amount of gnugs provided as
 collateral must be nonzero.  Anyone can become a validator at any
 time, except when the size of the current validator set is greater than the
 maximum number of validators allowed.  In that case, the transaction is only
-valid if the amount of gnuts is greater than the amount of effective gnuts held
-by the smallest validator, where effective gnuts include vesting and delegated
-gnuts.  When a new validator replaces an existing validator in such a way, the
-existing validator becomes inactive and all the gnuts and delegated gnuts enter
+valid if the amount of gnugs is greater than the amount of effective gnugs held
+by the smallest validator, where effective gnugs include vesting and delegated
+gnugs.  When a new validator replaces an existing validator in such a way, the
+existing validator becomes inactive and all the gnugs and delegated gnugs enter
 the unbonding state.  Note that, given the distribution of genesis-validators,
 the 33 available validator spots, and the issuance schedule, it is impossible
 for any genesis-validators to become unbonded by this mechanism.
@@ -974,8 +968,8 @@ toward the funding of common goods.  These funds will go to the
 `CustodianAddress` to be distributed in accordance with whatever is decided by
 the governance system.
 
-Gnut holders who delegate their voting power to other validators pay
-`DelegationCommision` (DEFAULT 15%) to the delegated validator.
+Gnug holders who delegate their voting power to other validators pay 10%
+commission to the delegated validator.
 
 ## Governance ##################################################################
 
@@ -984,16 +978,16 @@ well defined governance mechanism in order to coordinate various changes to the
 blockchain, such as the validator set, predefined parameters of the system, as
 well as software and wetware protocol upgrades.
 
-All gnut holders are responsible for voting on all proposals.  Failing to vote
-on a proposal in a timely manner will result in the gnut holder losing
-`AbsenteeismPenalty` (DEFAULT 0.5%) of its gnuts at most once per
+All gnug holders are responsible for voting on all proposals.  Failing to vote
+on a proposal in a timely manner will result in the gnug holder losing
+`AbsenteeismPenalty` (DEFAULT 0.5%) of its gnugs at most once per
 `AbsenteeismPenaltyWindow` (DEFAULT 1 week) time period.
 
 Each proposal requires a deposit of `MinimumProposalDeposit` tokens, which may
-be a combination one or more tokens include gnuts.  For each proposal, the voter
+be a combination one or more tokens include gnugs.  For each proposal, the voter
 may vote to take the deposit. If more than half of the voters choose to take the
 deposit (e.g. because the proposal was spam), the deposit goes to the reserve
-pool, except any gnuts which are burned.
+pool, except any gnugs which are burned.
 
 For each proposal, voters may vote with the following options:
 
@@ -1009,7 +1003,7 @@ required for the proposal to be decided as accepted (or decided as failed), but
 majority is vetoed, everyone gets punished by losing `VetoPenaltyFeeBlocks`
 (DEFAULT 1 day's worth of blocks) worth of fees (except taxes which will not be
 affected), and the party that vetoed the majority decision will be additionally
-punished by losing `VetoPenaltyGnuts` (DEFAULT 0.1%) of its gnuts.
+punished by losing `VetoPenaltyGnugs` (DEFAULT 0.1%) of its gnugs.
 
 ### Parameter Change Proposal
 
@@ -1122,7 +1116,7 @@ their insecurity.
 
 The criticism in the Stellar paper of the Tendermint-based proof-of-stake
 systems is mitigated by the token strategy described here, wherein a new type of
-token called the _gnut_ is issued that (mostly) represents the inherent value of
+token called the _gnug_ is issued that (mostly) represents the inherent value of
 the network, without competing with any preexisting currency or store of value.
 The advantage of Tendermint-based proof-of-stake, then, is its relative
 simplicity, while still providing sufficient, and provable security guarantees.
