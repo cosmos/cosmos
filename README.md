@@ -863,9 +863,9 @@ active validators and delegators.
 
 16,000,000 quarks will be sold in an Ethereum-style crowdsale. The crowdsale
 will last 42 days, in which the first 14 days will have the best price, and the
-price will decrease linearly to 2/3 of the initial price in the following 28
-days.  The price will be determined by dividing 16,000,000 by the total
-effective purchasing power of all the bids.
+purchasing power will decrease linearly to 2/3 of the initial purchasing power
+in the following 28 days.  The price will be determined by dividing 16,000,000
+by the total effective purchasing power of all the bids.
 
 #### GnuClear Foundation
 
