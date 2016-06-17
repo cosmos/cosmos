@@ -24,8 +24,6 @@ document.  Please check regularly for updates!._
     * [The Gnuclear Reactor](#the-gnuclear-reactor)
     * [Gnuclear Shards](#gnuclear-shards)
   * [Inter-blockchain Communication (IBC)](#inter-blockchain-communication-ibc)
-    * [IBCBlockCommitTx Transaction](#ibcblockcommittx-transaction)
-    * [IBCPacketTx Transaction](#ibcpackettx-transaction)
     * [IBC Packet Delivery
     Acknowledgement](#ibc-packet-delivery-acknowledgement)
   * [Transactions](#transactions)
@@ -537,81 +535,8 @@ acknowledgement](https://raw.githubusercontent.com/gnuclear/gnuclear-whitepaper/
 transaction must be posted on "Reactor" with the block-hash of "Shard1" (or on
 "Shard2" with the block-hash of "Reactor").
 
-### IBCBlockCommitTx Transaction
-
-An `IBCBlockCommitTx` transaction is composed of:
-
-- `ChainID (string)`: The ID of the blockchain
-- `BlockHash ([]byte)`: The block-hash bytes, the Merkle root which includes the
-  app-hash
-- `BlockPartsHeader (PartSetHeader)`: The block part-set header bytes, only
-  needed to verify vote signatures
-- `BlockHeight (int)`: The height of the commit
-- `BlockRound (int)`: The round of the commit
-- `Commit ([]Vote)`: The +⅔ Tendermint `Precommit` votes that comprise a block
-  commit
-- `ValidatorsHash ([]byte)`: A Merkle-tree root hash of the new validator set
-- `ValidatorsHashProof (SimpleProof)`: A SimpleTree Merkle-proof for proving the
-  `ValidatorsHash` against the `BlockHash`
-- `AppHash ([]byte)`: A IAVLTree Merkle-tree root hash of the application state
-- `AppHashProof (SimpleProof)`: A SimpleTree Merkle-proof for proving the
-  `AppHash` against the `BlockHash`
-
-### IBCPacketTx Transaction
-
-An `IBCPacket` is composed of:
-
-- `Header (IBCPacketHeader)`: The packet header
-- `Payload ([]byte)`: The bytes of the packet payload. _Optional_
-- `PayloadHash ([]byte)`: The hash for the bytes of the packet. _Optional_
-
-Either one of `Payload` or `PayloadHash` must be present.  The hash of an
-`IBCPacket` is a simple Merkle root of the two items, `Header` and `Payload`.
-An `IBCPacket` without the full payload is called an _abbreviated packet_.
-
-An `IBCPacketHeader` is composed of:
-
-- `SrcChainID (string)`: The source blockchain ID
-- `DstChainID (string)`: The destination blockchain ID
-- `Number (int)`: A unique number for all packets
-- `Status (enum)`: Can be one of `AckPending`, `AckSent`, `AckReceived`,
-  `NoAck`, or `Timeout`
-- `Type (string)`: The types are application-dependent.  Gnuclear reserves the
-  "coin" packet type
-- `MaxHeight (int)`: If status is not `NoAckWanted` or `AckReceived` by this
-  height, status becomes `Timeout`. _Optional_
-
-An `IBCPacketTx` transaction is composed of:
-
-- `FromChainID (string)`: The ID of the blockchain which is providing this
-  packet; not necessarily the source
-- `FromBlockHeight (int)`: The blockchain height in which the following packet
-  is included (Merkle-ized) in the block-hash of the source chain
-- `Packet (IBCPacket)`: A packet of data, whose status may be one of
-  `AckPending`, `AckSent`, `AckReceived`, `NoAck`, or `Timeout`
-- `PacketProof (IAVLProof)`: A IAVLTree Merkle-proof for proving the packet's
-  hash against the `AppHash` of the source chain at given height
-
-The sequence for sending a packet from "Shard1" to "Shard2" through the
-"Reactor" is depicted in {Figure X}.  First, an `IBCPacketTx` proves to
-"Reactor" that the packet is included in the app-state of "Shard1".  Then,
-another `IBCPacketTx` proves to "Shard2" that the packet is included in the
-app-state of "Reactor".  During this procedure, the `IBCPacket` fields are
-identical: the `SrcChainID` is always "Shard1", and the `DstChainID` is always
-"Shard2".
-
-The `PacketProof` must have the correct Merkle-proof path, as follows:
-
-```
-IBC/<SrcChainID>/<DstChainID>/<Number>
-
-```
-TODO: CLARIFY
-
-When "Shard1" wants to send a packet to "Shard2" through "Reactor", the
-`IBCPacket` data are identical whether the packet is Merkle-ized on "Shard1",
-the "Reactor", or "Shard2".  The only mutable field is `Status` for tracking
-delivery, as shown below.
+_See [IBCBlockCommitTx](#ibcblockcommittx) and [IBCPacketTx](#ibcpacketcommit)
+for for more information on the two IBC transaction types._
 
 ### IBC Packet Delivery Acknowledgement
 
@@ -712,14 +637,95 @@ reactor application via the TMSP interface.
 ### Transaction Types
 
 #### SendTx
+
 #### BondTx
+
 #### UnbondTx
+
 #### SlashTx
+
 #### BurnQuarkTx
+
 #### NewProposalTx
+
 #### VoteTx
+
 #### IBCBlockCommitTx
+
+An `IBCBlockCommitTx` transaction is composed of:
+
+- `ChainID (string)`: The ID of the blockchain
+- `BlockHash ([]byte)`: The block-hash bytes, the Merkle root which includes the
+  app-hash
+- `BlockPartsHeader (PartSetHeader)`: The block part-set header bytes, only
+  needed to verify vote signatures
+- `BlockHeight (int)`: The height of the commit
+- `BlockRound (int)`: The round of the commit
+- `Commit ([]Vote)`: The +⅔ Tendermint `Precommit` votes that comprise a block
+  commit
+- `ValidatorsHash ([]byte)`: A Merkle-tree root hash of the new validator set
+- `ValidatorsHashProof (SimpleProof)`: A SimpleTree Merkle-proof for proving the
+  `ValidatorsHash` against the `BlockHash`
+- `AppHash ([]byte)`: A IAVLTree Merkle-tree root hash of the application state
+- `AppHashProof (SimpleProof)`: A SimpleTree Merkle-proof for proving the
+  `AppHash` against the `BlockHash`
+
 #### IBCPacketTx
+
+An `IBCPacket` is composed of:
+
+- `Header (IBCPacketHeader)`: The packet header
+- `Payload ([]byte)`: The bytes of the packet payload. _Optional_
+- `PayloadHash ([]byte)`: The hash for the bytes of the packet. _Optional_
+
+Either one of `Payload` or `PayloadHash` must be present.  The hash of an
+`IBCPacket` is a simple Merkle root of the two items, `Header` and `Payload`.
+An `IBCPacket` without the full payload is called an _abbreviated packet_.
+
+An `IBCPacketHeader` is composed of:
+
+- `SrcChainID (string)`: The source blockchain ID
+- `DstChainID (string)`: The destination blockchain ID
+- `Number (int)`: A unique number for all packets
+- `Status (enum)`: Can be one of `AckPending`, `AckSent`, `AckReceived`,
+  `NoAck`, or `Timeout`
+- `Type (string)`: The types are application-dependent.  Gnuclear reserves the
+  "coin" packet type
+- `MaxHeight (int)`: If status is not `NoAckWanted` or `AckReceived` by this
+  height, status becomes `Timeout`. _Optional_
+
+An `IBCPacketTx` transaction is composed of:
+
+- `FromChainID (string)`: The ID of the blockchain which is providing this
+  packet; not necessarily the source
+- `FromBlockHeight (int)`: The blockchain height in which the following packet
+  is included (Merkle-ized) in the block-hash of the source chain
+- `Packet (IBCPacket)`: A packet of data, whose status may be one of
+  `AckPending`, `AckSent`, `AckReceived`, `NoAck`, or `Timeout`
+- `PacketProof (IAVLProof)`: A IAVLTree Merkle-proof for proving the packet's
+  hash against the `AppHash` of the source chain at given height
+
+The sequence for sending a packet from "Shard1" to "Shard2" through the
+"Reactor" is depicted in {Figure X}.  First, an `IBCPacketTx` proves to
+"Reactor" that the packet is included in the app-state of "Shard1".  Then,
+another `IBCPacketTx` proves to "Shard2" that the packet is included in the
+app-state of "Reactor".  During this procedure, the `IBCPacket` fields are
+identical: the `SrcChainID` is always "Shard1", and the `DstChainID` is always
+"Shard2".
+
+The `PacketProof` must have the correct Merkle-proof path, as follows:
+
+```
+IBC/<SrcChainID>/<DstChainID>/<Number>
+
+```
+TODO: CLARIFY
+
+When "Shard1" wants to send a packet to "Shard2" through "Reactor", the
+`IBCPacket` data are identical whether the packet is Merkle-ized on "Shard1",
+the "Reactor", or "Shard2".  The only mutable field is `Status` for tracking
+delivery, as shown below.
+
 
 ### Transaction Gas and Fees
 
