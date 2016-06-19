@@ -4,8 +4,8 @@
 Jae Kwon jae@tendermint.com<br/>
 Ethan Buchman ethan@tendermint.com
 
-For discussions, check out the [gnuclear forum](http://forum.tendermint.com/c/gnuclear)
-and also see the [issues](https://github.com/gnuclear/gnuclear-whitepaper/issues)
+For discussions, come to our Slack: [![Slack
+Status](http://forum.tendermint.com:3000/badge.svg)](http://forum.tendermint.com:3000/)
 
 _NOTE: If you can read this on GitHub, then we're still actively developing this
 document.  Please check regularly for updates!._
