@@ -4,8 +4,7 @@
 Jae Kwon jae@tendermint.com<br/>
 Ethan Buchman ethan@tendermint.com
 
-For discussions, come to our Slack: [![Slack
-Status](http://forum.tendermint.com:3000/badge.svg)](http://forum.tendermint.com:3000/)
+For discussions, [join our Slack](http://forum.tendermint.com:3000/)!
 
 _NOTE: If you can read this on GitHub, then we're still actively developing this
 document.  Please check regularly for updates!._
