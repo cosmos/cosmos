@@ -19,8 +19,8 @@ document.  Please check regularly for updates!._
     * [Overcoming Forks and Censorship
     Attacks](#overcoming-forks-and-censorship-attacks)
     * [TMSP](#tmsp)
-  * [The Gnuclear Reactor and Shards](#the-gnuclear-reactor-and-shards)
-    * [The Gnuclear Reactor](#the-gnuclear-reactor)
+  * [The Gnuclear Hub and Shards](#the-gnuclear-hub-and-shards)
+    * [The Gnuclear Hub](#the-gnuclear-hub)
     * [Gnuclear Shards](#gnuclear-shards)
   * [Inter-blockchain Communication (IBC)](#inter-blockchain-communication-ibc)
     * [IBC Packet Delivery
@@ -113,16 +113,16 @@ context, and we provide more summaries of some proposals and their drawbacks in
 
 Here we present Gnuclear, a novel blockchain network architecture that addresses
 all of these problems.  Gnuclear is a network of many independent blockchains,
-called shards, that are connected by a central blockchain, called the reactor.
-The reactor and shards are powered by Tendermint Core [\[8\]][8], which provides
+called shards, that are connected by a central blockchain, called the hub.
+The hub and shards are powered by Tendermint Core [\[8\]][8], which provides
 a high-performance, consistent, secure
 [PBFT-like](http://tendermint.com/blog/tendermint-vs-pbft/) consensus engine,
 where strict fork-accountability guarantees hold over the behaviour of malicious
-actors.  The Gnuclear reactor is a simple multi-asset proof-of-stake
+actors.  The Gnuclear hub is a simple multi-asset proof-of-stake
 cryptocurrency with a simple governance mechanism enabling the network to adapt
-and upgrade.  The reactor and shards of the Gnuclear network communicate with
+and upgrade.  The hub and shards of the Gnuclear network communicate with
 each other via an inter-blockchain communication (IBC) protocol which is
-formalized here.  The Gnuclear reactor utilizes IBC packets to move tokens from
+formalized here.  The Gnuclear hub utilizes IBC packets to move tokens from
 one shard to another while maintaining the total amount of tokens in the
 network, thus isolating each shard from the failure of others.
 
@@ -433,7 +433,7 @@ validator set, and for the application to receive the block information, such as
 the height and the commit votes.  The full TMSP specification can be found
 [here](https://github.com/tendermint/tmsp#message-types).
 
-## The Gnuclear Reactor and Shards #############################################
+## The Gnuclear Hub and Shards #############################################
 
 Here we describe a novel model of decentralization and scalability.  Gnuclear is
 a network of many blockchains powered by Tendermint via TMSP.  While existing
@@ -441,35 +441,35 @@ proposals aim to create a "single blockchain" with total global transaction
 ordering, Gnuclear permits many blockchains to run concurrently with one another
 via a sharding mechanism.
 
-At the basis, a global reactor blockchain (the Gnuclear reactor) manages many
+At the basis, a global hub blockchain (the Gnuclear hub) manages many
 independent blockchain shards.  A constant stream of recent block commits from
-shards posted on the reactor allows the reactor to keep up with the state of
-each shard.  Likewise, each shard keeps up with the state of the reactor (but
-shards do not keep up with each other except indirectly through the reactor).
+shards posted on the hub allows the hub to keep up with the state of
+each shard.  Likewise, each shard keeps up with the state of the hub (but
+shards do not keep up with each other except indirectly through the hub).
 Packets of information are then communicated from one chain to another by
 posting Merkle-proofs that collide with a recent block-hash from the source.
 This mechanism is called inter-blockchain communication, or IBC for short.
 
-![Figure of reactor and shards
+![Figure of hub and shards
 acknowledgement](https://raw.githubusercontent.com/gnuclear/gnuclear-whitepaper/master/images/hub_and_shards.png)
 
-Any of the shards can themselves be reactors to form a multi-level hierarchical
+Any of the shards can themselves be hubs to form a multi-level hierarchical
 network, but for the sake of clarity we will only describe the simple
-configuration with one central reactor and many shards.
+configuration with one central hub and many shards.
 
-### The Gnuclear Reactor
+### The Gnuclear Hub
 
-The Gnuclear reactor is a blockchain that hosts a multi-asset cryptocurrency,
+The Gnuclear hub is a blockchain that hosts a multi-asset cryptocurrency,
 where tokens can be held by individual users or by shards themselves.  These
 tokens can be moved from one shard to another in a special IBC packet called a
-"coin packet".  The reactor is responsible for preserving the global invariance
+"coin packet".  The hub is responsible for preserving the global invariance
 of the total amount of each token across the shards. IBC coin packet
-transactions must be committed by the sender, reactor and reciever blockchains.
+transactions must be committed by the sender, hub and reciever blockchains.
 
-Since the Gnuclear reactor acts as a central ledger of tokens for the whole
-system, the security of the reactor is of paramount importance.  While each
+Since the Gnuclear hub acts as a central ledger of tokens for the whole
+system, the security of the hub is of paramount importance.  While each
 shard may be a Tendermint blockchain that is secured by as few as 4 (or even
-less if BFT consensus is not needed), the reactor must be secured by a globally
+less if BFT consensus is not needed), the hub must be secured by a globally
 decentralized set of validators that can withstand the most severe attack
 scenarios, such as a continental network partition or a nation-state sponsored
 attack.
@@ -477,7 +477,7 @@ attack.
 ### Gnuclear Shards
 
 A Gnuclear shard is an independent blockchain that exchanges IBC messages with
-the Reactor.  From the Reactor's perspective, a shard is a multi-asset account
+the Hub.  From the Hub's perspective, a shard is a multi-asset account
 that can send and receive tokens using IBC packets. Like a cryptocurrency
 account, a shard cannot transfer more tokens than it has, but can receive tokens
 from others who have them. In certain cases, a shard may be granted special
@@ -491,21 +491,21 @@ number of priveleged shards will be created to act as pegs to other
 cryptocurrencies. The creation of new priviledged shards is left to governance.
 
 Note that a shard where +⅔ of the validators are Byzantine can commit invalid
-state.  Since the very purpose of the Gnuclear reactor is to avoid verifying
+state.  Since the very purpose of the Gnuclear hub is to avoid verifying
 every transaction on a shard, detecting such failures must be done by
 independent observers of the shard, which may appeal to social media and to the
 market to make their detection known (for instance, selling/shorting a token
 that is being artificially inflated by a Byzantine source-shard, and writing a
 blog post about the attack).  Additionally, if the validator set of the shard is
-not the same as that of the reactor, and shard validators have stake bonded on
-the reactor, an explicit alert mechanism may be used on the reactor to challenge
+not the same as that of the hub, and shard validators have stake bonded on
+the hub, an explicit alert mechanism may be used on the hub to challenge
 the validity of a block and to slash the deposits of offending validators.
 
 ## Inter-blockchain Communication (IBC) ########################################
 
-Now we look at how the reactor and shards communicate with each other.  Say that
-there are three blockchains, "Shard1", "Shard2", and "Reactor", and we wish for
-"Shard1" to produce a packet destined for "Shard2" going through "Reactor". For
+Now we look at how the hub and shards communicate with each other.  Say that
+there are three blockchains, "Shard1", "Shard2", and "Hub", and we wish for
+"Shard1" to produce a packet destined for "Shard2" going through "Hub". For
 a packet to move from one blockchain to another, a proof must be posted on the
 receiving chain that the sending chain knows about a packet with the appropriate
 destination. For the receiving chain to check the proof, it must keep up with
@@ -526,13 +526,13 @@ chain to determine which packets get committed (i.e. acknowledged), while
 allowing for complete freedom on the sending chain as to how many outbound
 packets are allowed.
 
-![Figure of Shard1, Shard2, and Reactor IBC without
+![Figure of Shard1, Shard2, and Hub IBC without
 acknowledgement](https://raw.githubusercontent.com/gnuclear/gnuclear-whitepaper/master/msc/ibc_without_ack.png)
 
 <CAPTION on a figure> In the example above, in order to update the block-hash of
-"Shard1" on "Reactor" (or of "Reactor" on "Shard2"), an `IBCBlockCommitTx`
-transaction must be posted on "Reactor" with the block-hash of "Shard1" (or on
-"Shard2" with the block-hash of "Reactor").
+"Shard1" on "Hub" (or of "Hub" on "Shard2"), an `IBCBlockCommitTx`
+transaction must be posted on "Hub" with the block-hash of "Shard1" (or on
+"Shard2" with the block-hash of "Hub").
 
 _See [IBCBlockCommitTx](#ibcblockcommittx) and [IBCPacketTx](#ibcpacketcommit)
 for for more information on the two IBC transaction types._
@@ -551,10 +551,10 @@ initial packet status to `AckPending`.  Then, it is the receiving chain's
 responsibility to confirm delivery by including an abbreviated`IBCPacket` in the
 app Merkle hash.
 
-![Figure of Shard1, Shard2, and Reactor IBC with
+![Figure of Shard1, Shard2, and Hub IBC with
 acknowledgement](https://raw.githubusercontent.com/gnuclear/gnuclear-whitepaper/master/msc/ibc_with_ack.png)
 
-First, an `IBCBlockCommit` and `IBCPacketTx` are posted on "Reactor" that proves
+First, an `IBCBlockCommit` and `IBCPacketTx` are posted on "Hub" that proves
 the existence of an `IBCPacket` on "Shard1".  Say that `IBCPacketTx` has the
 following value:
 
@@ -567,14 +567,14 @@ following value:
     - `Number`: 200 (say)
     - `Status`: `AckPending`
     - `Type`: "coin"
-    - `MaxHeight`: 350 (say "Reactor" is currently at height 300)
+    - `MaxHeight`: 350 (say "Hub" is currently at height 300)
   - `Payload`: &lt;The bytes of a "coin" payload&gt;
 
 Next, an `IBCBlockCommit` and `IBCPacketTx` are posted on "Shard2" that proves
-the existence of an `IBCPacket` on "Reactor".  Say that `IBCPacketTx` has the
+the existence of an `IBCPacket` on "Hub".  Say that `IBCPacketTx` has the
 following value:
 
-- `FromChainID`: "Reactor"
+- `FromChainID`: "Hub"
 - `FromBlockHeight`: 300
 - `Packet`: an `IBCPacket`:
   - `Header`: an `IBCPacketHeader`:
@@ -588,7 +588,7 @@ following value:
 
 Next, "Shard2" must include in its app-hash an abbreviated packet that shows the
 new status of `AckSent`.  An `IBCBlockCommit` and `IBCPacketTx` are posted back
-on "Reactor" that proves the existence of an abbreviated `IBCPacket` on
+on "Hub" that proves the existence of an abbreviated `IBCPacket` on
 "Shard2".  Say that `IBCPacketTx` has the following value:
 
 - `FromChainID`: "Shard2"
@@ -603,11 +603,11 @@ on "Reactor" that proves the existence of an abbreviated `IBCPacket` on
     - `MaxHeight`: 350
   - `PayloadHash`: &lt;The hash bytes of the same "coin" payload&gt;
 
-Finally, "Reactor" must update the status of the packet from `AckPending` to
+Finally, "Hub" must update the status of the packet from `AckPending` to
 `AckReceived`.  Evidence of this new finalized status should go back to
 "Shard2".  Say that `IBCPacketTx` has the following value:
 
-- `FromChainID`: "Reactor"
+- `FromChainID`: "Hub"
 - `FromBlockHeight`: 301
 - `Packet`: an `IBCPacket`:
   - `Header`: an `IBCPacketHeader`:
@@ -620,18 +620,18 @@ Finally, "Reactor" must update the status of the packet from `AckPending` to
   - `PayloadHash`: &lt;The hash bytes of the same "coin" payload&gt;
 
 Meanwhile, "Shard1" may optimistically assume successful delivery of a "coin"
-packet unless evidence to the contrary is proven on "Reactor".  In the example
-above, if "Reactor" had not received an `AckSent` status from "Shard2" by block
+packet unless evidence to the contrary is proven on "Hub".  In the example
+above, if "Hub" had not received an `AckSent` status from "Shard2" by block
 350, it would have set the status automatically to `Timeout`.  This evidence of
 a timeout can get posted back on "Shard1", and any tokens can be returned.
 
-![Figure of Shard1, Shard2, and Reactor IBC with acknowledgement and
+![Figure of Shard1, Shard2, and Hub IBC with acknowledgement and
 timeout](https://raw.githubusercontent.com/gnuclear/gnuclear-whitepaper/master/msc/ibc_with_ack_timeout.png)
 
 ## Transactions ################################################################
 
 In the canonical implementation, transactions are streamed to the Gnuclear
-reactor application via the TMSP interface.
+hub application via the TMSP interface.
 
 ### Transaction Types
 
@@ -705,10 +705,10 @@ An `IBCPacketTx` transaction is composed of:
   hash against the `AppHash` of the source chain at given height
 
 The sequence for sending a packet from "Shard1" to "Shard2" through the
-"Reactor" is depicted in {Figure X}.  First, an `IBCPacketTx` proves to
-"Reactor" that the packet is included in the app-state of "Shard1".  Then,
+"Hub" is depicted in {Figure X}.  First, an `IBCPacketTx` proves to
+"Hub" that the packet is included in the app-state of "Shard1".  Then,
 another `IBCPacketTx` proves to "Shard2" that the packet is included in the
-app-state of "Reactor".  During this procedure, the `IBCPacket` fields are
+app-state of "Hub".  During this procedure, the `IBCPacket` fields are
 identical: the `SrcChainID` is always "Shard1", and the `DstChainID` is always
 "Shard2".
 
@@ -720,9 +720,9 @@ IBC/<SrcChainID>/<DstChainID>/<Number>
 ```
 TODO: CLARIFY
 
-When "Shard1" wants to send a packet to "Shard2" through "Reactor", the
+When "Shard1" wants to send a packet to "Shard2" through "Hub", the
 `IBCPacket` data are identical whether the packet is Merkle-ized on "Shard1",
-the "Reactor", or "Shard2".  The only mutable field is `Status` for tracking
+the "Hub", or "Shard2".  The only mutable field is `Status` for tracking
 delivery, as shown below.
 
 
@@ -734,15 +734,15 @@ delivery, as shown below.
 
 A priveleged shard can act as the source of a pegged token of another
 cryptocurrency. A peg is in essence similar to the relationship between a
-Gnuclear reactor and shard; both must keep up with the latest blocks of the
+Gnuclear hub and shard; both must keep up with the latest blocks of the
 other in order to verify proofs that tokens have moved from one to the other.  A
-peg-shard on the Gnuclear network keeps up with both the reactor as well as the
+peg-shard on the Gnuclear network keeps up with both the hub as well as the
 other cryptocurrency.  The indirection through the peg-shard allows the logic of
-the reactor to remain simple by encapsulating any non-Tendermint consensus
+the hub to remain simple by encapsulating any non-Tendermint consensus
 light-client verification logic onto the shard.
 
 For instance, a Gnuclear shard with some validator set, possibly the same as
-that of the reactor, could act as an ether-peg, where the TMSP-application on
+that of the hub, could act as an ether-peg, where the TMSP-application on
 the shard (the "peg-shard") has mechanisms to exchange IBC messages with a
 peg-contract on the external Ethereum blockchain (the "target").  This contract
 would allow ether holders to send ether to the peg-shard by sending it to the
@@ -751,7 +751,7 @@ cannot be withdrawn unless an appropriate IBC packet is received by the
 peg-contract from the peg-shard. When a peg-shard receives an IBC packet proving
 that ether was received in the peg-contract for a particular Ethereum account, a
 corresponding account is created on the peg-shard with that balance.  Ether on
-the peg-shard ("pegged-ether") can then be transferred to and from the reactor,
+the peg-shard ("pegged-ether") can then be transferred to and from the hub,
 and later be destroyed with a transaction that sends it to a particular
 withdrawal address on Ethereum; an IBC packet proving that the transaction
 occured on the peg-shard can be posted to the Ethereum peg-contract to allow the
@@ -764,10 +764,10 @@ validators can steal ether outright from those who sent it to the peg-contract
 by deviating from the original pegging logic of the peg-shard.
 
 It is possible to address these issues by designing the peg to be "totally
-accountable".  For example, all IBC packets both from the reactor as well as
+accountable".  For example, all IBC packets both from the hub as well as
 from the target might require acknowledgement by the peg-shard in such a way
 that all state transitions of the peg-shard can be efficiently challenged and
-verified by either the reactor or the target.  The reactor and the target (or in
+verified by either the hub or the target.  The hub and the target (or in
 the case of Ethereum, the peg-contract) should allow the peg-shard validators to
 post collateral, and token transfers out of the peg-contract should be delayed
 (and collateral unbonding period sufficiently long) to allow for any challenges
@@ -784,7 +784,7 @@ large group of trusted notaries and institutions.
 
 A result of this integration would be, for instance, the ability of anyone with
 a bank account at a participating bank to move dollars from their bank account,
-which is on the shard, to other accounts on the shard, or to the reactor, or to
+which is on the shard, to other accounts on the shard, or to the hub, or to
 another shard entirely.  In this regard, Gnuclear can act as a seamless conduit
 between fiat currencies and cryptocurrencies.
 
@@ -797,7 +797,7 @@ Ethereum nodes process every single transaction and also stores all the state.
 Since Tendermint can commit blocks much faster than Ethereum's proof-of-work,
 EVM shards powered by Tendermint consensus and operating on pegged-ether can
 provide higher performance to Ethereum blockchains.  Additionally, though the
-Gnuclear reactor and IBC packet mechanics does not allow for arbitrary contract
+Gnuclear hub and IBC packet mechanics does not allow for arbitrary contract
 logic execution per se, it can be used to co-ordinate Ethereum contracts running
 on different shards, providing a foundation for generalized Ethereum scaling via
 sharding.  For example, asynchronous contract calls that "send an action" and
@@ -836,7 +836,7 @@ unidentified set of miners.
 A major problem with consistency favouring consensus algorithms like Tendermint
 is thought to be that any network partition which causes there to be no single
 partition with +⅔ validators will halt consensus altogether. The Gnuclear
-architecture can mitigate this problem by using a global reactor with regional
+architecture can mitigate this problem by using a global hub with regional
 autonomous shards, where +⅔ validators in a shard are based in a common
 geographic region. For instance, a common paradigm may be for individual cities,
 or regions, to operate a given shard for the coordination of finances and
@@ -883,7 +883,7 @@ TODO: note on integration with shard discovery, see roadmap
 
 ### The Quark Token
 
-While the Gnuclear reactor is a multi-asset system, there is a native token
+While the Gnuclear hub is a multi-asset system, there is a native token
 called _quarks_.  Quarks are the only staking token of Gnuclear.  Quarks are a
 license for the holder to vote, validate, or delegate to other validators.  Like
 Ethereum's ether, quarks are also used to pay for transaction fees to mitigate
@@ -914,7 +914,7 @@ the `GnuclearFoundationAddress` parameter.  This foundation will have 4,000,000
 quarks, of which 1,200,000 are pre-vested, and the rest will vest over a period
 of 4 years, all of which can be used to the full extent for voting.
 
-#### Gnuclear Reactor Block Reward
+#### Gnuclear Hub Block Reward
 
 Every block rewards all the active validators and delegators in proportion to
 their bonded quarks (before commissions).  There will be roughly 6,000,000
@@ -992,10 +992,10 @@ blockchain. In these cases, the validators can coordinate out of band to force
 the timeout of these malicious validators, if there is a supermajority
 consensus.
 
-In situations where the Gnuclear reactor halts due to a ⅓+ coalition of
+In situations where the Gnuclear hub halts due to a ⅓+ coalition of
 validators going offline, or in situations where a ⅓+ coalition of validators
 censor evidence of malicious behavior from entering the blockchain, as long as
-there are -½ such Byzantine validators, the reactor will recover with a
+there are -½ such Byzantine validators, the hub will recover with a
 reorg-proposal.  (Link to "Forks and Censorship Attacks").
 
 ### Transaction Fees
@@ -1018,7 +1018,7 @@ commission to the delegated validator.
 
 ## Governance ##################################################################
 
-The Gnuclear reactor blockchain is a distributed organization that requires a
+The Gnuclear hub blockchain is a distributed organization that requires a
 well defined governance mechanism in order to coordinate various changes to the
 blockchain, such as the validator set, predefined parameters of the system, as
 well as software and wetware protocol upgrades.
@@ -1225,7 +1225,7 @@ confirmation, not the receiving user.
 
 3. The most striking difference is that ILP's connectors are not responsible or
    keeping authoritative state about payments, whereas in Gnuclear, the
-validators of the Gnuclear reactor are the authority of the state of IBC token
+validators of the Gnuclear hub are the authority of the state of IBC token
 transfers as well as the authority of the amount of tokens held by each shard
 (but not the amount of tokens held by each account within a shard).  This is he
 fundamental innovation that allows for secure asymmetric tranfer of tokens from
