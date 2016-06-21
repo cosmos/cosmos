@@ -1023,15 +1023,13 @@ well defined governance mechanism in order to coordinate various changes to the
 blockchain, such as the validator set, predefined parameters of the system, as
 well as software and wetware protocol upgrades.
 
-_TODO: Remove AbsenteeismPenalty: This will go away, and we'll either create an
-artificial incentive for voting, or, we'll say that only the validators and the
-delegators' votes count, and specify how delegators can override the validator's
-vote._
-
-All quark holders are responsible for voting on all proposals.  Failing to vote
-on a proposal in a timely manner will result in the quark holder losing
+All validators are responsible for voting on all proposals.  Failing to vote on
+a proposal in a timely manner will result in the quark holder losing
 `AbsenteeismPenalty` (DEFAULT 0.5%) of its quarks at most once per
 `AbsenteeismPenaltyWindow` (DEFAULT 1 week) time period.
+
+Delegators automatically inherit the vote of the delegated validator.  This vote
+may be overridden manually.  Unbonded quarks get no vote.
 
 Each proposal requires a deposit of `MinimumProposalDeposit` tokens, which may
 be a combination one or more tokens include quarks.  For each proposal, the
