@@ -137,9 +137,25 @@ systems.
 In this section we describe the Tendermint consensus protocol and the interface
 used to build applications with it.
 
-### Consensus
+### Validators
 
-_NOTE:  +⅔ means "more than ⅔", while ⅓+ means "⅓ or more"._
+In classical Byzantine fault-tolerant (BFT) algorithms, each node has the same
+weight.  In Tendermint, nodes have a non-negative amount of _voting power_, and
+nodes that have positive voting power are called _validators_.  Validators
+participate in the consensus protocol by broadcasting cryptographic signatures,
+or _votes_, to agree upon the next block.
+
+Validators' voting powers are determined at genesis, or is changed
+deterministically by the blockchain, depending on the application.  For example,
+in a proof-of-stake application such as Gnuclear, the voting power may be
+determined by the amount of staking tokens bonded as collateral.
+
+_NOTE: Fractions like ⅔ and ⅓ refer to fractions of the total voting power,
+never the total number of validators, unless all the validators have equal
+weight._
+_NOTE: +⅔ means "more than ⅔", while ⅓+ means "⅓ or more"._
+
+### Consensus
 
 A fault-tolerant consensus protocol enables a set of non-faulty processes to
 eventually agree on a value proposed by at least one of them.  The problem is
@@ -173,15 +189,15 @@ fork due to asynchrony, Bitcoin can not reliably implement fork-accountability,
 other than the implicit opportunity cost paid by miners for mining an orphaned
 block.
 
-Tendermint is a partially synchronous Byzantine fault-tolerant (BFT) consensus
-protocol derived from the DLS consensus algorithm [\[20\]][20]. Tendermint is
-notable for its simplicity, performance, and fork-accountability.  The protocol
-requires a fixed, known set of <em>N</em> validators, where the <em>i</em>th
-validator is identified by its public key.  Validators attempt to come to
-consensus on one block at a time, where a block is a list of transactions.
-Consensus on a block proceeds in rounds. Each round has a round-leader, or
-proposer, who proposes a block. The validators then vote, in stages, on whether
-or not to accept the proposed block or move on to the next round.
+Tendermint is a partially synchronous BFT consensus protocol derived from the
+DLS consensus algorithm [\[20\]][20]. Tendermint is notable for its simplicity,
+performance, and fork-accountability.  The protocol requires a fixed, known set
+of <em>N</em> validators, where the <em>i</em>th validator is identified by its
+public key.  Validators attempt to come to consensus on one block at a time,
+where a block is a list of transactions.  Consensus on a block proceeds in
+rounds. Each round has a round-leader, or proposer, who proposes a block. The
+validators then vote, in stages, on whether or not to accept the proposed block
+or move on to the next round.
 
 We call the voting stages _PreVote_ and _PreCommit_. A vote can be for a
 particular block or for _Nil_.  We call a collection of +⅔ PreVotes for a single
@@ -190,15 +206,16 @@ single block in the same round a _Commit_.  If +⅔ PreCommit for Nil in the sam
 round, they move to the next round.
 
 The proposer for a round is chosen deterministically from the ordered list of
-validators.  Note that strict determinism in the protocol incurs a weak
-synchrony assumption as faulty leaders must be detected and skipped.  Thus,
-validators wait some amount _TimeoutPropose_ before they Prevote Nil, and the
-value of TimeoutPropose increases with each round.  Progression through the rest
-of a round is fully asychronous, in that progress is only made once a validator
-hears from +⅔ of the network.  In practice, it would take an extremely strong
-adversary to indefinetely thwart the weak synchrony assumption (causing the
-consensus to fail to ever commit a block), and doing so can be made even more
-difficult by using randomized values of TimeoutPropose on each validator.
+validators, in proportion to their voting power.  Note that strict determinism
+in the protocol incurs a weak synchrony assumption as faulty leaders must be
+detected and skipped.  Thus, validators wait some amount _TimeoutPropose_ before
+they Prevote Nil, and the value of TimeoutPropose increases with each round.
+Progression through the rest of a round is fully asychronous, in that progress
+is only made once a validator hears from +⅔ of the network.  In practice, it
+would take an extremely strong adversary to indefinetely thwart the weak
+synchrony assumption (causing the consensus to fail to ever commit a block), and
+doing so can be made even more difficult by using randomized values of
+TimeoutPropose on each validator.
 
 An additional set of constraints, or Locking Rules, ensure that the network will
 eventually commit just one value. Any malicious attempt to cause more than one
@@ -220,7 +237,7 @@ Tendermint’s security derives from its use of optimal Byzantine fault-toleranc
 via super-majority (+⅔) voting and the locking mechanism.  Together, they ensure
 that:
 
-* ⅓+ validators must be Byzantine to cause a violation of safety, where more
+* ⅓+ voting power must be Byzantine to cause a violation of safety, where more
   than two values are committed.  
 * if ever any set of validators succeeds in violating safety, or even attempts
   to do so, they can be identified by the protocol.  This includes both voting
@@ -242,13 +259,13 @@ which have no global state.  Instead of syncing a chain of block headers and
 verifying the proof of work, light clients, who are assumed to know all public
 keys in the validator set, need only verify the +⅔ PreCommits in the latest
 block.  The need to sync all block headers is eliminated as the existence of an
-alternative chain (a fork) means ⅓+ of validator deposits can be slashed.  Of
-course, since slashing requires that _someone_ detects the fork, it would be
-prudent for light clients, or at least those that are able, to sync headers,
-perhaps more slowly, on a risk adjusted basis, where the explicit cost of a fork
-can be easily calculated at ⅓+ of the bonded stake.  Additionally, light clients
-must stay synced with changes to the validator set, in order to avoid certain
-[long range attacks](#preventing-long-range-attacks).
+alternative chain (a fork) means ⅓+ of bonded stake can be slashed (in
+proof-of-stake).  Of course, since slashing requires that _someone_ detects the
+fork, it would be prudent for light clients, or at least those that are able, to
+sync headers, perhaps more slowly, on a risk adjusted basis, where the explicit
+cost of a fork can be easily calculated at ⅓+ of the bonded stake.
+Additionally, light clients must stay synced with changes to the validator set,
+in order to avoid certain [long range attacks](#preventing-long-range-attacks).
 
 In a spirit similar to Ethereum, Tendermint enables applications to embed a
 global Merkle root hash in each block, allowing easily verifiable state queries
@@ -315,14 +332,14 @@ light-client LRA security.
 
 ### Overcoming Forks and Censorship Attacks
 
-Due to the definition of a block commit, any ⅓+ coalition of validators can halt
-the blockchain by not broadcasting their votes. Such a coalition can also censor
-particular transactions by rejecting blocks that include these transactions,
-though this would result in a significant proportion of block proposals to be
-rejected, which would slow down the rate of block commits of the blockchain,
-reducing its utility and value. The malicious coalition might also broadcast
-votes in a trickle so as to grind blockchain block commits to a near halt, or
-engage in any combination of these attacks.  Finally, it can cause the
+Due to the definition of a block commit, any ⅓+ coalition of voting power can
+halt the blockchain by not broadcasting their votes. Such a coalition can also
+censor particular transactions by rejecting blocks that include these
+transactions, though this would result in a significant proportion of block
+proposals to be rejected, which would slow down the rate of block commits of the
+blockchain, reducing its utility and value. The malicious coalition might also
+broadcast votes in a trickle so as to grind blockchain block commits to a near
+halt, or engage in any combination of these attacks.  Finally, it can cause the
 blockchain to fork, by double-signing or violating the locking rules.
 
 If a global active adversary were also involved, it can partition the network in
@@ -339,24 +356,24 @@ Clients should verify the signatures on the reorg-proposal, verify any evidence,
 and make a judgement or prompt the end-user for a decision.  For example, a
 phone wallet app may prompt the user with a security warning, while a
 refrigerator may accept any reorg-proposal signed by +½ of the original
-validators.
+validators by voting power.
 
 No non-synchronous Byzantine fault-tolerant algorithm can come to consensus when
-⅓+ of validators are dishonest, yet a fork assumes that ⅓+ of validators have
-already been dishonest by double-signing or lock-changing without justification.
-So, signing the reorg-proposal is a coordination problem that cannot be solved
-by any non-synchronous protocol (i.e. automatically, and without making
-assumptions about the reliability of the underlying network).  For now, we leave
-the problem of reorg-proposal coordination to human coordination via internet
-media.  Validators must take care to ensure that there are no significant
-network partitions, to avoid situations where two conflicting reorg-proposals
-are signed.
+⅓+ of voting power are dishonest, yet a fork assumes that ⅓+ of voting power
+have already been dishonest by double-signing or lock-changing without
+justification.  So, signing the reorg-proposal is a coordination problem that
+cannot be solved by any non-synchronous protocol (i.e. automatically, and
+without making assumptions about the reliability of the underlying network).
+For now, we leave the problem of reorg-proposal coordination to human
+coordination via internet media.  Validators must take care to ensure that there
+are no significant network partitions, to avoid situations where two conflicting
+reorg-proposals are signed.
 
 Assuming that the external coordination medium and protocol is robust, it
 follows that forks are less of a concern than censorship attacks.
 
-In addition to forks and censorship, which require ⅓+ Byzantine validators, a
-coalition of +⅔ validators may commit arbitrary, invalid state.  This is
+In addition to forks and censorship, which require ⅓+ Byzantine voting power, a
+coalition of +⅔ voting power may commit arbitrary, invalid state.  This is
 characteristic of any (BFT) consensus system. Unlike double-signing, which
 creates forks with easily verifiable evidence, detecting committment of an
 invalid state requires non-validating peers to verify whole blocks, which
@@ -426,7 +443,7 @@ some handy properties. Inconsistencies in updating that state will now appear as
 blockchain forks which catches a whole class of programming errors. This also
 simplifies the development of secure lightweight clients, as Merkle-hash proofs
 can be verified by checking against the block-hash, and the block-hash is signed
-by a quorum of validators.
+by a quorum of validators (by voting power).
 
 Additional TMSP messages allow the application to keep track of and change the
 validator set, and for the application to receive the block information, such as
@@ -490,7 +507,7 @@ there may be only one priveleged shard per token type.  On Genesis day, a select
 number of priveleged shards will be created to act as pegs to other
 cryptocurrencies. The creation of new priviledged shards is left to governance.
 
-Note that a shard where +⅔ of the validators are Byzantine can commit invalid
+Note that a shard where +⅔ of the voting power are Byzantine can commit invalid
 state.  Since the very purpose of the Gnuclear hub is to avoid verifying
 every transaction on a shard, detecting such failures must be done by
 independent observers of the shard, which may appeal to social media and to the
@@ -758,10 +775,10 @@ occured on the peg-shard can be posted to the Ethereum peg-contract to allow the
 ether to be withdrawn.
 
 Of course, the risk of such a pegging contract is a rogue validator set.  ⅓+
-Byzantine validators could cause a fork, withdrawing ether from the peg-contract
-on Ethereum while keeping the pegged-ether on the peg-shard. Worse, +⅔ Byzantine
-validators can steal ether outright from those who sent it to the peg-contract
-by deviating from the original pegging logic of the peg-shard.
+Byzantine voting power could cause a fork, withdrawing ether from the
+peg-contract on Ethereum while keeping the pegged-ether on the peg-shard. Worse,
++⅔ Byzantine voting power can steal ether outright from those who sent it to the
+peg-contract by deviating from the original pegging logic of the peg-shard.
 
 It is possible to address these issues by designing the peg to be "totally
 accountable".  For example, all IBC packets both from the hub as well as
@@ -835,9 +852,9 @@ unidentified set of miners.
 
 A major problem with consistency favouring consensus algorithms like Tendermint
 is thought to be that any network partition which causes there to be no single
-partition with +⅔ validators will halt consensus altogether. The Gnuclear
+partition with +⅔ voting power will halt consensus altogether. The Gnuclear
 architecture can mitigate this problem by using a global hub with regional
-autonomous shards, where +⅔ validators in a shard are based in a common
+autonomous shards, where +⅔ voting power in a shard are based in a common
 geographic region. For instance, a common paradigm may be for individual cities,
 or regions, to operate a given shard for the coordination of finances and
 infrastructure, enabling municipal activity to persist in the event that
@@ -868,9 +885,9 @@ download a complete copy of the headers for all blocks in the entire blockchain
 the bandwidth requirements scale linearly with the amount of time [\[21\]][21].
 
 With Tendermint, all we need is the most recent block-hash signed by a quorum of
-validators, and a Merkle proof to the current value associated with the name.
-This makes it possible to have an efficient and secure light-client verification
-of _the current value of_ a name.
+validators (by voting power), and a Merkle proof to the current value associated
+with the name.  This makes it possible to have an efficient and secure
+light-client verification of _the current value of_ a name.
 
 On Gnuclear, we can take this concept and extend it further. Each
 name-registration shard in Gnuclear can have an associated top-level-domain
@@ -893,7 +910,7 @@ validators.
 The initial distribution of quark tokens and validators on Genesis will go to
 the funders of the Gnuclear crowdsale (80%), and the Gnuclear foundation (20%).
 From genesis onward, 30% of the initial quark distribution will be rewarded to
-active validators and delegators.
+validators and delegators.
 
 The `BurnQuarkTx` transaction can be used to recover any proportionate amount of
 tokens from the reserve pool.
@@ -916,11 +933,11 @@ of 4 years, all of which can be used to the full extent for voting.
 
 #### Gnuclear Hub Block Reward
 
-Every block rewards all the active validators and delegators in proportion to
-their bonded quarks (before commissions).  There will be roughly 6,000,000
-quarks rewarded every year, forever.  The number is not exact, because the
-number of blocks per year is not exact.  As with transaction fees, delegators
-pay the delegated validator a commission of 10%.
+Every block rewards all the validators and delegators in proportion to their
+bonded quarks (before commissions).  There will be roughly 6,000,000 quarks
+rewarded every year, forever.  The number is not exact, because the number of
+blocks per year is not exact.  As with transaction fees, delegators pay the
+delegated validator a commission of 10%.
 
 #### Incentivizing Hackers
 
@@ -967,9 +984,7 @@ of quarks is greater than the amount of effective quarks held by the smallest
 validator, where effective quarks include vesting and delegated quarks.  When a
 new validator replaces an existing validator in such a way, the existing
 validator becomes inactive and all the quarks and delegated quarks enter the
-unbonding state.  Note that, given the distribution of genesis-validators, the
-33 available validator spots, and the issuance schedule, it is impossible for
-any genesis-validators to become unbonded by this mechanism.
+unbonding state.
 
 ### Penalties for Validators
 
@@ -992,11 +1007,11 @@ blockchain. In these cases, the validators can coordinate out of band to force
 the timeout of these malicious validators, if there is a supermajority
 consensus.
 
-In situations where the Gnuclear hub halts due to a ⅓+ coalition of
-validators going offline, or in situations where a ⅓+ coalition of validators
-censor evidence of malicious behavior from entering the blockchain, as long as
-there are -½ such Byzantine validators, the hub will recover with a
-reorg-proposal.  (Link to "Forks and Censorship Attacks").
+In situations where the Gnuclear hub halts due to a ⅓+ coalition of voting power
+going offline, or in situations where a ⅓+ coalition of voting power censor
+evidence of malicious behavior from entering the blockchain, as long as there
+are -½ such Byzantine voting power, the hub will recover with a reorg-proposal.
+(Link to "Forks and Censorship Attacks").
 
 ### Transaction Fees
 
@@ -1065,7 +1080,6 @@ coordinated via the generic `TextProposal`.
 
 ## Roadmap #####################################################################
 
-* Decide on genesis-validators
 * Decide on crowdfund event details
 * Address shard attributes and discovery
 * Launch Gnuclear crowdfunding event
@@ -1194,7 +1208,7 @@ This is an active area of research by the Casper team.  The challenge is in
 constructing a betting mechanism that can be proven to be an evolutionarily
 stable strategy.  The main benefit of Casper as compared to Tendermint may be in
 offering "availability over consistency" -- consensus does not require a +⅔
-quorum from the validators -- perhaps at the cost of commit speed or
+quorum of voting power -- perhaps at the cost of commit speed or
 implementation complexity.
 
 ### Sharded Scaling
@@ -1468,7 +1482,9 @@ providing support for our work with Tendermint and Gnuclear.
 wording, especially under the TMSP section
 * [Jehan Tremback](https://github.com/jtremback) of Althea and Dustin Byington
   for helping with initial iterations
-* [Andrew Miller](http://soc1024.com/) for feedback on consensus
+* [Andrew Miller](http://soc1024.com/) of [Honey
+  Badger](https://eprint.iacr.org/2016/199) for feedback on consensus
+* [Greg Slepak](https://fixingtao.com/) for feedback on consensus and wording
 * Also thanks to [Bill Gleim](https://github.com/gleim) for various
   contributions.
 * TODO Your name and organization here if you want.
