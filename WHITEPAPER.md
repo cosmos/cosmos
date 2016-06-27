@@ -19,9 +19,9 @@ document.  Please check regularly for updates!._
     * [Overcoming Forks and Censorship
     Attacks](#overcoming-forks-and-censorship-attacks)
     * [TMSP](#tmsp)
-  * [The Gnuclear Hub and Shards](#the-gnuclear-hub-and-shards)
+  * [The Gnuclear Hub and Zones](#the-gnuclear-hub-and-zones)
     * [The Gnuclear Hub](#the-gnuclear-hub)
-    * [Gnuclear Shards](#gnuclear-shards)
+    * [Gnuclear Zones](#gnuclear-zones)
   * [Inter-blockchain Communication (IBC)](#inter-blockchain-communication-ibc)
     * [IBC Packet Delivery
     Acknowledgement](#ibc-packet-delivery-acknowledgement)
@@ -62,7 +62,7 @@ document.  Please check regularly for updates!._
       * [Stellar](#stellar)
       * [BitcoinNG](#bitcoinng)
       * [Casper](#casper)
-    * [Sharded Scaling](#sharded-scaling)
+    * [Zoneed Scaling](#zoneed-scaling)
       * [Interledger Protocol](#interledger-protocol)
       * [Sidechains](#sidechains)
       * [Ethereum Scalability Efforts](#ethereum-scalability-efforts)
@@ -113,18 +113,18 @@ context, and we provide more summaries of some proposals and their drawbacks in
 
 Here we present Gnuclear, a novel blockchain network architecture that addresses
 all of these problems.  Gnuclear is a network of many independent blockchains,
-called shards, that are connected by a central blockchain, called the hub.
-The hub and shards are powered by Tendermint Core [\[8\]][8], which provides
+called zones, that are connected by a central blockchain, called the hub.
+The hub and zones are powered by Tendermint Core [\[8\]][8], which provides
 a high-performance, consistent, secure
 [PBFT-like](http://tendermint.com/blog/tendermint-vs-pbft/) consensus engine,
 where strict fork-accountability guarantees hold over the behaviour of malicious
 actors.  The Gnuclear hub is a simple multi-asset proof-of-stake
 cryptocurrency with a simple governance mechanism enabling the network to adapt
-and upgrade.  The hub and shards of the Gnuclear network communicate with
+and upgrade.  The hub and zones of the Gnuclear network communicate with
 each other via an inter-blockchain communication (IBC) protocol which is
 formalized here.  The Gnuclear hub utilizes IBC packets to move tokens from
-one shard to another while maintaining the total amount of tokens in the
-network, thus isolating each shard from the failure of others.
+one zone to another while maintaining the total amount of tokens in the
+network, thus isolating each zone from the failure of others.
 
 We believe that Gnuclear proves that Tendermint BFT consensus is well suited for
 scaling public proof-of-stake blockchains, and that it can compete with
@@ -450,7 +450,7 @@ validator set, and for the application to receive the block information, such as
 the height and the commit votes.  The full TMSP specification can be found
 [here](https://github.com/tendermint/tmsp#message-types).
 
-## The Gnuclear Hub and Shards #############################################
+## The Gnuclear Hub and Zones #############################################
 
 Here we describe a novel model of decentralization and scalability.  Gnuclear is
 a network of many blockchains powered by Tendermint via TMSP.  While existing
@@ -459,70 +459,70 @@ ordering, Gnuclear permits many blockchains to run concurrently with one another
 via a sharding mechanism.
 
 At the basis, a global hub blockchain (the Gnuclear hub) manages many
-independent blockchain shards.  A constant stream of recent block commits from
-shards posted on the hub allows the hub to keep up with the state of
-each shard.  Likewise, each shard keeps up with the state of the hub (but
-shards do not keep up with each other except indirectly through the hub).
-Packets of information are then communicated from one chain to another by
-posting Merkle-proofs that collide with a recent block-hash from the source.
-This mechanism is called inter-blockchain communication, or IBC for short.
+independent blockchain shards called "zones".  A constant stream of recent block
+commits from zones posted on the hub allows the hub to keep up with the state of
+each zone.  Likewise, each zone keeps up with the state of the hub (but zones do
+not keep up with each other except indirectly through the hub).  Packets of
+information are then communicated from one chain to another by posting
+Merkle-proofs that collide with a recent block-hash from the source.  This
+mechanism is called inter-blockchain communication, or IBC for short.
 
-![Figure of hub and shards
-acknowledgement](https://raw.githubusercontent.com/gnuclear/gnuclear-whitepaper/master/images/hub_and_shards.png)
+![Figure of hub and zones
+acknowledgement](https://raw.githubusercontent.com/gnuclear/gnuclear-whitepaper/master/images/hub_and_zones.png)
 
-Any of the shards can themselves be hubs to form a multi-level hierarchical
+Any of the zones can themselves be hubs to form a multi-level hierarchical
 network, but for the sake of clarity we will only describe the simple
-configuration with one central hub and many shards.
+configuration with one central hub and many zones.
 
 ### The Gnuclear Hub
 
 The Gnuclear hub is a blockchain that hosts a multi-asset cryptocurrency,
-where tokens can be held by individual users or by shards themselves.  These
-tokens can be moved from one shard to another in a special IBC packet called a
+where tokens can be held by individual users or by zones themselves.  These
+tokens can be moved from one zone to another in a special IBC packet called a
 "coin packet".  The hub is responsible for preserving the global invariance
-of the total amount of each token across the shards. IBC coin packet
+of the total amount of each token across the zones. IBC coin packet
 transactions must be committed by the sender, hub and reciever blockchains.
 
 Since the Gnuclear hub acts as a central ledger of tokens for the whole
 system, the security of the hub is of paramount importance.  While each
-shard may be a Tendermint blockchain that is secured by as few as 4 (or even
+zone may be a Tendermint blockchain that is secured by as few as 4 (or even
 less if BFT consensus is not needed), the hub must be secured by a globally
 decentralized set of validators that can withstand the most severe attack
 scenarios, such as a continental network partition or a nation-state sponsored
 attack.
 
-### Gnuclear Shards
+### Gnuclear Zones
 
-A Gnuclear shard is an independent blockchain that exchanges IBC messages with
-the Hub.  From the Hub's perspective, a shard is a multi-asset account
+A Gnuclear zone is an independent blockchain that exchanges IBC messages with
+the Hub.  From the Hub's perspective, a zone is a multi-asset account
 that can send and receive tokens using IBC packets. Like a cryptocurrency
-account, a shard cannot transfer more tokens than it has, but can receive tokens
-from others who have them. In certain cases, a shard may be granted special
-priveleges to act as a "source" of some token, where, in addition to the shard's
+account, a zone cannot transfer more tokens than it has, but can receive tokens
+from others who have them. In certain cases, a zone may be granted special
+priveleges to act as a "source" of some token, where, in addition to the zone's
 balance in that token, it can send up to some maximum rate of additional tokens
-out to other accounts or shards, thereby inflating that token's supply. Such
+out to other accounts or zones, thereby inflating that token's supply. Such
 packets are similar to the "coin" packet, but have type "issue". Packets of type
-"issue" for a particular token may originate from only one shard - that is,
-there may be only one priveleged shard per token type.  On Genesis day, a select
-number of priveleged shards will be created to act as pegs to other
-cryptocurrencies. The creation of new priviledged shards is left to governance.
+"issue" for a particular token may originate from only one zone - that is,
+there may be only one priveleged zone per token type.  On Genesis day, a select
+number of priveleged zones will be created to act as pegs to other
+cryptocurrencies. The creation of new priviledged zones is left to governance.
 
-Note that a shard where +⅔ of the voting power are Byzantine can commit invalid
+Note that a zone where +⅔ of the voting power are Byzantine can commit invalid
 state.  Since the very purpose of the Gnuclear hub is to avoid verifying
-every transaction on a shard, detecting such failures must be done by
-independent observers of the shard, which may appeal to social media and to the
+every transaction on a zone, detecting such failures must be done by
+independent observers of the zone, which may appeal to social media and to the
 market to make their detection known (for instance, selling/shorting a token
-that is being artificially inflated by a Byzantine source-shard, and writing a
-blog post about the attack).  Additionally, if the validator set of the shard is
-not the same as that of the hub, and shard validators have stake bonded on
+that is being artificially inflated by a Byzantine source-zone, and writing a
+blog post about the attack).  Additionally, if the validator set of the zone is
+not the same as that of the hub, and zone validators have stake bonded on
 the hub, an explicit alert mechanism may be used on the hub to challenge
 the validity of a block and to slash the deposits of offending validators.
 
 ## Inter-blockchain Communication (IBC) ########################################
 
-Now we look at how the hub and shards communicate with each other.  Say that
-there are three blockchains, "Shard1", "Shard2", and "Hub", and we wish for
-"Shard1" to produce a packet destined for "Shard2" going through "Hub". For
+Now we look at how the hub and zones communicate with each other.  Say that
+there are three blockchains, "Zone1", "Zone2", and "Hub", and we wish for
+"Zone1" to produce a packet destined for "Zone2" going through "Hub". For
 a packet to move from one blockchain to another, a proof must be posted on the
 receiving chain that the sending chain knows about a packet with the appropriate
 destination. For the receiving chain to check the proof, it must keep up with
@@ -543,13 +543,13 @@ chain to determine which packets get committed (i.e. acknowledged), while
 allowing for complete freedom on the sending chain as to how many outbound
 packets are allowed.
 
-![Figure of Shard1, Shard2, and Hub IBC without
+![Figure of Zone1, Zone2, and Hub IBC without
 acknowledgement](https://raw.githubusercontent.com/gnuclear/gnuclear-whitepaper/master/msc/ibc_without_ack.png)
 
 <CAPTION on a figure> In the example above, in order to update the block-hash of
-"Shard1" on "Hub" (or of "Hub" on "Shard2"), an `IBCBlockCommitTx`
-transaction must be posted on "Hub" with the block-hash of "Shard1" (or on
-"Shard2" with the block-hash of "Hub").
+"Zone1" on "Hub" (or of "Hub" on "Zone2"), an `IBCBlockCommitTx`
+transaction must be posted on "Hub" with the block-hash of "Zone1" (or on
+"Zone2" with the block-hash of "Hub").
 
 _See [IBCBlockCommitTx](#ibcblockcommittx) and [IBCPacketTx](#ibcpacketcommit)
 for for more information on the two IBC transaction types._
@@ -568,26 +568,26 @@ initial packet status to `AckPending`.  Then, it is the receiving chain's
 responsibility to confirm delivery by including an abbreviated`IBCPacket` in the
 app Merkle hash.
 
-![Figure of Shard1, Shard2, and Hub IBC with
+![Figure of Zone1, Zone2, and Hub IBC with
 acknowledgement](https://raw.githubusercontent.com/gnuclear/gnuclear-whitepaper/master/msc/ibc_with_ack.png)
 
 First, an `IBCBlockCommit` and `IBCPacketTx` are posted on "Hub" that proves
-the existence of an `IBCPacket` on "Shard1".  Say that `IBCPacketTx` has the
+the existence of an `IBCPacket` on "Zone1".  Say that `IBCPacketTx` has the
 following value:
 
-- `FromChainID`: "Shard1"
+- `FromChainID`: "Zone1"
 - `FromBlockHeight`: 100 (say)
 - `Packet`: an `IBCPacket`:
   - `Header`: an `IBCPacketHeader`:
-    - `SrcChainID`: "Shard1"
-    - `DstChainID`: "Shard2"
+    - `SrcChainID`: "Zone1"
+    - `DstChainID`: "Zone2"
     - `Number`: 200 (say)
     - `Status`: `AckPending`
     - `Type`: "coin"
     - `MaxHeight`: 350 (say "Hub" is currently at height 300)
   - `Payload`: &lt;The bytes of a "coin" payload&gt;
 
-Next, an `IBCBlockCommit` and `IBCPacketTx` are posted on "Shard2" that proves
+Next, an `IBCBlockCommit` and `IBCPacketTx` are posted on "Zone2" that proves
 the existence of an `IBCPacket` on "Hub".  Say that `IBCPacketTx` has the
 following value:
 
@@ -595,25 +595,25 @@ following value:
 - `FromBlockHeight`: 300
 - `Packet`: an `IBCPacket`:
   - `Header`: an `IBCPacketHeader`:
-    - `SrcChainID`: "Shard1"
-    - `DstChainID`: "Shard2"
+    - `SrcChainID`: "Zone1"
+    - `DstChainID`: "Zone2"
     - `Number`: 200
     - `Status`: `AckPending`
     - `Type`: "coin"
     - `MaxHeight`: 350
   - `Payload`: &lt;The same bytes of a "coin" payload&gt;
 
-Next, "Shard2" must include in its app-hash an abbreviated packet that shows the
+Next, "Zone2" must include in its app-hash an abbreviated packet that shows the
 new status of `AckSent`.  An `IBCBlockCommit` and `IBCPacketTx` are posted back
 on "Hub" that proves the existence of an abbreviated `IBCPacket` on
-"Shard2".  Say that `IBCPacketTx` has the following value:
+"Zone2".  Say that `IBCPacketTx` has the following value:
 
-- `FromChainID`: "Shard2"
+- `FromChainID`: "Zone2"
 - `FromBlockHeight`: 400 (say)
 - `Packet`: an `IBCPacket`:
   - `Header`: an `IBCPacketHeader`:
-    - `SrcChainID`: "Shard1"
-    - `DstChainID`: "Shard2"
+    - `SrcChainID`: "Zone1"
+    - `DstChainID`: "Zone2"
     - `Number`: 200
     - `Status`: `AckSent`
     - `Type`: "coin"
@@ -622,27 +622,27 @@ on "Hub" that proves the existence of an abbreviated `IBCPacket` on
 
 Finally, "Hub" must update the status of the packet from `AckPending` to
 `AckReceived`.  Evidence of this new finalized status should go back to
-"Shard2".  Say that `IBCPacketTx` has the following value:
+"Zone2".  Say that `IBCPacketTx` has the following value:
 
 - `FromChainID`: "Hub"
 - `FromBlockHeight`: 301
 - `Packet`: an `IBCPacket`:
   - `Header`: an `IBCPacketHeader`:
-    - `SrcChainID`: "Shard1"
-    - `DstChainID`: "Shard2"
+    - `SrcChainID`: "Zone1"
+    - `DstChainID`: "Zone2"
     - `Number`: 200
     - `Status`: `AckReceived`
     - `Type`: "coin"
     - `MaxHeight`: 350
   - `PayloadHash`: &lt;The hash bytes of the same "coin" payload&gt;
 
-Meanwhile, "Shard1" may optimistically assume successful delivery of a "coin"
+Meanwhile, "Zone1" may optimistically assume successful delivery of a "coin"
 packet unless evidence to the contrary is proven on "Hub".  In the example
-above, if "Hub" had not received an `AckSent` status from "Shard2" by block
+above, if "Hub" had not received an `AckSent` status from "Zone2" by block
 350, it would have set the status automatically to `Timeout`.  This evidence of
-a timeout can get posted back on "Shard1", and any tokens can be returned.
+a timeout can get posted back on "Zone1", and any tokens can be returned.
 
-![Figure of Shard1, Shard2, and Hub IBC with acknowledgement and
+![Figure of Zone1, Zone2, and Hub IBC with acknowledgement and
 timeout](https://raw.githubusercontent.com/gnuclear/gnuclear-whitepaper/master/msc/ibc_with_ack_timeout.png)
 
 ## Transactions ################################################################
@@ -721,13 +721,13 @@ An `IBCPacketTx` transaction is composed of:
 - `PacketProof (IAVLProof)`: A IAVLTree Merkle-proof for proving the packet's
   hash against the `AppHash` of the source chain at given height
 
-The sequence for sending a packet from "Shard1" to "Shard2" through the
+The sequence for sending a packet from "Zone1" to "Zone2" through the
 "Hub" is depicted in {Figure X}.  First, an `IBCPacketTx` proves to
-"Hub" that the packet is included in the app-state of "Shard1".  Then,
-another `IBCPacketTx` proves to "Shard2" that the packet is included in the
+"Hub" that the packet is included in the app-state of "Zone1".  Then,
+another `IBCPacketTx` proves to "Zone2" that the packet is included in the
 app-state of "Hub".  During this procedure, the `IBCPacket` fields are
-identical: the `SrcChainID` is always "Shard1", and the `DstChainID` is always
-"Shard2".
+identical: the `SrcChainID` is always "Zone1", and the `DstChainID` is always
+"Zone2".
 
 The `PacketProof` must have the correct Merkle-proof path, as follows:
 
@@ -737,9 +737,9 @@ IBC/<SrcChainID>/<DstChainID>/<Number>
 ```
 TODO: CLARIFY
 
-When "Shard1" wants to send a packet to "Shard2" through "Hub", the
-`IBCPacket` data are identical whether the packet is Merkle-ized on "Shard1",
-the "Hub", or "Shard2".  The only mutable field is `Status` for tracking
+When "Zone1" wants to send a packet to "Zone2" through "Hub", the
+`IBCPacket` data are identical whether the packet is Merkle-ized on "Zone1",
+the "Hub", or "Zone2".  The only mutable field is `Status` for tracking
 delivery, as shown below.
 
 
@@ -749,50 +749,50 @@ delivery, as shown below.
 
 ### Pegging to Other Cryptocurrencies
 
-A priveleged shard can act as the source of a pegged token of another
+A priveleged zone can act as the source of a pegged token of another
 cryptocurrency. A peg is in essence similar to the relationship between a
-Gnuclear hub and shard; both must keep up with the latest blocks of the
+Gnuclear hub and zone; both must keep up with the latest blocks of the
 other in order to verify proofs that tokens have moved from one to the other.  A
-peg-shard on the Gnuclear network keeps up with both the hub as well as the
-other cryptocurrency.  The indirection through the peg-shard allows the logic of
+peg-zone on the Gnuclear network keeps up with both the hub as well as the
+other cryptocurrency.  The indirection through the peg-zone allows the logic of
 the hub to remain simple by encapsulating any non-Tendermint consensus
-light-client verification logic onto the shard.
+light-client verification logic onto the zone.
 
-For instance, a Gnuclear shard with some validator set, possibly the same as
+For instance, a Gnuclear zone with some validator set, possibly the same as
 that of the hub, could act as an ether-peg, where the TMSP-application on
-the shard (the "peg-shard") has mechanisms to exchange IBC messages with a
+the zone (the "peg-zone") has mechanisms to exchange IBC messages with a
 peg-contract on the external Ethereum blockchain (the "target").  This contract
-would allow ether holders to send ether to the peg-shard by sending it to the
+would allow ether holders to send ether to the peg-zone by sending it to the
 peg-contract on Ethereum.  Once ether is received by the peg-contract, the ether
 cannot be withdrawn unless an appropriate IBC packet is received by the
-peg-contract from the peg-shard. When a peg-shard receives an IBC packet proving
+peg-contract from the peg-zone. When a peg-zone receives an IBC packet proving
 that ether was received in the peg-contract for a particular Ethereum account, a
-corresponding account is created on the peg-shard with that balance.  Ether on
-the peg-shard ("pegged-ether") can then be transferred to and from the hub,
+corresponding account is created on the peg-zone with that balance.  Ether on
+the peg-zone ("pegged-ether") can then be transferred to and from the hub,
 and later be destroyed with a transaction that sends it to a particular
 withdrawal address on Ethereum; an IBC packet proving that the transaction
-occured on the peg-shard can be posted to the Ethereum peg-contract to allow the
+occured on the peg-zone can be posted to the Ethereum peg-contract to allow the
 ether to be withdrawn.
 
 Of course, the risk of such a pegging contract is a rogue validator set.  ⅓+
 Byzantine voting power could cause a fork, withdrawing ether from the
-peg-contract on Ethereum while keeping the pegged-ether on the peg-shard. Worse,
+peg-contract on Ethereum while keeping the pegged-ether on the peg-zone. Worse,
 +⅔ Byzantine voting power can steal ether outright from those who sent it to the
-peg-contract by deviating from the original pegging logic of the peg-shard.
+peg-contract by deviating from the original pegging logic of the peg-zone.
 
 It is possible to address these issues by designing the peg to be "totally
 accountable".  For example, all IBC packets both from the hub as well as
-from the target might require acknowledgement by the peg-shard in such a way
-that all state transitions of the peg-shard can be efficiently challenged and
+from the target might require acknowledgement by the peg-zone in such a way
+that all state transitions of the peg-zone can be efficiently challenged and
 verified by either the hub or the target.  The hub and the target (or in
-the case of Ethereum, the peg-contract) should allow the peg-shard validators to
+the case of Ethereum, the peg-contract) should allow the peg-zone validators to
 post collateral, and token transfers out of the peg-contract should be delayed
 (and collateral unbonding period sufficiently long) to allow for any challenges
 to be made.  We leave the design of the specification and implementation of this
 system open as a future Gnuclear improvement proposal.
 
 While the socio-political atmosphere is not quite evolved enough yet, we can
-extend the mechanism to allow for shards which peg to the fiat currency of a
+extend the mechanism to allow for zones which peg to the fiat currency of a
 nation states by forming a validator set out of some combination of institutions
 responsible for the nation's currency, most particularly, its banks. Of course,
 extra precautions must be made to only accept currencies backed by strong legal
@@ -801,8 +801,8 @@ large group of trusted notaries and institutions.
 
 A result of this integration would be, for instance, the ability of anyone with
 a bank account at a participating bank to move dollars from their bank account,
-which is on the shard, to other accounts on the shard, or to the hub, or to
-another shard entirely.  In this regard, Gnuclear can act as a seamless conduit
+which is on the zone, to other accounts on the zone, or to the hub, or to
+another zone entirely.  In this regard, Gnuclear can act as a seamless conduit
 between fiat currencies and cryptocurrencies.
 
 ### Ethereum Scaling
@@ -812,20 +812,20 @@ Ethereum nodes process every single transaction and also stores all the state.
 [link](https://docs.google.com/presentation/d/1CjD0W4l4-CwHKUvfF5Vlps76fKLEC6pIwu1a_kC_YRQ/mobilepresent?slide=id.gd284b9333_0_28).
 
 Since Tendermint can commit blocks much faster than Ethereum's proof-of-work,
-EVM shards powered by Tendermint consensus and operating on pegged-ether can
+EVM zones powered by Tendermint consensus and operating on pegged-ether can
 provide higher performance to Ethereum blockchains.  Additionally, though the
 Gnuclear hub and IBC packet mechanics does not allow for arbitrary contract
 logic execution per se, it can be used to co-ordinate Ethereum contracts running
-on different shards, providing a foundation for generalized Ethereum scaling via
+on different zones, providing a foundation for generalized Ethereum scaling via
 sharding.  For example, asynchronous contract calls that "send an action" and
 expect a response in return could be implemented by a sequence of two IBC
 packets going in opposite directions.
 
 ### Multi-Application Integration
 
-Gnuclear shards run arbitrary application logic, defined at the beginning of the
-shard's life, and potentially updated over time by governance. Such flexibility
-allows Gnuclear shards to act as pegs to other cryptocurrencies, like Ethereum
+Gnuclear zones run arbitrary application logic, defined at the beginning of the
+zone's life, and potentially updated over time by governance. Such flexibility
+allows Gnuclear zones to act as pegs to other cryptocurrencies, like Ethereum
 or Bitcoin, but it also permits derlivatives of those blockchains, utilizing the
 same codebase but a different validator set and history. This allows many
 existing cryptocurrency frameworks, such as that of Ethereum, Zerocash, Bitcoin,
@@ -835,14 +835,14 @@ platforms.  Furthermore, as a multi-asset blockchain, a single transaction may
 contain multiple inputs and outputs, where each input can be any token type,
 enabling Gnuclear to serve directly as a platform for decentralized exchange,
 though orders are assumed to be matched via other platforms. Alternatively, a
-shard can serve as a fault-tolerant exchange, including hosting the orderbook,
+zone can serve as a fault-tolerant exchange, including hosting the orderbook,
 openning up new business opportunities for blockchain backed exchanges, which
 may themselves trade liquidity over the Gnuclear network.
 
-Shards can also serve as blockchain-backed versions of enterprise and government
+Zones can also serve as blockchain-backed versions of enterprise and government
 systems, where pieces of a particular service, traditionally run by an
 organization or group of organizations, are instead run as a TMSP application on
-a certain shard, allowing it to inherit the security and interoperability of the
+a certain zone, allowing it to inherit the security and interoperability of the
 public Gnuclear network, without sacrificing control over the underlying
 service.  Thus, Gnuclear may be a best of both worlds for organizations looking
 to utilize blockchain technology that are wary of relinquishing control to an
@@ -854,9 +854,9 @@ A major problem with consistency favouring consensus algorithms like Tendermint
 is thought to be that any network partition which causes there to be no single
 partition with +⅔ voting power will halt consensus altogether. The Gnuclear
 architecture can mitigate this problem by using a global hub with regional
-autonomous shards, where +⅔ voting power in a shard are based in a common
+autonomous zones, where +⅔ voting power in a zone are based in a common
 geographic region. For instance, a common paradigm may be for individual cities,
-or regions, to operate a given shard for the coordination of finances and
+or regions, to operate a given zone for the coordination of finances and
 infrastructure, enabling municipal activity to persist in the event that
 otherwise remote service providers fail.  Note that this allows real geological,
 political, and network-topological features to be considered in designing robust
@@ -890,11 +890,11 @@ with the name.  This makes it possible to have an efficient and secure
 light-client verification of _the current value of_ a name.
 
 On Gnuclear, we can take this concept and extend it further. Each
-name-registration shard in Gnuclear can have an associated top-level-domain
-(TLD) name such as ".com" or ".org", and each name-registration shard can have
+name-registration zone in Gnuclear can have an associated top-level-domain
+(TLD) name such as ".com" or ".org", and each name-registration zone can have
 its own governance and registration rules.
 
-TODO: note on integration with shard discovery, see roadmap
+TODO: note on integration with zone discovery, see roadmap
 
 ## Issuance and Incentives #####################################################
 
@@ -1081,11 +1081,11 @@ coordinated via the generic `TextProposal`.
 ## Roadmap #####################################################################
 
 * Decide on crowdfund event details
-* Address shard attributes and discovery
+* Address zone attributes and discovery
 * Launch Gnuclear crowdfunding event
 * Develop Gnuclear and Tendermint
-* Develop EVM shards
-* Develop CryptoNote(\?) shard
+* Develop EVM zones
+* Develop CryptoNote(\?) zone
 * Launch Gnuclear blockchain
 * Develop Tendermint V2
 * ...
@@ -1211,7 +1211,7 @@ offering "availability over consistency" -- consensus does not require a +⅔
 quorum of voting power -- perhaps at the cost of commit speed or
 implementation complexity.
 
-### Sharded Scaling
+### Zoneed Scaling
 
 #### Interledger Protocol
 
@@ -1240,10 +1240,10 @@ confirmation, not the receiving user.
 3. The most striking difference is that ILP's connectors are not responsible or
    keeping authoritative state about payments, whereas in Gnuclear, the
 validators of the Gnuclear hub are the authority of the state of IBC token
-transfers as well as the authority of the amount of tokens held by each shard
-(but not the amount of tokens held by each account within a shard).  This is he
+transfers as well as the authority of the amount of tokens held by each zone
+(but not the amount of tokens held by each account within a zone).  This is he
 fundamental innovation that allows for secure asymmetric tranfer of tokens from
-shard to shard; the analog to ILP's connector in Gnuclear is a persistent and
+zone to zone; the analog to ILP's connector in Gnuclear is a persistent and
 maximally secure blockchain ledger.
 
 4. The inter-ledger payments in ILP need to be backed by an exchange orderbook,
@@ -1270,7 +1270,7 @@ algorithm that scales more securely.
 
 #### Ethereum Scalability Efforts
 
-Ethereum is currently researching a number of different strategies to shard the
+Ethereum is currently researching a number of different strategies to zone the
 state of the Ethereum blockchain to address scalability needs. These efforts
 have the goal of maintaining the abstraction layer offered by the current
 Ethereum Virtual Machine across the shared state space. Research efforts are
@@ -1530,7 +1530,7 @@ wording, especially under the TMSP section
 * [15] Sidechains: https://blockstream.com/sidechains.pdf
 * [16] Casper: https://blog.ethereum.org/2015/08/01/introducing-casper-friendly-ghost/
 * [17] TMSP: https://github.com/tendermint/tmsp
-* [18] Ethereum Sharding: https://github.com/ethereum/EIPs/issues/53
+* [18] Ethereum Zoneing: https://github.com/ethereum/EIPs/issues/53
 * [19] LibSwift: http://www.ds.ewi.tudelft.nl/fileadmin/pds/papers/PerformanceAnalysisOfLibswift.pdf
 * [20] DLS: http://groups.csail.mit.edu/tds/papers/Lynch/jacm88.pdf
 * [21] Thin Client Security: https://en.bitcoin.it/wiki/Thin_Client_Security
