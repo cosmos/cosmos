@@ -14,8 +14,8 @@ platform suitable for generations to come.
 ## What
 
 Gnuclear is the first proof-of-stake multi-token cryptocurrency based on proven
-research in Byzantine (BFT) consensus algorithms, led by the same team that
-created the Tendermint BFT consensus engine.
+research in "classical" Byzantine (BFT) consensus algorithms, led by the same
+team that created the Tendermint BFT consensus engine.
 
 ### Zones
 
@@ -95,7 +95,7 @@ increased user-satisfaction and freedom in policiy selection.
 
 <hr />
 
-Gnuclear is the first second-generation cryptocurrency that is designed to
+Gnuclear is a second-generation cryptocurrency that is designed to
 address much of the problems of first-generation cryptocurrencies, from speed
 and scalability to security and governance.  By standing on the shoulders of
 existing computer-science research, meticulously adhering to the best
