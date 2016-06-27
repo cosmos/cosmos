@@ -17,6 +17,8 @@ Gnuclear is the first proof-of-stake multi-token cryptocurrency based on proven
 research in Byzantine (BFT) consensus algorithms, led by the same team that
 created the Tendermint BFT consensus engine.
 
+### Zones
+
 Gnuclear is not just a single blockchain, but a federation of many blockchains.
 The Gnuclear Hub is a global top-level blockchain designed to be expandable by
 securely plugging in any number of secondary blockchains, called "zones".  For
@@ -44,6 +46,8 @@ Thus, Gnuclear is:
 * A federation of independent zones with different soft/hard fork policies
 * A public platform for launching new tokens that leverage existing zones
 
+### Tendermint-BFT DPoS
+
 Gnuclear is the first public blockchain powered by Tendermint's BFT consensus
 algorithm.  The Tendermint open-source project was born in 2014 to address the
 speed, scalability, and environmental issues of Bitcoin's proof-of-work
@@ -53,7 +57,7 @@ demonstrate a proof-of-stake cryptocurrency that addresses the nothing-at-stake
 problem suffered by first-gen proof-of-stake cryptocurrencies such as NXT and
 BitShares.
 
-Gnuclear is the first cryptocurrency to offer instant and provably-secure
+Gnuclear is also the first cryptocurrency to offer instant and provably-secure
 mobile-client payment verification.  Today, practically all Bitcoin mobile
 wallets use trusted servers to provide them with transaction verification.  This
 is because proof-of-work requires waiting for many confirmations before a
@@ -64,9 +68,8 @@ receive instant transaction confirmation, finally making trustless and practical
 payments a reality on your smartphone.  This has significant ramifications for
 IoT applications as well.
 
-Gnuclear is a new delegated-proof-of-stake (DPoS) cryptocurrency.  Gnuclear
-validators (who have a similar role to Bitcoin miners but instead use
-cryptographic signatures to vote) are meant to be secure, dedicated machines
+Validators in Gnuclear (who have a similar role to Bitcoin miners but instead
+use cryptographic signatures to vote) are meant to be secure, dedicated machines
 that are responsible for committing blocks.  Non-validators can delegate their
 staking tokens (called "quarks") to any validator to earn a portion of block
 fees and quark rewards, but incur the risk of getting slashed if the delegate
@@ -74,6 +77,8 @@ validator gets hacked or violates the protocol.  The proven safety guarantees of
 Tendermint BFT consensus, and the collateral deposit of stakeholders (of
 validators and delegators) provide provable, quantifiable security for nodes and
 even mobile clients.
+
+### Governance
 
 Gnuclear has a constitution and a governance system built in, making it a better
 and more efficient DAO.  Other cryptocurrencies such as Bitcoin and Ethereum
@@ -87,6 +92,8 @@ among the stakeholders on issues regarding issues of theft and bugs (such as
 TheDAO bug), allowing for quicker and cleaner resolution.  Combined with zones
 that can have their own governance body, the Gnuclear network allows for
 increased user-satisfaction and freedom in policiy selection.
+
+<hr />
 
 Gnuclear is the first second-generation cryptocurrency that is designed to
 address much of the problems of first-generation cryptocurrencies, from speed
