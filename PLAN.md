@@ -49,6 +49,6 @@ Timeline
 7. EOC + 6 months: Pre-alpha release of TendermintCore for security review
 8. EOC + 9 months: Alpha release of TendermintCore (Handle all BFT faults)
 9. EOC + 12 months: Alpha release of Gnuclear (Staking, delegation, governance)
-T. EOC + 15 months: Beta release of Gnuclear (Alpha + shards/zones support)
-A. EOC + 18 months: Gamma release of Gnuclear (Beta + specific shards)
-B. EOC + 18 months+: Continuous development, timeline set by Foundation
+10. EOC + 15 months: Beta release of Gnuclear (Alpha + shards/zones support)
+11. EOC + 18 months: Gamma release of Gnuclear (Beta + specific shards)
+12. EOC + 18 months+: Continuous development, timeline set by Foundation
