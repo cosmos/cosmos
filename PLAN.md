@@ -52,3 +52,9 @@ Timeline
 10. EOC + 15 months: Beta release of Gnuclear (Alpha + shards/zones support)
 11. EOC + 18 months: Gamma release of Gnuclear (Beta + specific shards)
 12. EOC + 18 months+: Continuous development, timeline set by Foundation
+
+Roadmap
+-------
+
+Post-* long term roadmap.
+e.g. ZCash vs CryptoNote question
