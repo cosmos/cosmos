@@ -178,7 +178,7 @@ reward.  The most important such guarantee is a form of _fork-accountability_,
 where the processes that caused the consensus to fail (ie.  caused clients of
 the protocol to accept different values - a fork) can be identified and punished
 according to the rules of the protocol, or, possibly, the legal system.  When
-the legal system is unreliable, validators can be forced to make security
+the legal system is unreliable or excessively expensive to invoke, validators can be forced to make security
 deposits in order to participate, and those deposits can be revoked, or slashed,
 when malicious behaviour is detected [\[10\]][10].
 
@@ -192,7 +192,7 @@ block.
 Tendermint is a partially synchronous BFT consensus protocol derived from the
 DLS consensus algorithm [\[20\]][20]. Tendermint is notable for its simplicity,
 performance, and fork-accountability.  The protocol requires a fixed, known set
-of <em>N</em> validators, where the <em>i</em>th validator is identified by its
+of validators, where each validator is identified by its
 public key.  Validators attempt to come to consensus on one block at a time,
 where a block is a list of transactions.  Consensus on a block proceeds in
 rounds. Each round has a round-leader, or proposer, who proposes a block. The
@@ -218,8 +218,8 @@ doing so can be made even more difficult by using randomized values of
 TimeoutPropose on each validator.
 
 An additional set of constraints, or Locking Rules, ensure that the network will
-eventually commit just one value. Any malicious attempt to cause more than one
-value to be committed can be identified.  First, a PreCommit for a block must
+eventually commit just one block at each height. Any malicious attempt to cause more than one
+block to be committed at a given height can be identified.  First, a PreCommit for a block must
 come with justification, in the form of a Polka for that block. If the validator
 has already PreCommit a block at round <em>R_1</em>, we say they are _locked_ on
 that block, and the Polka used to justify the new PreCommit at round
@@ -258,9 +258,9 @@ security, especially as compared to proof-of-work, and to protocols like Bitcoin
 which have no global state.  Instead of syncing a chain of block headers and
 verifying the proof of work, light clients, who are assumed to know all public
 keys in the validator set, need only verify the +⅔ PreCommits in the latest
-block.  The need to sync all block headers is eliminated as the existence of an
-alternative chain (a fork) means ⅓+ of bonded stake can be slashed (in
-proof-of-stake).  Of course, since slashing requires that _someone_ detects the
+block.  The need to sync all block headers is eliminated in proof-of-stake as the existence of an
+alternative chain (a fork) means ⅓+ of bonded stake can be slashed.
+Of course, since slashing requires that _someone_ detects the
 fork, it would be prudent for light clients, or at least those that are able, to
 sync headers, perhaps more slowly, on a risk adjusted basis, where the explicit
 cost of a fork can be easily calculated at ⅓+ of the bonded stake.
@@ -290,8 +290,8 @@ like Tendermint consensus). Long Range Attacks are often thought to be a
 critical blow to proof-of-stake.
 
 Fortunately, the LRA can be mitigated as follows.  First, for a validator to
-unbond, thereby recovering their deposit and no longer earning fees to
-participate in the consensus, the deposit must be made unavailable for an amount
+unbond (thereby recovering their deposit and no longer earning fees to
+participate in the consensus), the deposit must be made unavailable for an amount
 of time known as the "unbonding period", which may be on the order of weeks or
 months.  Second, for a light client to be secure, the first time it connects to
 the network it must verify a recent block-hash against a trusted source, or
@@ -308,7 +308,8 @@ Note that overcoming the LRA in this way requires a practical tweak of the
 original security model of proof-of-work. In PoW, it is assumed that a light
 client can sync to the current height from the trusted genesis block at any time
 simply by processing the proof-of-work in every block header.  To overcome the
-LRA, however, we require that a light client come online with some regularity,
+LRA, however, we require that a light client come online with some regularity
+to track changes in the validator set,
 and that the first time they come online they must be particularly careful to
 authenticate what they hear from the network against trusted sources. Of course,
 this latter requirement is similar to that of Bitcoin, where the protocol and
@@ -456,16 +457,17 @@ Here we describe a novel model of decentralization and scalability.  Atom is
 a network of many blockchains powered by Tendermint via TMSP.  While existing
 proposals aim to create a "single blockchain" with total global transaction
 ordering, Atom permits many blockchains to run concurrently with one another
-via a sharding mechanism.
+and yet retain interoperability.
 
 At the basis, a global hub blockchain (the Atom hub) manages many independent
-blockchain shards called "zones".  A constant stream of recent block commits
-from zones posted on the hub allows the hub to keep up with the state of each
+blockchains called "zones" (sometimes referred to as "shards", in reference to
+the database scaling technique known as "sharding").  
+A constant stream of recent block commits from zones posted on the hub allows the hub to keep up with the state of each
 zone.  Likewise, each zone keeps up with the state of the hub (but zones do not
-keep up with each other except indirectly through the hub).  Packets of
-information are then communicated from one chain to another by posting
-Merkle-proofs that collide with a recent block-hash from the source.  This
-mechanism is called inter-blockchain communication, or IBC for short.
+keep up with each other except indirectly through the hub).  
+Packets of information are then communicated from one zone to another by posting
+Merkle-proofs as evidence that the information was sent and received. 
+This mechanism is called inter-blockchain communication, or IBC for short.
 
 ![Figure of hub and zones
 acknowledgement](https://raw.githubusercontent.com/gnuclear/atom-whitepaper/master/images/hub_and_zones.png)
@@ -803,7 +805,8 @@ A result of this integration would be, for instance, the ability of anyone with
 a bank account at a participating bank to move dollars from their bank account,
 which is on the zone, to other accounts on the zone, or to the hub, or to
 another zone entirely.  In this regard, Atom can act as a seamless conduit
-between fiat currencies and cryptocurrencies.
+between fiat currencies and cryptocurrencies, removing the barriers that
+have until now limitted their interoperabiltiy to the realm of exchanges.
 
 ### Ethereum Scaling
 
