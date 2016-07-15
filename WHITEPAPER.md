@@ -62,7 +62,7 @@ document.  Please check regularly for updates!._
       * [Stellar](#stellar)
       * [BitcoinNG](#bitcoinng)
       * [Casper](#casper)
-    * [Zoneed Scaling](#zoneed-scaling)
+    * [Horizontal Scaling](#horizontal-scaling)
       * [Interledger Protocol](#interledger-protocol)
       * [Sidechains](#sidechains)
       * [Ethereum Scalability Efforts](#ethereum-scalability-efforts)
@@ -1211,7 +1211,7 @@ offering "availability over consistency" -- consensus does not require a +⅔
 quorum of voting power -- perhaps at the cost of commit speed or
 implementation complexity.
 
-### Zoneed Scaling
+### Horizontal Scaling
 
 #### Interledger Protocol
 
@@ -1530,7 +1530,7 @@ wording, especially under the TMSP section
 * [15] Sidechains: https://blockstream.com/sidechains.pdf
 * [16] Casper: https://blog.ethereum.org/2015/08/01/introducing-casper-friendly-ghost/
 * [17] TMSP: https://github.com/tendermint/tmsp
-* [18] Ethereum Zoneing: https://github.com/ethereum/EIPs/issues/53
+* [18] Ethereum Sharding: https://github.com/ethereum/EIPs/issues/53
 * [19] LibSwift: http://www.ds.ewi.tudelft.nl/fileadmin/pds/papers/PerformanceAnalysisOfLibswift.pdf
 * [20] DLS: http://groups.csail.mit.edu/tds/papers/Lynch/jacm88.pdf
 * [21] Thin Client Security: https://en.bitcoin.it/wiki/Thin_Client_Security
