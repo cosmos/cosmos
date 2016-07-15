@@ -10,33 +10,17 @@ _NOTE: If you can read this on GitHub, then we're still actively developing this
 document.  Please check regularly for updates!._
 
 ## Table of Contents ###########################################################
-
   * [Introduction](#introduction)
   * [Tendermint](#tendermint)
+    * [Validators](#validators)
     * [Consensus](#consensus)
     * [Light Clients](#light-clients)
-    * [Preventing Long Range Attacks](#preventing-long-range-attacks)
-    * [Overcoming Forks and Censorship
-    Attacks](#overcoming-forks-and-censorship-attacks)
+    * [Preventing Attacks](#preventing-attacks)
     * [TMSP](#tmsp)
   * [The Hub and Zones](#the-hub-and-zones)
     * [The Hub](#the-hub)
     * [The Zones](#the-zones)
   * [Inter-blockchain Communication (IBC)](#inter-blockchain-communication-ibc)
-    * [IBC Packet Delivery
-    Acknowledgement](#ibc-packet-delivery-acknowledgement)
-  * [Transactions](#transactions)
-    * [Transaction Types](#transaction-types)
-      * [SendTx](#sendtx)
-      * [BondTx](#bondtx)
-      * [UnbondTx](#unbondtx)
-      * [SlashTx](#slashtx)
-      * [BurnAtomTx](#burnatomtx)
-      * [NewProposalTx](#newproposaltx)
-      * [VoteTx](#votetx)
-      * [IBCBlockCommitTx](#ibcblockcommittx)
-      * [IBCPacketTx](#ibcpackettx)
-    * [Transaction Gas and Fees](#transaction-gas-and-fees)
   * [Use Cases](#use-cases)
     * [Pegging to Other Cryptocurrencies](#pegging-to-other-cryptocurrencies)
     * [Ethereum Scaling](#ethereum-scaling)
@@ -45,6 +29,10 @@ document.  Please check regularly for updates!._
     * [Federated Name Resolution System](#federated-name-resolution-system)
   * [Issuance and Incentives](#issuance-and-incentives)
     * [The Atom Token](#the-atom-token)
+    * [Crowdfund](#crowdfund)
+    * [Atom Foundation](#atom-foundation)
+    * [Atom Hub Block Reward](#atom-hub-block-reward)
+    * [Incentivizing Hackers](#incentivizing-hackers)
     * [Limitations on the Number of
     Validators](#limitations-on-the-number-of-validators)
     * [Becoming a Validator After Genesis
@@ -70,10 +58,27 @@ document.  Please check regularly for updates!._
       * [Lightning Network](#lightning-network)
       * [Segregated Witness](#segregated-witness)
   * [Appendix](#appendix)
-    * [Gas Fees for Transactions](#gas-fees-for-transactions)
-    * [TMSP specification](#tmsp-specification)
+    * [Tendermint Consensus](#tendermint-consensus)
+    * [Tendermint Light Clients](#tendermint-light-clients)
+    * [Preventing Long Range Attacks](#preventing-long-range-attacks)
+    * [Overcoming Forks and Censorship
+    Attacks](#overcoming-forks-and-censorship-attacks)
+    * [TMSP Specification](#tmsp-specification)
+    * [IBC Packet Delivery
+    Acknowledgement](#ibc-packet-delivery-acknowledgement)
     * [Merkle tree &amp; proof
     specification](#merkle-tree--proof-specification)
+  * [Transactions](#transactions)
+    * [Transaction Types](#transaction-types)
+      * [SendTx](#sendtx)
+      * [BondTx](#bondtx)
+      * [UnbondTx](#unbondtx)
+      * [SlashTx](#slashtx)
+      * [BurnAtomTx](#burnatomtx)
+      * [NewProposalTx](#newproposaltx)
+      * [VoteTx](#votetx)
+      * [IBCBlockCommitTx](#ibcblockcommittx)
+      * [IBCPacketTx](#ibcpackettx)
   * [Acknowledgements](#acknowledgements)
   * [Citations](#citations)
 
@@ -135,7 +140,7 @@ systems.
 ## Tendermint ##################################################################
 
 In this section we describe the Tendermint consensus protocol and the interface
-used to build applications with it.
+used to build applications with it. For more details, see the [appendix](#appendix).
 
 ### Validators
 
@@ -157,38 +162,6 @@ _NOTE: +⅔ means "more than ⅔", while ⅓+ means "⅓ or more"._
 
 ### Consensus
 
-A fault-tolerant consensus protocol enables a set of non-faulty processes to
-eventually agree on a value proposed by at least one of them.  The problem is
-made more difficult by asynchronous network conditions, wherein messages may
-have arbitrarily long delays, and by Byzantine faults, wherein processes may
-exhibit arbitrary, possibly malicious, behaviour.  In particular, it is well
-known that deterministic consensus in asynchronous networks is impossible with
-any fail-stop faults [\[9\]][9], and that consensus protocols in non-synchronous
-systems can tolerate strictly fewer Byzantine faults than crash faults (⅓ of
-processes, vs. ½). The former results from the inability to distinguish crash
-failures from asynchronous message delay. The latter from the fact that three
-processes are not enough for a safe majority vote if one of them can lie (you
-need at least four).
-
-In addition to providing optimal fault tolerance, a well designed consensus
-protocol should provide additional guarantees in the event that the tolerance
-capacity is exceeded and the consensus fails.  This is especially necessary in
-economic systems, where Byzantine behaviour can have substantial financial
-reward.  The most important such guarantee is a form of _fork-accountability_,
-where the processes that caused the consensus to fail (ie.  caused clients of
-the protocol to accept different values - a fork) can be identified and punished
-according to the rules of the protocol, or, possibly, the legal system.  When
-the legal system is unreliable or excessively expensive to invoke, validators can be forced to make security
-deposits in order to participate, and those deposits can be revoked, or slashed,
-when malicious behaviour is detected [\[10\]][10].
-
-Note this is much unlike Bitcoin, where forking is a regular occurence due to
-network asynchrony and the probabilistic nature of finding partial hash
-collissions.  Since in many cases, a malicious fork is indistinguishable from a
-fork due to asynchrony, Bitcoin can not reliably implement fork-accountability,
-other than the implicit opportunity cost paid by miners for mining an orphaned
-block.
-
 Tendermint is a partially synchronous BFT consensus protocol derived from the
 DLS consensus algorithm [\[20\]][20]. Tendermint is notable for its simplicity,
 performance, and fork-accountability.  The protocol requires a fixed, known set
@@ -197,44 +170,14 @@ public key.  Validators attempt to come to consensus on one block at a time,
 where a block is a list of transactions.  Consensus on a block proceeds in
 rounds. Each round has a round-leader, or proposer, who proposes a block. The
 validators then vote, in stages, on whether or not to accept the proposed block
-or move on to the next round.
-
-We call the voting stages _PreVote_ and _PreCommit_. A vote can be for a
-particular block or for _Nil_.  We call a collection of +⅔ PreVotes for a single
-block in the same round a _Polka_, and a collection of +⅔ PreCommits for a
-single block in the same round a _Commit_.  If +⅔ PreCommit for Nil in the same
-round, they move to the next round.
-
-The proposer for a round is chosen deterministically from the ordered list of
-validators, in proportion to their voting power.  Note that strict determinism
-in the protocol incurs a weak synchrony assumption as faulty leaders must be
-detected and skipped.  Thus, validators wait some amount _TimeoutPropose_ before
-they Prevote Nil, and the value of TimeoutPropose increases with each round.
-Progression through the rest of a round is fully asychronous, in that progress
-is only made once a validator hears from +⅔ of the network.  In practice, it
-would take an extremely strong adversary to indefinetely thwart the weak
-synchrony assumption (causing the consensus to fail to ever commit a block), and
-doing so can be made even more difficult by using randomized values of
-TimeoutPropose on each validator.
-
-An additional set of constraints, or Locking Rules, ensure that the network will
-eventually commit just one block at each height. Any malicious attempt to cause more than one
-block to be committed at a given height can be identified.  First, a PreCommit for a block must
-come with justification, in the form of a Polka for that block. If the validator
-has already PreCommit a block at round <em>R_1</em>, we say they are _locked_ on
-that block, and the Polka used to justify the new PreCommit at round
-<em>R_2</em> must come in a round <em>R_polka</em> where <em>R_1 &lt; R_polka
-&lt;= R_2</em>.  Second, validators must Propose and/or PreVote the block they
-are locked on.  Together, these conditions ensure that a validator does not
-PreCommit without sufficient evidence, and that validators which have already
-PreCommit cannot contribute to evidence to PreCommit something else.  This
-ensures both safety and liveness of the consensus algorithm.
+or move on to the next round. The proposer for a round is chosen deterministically from the ordered list of
+validators, in proportion to their voting power.  
 
 The full details of the protocol are described
 [here](https://github.com/tendermint/tendermint/wiki/Byzantine-Consensus-Algorithm).
 
 Tendermint’s security derives from its use of optimal Byzantine fault-tolerance
-via super-majority (+⅔) voting and the locking mechanism.  Together, they ensure
+via super-majority (+⅔) voting and a locking mechanism.  Together, they ensure
 that:
 
 * ⅓+ voting power must be Byzantine to cause a violation of safety, where more
@@ -254,141 +197,16 @@ broadcasting maliciously crafted votes. See FIGURE (TODO) for details.
 ### Light Clients
 
 A major benefit of Tendermint's consensus algorithm is simplified light client
-security, especially as compared to proof-of-work, and to protocols like Bitcoin
-which have no global state.  Instead of syncing a chain of block headers and
-verifying the proof of work, light clients, who are assumed to know all public
-keys in the validator set, need only verify the +⅔ PreCommits in the latest
-block.  The need to sync all block headers is eliminated in proof-of-stake as the existence of an
-alternative chain (a fork) means ⅓+ of bonded stake can be slashed.
-Of course, since slashing requires that _someone_ detects the
-fork, it would be prudent for light clients, or at least those that are able, to
-sync headers, perhaps more slowly, on a risk adjusted basis, where the explicit
-cost of a fork can be easily calculated at ⅓+ of the bonded stake.
-Additionally, light clients must stay synced with changes to the validator set,
-in order to avoid certain [long range attacks](#preventing-long-range-attacks).
+security, making it an ideal candidate for mobile and internet-of-things use cases.
+While a Bitcoin light client must sync chains of block headers and find the one with the most proof of work,
+Tendermint light clients, need only to keep up with changes to the validator set,
+and then simply verify the +⅔ PreCommits in the latest block to determine the latest state.  
 
-In a spirit similar to Ethereum, Tendermint enables applications to embed a
-global Merkle root hash in each block, allowing easily verifiable state queries
-for things like account balances, the value stored in a contract, or the
-existence of an unspent transaction output, depending on the nature of the
-application.
+### Preventing Attacks
 
-### Preventing Long Range Attacks
-
-Assuming a sufficiently resilient collection of broadcast networks and a static
-validator set, any fork in the blockchain can be detected and the deposits of
-the offending validators slashed.  This innovation, first suggested by Vitalik
-Buterin in early 2014, solves the nothing-at-stake problem of other
-proof-of-stake cryptocurrencies (see [Related Work](#related-work)). However,
-since validator sets must be able to change, over a long range of time the
-original validators may all become unbonded, and hence would be free to create a
-new chain, from the genesis block, incurring no cost as they no longer have
-deposits locked up.  This attack came to be known as the Long Range Attack (LRA)
-in contrast to a Short Range Attack, where validators who are currently bonded
-cause a fork and are hence punishable (assuming a fork-accountable BFT algorithm
-like Tendermint consensus). Long Range Attacks are often thought to be a
-critical blow to proof-of-stake.
-
-Fortunately, the LRA can be mitigated as follows.  First, for a validator to
-unbond (thereby recovering their deposit and no longer earning fees to
-participate in the consensus), the deposit must be made unavailable for an amount
-of time known as the "unbonding period", which may be on the order of weeks or
-months.  Second, for a light client to be secure, the first time it connects to
-the network it must verify a recent block-hash against a trusted source, or
-preferably multiple of them.  This condition is sometimes referred to as "weak
-subjectivity".  Finally, to remain secure, it must sync up with the latest
-validator set at least as frequently as the length of the unbonding period. This
-ensures that the light client knows about changes to the validator set before a
-validator has its capital unbonded and thus no longer at stake, which would
-allow it to deceive the client by carrying out a long range attack by creating
-new blocks beginning back at a height where it was bonded (assuming it has
-control of sufficiently many of the early private keys).
-
-Note that overcoming the LRA in this way requires a practical tweak of the
-original security model of proof-of-work. In PoW, it is assumed that a light
-client can sync to the current height from the trusted genesis block at any time
-simply by processing the proof-of-work in every block header.  To overcome the
-LRA, however, we require that a light client come online with some regularity
-to track changes in the validator set,
-and that the first time they come online they must be particularly careful to
-authenticate what they hear from the network against trusted sources. Of course,
-this latter requirement is similar to that of Bitcoin, where the protocol and
-software must also be obtained from a trusted source.
-
-The above method for preventing LRA is well suited for validators and full nodes
-of a Tendermint-powered blockchain because these nodes are meant to remain
-connected to the network.  The method is also suitable for light clients that
-can be expected to sync with the network frequently.  However, for light clients
-that are not expected to have frequent access to the internet or the blockchain
-network, yet another solution can be used to overcome the LRA.  Non-validator
-token holders can post their tokens as collateral with a very long unbonding
-period (e.g. much longer than the unbonding period for validators) and serve
-light clients with a secondary method of attesting to the validity of current
-and past block-hashes. While these tokens do not count toward the security of
-the blockchain's consensus, they nevertheless can provide strong guarantees for
-light clients.  If historical block-hash querying were supported in Ethereum,
-anyone could bond their tokens in a specially designed smart contract and
-provide attestation services for pay, effectively creating a market for
-light-client LRA security.
-
-### Overcoming Forks and Censorship Attacks
-
-Due to the definition of a block commit, any ⅓+ coalition of voting power can
-halt the blockchain by not broadcasting their votes. Such a coalition can also
-censor particular transactions by rejecting blocks that include these
-transactions, though this would result in a significant proportion of block
-proposals to be rejected, which would slow down the rate of block commits of the
-blockchain, reducing its utility and value. The malicious coalition might also
-broadcast votes in a trickle so as to grind blockchain block commits to a near
-halt, or engage in any combination of these attacks.  Finally, it can cause the
-blockchain to fork, by double-signing or violating the locking rules.
-
-If a global active adversary were also involved, it can partition the network in
-such a way that it may appear that the wrong subset of validators were
-responsible for the slowdown. This is not just a limitation of Tendermint, but
-rather a limitation of all consensus protocols whose network is potentially
-controlled by an active adversary.
-
-For these types of attacks, a subset of the validators through external means
-should coordinate to sign a reorg-proposal that chooses a fork (and any evidence
-thereof) and the initial subset of validators with their signatures. Validators
-who sign such a reorg-proposal forego its collateral on all other forks.
-Clients should verify the signatures on the reorg-proposal, verify any evidence,
-and make a judgement or prompt the end-user for a decision.  For example, a
-phone wallet app may prompt the user with a security warning, while a
-refrigerator may accept any reorg-proposal signed by +½ of the original
-validators by voting power.
-
-No non-synchronous Byzantine fault-tolerant algorithm can come to consensus when
-⅓+ of voting power are dishonest, yet a fork assumes that ⅓+ of voting power
-have already been dishonest by double-signing or lock-changing without
-justification.  So, signing the reorg-proposal is a coordination problem that
-cannot be solved by any non-synchronous protocol (i.e. automatically, and
-without making assumptions about the reliability of the underlying network).
-For now, we leave the problem of reorg-proposal coordination to human
-coordination via internet media.  Validators must take care to ensure that there
-are no significant network partitions, to avoid situations where two conflicting
-reorg-proposals are signed.
-
-Assuming that the external coordination medium and protocol is robust, it
-follows that forks are less of a concern than censorship attacks.
-
-In addition to forks and censorship, which require ⅓+ Byzantine voting power, a
-coalition of +⅔ voting power may commit arbitrary, invalid state.  This is
-characteristic of any (BFT) consensus system. Unlike double-signing, which
-creates forks with easily verifiable evidence, detecting committment of an
-invalid state requires non-validating peers to verify whole blocks, which
-implies that they keep a local copy of the state and execute each transaction,
-computing the state root independently for themselves.  Once detected, the only
-way to handle such a failure is via social consensus on alternative media.  For
-instance, in situations where Bitcoin has failed, whether forking due to
-software bugs (as in March 2013), or committing invalid state due to Byzantine
-behavior of miners (as in the July 2016), the well connected community of
-businesses, developers, miners, and other organizations established a social
-consensus as to what manual actions were required by participants to heal the
-network.  Furthermore, since validators of a Tendermint blockchain may be
-expected to be identifiable, commitment of an invalid state may even be
-punishable by law or some external jurisprudence, if desired.
+Tendermint has various protective measures for preventing certain notable attacks,
+like long-range-nothing-at-stake double spends and censorship. These are discussed more fully
+in the appendix.
 
 ### TMSP
 
@@ -421,35 +239,6 @@ Meanwhile, the TMSP application would be responsible for
 
 Tendermint is able to decompose the blockchain design by offering a very simple
 API between the application process and consensus process.
-
-TMSP consists of 3 primary message types that get delivered from the core to the
-application. The application replies with corresponding response messages.
-
-The `AppendTx` message is the work horse of the application. Each transaction in
-the blockchain is delivered with this message. The application needs to validate
-each transactions received with the AppendTx message against the current state,
-application protocol, and the cryptographic credentials of the transaction. A
-validated transaction then needs to update the application state — by binding a
-value into a key values store, or by updating the UTXO database.
-
-The `CheckTx` message is similar to AppendTx, but it’s only for validating
-transactions. Tendermint Core’s mempool first checks the validity of a
-transaction with CheckTx, and only relays valid transactions to its peers.
-Applications may check an incrementing nonce in the transaction and return an
-error upon CheckTx if the nonce is old.
-
-The `Commit` message is used to compute a cryptographic commitment to the
-current application state, to be placed into the next block header. This has
-some handy properties. Inconsistencies in updating that state will now appear as
-blockchain forks which catches a whole class of programming errors. This also
-simplifies the development of secure lightweight clients, as Merkle-hash proofs
-can be verified by checking against the block-hash, and the block-hash is signed
-by a quorum of validators (by voting power).
-
-Additional TMSP messages allow the application to keep track of and change the
-validator set, and for the application to receive the block information, such as
-the height and the commit votes.  The full TMSP specification can be found
-[here](https://github.com/tendermint/tmsp#message-types).
 
 ## The Hub and Zones ###########################################################
 
@@ -555,197 +344,6 @@ transaction must be posted on "Hub" with the block-hash of "Zone1" (or on
 
 _See [IBCBlockCommitTx](#ibcblockcommittx) and [IBCPacketTx](#ibcpacketcommit)
 for for more information on the two IBC transaction types._
-
-### IBC Packet Delivery Acknowledgement
-
-There are several reasons why a sender may want the acknowledgement of delivery
-of a packet by the receiving chain.  For example, the sender may not know the
-status of the destination chain, if it is expected to be faulty.  Or, the sender
-may want to impose a timeout on the packet (with the `MaxHeight` packet field),
-while any destination chain may suffer from a denial-of-service attack with a
-sudden spike in the number of incoming packets.
-
-In these cases, the sender can require delivery acknowledgement by setting the
-initial packet status to `AckPending`.  Then, it is the receiving chain's
-responsibility to confirm delivery by including an abbreviated`IBCPacket` in the
-app Merkle hash.
-
-![Figure of Zone1, Zone2, and Hub IBC with
-acknowledgement](https://raw.githubusercontent.com/gnuclear/atom-whitepaper/master/msc/ibc_with_ack.png)
-
-First, an `IBCBlockCommit` and `IBCPacketTx` are posted on "Hub" that proves
-the existence of an `IBCPacket` on "Zone1".  Say that `IBCPacketTx` has the
-following value:
-
-- `FromChainID`: "Zone1"
-- `FromBlockHeight`: 100 (say)
-- `Packet`: an `IBCPacket`:
-  - `Header`: an `IBCPacketHeader`:
-    - `SrcChainID`: "Zone1"
-    - `DstChainID`: "Zone2"
-    - `Number`: 200 (say)
-    - `Status`: `AckPending`
-    - `Type`: "coin"
-    - `MaxHeight`: 350 (say "Hub" is currently at height 300)
-  - `Payload`: &lt;The bytes of a "coin" payload&gt;
-
-Next, an `IBCBlockCommit` and `IBCPacketTx` are posted on "Zone2" that proves
-the existence of an `IBCPacket` on "Hub".  Say that `IBCPacketTx` has the
-following value:
-
-- `FromChainID`: "Hub"
-- `FromBlockHeight`: 300
-- `Packet`: an `IBCPacket`:
-  - `Header`: an `IBCPacketHeader`:
-    - `SrcChainID`: "Zone1"
-    - `DstChainID`: "Zone2"
-    - `Number`: 200
-    - `Status`: `AckPending`
-    - `Type`: "coin"
-    - `MaxHeight`: 350
-  - `Payload`: &lt;The same bytes of a "coin" payload&gt;
-
-Next, "Zone2" must include in its app-hash an abbreviated packet that shows the
-new status of `AckSent`.  An `IBCBlockCommit` and `IBCPacketTx` are posted back
-on "Hub" that proves the existence of an abbreviated `IBCPacket` on
-"Zone2".  Say that `IBCPacketTx` has the following value:
-
-- `FromChainID`: "Zone2"
-- `FromBlockHeight`: 400 (say)
-- `Packet`: an `IBCPacket`:
-  - `Header`: an `IBCPacketHeader`:
-    - `SrcChainID`: "Zone1"
-    - `DstChainID`: "Zone2"
-    - `Number`: 200
-    - `Status`: `AckSent`
-    - `Type`: "coin"
-    - `MaxHeight`: 350
-  - `PayloadHash`: &lt;The hash bytes of the same "coin" payload&gt;
-
-Finally, "Hub" must update the status of the packet from `AckPending` to
-`AckReceived`.  Evidence of this new finalized status should go back to
-"Zone2".  Say that `IBCPacketTx` has the following value:
-
-- `FromChainID`: "Hub"
-- `FromBlockHeight`: 301
-- `Packet`: an `IBCPacket`:
-  - `Header`: an `IBCPacketHeader`:
-    - `SrcChainID`: "Zone1"
-    - `DstChainID`: "Zone2"
-    - `Number`: 200
-    - `Status`: `AckReceived`
-    - `Type`: "coin"
-    - `MaxHeight`: 350
-  - `PayloadHash`: &lt;The hash bytes of the same "coin" payload&gt;
-
-Meanwhile, "Zone1" may optimistically assume successful delivery of a "coin"
-packet unless evidence to the contrary is proven on "Hub".  In the example
-above, if "Hub" had not received an `AckSent` status from "Zone2" by block
-350, it would have set the status automatically to `Timeout`.  This evidence of
-a timeout can get posted back on "Zone1", and any tokens can be returned.
-
-![Figure of Zone1, Zone2, and Hub IBC with acknowledgement and
-timeout](https://raw.githubusercontent.com/gnuclear/atom-whitepaper/master/msc/ibc_with_ack_timeout.png)
-
-## Transactions ################################################################
-
-In the canonical implementation, transactions are streamed to the Atom
-hub application via the TMSP interface.
-
-### Transaction Types
-
-#### SendTx
-
-#### BondTx
-
-#### UnbondTx
-
-#### SlashTx
-
-#### BurnAtomTx
-
-#### NewProposalTx
-
-#### VoteTx
-
-#### IBCBlockCommitTx
-
-An `IBCBlockCommitTx` transaction is composed of:
-
-- `ChainID (string)`: The ID of the blockchain
-- `BlockHash ([]byte)`: The block-hash bytes, the Merkle root which includes the
-  app-hash
-- `BlockPartsHeader (PartSetHeader)`: The block part-set header bytes, only
-  needed to verify vote signatures
-- `BlockHeight (int)`: The height of the commit
-- `BlockRound (int)`: The round of the commit
-- `Commit ([]Vote)`: The +⅔ Tendermint `Precommit` votes that comprise a block
-  commit
-- `ValidatorsHash ([]byte)`: A Merkle-tree root hash of the new validator set
-- `ValidatorsHashProof (SimpleProof)`: A SimpleTree Merkle-proof for proving the
-  `ValidatorsHash` against the `BlockHash`
-- `AppHash ([]byte)`: A IAVLTree Merkle-tree root hash of the application state
-- `AppHashProof (SimpleProof)`: A SimpleTree Merkle-proof for proving the
-  `AppHash` against the `BlockHash`
-
-#### IBCPacketTx
-
-An `IBCPacket` is composed of:
-
-- `Header (IBCPacketHeader)`: The packet header
-- `Payload ([]byte)`: The bytes of the packet payload. _Optional_
-- `PayloadHash ([]byte)`: The hash for the bytes of the packet. _Optional_
-
-Either one of `Payload` or `PayloadHash` must be present.  The hash of an
-`IBCPacket` is a simple Merkle root of the two items, `Header` and `Payload`.
-An `IBCPacket` without the full payload is called an _abbreviated packet_.
-
-An `IBCPacketHeader` is composed of:
-
-- `SrcChainID (string)`: The source blockchain ID
-- `DstChainID (string)`: The destination blockchain ID
-- `Number (int)`: A unique number for all packets
-- `Status (enum)`: Can be one of `AckPending`, `AckSent`, `AckReceived`,
-  `NoAck`, or `Timeout`
-- `Type (string)`: The types are application-dependent.  Atom reserves the
-  "coin" packet type
-- `MaxHeight (int)`: If status is not `NoAckWanted` or `AckReceived` by this
-  height, status becomes `Timeout`. _Optional_
-
-An `IBCPacketTx` transaction is composed of:
-
-- `FromChainID (string)`: The ID of the blockchain which is providing this
-  packet; not necessarily the source
-- `FromBlockHeight (int)`: The blockchain height in which the following packet
-  is included (Merkle-ized) in the block-hash of the source chain
-- `Packet (IBCPacket)`: A packet of data, whose status may be one of
-  `AckPending`, `AckSent`, `AckReceived`, `NoAck`, or `Timeout`
-- `PacketProof (IAVLProof)`: A IAVLTree Merkle-proof for proving the packet's
-  hash against the `AppHash` of the source chain at given height
-
-The sequence for sending a packet from "Zone1" to "Zone2" through the
-"Hub" is depicted in {Figure X}.  First, an `IBCPacketTx` proves to
-"Hub" that the packet is included in the app-state of "Zone1".  Then,
-another `IBCPacketTx` proves to "Zone2" that the packet is included in the
-app-state of "Hub".  During this procedure, the `IBCPacket` fields are
-identical: the `SrcChainID` is always "Zone1", and the `DstChainID` is always
-"Zone2".
-
-The `PacketProof` must have the correct Merkle-proof path, as follows:
-
-```
-IBC/<SrcChainID>/<DstChainID>/<Number>
-
-```
-TODO: CLARIFY
-
-When "Zone1" wants to send a packet to "Zone2" through "Hub", the
-`IBCPacket` data are identical whether the packet is Merkle-ized on "Zone1",
-the "Hub", or "Zone2".  The only mutable field is `Status` for tracking
-delivery, as shown below.
-
-
-### Transaction Gas and Fees
 
 ## Use Cases ###################################################################
 
@@ -1324,7 +922,222 @@ vertical scaling as well.
 
 ## Appendix ####################################################################
 
+### Fork Accountability
+
+A well designed consensus protocol should provide some guarantees in the event that the tolerance
+capacity is exceeded and the consensus fails.  This is especially necessary in
+economic systems, where Byzantine behaviour can have substantial financial
+reward.  The most important such guarantee is a form of _fork-accountability_,
+where the processes that caused the consensus to fail (ie.  caused clients of
+the protocol to accept different values - a fork) can be identified and punished
+according to the rules of the protocol, or, possibly, the legal system.  When
+the legal system is unreliable or excessively expensive to invoke, validators can be forced to make security
+deposits in order to participate, and those deposits can be revoked, or slashed,
+when malicious behaviour is detected [\[10\]][10].
+
+Note this is much unlike Bitcoin, where forking is a regular occurence due to
+network asynchrony and the probabilistic nature of finding partial hash
+collissions.  Since in many cases, a malicious fork is indistinguishable from a
+fork due to asynchrony, Bitcoin can not reliably implement fork-accountability,
+other than the implicit opportunity cost paid by miners for mining an orphaned
+block.
+
+
+### Tendermint Consensus 
+
+We call the voting stages _PreVote_ and _PreCommit_. A vote can be for a
+particular block or for _Nil_.  We call a collection of +⅔ PreVotes for a single
+block in the same round a _Polka_, and a collection of +⅔ PreCommits for a
+single block in the same round a _Commit_.  If +⅔ PreCommit for Nil in the same
+round, they move to the next round.
+
+Note that strict determinism in the protocol incurs a weak synchrony assumption as faulty leaders must be
+detected and skipped.  Thus, validators wait some amount _TimeoutPropose_ before
+they Prevote Nil, and the value of TimeoutPropose increases with each round.
+Progression through the rest of a round is fully asychronous, in that progress
+is only made once a validator hears from +⅔ of the network.  In practice, it
+would take an extremely strong adversary to indefinetely thwart the weak
+synchrony assumption (causing the consensus to fail to ever commit a block), and
+doing so can be made even more difficult by using randomized values of
+TimeoutPropose on each validator.
+
+An additional set of constraints, or Locking Rules, ensure that the network will
+eventually commit just one block at each height. Any malicious attempt to cause more than one
+block to be committed at a given height can be identified.  First, a PreCommit for a block must
+come with justification, in the form of a Polka for that block. If the validator
+has already PreCommit a block at round <em>R_1</em>, we say they are _locked_ on
+that block, and the Polka used to justify the new PreCommit at round
+<em>R_2</em> must come in a round <em>R_polka</em> where <em>R_1 &lt; R_polka
+&lt;= R_2</em>.  Second, validators must Propose and/or PreVote the block they
+are locked on.  Together, these conditions ensure that a validator does not
+PreCommit without sufficient evidence, and that validators which have already
+PreCommit cannot contribute to evidence to PreCommit something else.  This
+ensures both safety and liveness of the consensus algorithm.
+
+### Tendermint Light Clients
+
+The need to sync all block headers is eliminated in proof-of-stake as the existence of an
+alternative chain (a fork) means ⅓+ of bonded stake can be slashed.
+Of course, since slashing requires that _someone_ detects the
+fork, it would be prudent for light clients, or at least those that are able, to
+sync headers, perhaps more slowly, on a risk adjusted basis, where the explicit
+cost of a fork can be easily calculated at ⅓+ of the bonded stake.
+Additionally, light clients must stay synced with changes to the validator set,
+in order to avoid certain [long range attacks](#preventing-long-range-attacks).
+
+In a spirit similar to Ethereum, Tendermint enables applications to embed a
+global Merkle root hash in each block, allowing easily verifiable state queries
+for things like account balances, the value stored in a contract, or the
+existence of an unspent transaction output, depending on the nature of the
+application.
+
+### Preventing Long Range Attacks
+
+Assuming a sufficiently resilient collection of broadcast networks and a static
+validator set, any fork in the blockchain can be detected and the deposits of
+the offending validators slashed.  This innovation, first suggested by Vitalik
+Buterin in early 2014, solves the nothing-at-stake problem of other
+proof-of-stake cryptocurrencies (see [Related Work](#related-work)). However,
+since validator sets must be able to change, over a long range of time the
+original validators may all become unbonded, and hence would be free to create a
+new chain, from the genesis block, incurring no cost as they no longer have
+deposits locked up.  This attack came to be known as the Long Range Attack (LRA)
+in contrast to a Short Range Attack, where validators who are currently bonded
+cause a fork and are hence punishable (assuming a fork-accountable BFT algorithm
+like Tendermint consensus). Long Range Attacks are often thought to be a
+critical blow to proof-of-stake.
+
+Fortunately, the LRA can be mitigated as follows.  First, for a validator to
+unbond (thereby recovering their deposit and no longer earning fees to
+participate in the consensus), the deposit must be made unavailable for an amount
+of time known as the "unbonding period", which may be on the order of weeks or
+months.  Second, for a light client to be secure, the first time it connects to
+the network it must verify a recent block-hash against a trusted source, or
+preferably multiple of them.  This condition is sometimes referred to as "weak
+subjectivity".  Finally, to remain secure, it must sync up with the latest
+validator set at least as frequently as the length of the unbonding period. This
+ensures that the light client knows about changes to the validator set before a
+validator has its capital unbonded and thus no longer at stake, which would
+allow it to deceive the client by carrying out a long range attack by creating
+new blocks beginning back at a height where it was bonded (assuming it has
+control of sufficiently many of the early private keys).
+
+Note that overcoming the LRA in this way requires a practical tweak of the
+original security model of proof-of-work. In PoW, it is assumed that a light
+client can sync to the current height from the trusted genesis block at any time
+simply by processing the proof-of-work in every block header.  To overcome the
+LRA, however, we require that a light client come online with some regularity
+to track changes in the validator set,
+and that the first time they come online they must be particularly careful to
+authenticate what they hear from the network against trusted sources. Of course,
+this latter requirement is similar to that of Bitcoin, where the protocol and
+software must also be obtained from a trusted source.
+
+The above method for preventing LRA is well suited for validators and full nodes
+of a Tendermint-powered blockchain because these nodes are meant to remain
+connected to the network.  The method is also suitable for light clients that
+can be expected to sync with the network frequently.  However, for light clients
+that are not expected to have frequent access to the internet or the blockchain
+network, yet another solution can be used to overcome the LRA.  Non-validator
+token holders can post their tokens as collateral with a very long unbonding
+period (e.g. much longer than the unbonding period for validators) and serve
+light clients with a secondary method of attesting to the validity of current
+and past block-hashes. While these tokens do not count toward the security of
+the blockchain's consensus, they nevertheless can provide strong guarantees for
+light clients.  If historical block-hash querying were supported in Ethereum,
+anyone could bond their tokens in a specially designed smart contract and
+provide attestation services for pay, effectively creating a market for
+light-client LRA security.
+
+### Overcoming Forks and Censorship Attacks
+
+Due to the definition of a block commit, any ⅓+ coalition of voting power can
+halt the blockchain by not broadcasting their votes. Such a coalition can also
+censor particular transactions by rejecting blocks that include these
+transactions, though this would result in a significant proportion of block
+proposals to be rejected, which would slow down the rate of block commits of the
+blockchain, reducing its utility and value. The malicious coalition might also
+broadcast votes in a trickle so as to grind blockchain block commits to a near
+halt, or engage in any combination of these attacks.  Finally, it can cause the
+blockchain to fork, by double-signing or violating the locking rules.
+
+If a global active adversary were also involved, it can partition the network in
+such a way that it may appear that the wrong subset of validators were
+responsible for the slowdown. This is not just a limitation of Tendermint, but
+rather a limitation of all consensus protocols whose network is potentially
+controlled by an active adversary.
+
+For these types of attacks, a subset of the validators through external means
+should coordinate to sign a reorg-proposal that chooses a fork (and any evidence
+thereof) and the initial subset of validators with their signatures. Validators
+who sign such a reorg-proposal forego its collateral on all other forks.
+Clients should verify the signatures on the reorg-proposal, verify any evidence,
+and make a judgement or prompt the end-user for a decision.  For example, a
+phone wallet app may prompt the user with a security warning, while a
+refrigerator may accept any reorg-proposal signed by +½ of the original
+validators by voting power.
+
+No non-synchronous Byzantine fault-tolerant algorithm can come to consensus when
+⅓+ of voting power are dishonest, yet a fork assumes that ⅓+ of voting power
+have already been dishonest by double-signing or lock-changing without
+justification.  So, signing the reorg-proposal is a coordination problem that
+cannot be solved by any non-synchronous protocol (i.e. automatically, and
+without making assumptions about the reliability of the underlying network).
+For now, we leave the problem of reorg-proposal coordination to human
+coordination via internet media.  Validators must take care to ensure that there
+are no significant network partitions, to avoid situations where two conflicting
+reorg-proposals are signed.
+
+Assuming that the external coordination medium and protocol is robust, it
+follows that forks are less of a concern than censorship attacks.
+
+In addition to forks and censorship, which require ⅓+ Byzantine voting power, a
+coalition of +⅔ voting power may commit arbitrary, invalid state.  This is
+characteristic of any (BFT) consensus system. Unlike double-signing, which
+creates forks with easily verifiable evidence, detecting committment of an
+invalid state requires non-validating peers to verify whole blocks, which
+implies that they keep a local copy of the state and execute each transaction,
+computing the state root independently for themselves.  Once detected, the only
+way to handle such a failure is via social consensus on alternative media.  For
+instance, in situations where Bitcoin has failed, whether forking due to
+software bugs (as in March 2013), or committing invalid state due to Byzantine
+behavior of miners (as in the July 2016), the well connected community of
+businesses, developers, miners, and other organizations established a social
+consensus as to what manual actions were required by participants to heal the
+network.  Furthermore, since validators of a Tendermint blockchain may be
+expected to be identifiable, commitment of an invalid state may even be
+punishable by law or some external jurisprudence, if desired.
+
+
 ### TMSP specification
+
+TMSP consists of 3 primary message types that get delivered from the core to the
+application. The application replies with corresponding response messages.
+
+The `AppendTx` message is the work horse of the application. Each transaction in
+the blockchain is delivered with this message. The application needs to validate
+each transactions received with the AppendTx message against the current state,
+application protocol, and the cryptographic credentials of the transaction. A
+validated transaction then needs to update the application state — by binding a
+value into a key values store, or by updating the UTXO database.
+
+The `CheckTx` message is similar to AppendTx, but it’s only for validating
+transactions. Tendermint Core’s mempool first checks the validity of a
+transaction with CheckTx, and only relays valid transactions to its peers.
+Applications may check an incrementing nonce in the transaction and return an
+error upon CheckTx if the nonce is old.
+
+The `Commit` message is used to compute a cryptographic commitment to the
+current application state, to be placed into the next block header. This has
+some handy properties. Inconsistencies in updating that state will now appear as
+blockchain forks which catches a whole class of programming errors. This also
+simplifies the development of secure lightweight clients, as Merkle-hash proofs
+can be verified by checking against the block-hash, and the block-hash is signed
+by a quorum of validators (by voting power).
+
+Additional TMSP messages allow the application to keep track of and change the
+validator set, and for the application to receive the block information, such as
+the height and the commit votes.  
 
 TMSP requests/responses are simple Protobuf messages.  Check out the [schema
 file](https://github.com/tendermint/tmsp/blob/master/types/types.proto).
@@ -1414,6 +1227,99 @@ connection, or Key="mode", Value="consensus" for a consensus connection.
     Signals the end of a block.  Called prior to each Commit after all
 transactions
 
+See [the TMSP repository](https://github.com/tendermint/tmsp#message-types) for more details.
+
+### IBC Packet Delivery Acknowledgement
+
+There are several reasons why a sender may want the acknowledgement of delivery
+of a packet by the receiving chain.  For example, the sender may not know the
+status of the destination chain, if it is expected to be faulty.  Or, the sender
+may want to impose a timeout on the packet (with the `MaxHeight` packet field),
+while any destination chain may suffer from a denial-of-service attack with a
+sudden spike in the number of incoming packets.
+
+In these cases, the sender can require delivery acknowledgement by setting the
+initial packet status to `AckPending`.  Then, it is the receiving chain's
+responsibility to confirm delivery by including an abbreviated`IBCPacket` in the
+app Merkle hash.
+
+![Figure of Zone1, Zone2, and Hub IBC with
+acknowledgement](https://raw.githubusercontent.com/gnuclear/atom-whitepaper/master/msc/ibc_with_ack.png)
+
+First, an `IBCBlockCommit` and `IBCPacketTx` are posted on "Hub" that proves
+the existence of an `IBCPacket` on "Zone1".  Say that `IBCPacketTx` has the
+following value:
+
+- `FromChainID`: "Zone1"
+- `FromBlockHeight`: 100 (say)
+- `Packet`: an `IBCPacket`:
+  - `Header`: an `IBCPacketHeader`:
+    - `SrcChainID`: "Zone1"
+    - `DstChainID`: "Zone2"
+    - `Number`: 200 (say)
+    - `Status`: `AckPending`
+    - `Type`: "coin"
+    - `MaxHeight`: 350 (say "Hub" is currently at height 300)
+  - `Payload`: &lt;The bytes of a "coin" payload&gt;
+
+Next, an `IBCBlockCommit` and `IBCPacketTx` are posted on "Zone2" that proves
+the existence of an `IBCPacket` on "Hub".  Say that `IBCPacketTx` has the
+following value:
+
+- `FromChainID`: "Hub"
+- `FromBlockHeight`: 300
+- `Packet`: an `IBCPacket`:
+  - `Header`: an `IBCPacketHeader`:
+    - `SrcChainID`: "Zone1"
+    - `DstChainID`: "Zone2"
+    - `Number`: 200
+    - `Status`: `AckPending`
+    - `Type`: "coin"
+    - `MaxHeight`: 350
+  - `Payload`: &lt;The same bytes of a "coin" payload&gt;
+
+Next, "Zone2" must include in its app-hash an abbreviated packet that shows the
+new status of `AckSent`.  An `IBCBlockCommit` and `IBCPacketTx` are posted back
+on "Hub" that proves the existence of an abbreviated `IBCPacket` on
+"Zone2".  Say that `IBCPacketTx` has the following value:
+
+- `FromChainID`: "Zone2"
+- `FromBlockHeight`: 400 (say)
+- `Packet`: an `IBCPacket`:
+  - `Header`: an `IBCPacketHeader`:
+    - `SrcChainID`: "Zone1"
+    - `DstChainID`: "Zone2"
+    - `Number`: 200
+    - `Status`: `AckSent`
+    - `Type`: "coin"
+    - `MaxHeight`: 350
+  - `PayloadHash`: &lt;The hash bytes of the same "coin" payload&gt;
+
+Finally, "Hub" must update the status of the packet from `AckPending` to
+`AckReceived`.  Evidence of this new finalized status should go back to
+"Zone2".  Say that `IBCPacketTx` has the following value:
+
+- `FromChainID`: "Hub"
+- `FromBlockHeight`: 301
+- `Packet`: an `IBCPacket`:
+  - `Header`: an `IBCPacketHeader`:
+    - `SrcChainID`: "Zone1"
+    - `DstChainID`: "Zone2"
+    - `Number`: 200
+    - `Status`: `AckReceived`
+    - `Type`: "coin"
+    - `MaxHeight`: 350
+  - `PayloadHash`: &lt;The hash bytes of the same "coin" payload&gt;
+
+Meanwhile, "Zone1" may optimistically assume successful delivery of a "coin"
+packet unless evidence to the contrary is proven on "Hub".  In the example
+above, if "Hub" had not received an `AckSent` status from "Zone2" by block
+350, it would have set the status automatically to `Timeout`.  This evidence of
+a timeout can get posted back on "Zone1", and any tokens can be returned.
+
+![Figure of Zone1, Zone2, and Hub IBC with acknowledgement and
+timeout](https://raw.githubusercontent.com/gnuclear/atom-whitepaper/master/msc/ibc_with_ack_timeout.png)
+
 ### Merkle Tree & Proof Specification
 
 There are two types of Merkle trees supported in the Tendermint/Atom
@@ -1474,6 +1380,103 @@ TODO Replace with Ethereum's Patricia Trie if there is a binary variant.
 #### Merkle Proof Path Expression
 
 TODO
+
+## Transactions ################################################################
+
+In the canonical implementation, transactions are streamed to the Atom
+hub application via the TMSP interface.
+
+### Transaction Types
+
+#### SendTx
+
+#### BondTx
+
+#### UnbondTx
+
+#### SlashTx
+
+#### BurnAtomTx
+
+#### NewProposalTx
+
+#### VoteTx
+
+#### IBCBlockCommitTx
+
+An `IBCBlockCommitTx` transaction is composed of:
+
+- `ChainID (string)`: The ID of the blockchain
+- `BlockHash ([]byte)`: The block-hash bytes, the Merkle root which includes the
+  app-hash
+- `BlockPartsHeader (PartSetHeader)`: The block part-set header bytes, only
+  needed to verify vote signatures
+- `BlockHeight (int)`: The height of the commit
+- `BlockRound (int)`: The round of the commit
+- `Commit ([]Vote)`: The +⅔ Tendermint `Precommit` votes that comprise a block
+  commit
+- `ValidatorsHash ([]byte)`: A Merkle-tree root hash of the new validator set
+- `ValidatorsHashProof (SimpleProof)`: A SimpleTree Merkle-proof for proving the
+  `ValidatorsHash` against the `BlockHash`
+- `AppHash ([]byte)`: A IAVLTree Merkle-tree root hash of the application state
+- `AppHashProof (SimpleProof)`: A SimpleTree Merkle-proof for proving the
+  `AppHash` against the `BlockHash`
+
+#### IBCPacketTx
+
+An `IBCPacket` is composed of:
+
+- `Header (IBCPacketHeader)`: The packet header
+- `Payload ([]byte)`: The bytes of the packet payload. _Optional_
+- `PayloadHash ([]byte)`: The hash for the bytes of the packet. _Optional_
+
+Either one of `Payload` or `PayloadHash` must be present.  The hash of an
+`IBCPacket` is a simple Merkle root of the two items, `Header` and `Payload`.
+An `IBCPacket` without the full payload is called an _abbreviated packet_.
+
+An `IBCPacketHeader` is composed of:
+
+- `SrcChainID (string)`: The source blockchain ID
+- `DstChainID (string)`: The destination blockchain ID
+- `Number (int)`: A unique number for all packets
+- `Status (enum)`: Can be one of `AckPending`, `AckSent`, `AckReceived`,
+  `NoAck`, or `Timeout`
+- `Type (string)`: The types are application-dependent.  Atom reserves the
+  "coin" packet type
+- `MaxHeight (int)`: If status is not `NoAckWanted` or `AckReceived` by this
+  height, status becomes `Timeout`. _Optional_
+
+An `IBCPacketTx` transaction is composed of:
+
+- `FromChainID (string)`: The ID of the blockchain which is providing this
+  packet; not necessarily the source
+- `FromBlockHeight (int)`: The blockchain height in which the following packet
+  is included (Merkle-ized) in the block-hash of the source chain
+- `Packet (IBCPacket)`: A packet of data, whose status may be one of
+  `AckPending`, `AckSent`, `AckReceived`, `NoAck`, or `Timeout`
+- `PacketProof (IAVLProof)`: A IAVLTree Merkle-proof for proving the packet's
+  hash against the `AppHash` of the source chain at given height
+
+The sequence for sending a packet from "Zone1" to "Zone2" through the
+"Hub" is depicted in {Figure X}.  First, an `IBCPacketTx` proves to
+"Hub" that the packet is included in the app-state of "Zone1".  Then,
+another `IBCPacketTx` proves to "Zone2" that the packet is included in the
+app-state of "Hub".  During this procedure, the `IBCPacket` fields are
+identical: the `SrcChainID` is always "Zone1", and the `DstChainID` is always
+"Zone2".
+
+The `PacketProof` must have the correct Merkle-proof path, as follows:
+
+```
+IBC/<SrcChainID>/<DstChainID>/<Number>
+
+```
+TODO: CLARIFY
+
+When "Zone1" wants to send a packet to "Zone2" through "Hub", the
+`IBCPacket` data are identical whether the packet is Merkle-ized on "Zone1",
+the "Hub", or "Zone2".  The only mutable field is `Status` for tracking
+delivery, as shown below.
 
 ## Acknowledgements ############################################################
 
