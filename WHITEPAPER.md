@@ -31,7 +31,7 @@ document.  Please check regularly for updates!._
       * [BondTx](#bondtx)
       * [UnbondTx](#unbondtx)
       * [SlashTx](#slashtx)
-      * [BurnQuarkTx](#burnquarktx)
+      * [BurnAtomTx](#burnatomtx)
       * [NewProposalTx](#newproposaltx)
       * [VoteTx](#votetx)
       * [IBCBlockCommitTx](#ibcblockcommittx)
@@ -44,7 +44,7 @@ document.  Please check regularly for updates!._
     * [Network Partition Mitigation](#network-partition-mitigation)
     * [Federated Name Resolution System](#federated-name-resolution-system)
   * [Issuance and Incentives](#issuance-and-incentives)
-    * [The Quark Token](#the-quark-token)
+    * [The Atom Token](#the-atom-token)
     * [Limitations on the Number of
     Validators](#limitations-on-the-number-of-validators)
     * [Becoming a Validator After Genesis
@@ -660,7 +660,7 @@ hub application via the TMSP interface.
 
 #### SlashTx
 
-#### BurnQuarkTx
+#### BurnAtomTx
 
 #### NewProposalTx
 
@@ -898,26 +898,26 @@ TODO: note on integration with zone discovery, see roadmap
 
 ## Issuance and Incentives #####################################################
 
-### The Quark Token
+### The Atom Token
 
 While the Atom hub is a multi-asset system, there is a native token
-called _quarks_.  Quarks are the only staking token of Atom.  Quarks are a
+called _atoms_.  Atoms are the only staking token of Atom.  Atoms are a
 license for the holder to vote, validate, or delegate to other validators.  Like
-Ethereum's ether, quarks are also used to pay for transaction fees to mitigate
-spam.  Additional quarks are issued to validators and those who delegate to
+Ethereum's ether, atoms are also used to pay for transaction fees to mitigate
+spam.  Additional atoms are issued to validators and those who delegate to
 validators.
 
-The initial distribution of quark tokens and validators on Genesis will go to
+The initial distribution of atom tokens and validators on Genesis will go to
 the funders of the Atom Crowdsale (80%), and the Atom Foundation (20%).
-From genesis onward, 30% of the initial quark distribution will be rewarded to
+From genesis onward, 30% of the initial atom distribution will be rewarded to
 validators and delegators.
 
-The `BurnQuarkTx` transaction can be used to recover any proportionate amount of
+The `BurnAtomTx` transaction can be used to recover any proportionate amount of
 tokens from the reserve pool.
 
 #### Crowdfund
 
-16,000,000 quarks will be sold in an Ethereum-style crowdsale. The crowdsale
+16,000,000 atoms will be sold in an Ethereum-style crowdsale. The crowdsale
 will last 42 days, in which the first 14 days will have the best price, and the
 purchasing power will decrease linearly to 2/3 of the initial purchasing power
 in the following 28 days.  The price will be determined by dividing 16,000,000
@@ -926,15 +926,15 @@ by the total effective purchasing power of all the bids.
 #### Atom Foundation
 
 The Atom foundation is an external entity that is hired to develop the
-Atom network.  Quark holders can vote to change the foundation by changing
+Atom network.  Atom holders can vote to change the foundation by changing
 the `AtomFoundationAddress` parameter.  This foundation will have 4,000,000
-quarks, of which 1,200,000 are pre-vested, and the rest will vest over a period
+atoms, of which 1,200,000 are pre-vested, and the rest will vest over a period
 of 4 years, all of which can be used to the full extent for voting.
 
 #### Atom Hub Block Reward
 
 Every block rewards all the validators and delegators in proportion to their
-bonded quarks (before commissions).  There will be roughly 6,000,000 quarks
+bonded atoms (before commissions).  There will be roughly 6,000,000 atoms 
 rewarded every year, forever.  The number is not exact, because the number of
 blocks per year is not exact.  As with transaction fees, delegators pay the
 delegated validator a commission of 10%.
@@ -943,7 +943,7 @@ delegated validator a commission of 10%.
 
 TODO: Note about automatic bounties for hackers, to incentivize hackers to
 publish evidence (like capture-the-flag) that rewards some of the validator's
-quarks to the hacker, and burns some as well.
+atoms to the hacker, and burns some as well.
 
 ### Limitations on the Number of Validators
 
@@ -975,15 +975,15 @@ Year 10: 300
 
 ### Becoming a Validator After Genesis Day
 
-Quark holders who are not already validators can become one by signing and
-submitting a `BondTx` transaction.  The amount of quarks provided as collateral
+Atom holders who are not already validators can become one by signing and
+submitting a `BondTx` transaction.  The amount of atoms provided as collateral
 must be nonzero.  Anyone can become a validator at any time, except when the
 size of the current validator set is greater than the maximum number of
 validators allowed.  In that case, the transaction is only valid if the amount
-of quarks is greater than the amount of effective quarks held by the smallest
-validator, where effective quarks include vesting and delegated quarks.  When a
+of atoms is greater than the amount of effective atoms held by the smallest
+validator, where effective atoms include vesting and delegated atoms.  When a
 new validator replaces an existing validator in such a way, the existing
-validator becomes inactive and all the quarks and delegated quarks enter the
+validator becomes inactive and all the atoms and delegated atoms enter the
 unbonding state.
 
 ### Penalties for Validators
@@ -1028,7 +1028,7 @@ the GnuCler network.  Also, a `CommonsTax` (DEFAULT 3%) will go toward the
 funding of common goods.  These funds will go to the `CustodianAddress` to be
 distributed in accordance with whatever is decided by the governance system.
 
-Quark holders who delegate their voting power to other validators pay 10%
+Atom holders who delegate their voting power to other validators pay 10%
 commission to the delegated validator.
 
 ## Governance ##################################################################
@@ -1039,18 +1039,18 @@ blockchain, such as the validator set, predefined parameters of the system, as
 well as software and wetware protocol upgrades.
 
 All validators are responsible for voting on all proposals.  Failing to vote on
-a proposal in a timely manner will result in the quark holder losing
-`AbsenteeismPenalty` (DEFAULT 0.5%) of its quarks at most once per
+a proposal in a timely manner will result in the atom holder losing
+`AbsenteeismPenalty` (DEFAULT 0.5%) of its atoms at most once per
 `AbsenteeismPenaltyWindow` (DEFAULT 1 week) time period.
 
 Delegators automatically inherit the vote of the delegated validator.  This vote
-may be overridden manually.  Unbonded quarks get no vote.
+may be overridden manually.  Unbonded atoms get no vote.
 
 Each proposal requires a deposit of `MinimumProposalDeposit` tokens, which may
-be a combination one or more tokens include quarks.  For each proposal, the
+be a combination one or more tokens include atoms.  For each proposal, the
 voter may vote to take the deposit. If more than half of the voters choose to
 take the deposit (e.g. because the proposal was spam), the deposit goes to the
-reserve pool, except any quarks which are burned.
+reserve pool, except any atoms which are burned.
 
 For each proposal, voters may vote with the following options:
 
@@ -1066,7 +1066,7 @@ required for the proposal to be decided as accepted (or decided as failed), but
 majority is vetoed, everyone gets punished by losing `VetoPenaltyFeeBlocks`
 (DEFAULT 1 day's worth of blocks) worth of fees (except taxes which will not be
 affected), and the party that vetoed the majority decision will be additionally
-punished by losing `VetoPenaltyQuarks` (DEFAULT 0.1%) of its quarks.
+punished by losing `VetoPenaltyAtoms` (DEFAULT 0.1%) of its atoms.
 
 ### Parameter Change Proposal
 
@@ -1178,7 +1178,7 @@ their insecurity.
 
 The criticism in the Stellar paper of the Tendermint-based proof-of-stake
 systems is mitigated by the token strategy described here, wherein a new type of
-token called the _quark_ is issued that represent claims to future portions of
+token called the _atom_ is issued that represent claims to future portions of
 fees and rewards. The advantage of Tendermint-based proof-of-stake, then, is its
 relative simplicity, while still providing sufficient, and provable security
 guarantees.

@@ -4,7 +4,7 @@ Atom Crowdfund Plan
 DATE: July 5th, 2016
 NOTE: The details in this plan override what is currently in the whitepaper.
 
-* There will be a single crowdsale to sell 80% of quarks of 20M total.
+* There will be a single crowdsale to sell 80% of atoms of 20M total.
 
 * The proceeds of the crowdsale will go to the Foundation.
 

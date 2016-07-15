@@ -71,8 +71,8 @@ IoT applications as well.
 Validators in Atom (who have a similar role to Bitcoin miners but instead
 use cryptographic signatures to vote) are meant to be secure, dedicated machines
 that are responsible for committing blocks.  Non-validators can delegate their
-staking tokens (called "quarks") to any validator to earn a portion of block
-fees and quark rewards, but incur the risk of getting slashed if the delegate
+staking tokens (called "atoms") to any validator to earn a portion of block
+fees and atom rewards, but incur the risk of getting slashed if the delegate
 validator gets hacked or violates the protocol.  The proven safety guarantees of
 Tendermint BFT consensus, and the collateral deposit of stakeholders (of
 validators and delegators) provide provable, quantifiable security for nodes and
