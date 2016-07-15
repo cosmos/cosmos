@@ -29,16 +29,16 @@ document.  Please check regularly for updates!._
     * [Federated Name Resolution System](#federated-name-resolution-system)
   * [Issuance and Incentives](#issuance-and-incentives)
     * [The Atom Token](#the-atom-token)
-    * [Crowdfund](#crowdfund)
-    * [Atom Foundation](#atom-foundation)
-    * [Atom Hub Block Reward](#atom-hub-block-reward)
-    * [Incentivizing Hackers](#incentivizing-hackers)
+      * [Crowdfund](#crowdfund)
+      * [Atom Foundation](#atom-foundation)
+      * [Atom Hub Block Reward](#atom-hub-block-reward)
     * [Limitations on the Number of
     Validators](#limitations-on-the-number-of-validators)
     * [Becoming a Validator After Genesis
     Day](#becoming-a-validator-after-genesis-day)
     * [Penalties for Validators](#penalties-for-validators)
     * [Transaction Fees](#transaction-fees)
+    * [Incentivizing Hackers](#incentivizing-hackers)
   * [Governance](#governance)
     * [Parameter Change Proposal](#parameter-change-proposal)
     * [Text Proposal](#text-proposal)
@@ -540,12 +540,6 @@ rewarded every year, forever.  The number is not exact, because the number of
 blocks per year is not exact.  As with transaction fees, delegators pay the
 delegated validator a commission of 10%.
 
-#### Incentivizing Hackers
-
-TODO: Note about automatic bounties for hackers, to incentivize hackers to
-publish evidence (like capture-the-flag) that rewards some of the validator's
-atoms to the hacker, and burns some as well.
-
 ### Limitations on the Number of Validators
 
 Unlike Bitcoin or other proof-of-work blockchains, a Tendermint blockchain gets
@@ -631,6 +625,12 @@ distributed in accordance with whatever is decided by the governance system.
 
 Atom holders who delegate their voting power to other validators pay 10%
 commission to the delegated validator.
+
+### Incentivizing Hackers
+
+TODO: Note about automatic bounties for hackers, to incentivize hackers to
+publish evidence (like capture-the-flag) that rewards some of the validator's
+atoms to the hacker, and burns some as well.
 
 ## Governance ##################################################################
 
