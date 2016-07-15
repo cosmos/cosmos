@@ -69,7 +69,6 @@ document.  Please check regularly for updates!._
     Acknowledgement](#ibc-packet-delivery-acknowledgement)
     * [Merkle tree &amp; proof
     specification](#merkle-tree--proof-specification)
-  * [Transactions](#transactions)
     * [Transaction Types](#transaction-types)
       * [SendTx](#sendtx)
       * [BondTx](#bondtx)
@@ -1391,12 +1390,10 @@ TODO Replace with Ethereum's Patricia Trie if there is a binary variant.
 
 TODO
 
-## Transactions ################################################################
+### Transaction Types
 
 In the canonical implementation, transactions are streamed to the Atom
 hub application via the TMSP interface.
-
-### Transaction Types
 
 #### SendTx
 
