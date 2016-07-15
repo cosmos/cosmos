@@ -1,4 +1,4 @@
-# Gnuclear
+# Atom
 **A New Architecture for Scalable Blockchain Decentralization**
 
 Jae Kwon jae@tendermint.com<br/>
@@ -19,9 +19,9 @@ document.  Please check regularly for updates!._
     * [Overcoming Forks and Censorship
     Attacks](#overcoming-forks-and-censorship-attacks)
     * [TMSP](#tmsp)
-  * [The Gnuclear Hub and Zones](#the-gnuclear-hub-and-zones)
-    * [The Gnuclear Hub](#the-gnuclear-hub)
-    * [Gnuclear Zones](#gnuclear-zones)
+  * [The Hub and Zones](#the-hub-and-zones)
+    * [The Hub](#the-hub)
+    * [The Zones](#the-zones)
   * [Inter-blockchain Communication (IBC)](#inter-blockchain-communication-ibc)
     * [IBC Packet Delivery
     Acknowledgement](#ibc-packet-delivery-acknowledgement)
@@ -111,22 +111,22 @@ architectures](http://vukolic.com/iNetSec_2015.pdf) is provided for additional
 context, and we provide more summaries of some proposals and their drawbacks in
 [Related Work](#related-work).
 
-Here we present Gnuclear, a novel blockchain network architecture that addresses
-all of these problems.  Gnuclear is a network of many independent blockchains,
-called zones, that are connected by a central blockchain, called the hub.
-The hub and zones are powered by Tendermint Core [\[8\]][8], which provides
-a high-performance, consistent, secure
+Here we present Atom, a novel blockchain network architecture that addresses all
+of these problems.  Atom is a network of many independent blockchains, called
+zones, that are connected by a central blockchain, called the hub.  The hub and
+zones are powered by Tendermint Core [\[8\]][8], which provides a
+high-performance, consistent, secure
 [PBFT-like](http://tendermint.com/blog/tendermint-vs-pbft/) consensus engine,
 where strict fork-accountability guarantees hold over the behaviour of malicious
-actors.  The Gnuclear hub is a simple multi-asset proof-of-stake
-cryptocurrency with a simple governance mechanism enabling the network to adapt
-and upgrade.  The hub and zones of the Gnuclear network communicate with
-each other via an inter-blockchain communication (IBC) protocol which is
-formalized here.  The Gnuclear hub utilizes IBC packets to move tokens from
-one zone to another while maintaining the total amount of tokens in the
-network, thus isolating each zone from the failure of others.
+actors.  The Atom hub is a simple multi-asset proof-of-stake cryptocurrency with
+a simple governance mechanism enabling the network to adapt and upgrade.  The
+hub and zones of the Atom network communicate with each other via an
+inter-blockchain communication (IBC) protocol which is formalized here.  The
+Atom hub utilizes IBC packets to move tokens from one zone to another while
+maintaining the total amount of tokens in the network, thus isolating each zone
+from the failure of others.
 
-We believe that Gnuclear proves that Tendermint BFT consensus is well suited for
+We believe that Atom proves that Tendermint BFT consensus is well suited for
 scaling public proof-of-stake blockchains, and that it can compete with
 proof-of-work in speed, security, and scalability.  Above all, we hope it grows
 into a platform that works for everyone interested in distributed ledger
@@ -147,7 +147,7 @@ or _votes_, to agree upon the next block.
 
 Validators' voting powers are determined at genesis, or is changed
 deterministically by the blockchain, depending on the application.  For example,
-in a proof-of-stake application such as Gnuclear, the voting power may be
+in a proof-of-stake application such as Atom, the voting power may be
 determined by the amount of staking tokens bonded as collateral.
 
 _NOTE: Fractions like ⅔ and ⅓ refer to fractions of the total voting power,
@@ -450,40 +450,40 @@ validator set, and for the application to receive the block information, such as
 the height and the commit votes.  The full TMSP specification can be found
 [here](https://github.com/tendermint/tmsp#message-types).
 
-## The Gnuclear Hub and Zones #############################################
+## The Hub and Zones ###########################################################
 
-Here we describe a novel model of decentralization and scalability.  Gnuclear is
+Here we describe a novel model of decentralization and scalability.  Atom is
 a network of many blockchains powered by Tendermint via TMSP.  While existing
 proposals aim to create a "single blockchain" with total global transaction
-ordering, Gnuclear permits many blockchains to run concurrently with one another
+ordering, Atom permits many blockchains to run concurrently with one another
 via a sharding mechanism.
 
-At the basis, a global hub blockchain (the Gnuclear hub) manages many
-independent blockchain shards called "zones".  A constant stream of recent block
-commits from zones posted on the hub allows the hub to keep up with the state of
-each zone.  Likewise, each zone keeps up with the state of the hub (but zones do
-not keep up with each other except indirectly through the hub).  Packets of
+At the basis, a global hub blockchain (the Atom hub) manages many independent
+blockchain shards called "zones".  A constant stream of recent block commits
+from zones posted on the hub allows the hub to keep up with the state of each
+zone.  Likewise, each zone keeps up with the state of the hub (but zones do not
+keep up with each other except indirectly through the hub).  Packets of
 information are then communicated from one chain to another by posting
 Merkle-proofs that collide with a recent block-hash from the source.  This
 mechanism is called inter-blockchain communication, or IBC for short.
 
 ![Figure of hub and zones
-acknowledgement](https://raw.githubusercontent.com/gnuclear/gnuclear-whitepaper/master/images/hub_and_zones.png)
+acknowledgement](https://raw.githubusercontent.com/gnuclear/atom-whitepaper/master/images/hub_and_zones.png)
 
 Any of the zones can themselves be hubs to form a multi-level hierarchical
 network, but for the sake of clarity we will only describe the simple
 configuration with one central hub and many zones.
 
-### The Gnuclear Hub
+### The Hub
 
-The Gnuclear hub is a blockchain that hosts a multi-asset cryptocurrency,
+The Atom hub is a blockchain that hosts a multi-asset cryptocurrency,
 where tokens can be held by individual users or by zones themselves.  These
 tokens can be moved from one zone to another in a special IBC packet called a
 "coin packet".  The hub is responsible for preserving the global invariance
 of the total amount of each token across the zones. IBC coin packet
 transactions must be committed by the sender, hub and reciever blockchains.
 
-Since the Gnuclear hub acts as a central ledger of tokens for the whole
+Since the Atom hub acts as a central ledger of tokens for the whole
 system, the security of the hub is of paramount importance.  While each
 zone may be a Tendermint blockchain that is secured by as few as 4 (or even
 less if BFT consensus is not needed), the hub must be secured by a globally
@@ -491,9 +491,9 @@ decentralized set of validators that can withstand the most severe attack
 scenarios, such as a continental network partition or a nation-state sponsored
 attack.
 
-### Gnuclear Zones
+### The Zones
 
-A Gnuclear zone is an independent blockchain that exchanges IBC messages with
+An Atom zone is an independent blockchain that exchanges IBC messages with
 the Hub.  From the Hub's perspective, a zone is a multi-asset account
 that can send and receive tokens using IBC packets. Like a cryptocurrency
 account, a zone cannot transfer more tokens than it has, but can receive tokens
@@ -508,7 +508,7 @@ number of priveleged zones will be created to act as pegs to other
 cryptocurrencies. The creation of new priviledged zones is left to governance.
 
 Note that a zone where +⅔ of the voting power are Byzantine can commit invalid
-state.  Since the very purpose of the Gnuclear hub is to avoid verifying
+state.  Since the very purpose of the Atom hub is to avoid verifying
 every transaction on a zone, detecting such failures must be done by
 independent observers of the zone, which may appeal to social media and to the
 market to make their detection known (for instance, selling/shorting a token
@@ -544,7 +544,7 @@ allowing for complete freedom on the sending chain as to how many outbound
 packets are allowed.
 
 ![Figure of Zone1, Zone2, and Hub IBC without
-acknowledgement](https://raw.githubusercontent.com/gnuclear/gnuclear-whitepaper/master/msc/ibc_without_ack.png)
+acknowledgement](https://raw.githubusercontent.com/gnuclear/atom-whitepaper/master/msc/ibc_without_ack.png)
 
 <CAPTION on a figure> In the example above, in order to update the block-hash of
 "Zone1" on "Hub" (or of "Hub" on "Zone2"), an `IBCBlockCommitTx`
@@ -569,7 +569,7 @@ responsibility to confirm delivery by including an abbreviated`IBCPacket` in the
 app Merkle hash.
 
 ![Figure of Zone1, Zone2, and Hub IBC with
-acknowledgement](https://raw.githubusercontent.com/gnuclear/gnuclear-whitepaper/master/msc/ibc_with_ack.png)
+acknowledgement](https://raw.githubusercontent.com/gnuclear/atom-whitepaper/master/msc/ibc_with_ack.png)
 
 First, an `IBCBlockCommit` and `IBCPacketTx` are posted on "Hub" that proves
 the existence of an `IBCPacket` on "Zone1".  Say that `IBCPacketTx` has the
@@ -643,11 +643,11 @@ above, if "Hub" had not received an `AckSent` status from "Zone2" by block
 a timeout can get posted back on "Zone1", and any tokens can be returned.
 
 ![Figure of Zone1, Zone2, and Hub IBC with acknowledgement and
-timeout](https://raw.githubusercontent.com/gnuclear/gnuclear-whitepaper/master/msc/ibc_with_ack_timeout.png)
+timeout](https://raw.githubusercontent.com/gnuclear/atom-whitepaper/master/msc/ibc_with_ack_timeout.png)
 
 ## Transactions ################################################################
 
-In the canonical implementation, transactions are streamed to the Gnuclear
+In the canonical implementation, transactions are streamed to the Atom
 hub application via the TMSP interface.
 
 ### Transaction Types
@@ -705,7 +705,7 @@ An `IBCPacketHeader` is composed of:
 - `Number (int)`: A unique number for all packets
 - `Status (enum)`: Can be one of `AckPending`, `AckSent`, `AckReceived`,
   `NoAck`, or `Timeout`
-- `Type (string)`: The types are application-dependent.  Gnuclear reserves the
+- `Type (string)`: The types are application-dependent.  Atom reserves the
   "coin" packet type
 - `MaxHeight (int)`: If status is not `NoAckWanted` or `AckReceived` by this
   height, status becomes `Timeout`. _Optional_
@@ -750,15 +750,15 @@ delivery, as shown below.
 ### Pegging to Other Cryptocurrencies
 
 A priveleged zone can act as the source of a pegged token of another
-cryptocurrency. A peg is in essence similar to the relationship between a
-Gnuclear hub and zone; both must keep up with the latest blocks of the
+cryptocurrency. A peg is in essence similar to the relationship between the
+Atom hub and zone; both must keep up with the latest blocks of the
 other in order to verify proofs that tokens have moved from one to the other.  A
-peg-zone on the Gnuclear network keeps up with both the hub as well as the
+peg-zone on the Atom network keeps up with both the hub as well as the
 other cryptocurrency.  The indirection through the peg-zone allows the logic of
 the hub to remain simple by encapsulating any non-Tendermint consensus
 light-client verification logic onto the zone.
 
-For instance, a Gnuclear zone with some validator set, possibly the same as
+For instance, an Atom zone with some validator set, possibly the same as
 that of the hub, could act as an ether-peg, where the TMSP-application on
 the zone (the "peg-zone") has mechanisms to exchange IBC messages with a
 peg-contract on the external Ethereum blockchain (the "target").  This contract
@@ -789,7 +789,7 @@ the case of Ethereum, the peg-contract) should allow the peg-zone validators to
 post collateral, and token transfers out of the peg-contract should be delayed
 (and collateral unbonding period sufficiently long) to allow for any challenges
 to be made.  We leave the design of the specification and implementation of this
-system open as a future Gnuclear improvement proposal.
+system open as a future Atom improvement proposal.
 
 While the socio-political atmosphere is not quite evolved enough yet, we can
 extend the mechanism to allow for zones which peg to the fiat currency of a
@@ -802,7 +802,7 @@ large group of trusted notaries and institutions.
 A result of this integration would be, for instance, the ability of anyone with
 a bank account at a participating bank to move dollars from their bank account,
 which is on the zone, to other accounts on the zone, or to the hub, or to
-another zone entirely.  In this regard, Gnuclear can act as a seamless conduit
+another zone entirely.  In this regard, Atom can act as a seamless conduit
 between fiat currencies and cryptocurrencies.
 
 ### Ethereum Scaling
@@ -814,7 +814,7 @@ Ethereum nodes process every single transaction and also stores all the state.
 Since Tendermint can commit blocks much faster than Ethereum's proof-of-work,
 EVM zones powered by Tendermint consensus and operating on pegged-ether can
 provide higher performance to Ethereum blockchains.  Additionally, though the
-Gnuclear hub and IBC packet mechanics does not allow for arbitrary contract
+Atom hub and IBC packet mechanics does not allow for arbitrary contract
 logic execution per se, it can be used to co-ordinate Ethereum contracts running
 on different zones, providing a foundation for generalized Ethereum scaling via
 sharding.  For example, asynchronous contract calls that "send an action" and
@@ -823,9 +823,9 @@ packets going in opposite directions.
 
 ### Multi-Application Integration
 
-Gnuclear zones run arbitrary application logic, defined at the beginning of the
+Atom zones run arbitrary application logic, defined at the beginning of the
 zone's life, and potentially updated over time by governance. Such flexibility
-allows Gnuclear zones to act as pegs to other cryptocurrencies, like Ethereum
+allows Atom zones to act as pegs to other cryptocurrencies, like Ethereum
 or Bitcoin, but it also permits derlivatives of those blockchains, utilizing the
 same codebase but a different validator set and history. This allows many
 existing cryptocurrency frameworks, such as that of Ethereum, Zerocash, Bitcoin,
@@ -833,18 +833,18 @@ CryptoNote, and so on to be used with a higher performance consensus engine on a
 common network, openning tremendous opportunity for interoperability across
 platforms.  Furthermore, as a multi-asset blockchain, a single transaction may
 contain multiple inputs and outputs, where each input can be any token type,
-enabling Gnuclear to serve directly as a platform for decentralized exchange,
+enabling Atom to serve directly as a platform for decentralized exchange,
 though orders are assumed to be matched via other platforms. Alternatively, a
 zone can serve as a fault-tolerant exchange, including hosting the orderbook,
 openning up new business opportunities for blockchain backed exchanges, which
-may themselves trade liquidity over the Gnuclear network.
+may themselves trade liquidity over the Atom network.
 
 Zones can also serve as blockchain-backed versions of enterprise and government
 systems, where pieces of a particular service, traditionally run by an
 organization or group of organizations, are instead run as a TMSP application on
 a certain zone, allowing it to inherit the security and interoperability of the
-public Gnuclear network, without sacrificing control over the underlying
-service.  Thus, Gnuclear may be a best of both worlds for organizations looking
+public Atom network, without sacrificing control over the underlying
+service.  Thus, Atom may be a best of both worlds for organizations looking
 to utilize blockchain technology that are wary of relinquishing control to an
 unidentified set of miners.
 
@@ -852,7 +852,7 @@ unidentified set of miners.
 
 A major problem with consistency favouring consensus algorithms like Tendermint
 is thought to be that any network partition which causes there to be no single
-partition with +⅔ voting power will halt consensus altogether. The Gnuclear
+partition with +⅔ voting power will halt consensus altogether. The Atom
 architecture can mitigate this problem by using a global hub with regional
 autonomous zones, where +⅔ voting power in a zone are based in a common
 geographic region. For instance, a common paradigm may be for individual cities,
@@ -889,8 +889,8 @@ validators (by voting power), and a Merkle proof to the current value associated
 with the name.  This makes it possible to have an efficient and secure
 light-client verification of _the current value of_ a name.
 
-On Gnuclear, we can take this concept and extend it further. Each
-name-registration zone in Gnuclear can have an associated top-level-domain
+On Atom, we can take this concept and extend it further. Each
+name-registration zone in Atom can have an associated top-level-domain
 (TLD) name such as ".com" or ".org", and each name-registration zone can have
 its own governance and registration rules.
 
@@ -900,15 +900,15 @@ TODO: note on integration with zone discovery, see roadmap
 
 ### The Quark Token
 
-While the Gnuclear hub is a multi-asset system, there is a native token
-called _quarks_.  Quarks are the only staking token of Gnuclear.  Quarks are a
+While the Atom hub is a multi-asset system, there is a native token
+called _quarks_.  Quarks are the only staking token of Atom.  Quarks are a
 license for the holder to vote, validate, or delegate to other validators.  Like
 Ethereum's ether, quarks are also used to pay for transaction fees to mitigate
 spam.  Additional quarks are issued to validators and those who delegate to
 validators.
 
 The initial distribution of quark tokens and validators on Genesis will go to
-the funders of the Gnuclear crowdsale (80%), and the Gnuclear foundation (20%).
+the funders of the Atom Crowdsale (80%), and the Atom Foundation (20%).
 From genesis onward, 30% of the initial quark distribution will be rewarded to
 validators and delegators.
 
@@ -923,15 +923,15 @@ purchasing power will decrease linearly to 2/3 of the initial purchasing power
 in the following 28 days.  The price will be determined by dividing 16,000,000
 by the total effective purchasing power of all the bids.
 
-#### Gnuclear Foundation
+#### Atom Foundation
 
-The Gnuclear foundation is an external entity that is hired to develop the
-Gnuclear network.  Quark holders can vote to change the foundation by changing
-the `GnuclearFoundationAddress` parameter.  This foundation will have 4,000,000
+The Atom foundation is an external entity that is hired to develop the
+Atom network.  Quark holders can vote to change the foundation by changing
+the `AtomFoundationAddress` parameter.  This foundation will have 4,000,000
 quarks, of which 1,200,000 are pre-vested, and the rest will vest over a period
 of 4 years, all of which can be used to the full extent for voting.
 
-#### Gnuclear Hub Block Reward
+#### Atom Hub Block Reward
 
 Every block rewards all the validators and delegators in proportion to their
 bonded quarks (before commissions).  There will be roughly 6,000,000 quarks
@@ -1007,7 +1007,7 @@ blockchain. In these cases, the validators can coordinate out of band to force
 the timeout of these malicious validators, if there is a supermajority
 consensus.
 
-In situations where the Gnuclear hub halts due to a ⅓+ coalition of voting power
+In situations where the Atom hub halts due to a ⅓+ coalition of voting power
 going offline, or in situations where a ⅓+ coalition of voting power censor
 evidence of malicious behavior from entering the blockchain, as long as there
 are -½ such Byzantine voting power, the hub will recover with a reorg-proposal.
@@ -1015,7 +1015,7 @@ are -½ such Byzantine voting power, the hub will recover with a reorg-proposal.
 
 ### Transaction Fees
 
-Gnuclear validators can accept any token type or combination of types as a fee
+Atom validators can accept any token type or combination of types as a fee
 for processing a transaction.  Each validator can subjectively set whatever
 exchange rate it wants, and choose whatever transactions it wants, as long as
 the `BlockGasLimit` is not exceeded.  The collected fees minus any taxes
@@ -1033,7 +1033,7 @@ commission to the delegated validator.
 
 ## Governance ##################################################################
 
-The Gnuclear hub blockchain is a distributed organization that requires a
+The Atom hub blockchain is a distributed organization that requires a
 well defined governance mechanism in order to coordinate various changes to the
 blockchain, such as the validator set, predefined parameters of the system, as
 well as software and wetware protocol upgrades.
@@ -1082,11 +1082,11 @@ coordinated via the generic `TextProposal`.
 
 * Decide on crowdfund event details
 * Address zone attributes and discovery
-* Launch Gnuclear crowdfunding event
-* Develop Gnuclear and Tendermint
+* Launch Atom crowdfunding event
+* Develop Atom and Tendermint
 * Develop EVM zones
 * Develop CryptoNote(\?) zone
-* Launch Gnuclear blockchain
+* Launch Atom blockchain
 * Develop Tendermint V2
 * ...
 
@@ -1117,10 +1117,10 @@ The main benefit of Tendermint consensus over PBFT is that Tendermint has an
 improved and simplified underlying structure, some of which is a result of
 embracing the blockchain paradigm.  Tendermint blocks must commit in order,
 which obviates the complexity and communication overhead associated with PBFT's
-view-changes.  In Gnuclear and many cryptocurrencies, there is no need to allow
+view-changes.  In Atom and many cryptocurrencies, there is no need to allow
 for block <em>N+i</em> where <em>i >= 1</em> to commit, when block <em>N</em>
 itself hasn't yet committed. If bandwidth is the reason why block <em>N</em>
-hasn't committed in Gnuclear, then it doesn't help to use bandwidth sharing
+hasn't committed in Atom, then it doesn't help to use bandwidth sharing
 votes for blocks <em>N+i</em>. If a network partition or offline nodes is the
 reason why block <em>N</em> hasn't committed, then <em>N+i</em> won't commit
 anyway.
@@ -1223,7 +1223,7 @@ payments across disparate ledger types, and extends the atomic transaction
 mechanism to include not only hash-locks, but also a quroum of notaries (called
 the Atomic Transport Protocol).  The latter mechanism for enforcing atomicity in
 inter-ledger transactions is similar to Tendermint's light-client SPV echanism,
-so an illustration of the distinction between ILP and Gnuclear/IBC is warranted,
+so an illustration of the distinction between ILP and Atom/IBC is warranted,
 and provided below.
 
 1. The notaries of a connector in ILP does not support membership changes, and
@@ -1238,12 +1238,12 @@ validator-set of the receiver's blockchain is responsible for providing
 confirmation, not the receiving user.
 
 3. The most striking difference is that ILP's connectors are not responsible or
-   keeping authoritative state about payments, whereas in Gnuclear, the
-validators of the Gnuclear hub are the authority of the state of IBC token
+   keeping authoritative state about payments, whereas in Atom, the
+validators of the Atom hub are the authority of the state of IBC token
 transfers as well as the authority of the amount of tokens held by each zone
 (but not the amount of tokens held by each account within a zone).  This is he
 fundamental innovation that allows for secure asymmetric tranfer of tokens from
-zone to zone; the analog to ILP's connector in Gnuclear is a persistent and
+zone to zone; the analog to ILP's connector in Atom is a persistent and
 maximally secure blockchain ledger.
 
 4. The inter-ledger payments in ILP need to be backed by an exchange orderbook,
@@ -1265,7 +1265,7 @@ should be transferred across the peg and back.  Of course, since Bitcoin uses
 proof-of-work, Bitcoin sidechains suffer from the many risks of proof-of-work as
 a consensus mechanism, which are particularly exacerbated in a scalability
 context. That said, the core mechanism of the two-way peg is in principle the
-same as that employed by the Gnuclear network, though using a consensus
+same as that employed by the Atom network, though using a consensus
 algorithm that scales more securely.
 
 #### Ethereum Scalability Efforts
@@ -1297,7 +1297,7 @@ channels.
 While the Lightning Network can also easily extend across multiple independent
 blockchains to allow for the transfer of _value_ via an exchange market, it
 cannot be used to assymetrically transfer _tokens_ from one blockchain to
-another.  The main benefit of the Gnuclear network described here is to enable
+another.  The main benefit of the Atom network described here is to enable
 such direct token transfers.  That said, we expect payment channels and the
 Lightning Network to become widely adopted along with our token transfer
 mechanism, for cost-saving and privacy reasons.
@@ -1413,7 +1413,7 @@ transactions
 
 ### Merkle Tree & Proof Specification
 
-There are two types of Merkle trees supported in the Tendermint/Gnuclear
+There are two types of Merkle trees supported in the Tendermint/Atom
 ecosystem: The Simple Tree, and the IAVL+ Tree.
 
 ### Simple Tree
@@ -1475,7 +1475,7 @@ TODO
 ## Acknowledgements ############################################################
 
 We thank our friends and peers for assistance in conceptualizing, reviewing, and
-providing support for our work with Tendermint and Gnuclear.
+providing support for our work with Tendermint and Atom.
 
 * [Zaki Manian](https://github.com/zmanian) of
   [SkuChain](https://www.skuchain.com/) provided much help in formatting and

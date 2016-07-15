@@ -1,4 +1,4 @@
-Gnuclear Crowdfund Plan
+Atom Crowdfund Plan
 -----------------------
 
 DATE: July 5th, 2016
@@ -8,7 +8,7 @@ NOTE: The details in this plan override what is currently in the whitepaper.
 
 * The proceeds of the crowdsale will go to the Foundation.
 
-* The Foundation will be a Switzerland non-profit foundation.
+* The Foundation will be a Switzerland/Canadian non-profit foundation.
 
 * The crowdsale will be a simple Ethereum-style crowdsale occuring over 42 days.
 
@@ -20,7 +20,7 @@ crowdsale between Bitcoin and Ethereum.
   than $3M, 95% of the funds will be returned.
 
 * Upon completion of the crowdsale, the Foundation will sell 50% of the raised
-  amount and hold fiat in a Switzerland bank account.
+  amount and hold fiat in a Switzerland/Canadian bank account.
 
 * Some time after the crowdsale, an Ethereum contract (that holds no value) will
   determine the genesis 100 validators by allowing stakeholders to delegate.
@@ -40,7 +40,7 @@ Timeline
 --------
 
 0. Initial angel funding, $50 ~ $75K
-1. Switzerland non-profit is created
+1. Switzerland/Canadian non-profit is created
 2. Crowdsale is announced 30 ~ 60 days prior to crowdsale
 3. Crowdsale goes on for 42 days
 4. End of crowdsale (EOC)
@@ -48,9 +48,9 @@ Timeline
 6. EOC + 2 months: DelegationGame contract is launched
 7. EOC + 6 months: Pre-alpha release of TendermintCore for security review
 8. EOC + 9 months: Alpha release of TendermintCore (Handle all BFT faults)
-9. EOC + 12 months: Alpha release of Gnuclear (Staking, delegation, governance)
-10. EOC + 15 months: Beta release of Gnuclear (Alpha + shards/zones support)
-11. EOC + 18 months: Gamma release of Gnuclear (Beta + specific shards)
+9. EOC + 12 months: Alpha release of Atom (Staking, delegation, governance)
+10. EOC + 15 months: Beta release of Atom (Alpha + shards/zones support)
+11. EOC + 18 months: Gamma release of Atom (Beta + specific shards)
 12. EOC + 18 months+: Continuous development, timeline set by Foundation
 
 Roadmap
