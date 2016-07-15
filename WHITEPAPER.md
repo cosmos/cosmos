@@ -871,12 +871,21 @@ algorithm that scales more securely.
 
 #### Ethereum Scalability Efforts
 
-Ethereum is currently researching a number of different strategies to zone the
+Ethereum is currently researching a number of different strategies to shard the
 state of the Ethereum blockchain to address scalability needs. These efforts
 have the goal of maintaining the abstraction layer offered by the current
-Ethereum Virtual Machine across the shared state space. Research efforts are
-being conducted by the Ethereum Foundation under Serenity, the Consensys
-organizations and the Dfinity project. [\[18\]][18]
+Ethereum Virtual Machine across the shared state space. Multiple research
+efforts are underway at this time. [\[18\]][18][\[22\]][22]
+
+##### Atom vs Ethereum 2.0 Mauve
+ 
+Atom and Ethereum 2.0 Mauve [\[22\]][22] have different design goals.
+
+* Atom is specifically about tokens.  Mauve is about universal computation.
+* Atom is not bound to the EVM, so even different VMs can interoperate.
+* Atom lets the zone creator determine who validates the zone.
+* Anyone can start a new zone in Atom (unless governance decides otherwise).
+* The hub isolates zone failures so global token invariants are preserved.
 
 ### General Scaling
 
@@ -1518,6 +1527,7 @@ wording, especially under the TMSP section
 [19]: http://www.ds.ewi.tudelft.nl/fileadmin/pds/papers/PerformanceAnalysisOfLibswift.pdf
 [20]: http://groups.csail.mit.edu/tds/papers/Lynch/jacm88.pdf
 [21]: https://en.bitcoin.it/wiki/Thin_Client_Security
+[22]: http://vitalik.ca/files/mauve_paper.html
 
 * [1] Bitcoin: https://bitcoin.org/bitcoin.pdf
 * [2] ZeroCash: http://zerocash-project.org/paper
@@ -1540,6 +1550,7 @@ wording, especially under the TMSP section
 * [19] LibSwift: http://www.ds.ewi.tudelft.nl/fileadmin/pds/papers/PerformanceAnalysisOfLibswift.pdf
 * [20] DLS: http://groups.csail.mit.edu/tds/papers/Lynch/jacm88.pdf
 * [21] Thin Client Security: https://en.bitcoin.it/wiki/Thin_Client_Security
+* [22] Ethereum 2.0 Mauve Paper: http://vitalik.ca/files/mauve_paper.html
 
 #### Unsorted links
 
