@@ -58,6 +58,7 @@ document.  Please check regularly for updates!._
       * [Lightning Network](#lightning-network)
       * [Segregated Witness](#segregated-witness)
   * [Appendix](#appendix)
+    * [Fork Accountability](#fork-accountability)
     * [Tendermint Consensus](#tendermint-consensus)
     * [Tendermint Light Clients](#tendermint-light-clients)
     * [Preventing Long Range Attacks](#preventing-long-range-attacks)
@@ -1334,7 +1335,7 @@ timeout](https://raw.githubusercontent.com/gnuclear/atom-whitepaper/master/msc/i
 There are two types of Merkle trees supported in the Tendermint/Atom
 ecosystem: The Simple Tree, and the IAVL+ Tree.
 
-### Simple Tree
+#### Simple Tree
 
 The Simple Tree is a Merkle tree for a static list of elements.  If the number
 of items is not a power of two, some leaves will be at different levels.  Simple
@@ -1359,7 +1360,7 @@ block, and the top level elements of the application state root.
   A SimpleTree with 7 elements
 ```
 
-## IAVL+ Tree
+#### IAVL+ Tree
 
 The purpose of the IAVL+ data structure is to provide persistent storage for
 key-value pairs in the application state such that a deterministic Merkle root
