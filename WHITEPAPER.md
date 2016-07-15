@@ -347,6 +347,9 @@ for for more information on the two IBC transaction types._
 
 ## Use Cases ###################################################################
 
+_TODO: Document how zones can have their own governance and economic policies,
+like when to hard-fork_
+
 ### Pegging to Other Cryptocurrencies
 
 A priveleged zone can act as the source of a pegged token of another
