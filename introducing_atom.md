@@ -4,13 +4,13 @@ This is made most apparent when you attempt to buy your first Bitcoin: you disco
 difficult to buy the new internet money over the internet, at least without divulging considerable amounts of personal information and 
 allowing weeks for it to be verified by third parties (exchanges) you hardly know and have been warned not to trust with too much of your money.	
 
-While mechanisms like atomic swaps between chains can help link communities,
+While mechanisms like [atomic swaps](https://en.bitcoin.it/wiki/Atomic_cross-chain_trading) between chains can help link communities,
 they suffer from long timeouts and a need for mature liquidity markets on each side.
-The altcoin ecosystem is an alchemical soup of enthusiasts experimenting in various ways in new cryptocurrency design,
+The [altcoin ecosystem](https://coinmarketcap.com/) is an alchemical soup of enthusiasts experimenting in various ways in new cryptocurrency design,
 but each altcoin stands alone, siloed by the sovereignty of its own blockchain, 
 many needlessly wasting electricty through convoluted Proof-of-Work (PoW) designs.
 
-Ethereum sought to address the problem, somewhat indirectly, by inventing a new platform for computation, 
+[Ethereum](https://ethereum.org/) sought to address the problem, somewhat indirectly, by inventing a new platform for computation, 
 allowing arbitrary financial systems to be written against a common virtual machine using a common development environment.
 Presuming all new cryptocurrencies launch on Ethereum, they will all have some capacity for interoperability.
 Ethereum is a wonderful idea, but the design decisions, while motivated by important considerations
@@ -21,7 +21,10 @@ but want alternatives to the current state transition machine.
 
 Of course, Ethereum doesn't address the problem of turning fiat currency into ether, either,
 short of having banks and major government bodies issue their currency on Ethereum.
-And while many such institutions are investigating the Ethereum blockchain,
+And while [many](http://www.coindesk.com/south-africa-diy-ethereum-blockchain-tests/) 
+[such](http://www.coindesk.com/south-africa-diy-ethereum-blockchain-tests/) 
+[institutions](http://www.coindesk.com/fidor-ethereum-core-banking/) 
+are investigating the Ethereum blockchain,
 there are both scalability and governance concerns that will restrict its full scale adoption,
 and hence impede integration with existing systems and currencies.
 
@@ -46,22 +49,23 @@ It consits of a web of "hubs" and "zones", where each "zone" is effectively an i
 with an arbitrary cryptocurrency design (be it like Bitcoin, Ethereum, ZeroCash, CryptoNote, your local banking institution, etc.), 
 and each "hub" is a multi-asset cryptocurrency that facilitates interoperability between some set of zones.
 
-Hubs and zones are powered by the Tendermint Proof-of-Stake (PoS) algorithm, 
-using the TMSP interface to host applications written in any programming language.
+Hubs and zones are powered by the [Tendermint](http://tendermint.com/) [Proof-of-Stake (PoS) consensus algorithm](https://github.com/tendermint/tendermint/wiki/Byzantine-Consensus-Algorithm), 
+using the [TMSP interface](http://tendermint.com/blog/tendermint-socket-protocol/) to host applications written in any programming language.
 TMSP permits enormous flexibility in application design, and enables the application
 to inherit the security features of a Tendermint-powered blockchain.
 
 Zones communicate with one another through a hub, 
 primarily in the form of assymetric transfer of some set of tokens from one zone to another.
-Effectively, a hub is a blockchain with many sidechains, 
+Effectively, a hub is a blockchain with many [sidechains](https://blockstream.com/sidechains.pdf),
 but using PoS instead of PoW leads to a dramatic reduction in overhead without sacrificing security.
 The trick is that each zone acts as a light client for the hub, and the hub acts as a light client for all its zones.
-Tendermint makes this efficient with compact light client proofs that are secure so long as the validator set is known,
-which can be achieved by ensuring the light client synchronizes with validator set changes at least as often as they are permitted to occur.
+[Tendermint makes this efficient](https://github.com/tendermint/tendermint/wiki/Light-Client-Protocol) with compact light client proofs that 
+are secure so long as the validator set is known,
+which can be achieved by ensuring the light client [synchronizes with validator set changes at least as often as they are permitted to occur](https://blog.ethereum.org/2014/11/25/proof-stake-learned-love-weak-subjectivity/).
 
-Many people have rallied against the use of Proof-of-Stake, claiming it is impossible to secure.
+Many people have [rallied against the use of Proof-of-Stake](https://download.wpsoftware.net/bitcoin/pos.pdf), claiming it is impossible to secure.
 Simultaneously, they acknowledge that it is nearly trivial to secure many PoS chains using a single, secure PoW chain. 
-It is my own position that the correct number of PoW chains is one,
+It is [my own position](https://twitter.com/buchmanster/status/738550345597648896) that the correct number of PoW chains is one,
 and the correct number of PoS chains is in the thousands or millions, on par with the number of currencies, rewards systems, and various 
 other token-based systems in the world.
 
