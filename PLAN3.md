@@ -68,11 +68,10 @@ validating power and voting power to a validator.  They are still responsible
 for voting on proposals during the vesting period, but if they don't vote they
 will be penalized, but they will inherit the vote of the delegated validator.
 
-**Early Funders**: The Early Funders are qualified investors, and bear the
-burden of risk, for the benefit of the Crowdfunding campaign. The first 5% of
-the atom distribution on Genesis will go to the Early Funders. The proceeds from
-the early funding will go toward legal and PR fees, and also help pay salary for
-the Atom Foundation until the crowdfunding is complete.
+**Early Funders**: The Early Funders are qualified investors who purchase 5% of
+the Genesis atoms prior to the crowdfund. The proceeds from the early funding
+will go toward legal and PR fees, and also help pay salary for the Atom
+Foundation until the crowdfunding is complete.
 
 **Validator**: Validators are full nodes of an Atom zone that have the
 responsibility of committing blocks in that zone.  The Atom Hub will start with
