@@ -1,7 +1,7 @@
 Atom Crowdfund Plan #3
 ----------------------
 
-DATE: July 22nd, 2016
+DATE: July 22nd, 2016<br/>
 NOTE: The details in this plan override what is currently in the whitepaper.
 
 * The Atom Foundation will be a Canadian entity.  Its mission is to create,
@@ -85,28 +85,28 @@ the top 100 bonded delegates who will become the genesis validators.
 ### Essential Atom Software and Services
 
 **TendermintCore**
-  _Alpha_
-  * mempool optimization
-  * peer exchange handler
-  * validator set changes
-  * fork detection and handling
-  _Beta_
-  * tendermint consensus v2
+  * _Alpha_
+    * mempool optimization
+    * peer exchange handler
+    * validator set changes
+    * fork detection and handling
+  * _Beta_
+    * tendermint consensus v2
 
 **Atom Hub**
-  _Alpha_
-  * multiasset, atom staking
-  * delegation
-  * governance
-  * basic wallet client
-  _Beta_
-  * zone support
-    * exchange zone
-    * ethereum zone
-    * import crypto distributions
+  * _Alpha_
+    * multiasset, atom staking
+    * delegation
+    * governance
+    * basic wallet client
+  * _Beta_
+    * zone support
+      * exchange zone
+      * ethereum zone
+      * import crypto distributions
+      * ...
+    * Atom network explorer client
     * ...
-  * Atom network explorer client
-  * ...
 
 **Atom Zones**
   * exchange
