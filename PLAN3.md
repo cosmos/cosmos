@@ -85,6 +85,7 @@ the top 100 bonded delegates who will become the genesis validators.
 
 **TendermintCore**
   * _Alpha_
+    * fix existing issues
     * mempool optimization
     * peer exchange handler
     * validator set changes
@@ -94,8 +95,8 @@ the top 100 bonded delegates who will become the genesis validators.
 
 **Atom Hub**
   * _Alpha_
-    * multiasset, atom staking
-    * delegation
+    * multiasset accounts
+    * atom staking with delegation
     * governance
     * basic wallet client
   * _Beta_
@@ -103,16 +104,7 @@ the top 100 bonded delegates who will become the genesis validators.
       * exchange zone
       * ethereum zone
       * import crypto distributions
-      * ...
     * Atom network explorer client
-    * ...
-
-**Atom Zones**
-  * exchange
-  * import existing crypto distribution
-  * bitcoin
-  * ethereum
-  * ...
 
 **Atom Services**
   * bitcoin peg - atom bounty?
@@ -139,15 +131,6 @@ members of the public who wish to support or participate in this project.
 The crowdfund will happen over a period of 42 days as the Ethereum crowdsale,
 and be capped an amount to be determined later.
 
-## Legal Considerations
-
-It is criticial that the Crowdfund be done in a way that doesn't violate
-securities laws in various jurisdictions.  For example, in Canada, we look to
-the [Offering Memorandum
-Exemption](http://www.osc.gov.on.ca/en/NewsEvents_nr_20151029_finalize-offering-memorandum-exemption.htm).
-In addition, we will structure the Crowdfund to occur after the Essential Atom
-Software is built, reducing Crowdfund funder risk.
-
 Timeline
 --------
 
@@ -164,4 +147,4 @@ Timeline
 1. EoCF + 15 months: launch Atom Hub beta
 1. EoCF + 15 months+: Continuous development, timeline set by Foundation
 
-TODO: figure out timeline for pegs
+NOTE: timeline for peg support depends on partnership
