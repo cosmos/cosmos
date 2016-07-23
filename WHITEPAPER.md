@@ -119,34 +119,26 @@ context, and we provide more summaries of some proposals and their drawbacks in
 
 Here we present Atom, a novel blockchain network architecture that addresses all
 of these problems.  Atom is a network of many independent blockchains, called
-zones, that are connected by a central blockchain, called the hub.  The hub and
-zones are powered by Tendermint Core [\[8\]][8], which provides a
+zones.  The zones are powered by Tendermint Core [\[8\]][8], which provides a
 high-performance, consistent, secure
 [PBFT-like](http://tendermint.com/blog/tendermint-vs-pbft/) consensus engine,
 where strict fork-accountability guarantees hold over the behaviour of malicious
-actors.  The Atom hub is a simple multi-asset proof-of-stake cryptocurrency with
-a simple governance mechanism enabling the network to adapt and upgrade.  The
-hub and zones of the Atom network communicate with each other via an
-inter-blockchain communication (IBC) protocol which is formalized here.  The
-Atom hub utilizes IBC packets to move tokens from one zone to another while
-maintaining the total amount of tokens in the network, thus isolating each zone
-from the failure of others.
+actors.  Tendermint Core's BFT consensus algorithm is well suited for scaling
+public proof-of-stake blockchains.
 
-Tokens can be transferred from one zone to another, securely and quickly,
-without the need for a liquid exchange between zones.  All inter-zone token
-transfers go through the Atom Hub, which keeps track of the total amount of
-tokens held by each zone.  A new blockchain-to-blockchain communiation protocol
-called IBC (a kind of virtual UDP or TCP for blockchains) is used to securely
-coordinate token transfers between the hub and zones.  Zones enable
-forward-compatibility with future blockchain systems, allowing all
-cryptocurrency research to be incorporated into Atom, and spurring even more
-research into distributed ledger systems.
+The first zone on Atom is called the Atom Hub. The Atom Hub is a multi-asset
+proof-of-stake cryptocurrency with a simple governance mechanism enabling the
+network to adapt and upgrade.  In addition, the Atom Hub can be extended by
+connecting other zones.
 
-We believe that Atom proves that Tendermint BFT consensus is well suited for
-scaling public proof-of-stake blockchains, and that it can compete with
-proof-of-work in speed, security, and scalability.  Above all, we hope it grows
-into a platform that works for everyone interested in distributed ledger
-systems.
+The hub and zones of the Atom network communicate with each other via an
+inter-blockchain communication (IBC) protocol, a kind of virtual UDP or TCP for
+blockchains.  Tokens can be transferred from one zone to another, securely and
+quickly, without the need for exchange liquidity between zones.  Instead, all
+inter-zone token transfers go through the Atom Hub, which keeps track of the
+total amount of tokens held by each zone.  The hub isolates each zone from the
+failure of other zones.  Since anyone can connect a new zone to the Atom Hub,
+zones allow for future-compatibility with new blockchain innovations.
 
 ## Tendermint ##################################################################
 
@@ -327,7 +319,7 @@ a slow process with no support for Sybil-proof coordination prior to
 vote-by-mining. In Atom, validators and delegators can vote on proposals
 that can change preset parameters of the system automatically (such as the block
 gas limit), as well as vote on amendments to a human-readible constitution that
-govern the policies of the Atom hub.  The constitution allows for cohesion
+govern the policies of the Atom Hub.  The constitution allows for cohesion
 among the stakeholders on issues regarding issues of theft and bugs (such as
 TheDAO bug), allowing for quicker and cleaner resolution.  Combined with zones
 that can have their own governance body, the Atom network allows for
@@ -341,33 +333,33 @@ proposals aim to create a "single blockchain" with total global transaction
 ordering, Atom permits many blockchains to run concurrently with one another
 and yet retain interoperability.
 
-At the basis, a global hub blockchain (the Atom hub) manages many independent
-blockchains called "zones" (sometimes referred to as "shards", in reference to
-the database scaling technique known as "sharding").  
-A constant stream of recent block commits from zones posted on the hub allows the hub to keep up with the state of each
-zone.  Likewise, each zone keeps up with the state of the hub (but zones do not
-keep up with each other except indirectly through the hub).  
-Packets of information are then communicated from one zone to another by posting
-Merkle-proofs as evidence that the information was sent and received. 
-This mechanism is called inter-blockchain communication, or IBC for short.
+At the basis, the Atom Hub manages many independent blockchains called "zones"
+(sometimes referred to as "shards", in reference to the database scaling
+technique known as "sharding").  A constant stream of recent block commits from
+zones posted on the hub allows the hub to keep up with the state of each zone.
+Likewise, each zone keeps up with the state of the hub (but zones do not keep up
+with each other except indirectly through the hub).  Packets of information are
+then communicated from one zone to another by posting Merkle-proofs as evidence
+that the information was sent and received.  This mechanism is called
+inter-blockchain communication, or IBC for short.
 
 ![Figure of hub and zones
 acknowledgement](https://raw.githubusercontent.com/gnuclear/atom-whitepaper/master/images/hub_and_zones.png)
 
-Any of the zones can themselves be hubs to form a multi-level hierarchical
-network, but for the sake of clarity we will only describe the simple
-configuration with one central hub and many zones.
+Any of the zones can themselves be hubs to form an acyclic graph network, but
+for the sake of clarity we will only describe the simple configuration where
+there is only one hub, and many non-hub zones.
 
 ### The Hub
 
-The Atom hub is a blockchain that hosts a multi-asset cryptocurrency,
+The Atom Hub is a blockchain that hosts a multi-asset cryptocurrency,
 where tokens can be held by individual users or by zones themselves.  These
 tokens can be moved from one zone to another in a special IBC packet called a
 "coin packet".  The hub is responsible for preserving the global invariance
 of the total amount of each token across the zones. IBC coin packet
 transactions must be committed by the sender, hub and reciever blockchains.
 
-Since the Atom hub acts as a central ledger of tokens for the whole
+Since the Atom Hub acts as a central ledger of tokens for the whole
 system, the security of the hub is of paramount importance.  While each
 zone may be a Tendermint blockchain that is secured by as few as 4 (or even
 less if BFT consensus is not needed), the hub must be secured by a globally
@@ -392,7 +384,7 @@ number of priveleged zones will be created to act as pegs to other
 cryptocurrencies. The creation of new priviledged zones is left to governance.
 
 Note that a zone where +⅔ of the voting power are Byzantine can commit invalid
-state.  Since the very purpose of the Atom hub is to avoid verifying
+state.  Since the very purpose of the Atom Hub is to avoid verifying
 every transaction on a zone, detecting such failures must be done by
 independent observers of the zone, which may appeal to social media and to the
 market to make their detection known (for instance, selling/shorting a token
@@ -446,7 +438,7 @@ like when to hard-fork_
 ### Pegging to Other Cryptocurrencies
 
 A priveleged zone can act as the source of a pegged token of another
-cryptocurrency. A peg is in essence similar to the relationship between the
+cryptocurrency. A peg is in essence similar to the relationship between an
 Atom hub and zone; both must keep up with the latest blocks of the
 other in order to verify proofs that tokens have moved from one to the other.  A
 peg-zone on the Atom network keeps up with both the hub as well as the
@@ -597,7 +589,7 @@ TODO: note on integration with zone discovery, see roadmap
 
 ### The Atom Token
 
-While the Atom hub is a multi-asset system, there is a native token
+While the Atom Hub is a multi-asset system, there is a native token
 called _atoms_.  Atoms are the only staking token of Atom.  Atoms are a
 license for the holder to vote, validate, or delegate to other validators.  Like
 Ethereum's ether, atoms are also used to pay for transaction fees to mitigate
@@ -698,7 +690,7 @@ blockchain. In these cases, the validators can coordinate out of band to force
 the timeout of these malicious validators, if there is a supermajority
 consensus.
 
-In situations where the Atom hub halts due to a ⅓+ coalition of voting power
+In situations where the Atom Hub halts due to a ⅓+ coalition of voting power
 going offline, or in situations where a ⅓+ coalition of voting power censor
 evidence of malicious behavior from entering the blockchain, as long as there
 are -½ such Byzantine voting power, the hub will recover with a reorg-proposal.
@@ -730,8 +722,8 @@ atoms to the hacker, and burns some as well.
 
 ## Governance ##################################################################
 
-The Atom hub blockchain is a distributed organization that requires a
-well defined governance mechanism in order to coordinate various changes to the
+The Atom Hub is operated by a distributed organization that requires a well
+defined governance mechanism in order to coordinate various changes to the
 blockchain, such as the validator set, predefined parameters of the system, as
 well as software and wetware protocol upgrades.
 
@@ -936,7 +928,7 @@ confirmation, not the receiving user.
 
 3. The most striking difference is that ILP's connectors are not responsible or
    keeping authoritative state about payments, whereas in Atom, the
-validators of the Atom hub are the authority of the state of IBC token
+validators of the Atom Hub are the authority of the state of IBC token
 transfers as well as the authority of the amount of tokens held by each zone
 (but not the amount of tokens held by each account within a zone).  This is he
 fundamental innovation that allows for secure asymmetric tranfer of tokens from

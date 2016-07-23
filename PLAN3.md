@@ -54,7 +54,7 @@ Delegators in proportion to their bonded atoms, and afterwards account for any
 commissions that delegators pay to delegate validators.  The reward will consist
 of two categories -- transaction fees, and inflationary atoms.  The transction
 fees will be any fee collected by a validator.  In addition, there will be
-infltionary atoms at a constant amount of 25% x 20M atoms, or 5M atoms per year.
+inflationary atoms at a constant amount of 25% x 20M atoms, or 5M atoms per year.
 Atom holders who do not put their atoms at stake by being a validator or
 delegating to a validator will not receive any of the Atom Hub Block Rewards.
 
