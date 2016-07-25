@@ -65,15 +65,14 @@ unique experiment in the intersection between governance, culture, and
 economics.  Would it not be a tragedy for all these experiments to be so rigidly
 siloed from one another by great chasms of incompatibility?
 
-Clearly, what we need is something more general than Ethereum; something that
-can integrate existing codebases and the states of existing blockchains;
-something that can interface in a sane manner with the currencies issued by
-nation states; something that formalizes the relationship between
-cryptocurrencies and connects them without compromising their independence;
+Clearly, what we need is something more general than Ethereum - a sort of meta-Ethereum; 
+something that can integrate existing codebases and the states of existing blockchains;
+something that can interface in a sane manner with the currencies issued by nation states; 
+something that formalizes the relationship between cryptocurrencies and connects them without compromising their independence;
 something with extreme flexibility that does not compromise security.
 
 Enter Atom. Atom is a network and a framework for interoperability between
-blockchains.  It consits of a web of "hubs" and "zones", where each "zone" is
+blockchains.  It consists of a web of "hubs" and "zones", where each "zone" is
 effectively an independent blockchain with an arbitrary cryptocurrency design
 (be it like Bitcoin, Ethereum, ZeroCash, CryptoNote, your local banking
 institution, etc.), and each "hub" is a multi-asset cryptocurrency that
