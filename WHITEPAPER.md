@@ -122,9 +122,9 @@ of these problems.  Atom is a network of many independent blockchains, called
 zones.  The zones are powered by Tendermint Core [\[8\]][8], which provides a
 high-performance, consistent, secure
 [PBFT-like](http://tendermint.com/blog/tendermint-vs-pbft/) consensus engine,
-where strict fork-accountability guarantees hold over the behaviour of malicious
-actors.  Tendermint Core's BFT consensus algorithm is well suited for scaling
-public proof-of-stake blockchains.
+where strict [fork-accountability](#fork-accountability) guarantees hold over
+the behaviour of malicious actors.  Tendermint Core's BFT consensus algorithm is
+well suited for scaling public proof-of-stake blockchains.
 
 The first zone on Atom is called the Atom Hub. The Atom Hub is a multi-asset
 proof-of-stake cryptocurrency with a simple governance mechanism enabling the
@@ -167,14 +167,15 @@ _NOTE: +⅔ means "more than ⅔", while ⅓+ means "⅓ or more"._
 
 Tendermint is a partially synchronous BFT consensus protocol derived from the
 DLS consensus algorithm [\[20\]][20]. Tendermint is notable for its simplicity,
-performance, and fork-accountability.  The protocol requires a fixed, known set
-of validators, where each validator is identified by its
-public key.  Validators attempt to come to consensus on one block at a time,
+performance, and [fork-accountability](#fork-accountability).  The protocol
+requires a fixed, known set of validators, where each validator is identified by
+its public key.  Validators attempt to come to consensus on one block at a time,
 where a block is a list of transactions.  Consensus on a block proceeds in
 rounds. Each round has a round-leader, or proposer, who proposes a block. The
 validators then vote, in stages, on whether or not to accept the proposed block
-or move on to the next round. The proposer for a round is chosen deterministically from the ordered list of
-validators, in proportion to their voting power.  
+or move on to the next round. The proposer for a round is chosen
+deterministically from the ordered list of validators, in proportion to their
+voting power.
 
 The full details of the protocol are described
 [here](https://github.com/tendermint/tendermint/wiki/Byzantine-Consensus-Algorithm).
@@ -200,16 +201,19 @@ broadcasting maliciously crafted votes. See FIGURE (TODO) for details.
 ### Light Clients
 
 A major benefit of Tendermint's consensus algorithm is simplified light client
-security, making it an ideal candidate for mobile and internet-of-things use cases.
-While a Bitcoin light client must sync chains of block headers and find the one with the most proof of work,
-Tendermint light clients, need only to keep up with changes to the validator set,
-and then simply verify the +⅔ PreCommits in the latest block to determine the latest state.  
+security, making it an ideal candidate for mobile and internet-of-things use
+cases.  While a Bitcoin light client must sync chains of block headers and find
+the one with the most proof of work, Tendermint light clients need only to keep
+up with changes to the validator set, and then simply verify the +⅔ PreCommits
+in the latest block to determine the latest state.  
 
 ### Preventing Attacks
 
-Tendermint has various protective measures for preventing certain notable attacks,
-like long-range-nothing-at-stake double spends and censorship. These are discussed more fully
-in the appendix.
+Tendermint has various protective measures for preventing certain notable
+attacks, like long-range-nothing-at-stake double spends and censorship. These
+are discussed more fully in the [appendix](#preventing-long-range-attacks).
+
+TODO: discuss censorship
 
 ### TMSP
 
@@ -1070,6 +1074,9 @@ are locked on.  Together, these conditions ensure that a validator does not
 PreCommit without sufficient evidence, and that validators which have already
 PreCommit cannot contribute to evidence to PreCommit something else.  This
 ensures both safety and liveness of the consensus algorithm.
+
+The full details of the protocol are described
+[here](https://github.com/tendermint/tendermint/wiki/Byzantine-Consensus-Algorithm).
 
 ### Tendermint Light Clients
 
