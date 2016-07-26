@@ -210,10 +210,10 @@ in the latest block to determine the latest state.
 ### Preventing Attacks
 
 Tendermint has various protective measures for preventing certain notable
-attacks, like long-range-nothing-at-stake double spends and censorship. These
-are discussed more fully in the [appendix](#preventing-long-range-attacks).
-
-TODO: discuss censorship
+attacks, like [long-range-nothing-at-stake double
+spends](#preventing-long-range-attacks) and
+[censorship](#overcoming-forks-and-censorship-attacks). These are discussed more
+fully in the [appendix](#appendix).
 
 ### TMSP
 
