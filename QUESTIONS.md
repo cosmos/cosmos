@@ -1,5 +1,4 @@
-1) Can you talk about sharding?  Is this one of the key aspects that makes Atom
-better than other blockchains out there?  How does this relate to the IBC? 
+- What is sharding?
 
 Sharding is about dividing the workload up into pieces for the purpose of 
 horizontal scaling.  There are many ways to handle sharding in SQL databases,
@@ -9,11 +8,15 @@ are their own silos with no good way to interoperate except via centralized
 exchanges, or tricks like hashlocked transactions (like the Lightning Network),
 which have their own benefits and drawbacks.
 
-Atom zones are a particular way to implement sharding.  It's a sharding solution
+- How does Atom do sharding?
+
+Atom implements sharding using zones. It's a sharding solution
 that preserves the sovereignty of the shard as a self-governing and
 self-validating system.  The Atom Hub doesn't care about the internal state of
 an Atom zone -- rather, all that matters to the Atom Hub is what the zone
 explicitly communicates to the Atom Hub via IBC packets.
+
+- What's an IBC packet?
 
 IBC packets are packets of data that one blockchain wishes to send to another
 blockchain.  But instead of literally sending a packet of bytes via the TCP/IP
@@ -28,8 +31,9 @@ which proves that the blockchain validators agreed to publish this packet of
 information.  So, anyone who sees an IBC packet (regardless of the source of
 this data) can verify its integrity.
 
-This is similar to what Blockstream proposed with sidechains.  The difference is
-that in Atom, the hubs and zones are all powered by Tendermint consensus.  IBC
+- Isn't this just sidechains, like what Blockstream proposed?
+
+Yes. Exactly. Except in Atom, the hubs and zones are all powered by Tendermint consensus.  IBC
 on Tendermint is great because of all the reasons why light-client payment
 verification is great as compared to proof-of-work -- superior speed, no need to
 download all the block headers, 1-block finality, and security via collateral.
@@ -37,6 +41,9 @@ So Atom is a bit like Blockstream's sidechains proposal, except with the Atom
 Hub at the center instead of Bitcoin, which makes everything faster and simpler,
 and arguably more secure.  Also the fact that the Atom Hub is a multiasset
 blockchain is a big advantage.
+
+
+- How does Atom compare to Ethereum sharding?
 
 Vitalik is working on sharding solutions for Ethereum, but the solutions I've
 seen assume that all the shards are running the same VM.  The biggest difference
@@ -49,19 +56,19 @@ Atom Hub don't care that other zones fail or crash, as long as the Atom Hub
 continues to function and preserves the total number of tokens across all the
 zones.  Vitalik is trying to create a sharding solution where none of the shards
 may fail, because the internal state of those shards can mean anything at all.
-Vitalik is trying to solve a much difficult problem.
+Vitalik is trying to solve a much more difficult problem. If we do our job right, 
+we will be able to implement whatever he comes up within Atom.
 
-Finally, shards are called zones in Atom because they really are like sovereign
+- Why are shards called zones?
+
+Shards are called zones in Atom because they really are like sovereign
 economic zones.  We've seen a taste of blockchain governance with the Ethereum
 hard-fork following TheDAO hack.  In Atom, all zones are sovereign and can
 construct their own governance policies, and yet they can all interoperate on
 the Atom Hub.  That's the benefit of the IBC abstraction, that it's about
 accountable and cryptographicaly verifiable communication.
 
-
-2) How does one exchange currencies in this system?  If I wanted to go from
-bitcoin to ethereum what are the steps I need to take to get this done.  Is this
-where IBC comes in?  Is there some form of escrow?
+- How does one exchange currencies in this system?  
 
 For tokens outside the Atom system, they can only be introduced via pegged
 derivatives (akin to what Blockstream's sidechains paper was suggesting).  I
@@ -87,8 +94,18 @@ inputs and two outputs, with 2 different assets, swapped).  But this requires
 both parties to the trade to be online.  Instead, you can send your tokens to an
 exchange zone, to take advantage of an order-book.
 
+- So can I trade BTC for ETH using Atom?
 
-3) How does one switch blockchains in this system as well? 
+You can, if you trust the respective Ethereum and Bitcoin peg zones. 
+If alternatives of Ethereum and Bitcoin (ie. same codebase, different network)
+launch on Atom, you can trade those directly.
+
+- Does Atom involve escrow?
+
+Not really, though the hub may be thought of as an escrow agent mediating between two zones, but that's of course the point.
+However, the pegs in peg-zones may well utilize escrow to allow, for instance, BTC to move into a zone.
+
+- How does one switch blockchains in this system? 
 
 The zone is responsible for committing an IBC packet with outbound coins for
 another zone.  Zones can do whatever they want, so it's really up to the logic
@@ -96,7 +113,7 @@ of the zone, as well as the client.  Ideally there will be a standard
 specification for constructing a transaction to move funds from one zone to
 another.  So an EVM zone should be implemented such that it can process this
 universal transaction format that lets any simple user account send funds to
-another zone via the Atom Hub (or any other hub).  This may be something for to
+another zone via the Atom Hub (or any other hub).  This may be something to
 be defined as an IETF or W3C specification, but it's a bit too early for that,
 so we should forge ahead and document the spec for everyone to see.
 
@@ -117,18 +134,18 @@ plumbing.  End-users shouldn't know all of the details except a few rules for
 safety, like "don't send money to zones you don't know".
 
 
-4) Is consensus configurable?  When I am switching between blockchains won't my
+- Is consensus configurable?  When I am switching between blockchains won't my
 consensus be different in different scenarios?
 
 We can accomodate other PoS consensus mechanisms as long as they have a very
 clean and consise light-client verification protocol.  Or, even Tendermint might
 upgrade to support additional features.  It will be up to the Atom Foundation
 and the Atom governance to decide whether to support them.  It isn't necessary
-of there can be adapter zones.  That's what a Bitcoin peg zone is -- an adapter
+if there can be adapter zones.  That's what a Bitcoin peg zone is -- an adapter
 zone to sit between PoW and Tendermint.
 
 
-5) What is the maximum number of nodes in Atom?  Does each zone or hub have
+- What is the maximum number of nodes in Atom?  Does each zone or hub have
 their own nodes?
 
 Yes.  Each zone has its own nodes, we don't re-use public keys (yet, though we
@@ -136,13 +153,13 @@ could in the future).  Different atoms bonded in each zone, but all the same
 atom token.
 
 
-6) Do the validatiors that are chosen, validate transactions for every zone and
+- Do the validatiors that are chosen, validate transactions for every zone and
 Hub?
 
 No.  Validators for a zone only validate transactions for their zone.
 
 
-7) The whitepaper states "Zones communicate with one another through a hub,
+- The whitepaper states "Zones communicate with one another through a hub,
 primarily in the form of assymetric transfer of some set of tokens from one zone
 to another." Can you talk about what exactly the asymmetric transfer is? 
 
@@ -153,7 +170,7 @@ peg.  It's as if the token moved from one zone to another.  The trick is that
 there is a common crypto "depository" -- the Atom Hub.
 
 
-8) According to the whitepaper: "Atom reflects this position in that it makes no
+- According to the whitepaper: "Atom reflects this position in that it makes no
 distinction between hubs - there is no "top" hub, and the most popular or
 successful hub is a matter of adoption by zones. "  In your view what will make
 hubs more successful and what will make them unsuccessful?
@@ -165,7 +182,7 @@ partners), etc.  One could also imagine a much slower, but more distributed
 "slow hub", or much faster but less decentralized "high-frequency hubs".
 
 
-9) What will be the process for abandoning validators that misbehave?
+- What will be the process for abandoning validators that misbehave?
 
 If a validator misbehaves on its own by double-signing at the same height &amp;
 round, then the evidence is very short and simple -- it's just the two
@@ -179,13 +196,13 @@ data structure.  It is guaranteed to slash at least 1/3 of the validators' atoms
 for that zone.
 
 
-10) Can delegators also be validators?  Or are delegators never validators?
+- Can delegators also be validators?  Or are delegators never validators?
 
 Delegators are never validators.  If someone who operates validator nodes wishes
 to delegate, they need to do so with their free and unbonded atoms.
 
 
-11) "Validators' voting powers are determined at genesis, or is changed
+- "Validators' voting powers are determined at genesis, or is changed
 deterministically by the blockchain, depending on the application."  Any idea
 what shape this will take initially what are you thinking for voting powers?
 
@@ -200,8 +217,7 @@ In some way it doesn't matter, because even if there are attacks and mishaps
 along the way, eventually through hard-forks the blockchain can purge the bad
 actors.  It's antifragile.
 
-
-12) Can you give some details about what you took(derived) from the DLS
+- Can you give some details about what you took(derived) from the DLS
 consensus algorithm?
 
 The locking mechanism was something that I hadn't seen in other papers, like
@@ -219,18 +235,18 @@ clock cycle, was also inspired by DLS's paper in the later sections (after
 section 5).
 
 
-13) Talk about governance and in your view why Atom is better than the other
+-` Talk about governance and in your view why Atom is better than the other
 options out there?
 
 TODO
 
 
-14) What use cases do you think are most compelling in the future?
+- What use cases do you think are most compelling in the future?
 
 TODO
 
 
-15) Do you feel Atom and Interledger are complimentary or are you directly
+- Do you feel Atom and Interledger are complimentary or are you directly
 competing with it?
 
 They're more complementary than competing.  For one, Interledger will be very
