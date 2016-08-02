@@ -1594,8 +1594,8 @@ wording, especially under the TMSP section
 * [Andrew Miller](http://soc1024.com/) of [Honey
   Badger](https://eprint.iacr.org/2016/199) for feedback on consensus
 * [Greg Slepak](https://fixingtao.com/) for feedback on consensus and wording
-* Also thanks to [Bill Gleim](https://github.com/gleim) for various
-  contributions.
+* Also thanks to [Bill Gleim](https://github.com/gleim) and [Seunghwan
+  Han](http://www.seunghwanhan.com) for various contributions.
 * TODO Your name and organization here if you want.
 
 ## Citations ###################################################################
