@@ -38,7 +38,7 @@ year, to be distributed in proportion to the bonded atom holders.
 **Atom Foundation**: The Atom Foundation is a designated legal entity that is
 responsible for overseeing the crowdfunding and genesis of the Atom Hub.  After
 Genesis, the Atom Foundation takes on a managerial role of managing any excess
-funds from the crowdsale, education and PR, and oversees the long term
+funds from the crowdfund, education and PR, and oversees the long term
 sustainability of the Atom Ecosystem.
 
 **Atom Ecosystem**: Includes the Atom Hub, other zones that we might officially
@@ -58,10 +58,10 @@ inflationary atoms at a constant amount of 25% x 20M atoms, or 5M atoms per year
 Atom holders who do not put their atoms at stake by being a validator or
 delegating to a validator will not receive any of the Atom Hub Block Rewards.
 
-**Crowdfund**: An atom token sale event that happens during a period of 42 days.
-There will be a website where those who wish to purchase atoms can sign up
-The crowdfund proceeds will be used to complete the Essential Atom Software and
-Services, starting with the release of TendermintCore. 
+**Crowdfund**: An atom token crowdfund event that happens during a period of 42
+days.  There will be a website where those who wish to purchase atoms can sign
+up The crowdfund proceeds will be used to complete the Essential Atom Software
+and Services, starting with the release of TendermintCore. 
 
 **Delegator**: An atom holder who put their atoms at stake by delegating its
 validating power and voting power to a validator.  They are still responsible
@@ -106,12 +106,10 @@ the top 100 bonded delegates who will become the genesis validators.
       * import crypto distributions
     * Atom network explorer client
 
-**Atom Services**
-  * bitcoin peg - atom bounty?
-  * ethereum peg - atom bounty?
-
 **Other**
-  * hardware signing device, with partner (sold separately)
+  * hardware wallet _with sufficient funding, sold separately_
+  * Ethereum peg _with sufficient funding_
+  * Bitcoin peg _with partner, if possible_
 
 ## Funding
 
@@ -128,8 +126,20 @@ legal expenses.
 
 During the Crowdfund, 75% of future Genesis atoms will be sold to sophisticated
 members of the public who wish to support or participate in this project.
-The crowdfund will happen over a period of 42 days as the Ethereum crowdsale,
+The crowdfund will happen over a period of 42 days as the Ethereum crowdfund,
 and be capped an amount to be determined later.
+
+The crowdfund will be capped at $12M equivalent of bitcoins after the first 24
+hours of the crowfund.  After 24 hours since the beginning of the crowdfund,
+when the total amount raised exceeds $12M given the price of bitcoin at 9am PDT
+the morning of, the crowdfund will immediately stop.
+
+### Funding Milestones
+
+* If the crowdfund does not meet the minimum $3M -- 95+% of funds returned
+* If the crowdfund exceeds $3M -- Essential Atom Software
+* If the crowdfund exceeds $5M -- Ethereum peg
+* If the crowdfund exceeds $7M -- Open-source hardware wallet (sold separately)
 
 Timeline
 --------
@@ -137,14 +147,17 @@ Timeline
 1. Prefund for 5% of Genesis atoms
 1. Canadian non-profit is created
 1. Begin Crowdfund
-1. End of Crowdfund after 42 days (EoCF)
+1. End of Crowdfund after 42 days or cap reache (EoCF)
 1. EoCF + 2 months: alpha release candidate of TendermintCore for security audit
 1. EoCF + 4 months: alpha release of TendermintCore
 1. EoCF + 7 months: alpha release candidate of Atom Hub for security audit
 1. EoCF + 9 months: alpha release of Atom Hub
 1. EoCF + 10 months: launch Atom Hub alpha
+1. EoCF + 12 months: begin sale of open-source hardware wallet (if funding
+   milestone reached)
 1. EoCF + 13 months: beta release candidate of Alpha Hub for security audit
 1. EoCF + 15 months: launch Atom Hub beta
 1. EoCF + 15 months+: Continuous development, timeline set by Foundation
 
-NOTE: timeline for peg support depends on partnership
+* Timeline for Bitcoin peg support depends on partnership
+* Timeline for Ethereum peg support set after alpha release of Atom Hub
