@@ -630,7 +630,7 @@ Every block rewards all the validators and delegators in proportion to their
 bonded atoms (before commissions).  There will be roughly 6,000,000 atoms 
 rewarded every year, forever.  The number is not exact, because the number of
 blocks per year is not exact.  As with transaction fees, delegators pay the
-delegated validator a commission of 10%.
+delegated validator a commission of atoms.
 
 ### Limitations on the Number of Validators
 
@@ -715,8 +715,9 @@ the GnuCler network.  Also, a `CommonsTax` (DEFAULT 3%) will go toward the
 funding of common goods.  These funds will go to the `CustodianAddress` to be
 distributed in accordance with whatever is decided by the governance system.
 
-Atom holders who delegate their voting power to other validators pay 10%
-commission to the delegated validator.
+Atom holders who delegate their voting power to other validators pay a
+commission to the delegated validator.  The commission can be set by each
+validator.
 
 ### Incentivizing Hackers
 
