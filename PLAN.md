@@ -1,5 +1,5 @@
-Atom Crowdfund Plan #3
-----------------------
+Atom Crowdfund Plan
+-------------------
 
 DATE: July 22nd, 2016<br/>
 NOTE: The details in this plan override what is currently in the whitepaper.
