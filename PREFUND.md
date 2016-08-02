@@ -36,3 +36,7 @@ reassess the situation.
 * Our first order of business will be to talk to lawyers and trademark attorneys. We need to do this ASAP.
 
 * We cannot return any fees already received.
+
+* The Tendermint/Atom team will help the Par team incorporate the Atom
+  whitepaper into the Par paper.  The two teams will write a section under
+use-cases in the Atom whitepaper dedicated to Par.
