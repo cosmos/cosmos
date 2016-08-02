@@ -33,7 +33,6 @@ commission rates settable by each validator candidate.
   certainty, what we're doing is illegal (an unlikely scenario).  Then, we will
 reassess the situation.
 
-* Our first order of business will be to talk to lawyers.  We need to do this
-  ASAP.
+* Our first order of business will be to talk to lawyers and trademark attorneys. We need to do this ASAP.
 
 * We cannot return any fees already received.
