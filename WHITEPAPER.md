@@ -249,7 +249,7 @@ API between the application process and consensus process.
 
 ## Atom Overview ###############################################################
 
-Atom is the first proof-of-stake multi-token cryptocurrency based on proven
+Atom is the first proof-of-stake multi-token blockchain system based on proven
 research in "classical" Byzantine (BFT) consensus algorithms, led by the same
 team that created the Tendermint BFT consensus engine.
 
