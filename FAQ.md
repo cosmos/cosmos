@@ -8,13 +8,13 @@ are their own silos with no good way to interoperate except via centralized
 exchanges, or tricks like hashlocked transactions (like the Lightning Network),
 which have their own benefits and drawbacks.
 
-- **How does Atom do sharding?**
+- **How does Cosmos do sharding?**
 
-Atom implements sharding using zones. It's a sharding solution that preserves
+Cosmos implements sharding using zones. It's a sharding solution that preserves
 the sovereignty of the shard as a self-governing and self-validating system.
-The Atom Hub doesn't care about the internal state of an Atom zone -- rather,
-all that matters to the Atom Hub is what the zone explicitly communicates to the
-Atom Hub via IBC packets.
+The Cosmos Hub doesn't care about the internal state of an Cosmos zone --
+rather, all that matters to the Cosmos Hub is what the zone explicitly
+communicates to the Cosmos Hub via IBC packets.
 
 - **What's an IBC packet?**
 
@@ -33,71 +33,75 @@ this data) can verify its integrity.
 
 - **Isn't this just sidechains, like what Blockstream proposed?**
 
-Yes. Exactly. Except in Atom, the hubs and zones are all powered by Tendermint
+Yes. Exactly. Except in Cosmos, the hubs and zones are all powered by Tendermint
 consensus.  IBC on Tendermint is great because of all the reasons why
 light-client payment verification is great as compared to proof-of-work --
 superior speed, no need to download all the block headers, 1-block finality, and
-security via collateral.  So Atom is a bit like Blockstream's sidechains
-proposal, except with the Atom Hub at the center instead of Bitcoin, which makes
-everything faster and simpler, and arguably more secure.  Also the fact that the
-Atom Hub is a multiasset blockchain is a big advantage.
+security via collateral.  So Cosmos is a bit like Blockstream's sidechains
+proposal, except with the Cosmos Hub at the center instead of Bitcoin, which
+makes everything faster and simpler, and arguably more secure.  Also the fact
+that the Cosmos Hub is a multiasset blockchain is a big advantage.
 
 
-- **How does Atom compare to Ethereum sharding?**
+- **How does Cosmos compare to Ethereum sharding?**
 
 Vitalik is working on sharding solutions for Ethereum, but the solutions I've
 seen assume that all the shards are running the same VM.  The biggest difference
-between what Vitalik's latest sharding design and Atom is that the Atom Hub lets
-you plug in any zone, even for entirely different VMs or zones with no VMs at
-all (like Bitcoind).  This works because the Atom Hub is about preserving the
-total number of tokens across zones/shards, whereas Vitalik's scaling solution
-is about sharding the general Ethereum state machine state.  The zones of the
-Atom Hub don't care that other zones fail or crash, as long as the Atom Hub
-continues to function and preserves the total number of tokens across all the
-zones.  Vitalik is trying to create a sharding solution where none of the shards
-may fail, because the internal state of those shards can mean anything at all.
-Vitalik is trying to solve a much more difficult problem. If we do our job
-right, we will be able to implement whatever he comes up within Atom.
+between what Vitalik's latest sharding design and Cosmos is that the Cosmos Hub
+lets you plug in any zone, even for entirely different VMs or zones with no VMs
+at all (like Bitcoind).  This works because the Cosmos Hub is about preserving
+the total number of tokens across zones/shards, whereas Vitalik's scaling
+solution is about sharding the general Ethereum state machine state.  The zones
+of the Cosmos Hub don't care that other zones fail or crash, as long as the
+Cosmos Hub continues to function and preserves the total number of tokens across
+all the zones.  Vitalik is trying to create a sharding solution where none of
+the shards may fail, because the internal state of those shards can mean
+anything at all.  Vitalik is trying to solve a much more difficult problem. If
+we do our job right, we will be able to implement whatever he comes up within
+Cosmos.
 
 - **Why are shards called zones?**
 
-Shards are called zones in Atom because they really are like sovereign economic
-zones.  We've seen a taste of blockchain governance with the Ethereum hard-fork
-following TheDAO hack.  In Atom, all zones are sovereign and can construct their
-own governance policies, and yet they can all interoperate on the Atom Hub.
-That's the benefit of the IBC abstraction, that it's about accountable and
-cryptographicaly verifiable communication.
+Shards are called zones in Cosmos because they really are like sovereign
+economic zones.  We've seen a taste of blockchain governance with the Ethereum
+hard-fork following TheDAO hack.  In Cosmos, all zones are sovereign and can
+construct their own governance policies, and yet they can all interoperate on
+the Cosmos Hub.  That's the benefit of the IBC abstraction, that it's about
+accountable and cryptographicaly verifiable communication.
 
 - **How does one exchange currencies in this system?**
 
-For tokens outside the Atom system, they can only be introduced via pegged
+For tokens outside the Cosmos system, they can only be introduced via pegged
 derivatives (akin to what Blockstream's sidechains paper was suggesting).  I
 suppose you could also use other means to track the value of some token inside
-the Atom network by involving prediction markets or betting, but I'm not an
+the Cosmos network by involving prediction markets or betting, but I'm not an
 expert on those.  They can be supported too by other zones, but I won't go into
 them here.
 
-In the Atom Hub, pegs will be tied to a specific zone; that is, a zone and its
+In the Cosmos Hub, pegs will be tied to a specific zone; that is, a zone and its
 validator sets are expected to also be involved in a m-of-n contract on the
-target chain, like Bitcoin or Ethereum.  
+target chain, like Bitcoin or Ethereum.
 
-``` _ peg smart contract / [  Ethereum  ] <--> [ EtherAtom Peg Zone ] <-IBC-> [
-Atom Hub  ] <-IBC-> (Bitcoin) [ PoW/Casper ]      [     Tendermint     ]
-[ Tendermint ] <-IBC-> (exchang) ```
+``` 
+           _ peg smart contract
+          /
+  [  Ethereum  ] <--> [ EtherCosmos Peg Zone ] <-IBC-> [  Cosmos Hub  ] <-IBC-> (Bitcoin) [ PoW/Casper ]
+                      [      Tendermint      ]         [  Tendermint  ] <-IBC-> (exchange)
+```
 
 Once the tokens are in the hub, its must easier to exchange currencies.  Either
-trade with another account directly in the Atom Hub (a Send transaction with two
-inputs and two outputs, with 2 different assets, swapped).  But this requires
-both parties to the trade to be online.  Instead, you can send your tokens to an
-exchange zone, to take advantage of an order-book.
+trade with another account directly in the Cosmos Hub (a Send transaction with
+two inputs and two outputs, with 2 different assets, swapped).  But this
+requires both parties to the trade to be online.  Instead, you can send your
+tokens to an exchange zone, to take advantage of an order-book.
 
-- **So can I trade BTC for ETH using Atom?**
+- **So can I trade BTC for ETH using Cosmos?**
 
 You can, if you trust the respective Ethereum and Bitcoin peg zones.  If
 alternatives of Ethereum and Bitcoin (ie. same codebase, different network)
-launch on Atom, you can trade those directly.
+launch on Cosmos, you can trade those directly.
 
-- **Does Atom involve escrow?**
+- **Does Cosmos involve escrow?**
 
 Not really, though the hub may be thought of as an escrow agent mediating
 between two zones, but that's of course the point.  However, the pegs in
@@ -112,19 +116,19 @@ of the zone, as well as the client.  Ideally there will be a standard
 specification for constructing a transaction to move funds from one zone to
 another.  So an EVM zone should be implemented such that it can process this
 universal transaction format that lets any simple user account send funds to
-another zone via the Atom Hub (or any other hub).  This may be something to be
+another zone via the Cosmos Hub (or any other hub).  This may be something to be
 defined as an IETF or W3C specification, but it's a bit too early for that, so
 we should forge ahead and document the spec for everyone to see.
 
 There should be some specification for defining:
  - the destination zone
- - the intermediary zones (typically the Atom Hub)
+ - the intermediary zones (typically the Cosmos Hub)
  - the assets and quantity
  - the destination account or smart contract
  - any other information
 
 These are specified [here](
-https://github.com/gnuclear/atom-whitepaper/blob/master/WHITEPAPER.md#ibcpackettx).
+https://github.com/cosmos/cosmos/blob/master/WHITEPAPER.md#ibcpackettx).
 
 There will also be way to navigate these zones, whereby nodes or validators of a
 zone can publish their IP endpoints or whatnot, voluntarily.  So zone discovery
@@ -138,13 +142,13 @@ safety, like "don't send money to zones you don't know".
 
 We can accomodate other PoS consensus mechanisms as long as they have a very
 clean and consise light-client verification protocol.  Or, even Tendermint might
-upgrade to support additional features.  It will be up to the Atom Foundation
-and the Atom governance to decide whether to support them.  It isn't necessary
+upgrade to support additional features.  It will be up to the Cosmos Foundation
+and the Cosmos governance to decide whether to support them.  It isn't necessary
 if there can be adapter zones.  That's what a Bitcoin peg zone is -- an adapter
 zone to sit between PoW and Tendermint.
 
 
-- **What is the maximum number of nodes in Atom?  Does each zone or hub have
+- **What is the maximum number of nodes in Cosmos?  Does each zone or hub have
   their own nodes?**
 
 Yes.  Each zone has its own nodes, we don't re-use public keys (yet, though we
@@ -163,13 +167,13 @@ No.  Validators for a zone only validate transactions for their zone.
 zone to another." Can you talk about what exactly the asymmetric transfer is?**
 
 It's maybe not the best term, but we coined it to refer to the kind of
-inter-zone token transfer that happens in the Atom Hub.  The transfer of tokens
-was not via any bidirectional or bilateral exchange mechanism, or even through a
-peg.  It's as if the token moved from one zone to another.  The trick is that
-there is a common crypto "depository" -- the Atom Hub.
+inter-zone token transfer that happens in the Cosmos Hub.  The transfer of
+tokens was not via any bidirectional or bilateral exchange mechanism, or even
+through a peg.  It's as if the token moved from one zone to another.  The trick
+is that there is a common crypto "depository" -- the Cosmos Hub.
 
 
-- **According to the whitepaper: "Atom reflects this position in that it makes
+- **According to the whitepaper: "Cosmos reflects this position in that it makes
   no distinction between hubs - there is no "top" hub, and the most popular or
 successful hub is a matter of adoption by zones. "  In your view what will make
 hubs more successful and what will make them unsuccessful?**
@@ -185,11 +189,11 @@ partners), etc.  One could also imagine a much slower, but more distributed
 
 If a validator misbehaves on its own by double-signing at the same height &amp;
 round, then the evidence is very short and simple -- it's just the two
-conflicting votes.  This evidence can be included in the the AtomHub as a Slash
-transaction, and the validator will immediately become inactive and slashed
-after the Slash transaction gets committed.
+conflicting votes.  This evidence can be included in the the CosmosHub as a
+Slash transaction, and the validator will immediately become inactive and
+slashed after the Slash transaction gets committed.
 
-If there is a zone fork, either of the Atom Hub or any of the zones, the two
+If there is a zone fork, either of the Cosmos Hub or any of the zones, the two
 conflicting commits also constitute evidence.  This is a much more complicated
 data structure.  It is guaranteed to slash at least 1/3 of the validators' atoms
 for that zone.
@@ -233,7 +237,7 @@ The 2/3 quorum of any votes to synchronize validators, a kind of virtual clock
 cycle, was also inspired by DLS's paper in the later sections (after section 5).
 
 
-- **Why is Atom's governance better than any other options out there?**
+- **Why is Cosmos's governance better than any other options out there?**
 
 One is, the stakeholders are well defined, as is the prior social contract.  ETH
 had a hard time with the fork because they had to ask the ether holders as well
@@ -242,29 +246,30 @@ to partake in governance, so no quorum could be reached in time.  Asking the
 miners is necessary to ensure that the hard-fork will have support, but after a
 while they tend to simply follow the money and incentives.
 
-Atom is different because instead of anonymous miners we have social contract
+Cosmos is different because instead of anonymous miners we have social contract
 bound validators and delegators who have stake, and, they have the obligation to
 partake in governance.
 
 - **What use cases do you think are most compelling in the future?**
 
-Atom allows everyone to benefit from the network effect of various interoperable
-tokens and zones.  For example, if anyone creates a peg zone or a new token
-type, all the other zones can use them if they support the new token type.
+Cosmos allows everyone to benefit from the network effect of various
+interoperable tokens and zones.  For example, if anyone creates a peg zone or a
+new token type, all the other zones can use them if they support the new token
+type.
 
-So, the Atom Hub has a particular use-case that isn't filled by anything today.
-The best use-case for Atom Zones are for any token-based blockchain that benefit
-from the new interoperability, speed, and scalability properties.  It may be a
-kind of distributed exchange.
+So, the Cosmos Hub has a particular use-case that isn't filled by anything
+today.  The best use-case for Cosmos Zones are for any token-based blockchain
+that benefit from the new interoperability, speed, and scalability properties.
+It may be a kind of distributed exchange.
 
-- **Do you feel Atom and Interledger are complimentary or are you directly
+- **Do you feel Cosmos and Interledger are complimentary or are you directly
   competing with it?**
 
 They're more complementary than competing.  For one, Interledger will be very
-useful for creating Atom zones that interface with the traditional financial
+useful for creating Cosmos zones that interface with the traditional financial
 system.
 
 Interledger can also be used directly between blockchain zones.  For this
-use-case, the Atom Hub may be a competitive option, as compared to other options
-for Interledger notary sets.  The Atom Hub validators could also offer their
-services as an Interledger notary set.
+use-case, the Cosmos Hub may be a competitive option, as compared to other
+options for Interledger notary sets.  The Cosmos Hub validators could also offer
+their services as an Interledger notary set.

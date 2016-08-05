@@ -1,18 +1,18 @@
-Atom Crowdfund Plan
+Cosmos Crowdfund Plan
 -------------------
 
 DATE: July 22nd, 2016<br/>
 NOTE: The details in this plan override what is currently in the whitepaper.
 
-* The Atom Foundation will be a Canadian entity.  Its mission is to create,
-  maintain, and further develop, the Atom Ecosystem.
+* The Cosmos Foundation will be a Canadian entity.  Its mission is to create,
+  maintain, and further develop, the Cosmos Ecosystem.
 
 * There will be a Crowdfunding campaign to sell tokens called "atoms" that give
-  the holder limited license to use the Atom Ecosystem.  The proceeds of the
-Crowdfunding campaign will go to the Atom Foundation to develop the Essential
-Atom Software and Services.
+  the holder limited license to use the Cosmos Ecosystem.  The proceeds of the
+Crowdfunding campaign will go to the Cosmos Foundation to develop the Essential
+Cosmos Software and Services.
 
-* Upon completion of the Crowdfund, all the atom holders, including the Atom
+* Upon completion of the Crowdfund, all the atom holders, including the Cosmos
   Foundation, play the Delegation Game in a special purpose Ethereum smart
 contract (which holds no Ether).  The top 100 validators after delegation will
 be chosen as validators on Genesis.
@@ -23,44 +23,44 @@ years of vesting.
 
 * On Genesis, the distribution of atoms will be split between:
   * the Early Funders (5%)
-  * the Atom Foundation (20%)
+  * the Cosmos Foundation (20%)
   * the Crowdfund Funders (75%)
 
-* The Atom Foundation can receive more atoms from Atom Governance if it passes a
+* The Cosmos Foundation can receive more atoms from Cosmos Governance if it passes a
   proposal with an attached award.
 
 * In addition, 25% of the total number of atoms on Genesis (a constant
-  predetermined amount), will be inflated by the Atom Hub Block Reward every
+  predetermined amount), will be inflated by the Cosmos Hub Block Reward every
 year, to be distributed in proportion to the bonded atom holders.
 
 ## Definitions
 
-**Atom Foundation**: The Atom Foundation is a designated legal entity that is
-responsible for overseeing the crowdfunding and genesis of the Atom Hub.  After
-Genesis, the Atom Foundation takes on a managerial role of managing any excess
+**Cosmos Foundation**: The Cosmos Foundation is a designated legal entity that is
+responsible for overseeing the crowdfunding and genesis of the Cosmos Hub.  After
+Genesis, the Cosmos Foundation takes on a managerial role of managing any excess
 funds from the crowdfund, education and PR, and oversees the long term
-sustainability of the Atom Ecosystem.
+sustainability of the Cosmos Ecosystem.
 
-**Atom Ecosystem**: Includes the Atom Hub, other zones that we might officially
-support, client software, etc.  All code in the Atom Ecosystem will be Apache2.0
+**Cosmos Ecosystem**: Includes the Cosmos Hub, other zones that we might officially
+support, client software, etc.  All code in the Cosmos Ecosystem will be Apache2.0
 
-**Atom Hub**: An Atom hub is itself a blockchain, or zone, that connects to many
-other zones.  The hub facilitates token movement between zones.  The Atom Hub is
+**Cosmos Hub**: An Cosmos hub is itself a blockchain, or zone, that connects to many
+other zones.  The hub facilitates token movement between zones.  The Cosmos Hub is
 the first hub, and the first zone.  It is also written as "Adam".  There may be
 more hubs in the future.
 
-**Atom Hub Block Reward**: The blockchain will reward the Validators and
+**Cosmos Hub Block Reward**: The blockchain will reward the Validators and
 Delegators in proportion to their bonded atoms, and afterwards account for any
 commissions that delegators pay to delegate validators.  The reward will consist
 of two categories -- transaction fees, and inflationary atoms.  The transction
 fees will be any fee collected by a validator.  In addition, there will be
 inflationary atoms at a constant amount of 25% x 20M atoms, or 5M atoms per year.
-Atom holders who do not put their atoms at stake by being a validator or
-delegating to a validator will not receive any of the Atom Hub Block Rewards.
+Cosmos holders who do not put their atoms at stake by being a validator or
+delegating to a validator will not receive any of the Cosmos Hub Block Rewards.
 
 **Crowdfund**: An atom token crowdfund event that happens during a period of 42
 days.  There will be a website where those who wish to purchase atoms can sign
-up The crowdfund proceeds will be used to complete the Essential Atom Software
+up The crowdfund proceeds will be used to complete the Essential Cosmos Software
 and Services, starting with the release of TendermintCore. 
 
 **Delegator**: An atom holder who put their atoms at stake by delegating its
@@ -70,18 +70,18 @@ will be penalized, but they will inherit the vote of the delegated validator.
 
 **Early Funders**: The Early Funders are qualified investors who purchase 5% of
 the Genesis atoms prior to the crowdfund. The proceeds from the early funding
-will go toward legal and PR fees, and also help pay salary for the Atom
+will go toward legal and PR fees, and also help pay salary for the Cosmos
 Foundation until the crowdfunding is complete.
 
-**Validator**: Validators are full nodes of an Atom zone that have the
-responsibility of committing blocks in that zone.  The Atom Hub will start with
+**Validator**: Validators are full nodes of an Cosmos zone that have the
+responsibility of committing blocks in that zone.  The Cosmos Hub will start with
 100 validator spots. Due to the limited number of validator spots, not everyone
 who has atoms can be a validator.  Instead, everyone else can bond atoms and
 delegate their consensus voting power to any of the 100 validators.  Before
-Genesis, the Atom Crowdfund funders will play the Delegation Game to determine
+Genesis, the Cosmos Crowdfund funders will play the Delegation Game to determine
 the top 100 bonded delegates who will become the genesis validators.
 
-### Essential Atom Software and Services
+### Essential Cosmos Software and Services
 
 **TendermintCore**
   * _Alpha_
@@ -93,7 +93,7 @@ the top 100 bonded delegates who will become the genesis validators.
   * _Beta_
     * tendermint consensus v2
 
-**Atom Hub**
+**Cosmos Hub**
   * _Alpha_
     * multiasset accounts
     * atom staking with delegation
@@ -104,7 +104,7 @@ the top 100 bonded delegates who will become the genesis validators.
       * exchange zone
       * ethereum zone
       * import crypto distributions
-    * Atom network explorer client
+    * Cosmos network explorer client
 
 **Other**
   * hardware wallet _with sufficient funding, sold separately_
@@ -113,7 +113,7 @@ the top 100 bonded delegates who will become the genesis validators.
 
 ## Funding
 
-Funds will be raised by the Atom Foundation in 2 phases.
+Funds will be raised by the Cosmos Foundation in 2 phases.
 
 ### Phase 0: the Prefund
 
@@ -137,7 +137,7 @@ the morning of, the crowdfund will immediately stop.
 ### Funding Milestones
 
 * If the crowdfund does not meet the minimum $3M -- 95+% of funds returned
-* If the crowdfund exceeds $3M -- Essential Atom Software
+* If the crowdfund exceeds $3M -- Essential Cosmos Software
 * If the crowdfund exceeds $5M -- Ethereum peg
 * If the crowdfund exceeds $7M -- Open-source hardware wallet (sold separately)
 
@@ -150,14 +150,14 @@ Timeline
 1. End of Crowdfund after 42 days or cap reache (EoCF)
 1. EoCF + 2 months: alpha release candidate of TendermintCore for security audit
 1. EoCF + 4 months: alpha release of TendermintCore
-1. EoCF + 7 months: alpha release candidate of Atom Hub for security audit
-1. EoCF + 9 months: alpha release of Atom Hub
-1. EoCF + 10 months: launch Atom Hub alpha
+1. EoCF + 7 months: alpha release candidate of Cosmos Hub for security audit
+1. EoCF + 9 months: alpha release of Cosmos Hub
+1. EoCF + 10 months: launch Cosmos Hub alpha
 1. EoCF + 12 months: begin sale of open-source hardware wallet (if funding
    milestone reached)
 1. EoCF + 13 months: beta release candidate of Alpha Hub for security audit
-1. EoCF + 15 months: launch Atom Hub beta
+1. EoCF + 15 months: launch Cosmos Hub beta
 1. EoCF + 15 months+: Continuous development, timeline set by Foundation
 
 * Timeline for Bitcoin peg support depends on partnership
-* Timeline for Ethereum peg support set after alpha release of Atom Hub
+* Timeline for Ethereum peg support set after alpha release of Cosmos Hub

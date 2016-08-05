@@ -1,4 +1,4 @@
-# Atom
+# Cosmos
 **A New Architecture for Scalable Blockchain Decentralization**
 
 Jae Kwon jae@tendermint.com<br/>
@@ -17,7 +17,7 @@ document.  Please check regularly for updates!._
     * [Light Clients](#light-clients)
     * [Preventing Attacks](#preventing-attacks)
     * [TMSP](#tmsp)
-  * [Atom Overview](#atom-overview)
+  * [Cosmos Overview](#cosmos-overview)
   * [The Hub and Zones](#the-hub-and-zones)
     * [The Hub](#the-hub)
     * [The Zones](#the-zones)
@@ -31,8 +31,8 @@ document.  Please check regularly for updates!._
   * [Issuance and Incentives](#issuance-and-incentives)
     * [The Atom Token](#the-atom-token)
       * [Crowdfund](#crowdfund)
-      * [Atom Foundation](#atom-foundation)
-      * [Atom Hub Block Reward](#atom-hub-block-reward)
+      * [Cosmos Foundation](#atom-foundation)
+      * [Cosmos Hub Block Reward](#atom-hub-block-reward)
     * [Limitations on the Number of
     Validators](#limitations-on-the-number-of-validators)
     * [Becoming a Validator After Genesis
@@ -117,8 +117,8 @@ architectures](http://vukolic.com/iNetSec_2015.pdf) is provided for additional
 context, and we provide more summaries of some proposals and their drawbacks in
 [Related Work](#related-work).
 
-Here we present Atom, a novel blockchain network architecture that addresses all
-of these problems.  Atom is a network of many independent blockchains, called
+Here we present Cosmos, a novel blockchain network architecture that addresses all
+of these problems.  Cosmos is a network of many independent blockchains, called
 zones.  The zones are powered by Tendermint Core [\[8\]][8], which provides a
 high-performance, consistent, secure
 [PBFT-like](http://tendermint.com/blog/tendermint-vs-pbft/) consensus engine,
@@ -126,18 +126,18 @@ where strict [fork-accountability](#fork-accountability) guarantees hold over
 the behaviour of malicious actors.  Tendermint Core's BFT consensus algorithm is
 well suited for scaling public proof-of-stake blockchains.
 
-The first zone on Atom is called the Atom Hub. The Atom Hub is a multi-asset
+The first zone on Cosmos is called the Cosmos Hub. The Cosmos Hub is a multi-asset
 proof-of-stake cryptocurrency with a simple governance mechanism enabling the
-network to adapt and upgrade.  In addition, the Atom Hub can be extended by
+network to adapt and upgrade.  In addition, the Cosmos Hub can be extended by
 connecting other zones.
 
-The hub and zones of the Atom network communicate with each other via an
+The hub and zones of the Cosmos network communicate with each other via an
 inter-blockchain communication (IBC) protocol, a kind of virtual UDP or TCP for
 blockchains.  Tokens can be transferred from one zone to another, securely and
 quickly, without the need for exchange liquidity between zones.  Instead, all
-inter-zone token transfers go through the Atom Hub, which keeps track of the
+inter-zone token transfers go through the Cosmos Hub, which keeps track of the
 total amount of tokens held by each zone.  The hub isolates each zone from the
-failure of other zones.  Since anyone can connect a new zone to the Atom Hub,
+failure of other zones.  Since anyone can connect a new zone to the Cosmos Hub,
 zones allow for future-compatibility with new blockchain innovations.
 
 ## Tendermint ##################################################################
@@ -155,7 +155,7 @@ or _votes_, to agree upon the next block.
 
 Validators' voting powers are determined at genesis, or is changed
 deterministically by the blockchain, depending on the application.  For example,
-in a proof-of-stake application such as Atom, the voting power may be
+in a proof-of-stake application such as the Cosmos Hub, the voting power may be
 determined by the amount of staking tokens bonded as collateral.
 
 _NOTE: Fractions like ⅔ and ⅓ refer to fractions of the total voting power,
@@ -247,24 +247,24 @@ Meanwhile, the TMSP application would be responsible for
 Tendermint is able to decompose the blockchain design by offering a very simple
 API between the application process and consensus process.
 
-## Atom Overview ###############################################################
+## Cosmos Overview #############################################################
 
-Atom is the first proof-of-stake multi-token blockchain system based on proven
+Cosmos is the first proof-of-stake multi-token blockchain system based on proven
 research in "classical" Byzantine (BFT) consensus algorithms, led by the same
 team that created the Tendermint BFT consensus engine.
 
 ### Zones
 
-Atom is not just a single blockchain, but a federation of many blockchains.
-The Atom Hub is a global top-level blockchain designed to be expandable by
+Cosmos is not just a single blockchain, but a federation of many blockchains.
+The Cosmos Hub is a global top-level blockchain designed to be expandable by
 securely plugging in any number of secondary blockchains, called "zones".  For
 example, many Bitcoind, Geth (Ethereum), ZCash, or any future blockchain systems
-can be plugged in.  These zones allow Atom to scale infinitely to meet
+can be plugged in.  These zones allow Cosmos to scale infinitely to meet
 global transaction demand.
 
 Coins can be transferred from one zone to another, securely and quickly, without
 the need for a liquid exchange between zones.  All inter-zone coin transfers go
-through the Atom Hub, which keeps track of the total amount of coins held by
+through the Cosmos Hub, which keeps track of the total amount of coins held by
 each zone.  A new blockchain-to-blockchain communiation protocol called IBC (a
 kind of virtual UDP or TCP for blockchains) is used to securely coordinate coin
 transfers between the hub and zones.  Like UDP or TCP, IBC is a novel
@@ -272,10 +272,10 @@ foundational blockchain protocol that will accelerate the innovation of future
 internet-of-blockchains applications.
 
 Zones enable forward-compatibility with future blockchain systems, allowing all
-cryptocurrency research to be incorporated into Atom, and spurring even more
+cryptocurrency research to be incorporated into Cosmos, and spurring even more
 research into much needed Smart Contract research.
 
-Thus, Atom is:
+Thus, Cosmos is:
 
 * A general scaling solution for cryptocurrencies
 * A platform for experimenting with new blockchain/smart-contract paradigms
@@ -284,27 +284,27 @@ Thus, Atom is:
 
 ### Tendermint-BFT DPoS
 
-Atom is the first public blockchain powered by Tendermint's BFT consensus
-algorithm.  The Tendermint open-source project was born in 2014 to address the
-speed, scalability, and environmental issues of Bitcoin's proof-of-work
-consensus algorithm.  By utilizing and improving upon proven BFT algorithms
-developed at MIT in 1988, the Tendermint team was first to conceptually
-demonstrate a proof-of-stake cryptocurrency that addresses the nothing-at-stake
-problem suffered by first-gen proof-of-stake cryptocurrencies such as NXT and
-BitShares.
+The Cosmos Hub is the first public blockchain powered by Tendermint's BFT
+consensus algorithm.  The Tendermint open-source project was born in 2014 to
+address the speed, scalability, and environmental issues of Bitcoin's
+proof-of-work consensus algorithm.  By utilizing and improving upon proven BFT
+algorithms developed at MIT in 1988, the Tendermint team was first to
+conceptually demonstrate a proof-of-stake cryptocurrency that addresses the
+nothing-at-stake problem suffered by first-gen proof-of-stake cryptocurrencies
+such as NXT and BitShares.
 
-Atom is also the first cryptocurrency to offer instant and provably-secure
+Cosmos is also the first cryptocurrency system to offer instant and provably-secure
 mobile-client payment verification.  Today, practically all Bitcoin mobile
 wallets use trusted servers to provide them with transaction verification.  This
 is because proof-of-work requires waiting for many confirmations before a
 transaction can be considered irreversibly committed.  Double-spend attacks have
-already been demonstrated on services like CoinBase.  Since the Atom (and
+already been demonstrated on services like CoinBase.  Since Cosmos (and
 Tendermint) blockchain is designed not to fork at all, mobile wallets can
 receive instant transaction confirmation, finally making trustless and practical
 payments a reality on your smartphone.  This has significant ramifications for
 IoT applications as well.
 
-Validators in Atom (who have a similar role to Bitcoin miners but instead
+Validators in Cosmos (who have a similar role to Bitcoin miners but instead
 use cryptographic signatures to vote) are meant to be secure, dedicated machines
 that are responsible for committing blocks.  Non-validators can delegate their
 staking tokens (called "atoms") to any validator to earn a portion of block
@@ -316,28 +316,28 @@ even mobile clients.
 
 ### Governance
 
-Atom has a constitution and a governance system built in, making it a better
+Cosmos has a constitution and a governance system built in, making it a better
 and more efficient DAO.  Other cryptocurrencies such as Bitcoin and Ethereum
 rely mostly on mining to poll the community for suggested upgrades, but this is
 a slow process with no support for Sybil-proof coordination prior to
-vote-by-mining. In Atom, validators and delegators can vote on proposals
+vote-by-mining. In Cosmos, validators and delegators can vote on proposals
 that can change preset parameters of the system automatically (such as the block
 gas limit), as well as vote on amendments to a human-readible constitution that
-govern the policies of the Atom Hub.  The constitution allows for cohesion
+govern the policies of the Cosmos Hub.  The constitution allows for cohesion
 among the stakeholders on issues regarding issues of theft and bugs (such as
 TheDAO bug), allowing for quicker and cleaner resolution.  Combined with zones
-that can have their own governance body, the Atom network allows for
+that can have their own governance body, the Cosmos network allows for
 increased user-satisfaction and freedom in policiy selection.
 
 ## The Hub and Zones ###########################################################
 
-Here we describe a novel model of decentralization and scalability.  Atom is
+Here we describe a novel model of decentralization and scalability.  Cosmos is
 a network of many blockchains powered by Tendermint via TMSP.  While existing
 proposals aim to create a "single blockchain" with total global transaction
-ordering, Atom permits many blockchains to run concurrently with one another
+ordering, Cosmos permits many blockchains to run concurrently with one another
 and yet retain interoperability.
 
-At the basis, the Atom Hub manages many independent blockchains called "zones"
+At the basis, the Cosmos Hub manages many independent blockchains called "zones"
 (sometimes referred to as "shards", in reference to the database scaling
 technique known as "sharding").  A constant stream of recent block commits from
 zones posted on the hub allows the hub to keep up with the state of each zone.
@@ -356,14 +356,14 @@ there is only one hub, and many non-hub zones.
 
 ### The Hub
 
-The Atom Hub is a blockchain that hosts a multi-asset cryptocurrency,
+The Cosmos Hub is a blockchain that hosts a multi-asset cryptocurrency,
 where tokens can be held by individual users or by zones themselves.  These
 tokens can be moved from one zone to another in a special IBC packet called a
 "coin packet".  The hub is responsible for preserving the global invariance
 of the total amount of each token across the zones. IBC coin packet
 transactions must be committed by the sender, hub and reciever blockchains.
 
-Since the Atom Hub acts as a central ledger of tokens for the whole
+Since the Cosmos Hub acts as a central ledger of tokens for the whole
 system, the security of the hub is of paramount importance.  While each
 zone may be a Tendermint blockchain that is secured by as few as 4 (or even
 less if BFT consensus is not needed), the hub must be secured by a globally
@@ -373,7 +373,7 @@ attack.
 
 ### The Zones
 
-An Atom zone is an independent blockchain that exchanges IBC messages with
+An Cosmos zone is an independent blockchain that exchanges IBC messages with
 the Hub.  From the Hub's perspective, a zone is a multi-asset account
 that can send and receive tokens using IBC packets. Like a cryptocurrency
 account, a zone cannot transfer more tokens than it has, but can receive tokens
@@ -388,7 +388,7 @@ number of priveleged zones will be created to act as pegs to other
 cryptocurrencies. The creation of new priviledged zones is left to governance.
 
 Note that a zone where +⅔ of the voting power are Byzantine can commit invalid
-state.  Since the very purpose of the Atom Hub is to avoid verifying
+state.  Since the very purpose of the Cosmos Hub is to avoid verifying
 every transaction on a zone, detecting such failures must be done by
 independent observers of the zone, which may appeal to social media and to the
 market to make their detection known (for instance, selling/shorting a token
@@ -443,14 +443,14 @@ like when to hard-fork_
 
 A priveleged zone can act as the source of a pegged token of another
 cryptocurrency. A peg is in essence similar to the relationship between an
-Atom hub and zone; both must keep up with the latest blocks of the
+Cosmos hub and zone; both must keep up with the latest blocks of the
 other in order to verify proofs that tokens have moved from one to the other.  A
-peg-zone on the Atom network keeps up with both the hub as well as the
+peg-zone on the Cosmos network keeps up with both the hub as well as the
 other cryptocurrency.  The indirection through the peg-zone allows the logic of
 the hub to remain simple by encapsulating any non-Tendermint consensus
 light-client verification logic onto the zone.
 
-For instance, an Atom zone with some validator set, possibly the same as
+For instance, an Cosmos zone with some validator set, possibly the same as
 that of the hub, could act as an ether-peg, where the TMSP-application on
 the zone (the "peg-zone") has mechanisms to exchange IBC messages with a
 peg-contract on the external Ethereum blockchain (the "target").  This contract
@@ -481,7 +481,7 @@ the case of Ethereum, the peg-contract) should allow the peg-zone validators to
 post collateral, and token transfers out of the peg-contract should be delayed
 (and collateral unbonding period sufficiently long) to allow for any challenges
 to be made.  We leave the design of the specification and implementation of this
-system open as a future Atom improvement proposal.
+system open as a future Cosmos improvement proposal.
 
 While the socio-political atmosphere is not quite evolved enough yet, we can
 extend the mechanism to allow for zones which peg to the fiat currency of a
@@ -494,8 +494,8 @@ large group of trusted notaries and institutions.
 A result of this integration would be, for instance, the ability of anyone with
 a bank account at a participating bank to move dollars from their bank account,
 which is on the zone, to other accounts on the zone, or to the hub, or to
-another zone entirely.  In this regard, Atom can act as a seamless conduit
-between fiat currencies and cryptocurrencies, removing the barriers that
+another zone entirely.  In this regard, the Cosmos Hub can act as a seamless
+conduit between fiat currencies and cryptocurrencies, removing the barriers that
 have until now limitted their interoperabiltiy to the realm of exchanges.
 
 ### Ethereum Scaling
@@ -507,7 +507,7 @@ Ethereum nodes process every single transaction and also stores all the state.
 Since Tendermint can commit blocks much faster than Ethereum's proof-of-work,
 EVM zones powered by Tendermint consensus and operating on pegged-ether can
 provide higher performance to Ethereum blockchains.  Additionally, though the
-Atom hub and IBC packet mechanics does not allow for arbitrary contract
+Cosmos hub and IBC packet mechanics does not allow for arbitrary contract
 logic execution per se, it can be used to co-ordinate Ethereum contracts running
 on different zones, providing a foundation for generalized Ethereum scaling via
 sharding.  For example, asynchronous contract calls that "send an action" and
@@ -516,9 +516,9 @@ packets going in opposite directions.
 
 ### Multi-Application Integration
 
-Atom zones run arbitrary application logic, defined at the beginning of the
+Cosmos zones run arbitrary application logic, defined at the beginning of the
 zone's life, and potentially updated over time by governance. Such flexibility
-allows Atom zones to act as pegs to other cryptocurrencies, like Ethereum
+allows Cosmos zones to act as pegs to other cryptocurrencies, like Ethereum
 or Bitcoin, but it also permits derlivatives of those blockchains, utilizing the
 same codebase but a different validator set and history. This allows many
 existing cryptocurrency frameworks, such as that of Ethereum, Zerocash, Bitcoin,
@@ -526,18 +526,18 @@ CryptoNote, and so on to be used with a higher performance consensus engine on a
 common network, openning tremendous opportunity for interoperability across
 platforms.  Furthermore, as a multi-asset blockchain, a single transaction may
 contain multiple inputs and outputs, where each input can be any token type,
-enabling Atom to serve directly as a platform for decentralized exchange,
+enabling Cosmos to serve directly as a platform for decentralized exchange,
 though orders are assumed to be matched via other platforms. Alternatively, a
 zone can serve as a fault-tolerant exchange, including hosting the orderbook,
 openning up new business opportunities for blockchain backed exchanges, which
-may themselves trade liquidity over the Atom network.
+may themselves trade liquidity over the Cosmos network.
 
 Zones can also serve as blockchain-backed versions of enterprise and government
 systems, where pieces of a particular service, traditionally run by an
 organization or group of organizations, are instead run as a TMSP application on
 a certain zone, allowing it to inherit the security and interoperability of the
-public Atom network, without sacrificing control over the underlying
-service.  Thus, Atom may be a best of both worlds for organizations looking
+public Cosmos network, without sacrificing control over the underlying
+service.  Thus, Cosmos may be a best of both worlds for organizations looking
 to utilize blockchain technology that are wary of relinquishing control to an
 unidentified set of miners.
 
@@ -545,7 +545,7 @@ unidentified set of miners.
 
 A major problem with consistency favouring consensus algorithms like Tendermint
 is thought to be that any network partition which causes there to be no single
-partition with +⅔ voting power will halt consensus altogether. The Atom
+partition with +⅔ voting power will halt consensus altogether. The Cosmos 
 architecture can mitigate this problem by using a global hub with regional
 autonomous zones, where +⅔ voting power in a zone are based in a common
 geographic region. For instance, a common paradigm may be for individual cities,
@@ -582,8 +582,8 @@ validators (by voting power), and a Merkle proof to the current value associated
 with the name.  This makes it possible to have an efficient and secure
 light-client verification of _the current value of_ a name.
 
-On Atom, we can take this concept and extend it further. Each
-name-registration zone in Atom can have an associated top-level-domain
+In Cosmos, we can take this concept and extend it further. Each
+name-registration zone in Cosmos can have an associated top-level-domain
 (TLD) name such as ".com" or ".org", and each name-registration zone can have
 its own governance and registration rules.
 
@@ -591,17 +591,17 @@ TODO: note on integration with zone discovery, see roadmap
 
 ## Issuance and Incentives #####################################################
 
-### The Atom Token
+### The Cosmos Token
 
-While the Atom Hub is a multi-asset system, there is a native token
-called _atoms_.  Atoms are the only staking token of Atom.  Atoms are a
+While the Cosmos Hub is a multi-asset system, there is a native token
+called _atoms_.  Atoms are the only staking token of the Cosmos Hub.  Atoms are a
 license for the holder to vote, validate, or delegate to other validators.  Like
 Ethereum's ether, atoms are also used to pay for transaction fees to mitigate
 spam.  Additional atoms are issued to validators and those who delegate to
 validators.
 
 The initial distribution of atom tokens and validators on Genesis will go to
-the funders of the Atom Crowdsale (80%), and the Atom Foundation (20%).
+the funders of the Cosmos Crowdsale (80%), and the Cosmos Foundation (20%).
 From genesis onward, 30% of the initial atom distribution will be rewarded to
 validators and delegators.
 
@@ -616,15 +616,15 @@ purchasing power will decrease linearly to 2/3 of the initial purchasing power
 in the following 28 days.  The price will be determined by dividing 16,000,000
 by the total effective purchasing power of all the bids.
 
-#### Atom Foundation
+#### Cosmos Foundation
 
-The Atom foundation is an external entity that is hired to develop the
-Atom network.  Atom holders can vote to change the foundation by changing
-the `AtomFoundationAddress` parameter.  This foundation will have 4,000,000
+The Cosmos foundation is an external entity that is hired to develop the
+Cosmos network.  Atom holders can vote to change the foundation by changing
+the `CosmosFoundationAddress` parameter.  This foundation will have 4,000,000
 atoms, of which 1,200,000 are pre-vested, and the rest will vest over a period
 of 4 years, all of which can be used to the full extent for voting.
 
-#### Atom Hub Block Reward
+#### Cosmos Hub Block Reward
 
 Every block rewards all the validators and delegators in proportion to their
 bonded atoms (before commissions).  There will be roughly 6,000,000 atoms 
@@ -694,7 +694,7 @@ blockchain. In these cases, the validators can coordinate out of band to force
 the timeout of these malicious validators, if there is a supermajority
 consensus.
 
-In situations where the Atom Hub halts due to a ⅓+ coalition of voting power
+In situations where the Cosmos Hub halts due to a ⅓+ coalition of voting power
 going offline, or in situations where a ⅓+ coalition of voting power censor
 evidence of malicious behavior from entering the blockchain, as long as there
 are -½ such Byzantine voting power, the hub will recover with a reorg-proposal.
@@ -702,7 +702,7 @@ are -½ such Byzantine voting power, the hub will recover with a reorg-proposal.
 
 ### Transaction Fees
 
-Atom validators can accept any token type or combination of types as a fee
+Cosmos Hub validators can accept any token type or combination of types as a fee
 for processing a transaction.  Each validator can subjectively set whatever
 exchange rate it wants, and choose whatever transactions it wants, as long as
 the `BlockGasLimit` is not exceeded.  The collected fees minus any taxes
@@ -727,7 +727,7 @@ atoms to the hacker, and burns some as well.
 
 ## Governance ##################################################################
 
-The Atom Hub is operated by a distributed organization that requires a well
+The Cosmos Hub is operated by a distributed organization that requires a well
 defined governance mechanism in order to coordinate various changes to the
 blockchain, such as the validator set, predefined parameters of the system, as
 well as software and wetware protocol upgrades.
@@ -774,15 +774,7 @@ coordinated via the generic `TextProposal`.
 
 ## Roadmap #####################################################################
 
-* Decide on crowdfund event details
-* Address zone attributes and discovery
-* Launch Atom crowdfunding event
-* Develop Atom and Tendermint
-* Develop EVM zones
-* Develop CryptoNote(\?) zone
-* Launch Atom blockchain
-* Develop Tendermint V2
-* ...
+See [the Plan](https://github.com/cosmos/cosmos/blob/master/PLAN.md).
 
 ## Related Work ################################################################
 
@@ -811,10 +803,10 @@ The main benefit of Tendermint consensus over PBFT is that Tendermint has an
 improved and simplified underlying structure, some of which is a result of
 embracing the blockchain paradigm.  Tendermint blocks must commit in order,
 which obviates the complexity and communication overhead associated with PBFT's
-view-changes.  In Atom and many cryptocurrencies, there is no need to allow
+view-changes.  In Cosmos and many cryptocurrencies, there is no need to allow
 for block <em>N+i</em> where <em>i >= 1</em> to commit, when block <em>N</em>
 itself hasn't yet committed. If bandwidth is the reason why block <em>N</em>
-hasn't committed in Atom, then it doesn't help to use bandwidth sharing
+hasn't committed in a Cosmos zone, then it doesn't help to use bandwidth sharing
 votes for blocks <em>N+i</em>. If a network partition or offline nodes is the
 reason why block <em>N</em> hasn't committed, then <em>N+i</em> won't commit
 anyway.
@@ -917,7 +909,7 @@ payments across disparate ledger types, and extends the atomic transaction
 mechanism to include not only hash-locks, but also a quroum of notaries (called
 the Atomic Transport Protocol).  The latter mechanism for enforcing atomicity in
 inter-ledger transactions is similar to Tendermint's light-client SPV echanism,
-so an illustration of the distinction between ILP and Atom/IBC is warranted,
+so an illustration of the distinction between ILP and Cosmos/IBC is warranted,
 and provided below.
 
 1. The notaries of a connector in ILP does not support membership changes, and
@@ -932,12 +924,12 @@ validator-set of the receiver's blockchain is responsible for providing
 confirmation, not the receiving user.
 
 3. The most striking difference is that ILP's connectors are not responsible or
-   keeping authoritative state about payments, whereas in Atom, the
-validators of the Atom Hub are the authority of the state of IBC token
+   keeping authoritative state about payments, whereas in Cosmos, the
+validators of the Cosmos Hub are the authority of the state of IBC token
 transfers as well as the authority of the amount of tokens held by each zone
 (but not the amount of tokens held by each account within a zone).  This is he
 fundamental innovation that allows for secure asymmetric tranfer of tokens from
-zone to zone; the analog to ILP's connector in Atom is a persistent and
+zone to zone; the analog to ILP's connector in Cosmos is a persistent and
 maximally secure blockchain ledger.
 
 4. The inter-ledger payments in ILP need to be backed by an exchange orderbook,
@@ -959,7 +951,7 @@ should be transferred across the peg and back.  Of course, since Bitcoin uses
 proof-of-work, Bitcoin sidechains suffer from the many risks of proof-of-work as
 a consensus mechanism, which are particularly exacerbated in a scalability
 context. That said, the core mechanism of the two-way peg is in principle the
-same as that employed by the Atom network, though using a consensus
+same as that employed by the Cosmos network, though using a consensus
 algorithm that scales more securely.
 
 #### Ethereum Scalability Efforts
@@ -970,14 +962,14 @@ have the goal of maintaining the abstraction layer offered by the current
 Ethereum Virtual Machine across the shared state space. Multiple research
 efforts are underway at this time. [\[18\]][18][\[22\]][22]
 
-##### Atom vs Ethereum 2.0 Mauve
+##### Cosmos vs Ethereum 2.0 Mauve
  
-Atom and Ethereum 2.0 Mauve [\[22\]][22] have different design goals.
+Cosmos and Ethereum 2.0 Mauve [\[22\]][22] have different design goals.
 
-* Atom is specifically about tokens.  Mauve is about universal computation.
-* Atom is not bound to the EVM, so even different VMs can interoperate.
-* Atom lets the zone creator determine who validates the zone.
-* Anyone can start a new zone in Atom (unless governance decides otherwise).
+* Cosmos is specifically about tokens.  Mauve is about universal computation.
+* Cosmos is not bound to the EVM, so even different VMs can interoperate.
+* Cosmos lets the zone creator determine who validates the zone.
+* Anyone can start a new zone in Cosmos (unless governance decides otherwise).
 * The hub isolates zone failures so global token invariants are preserved.
 
 ### General Scaling
@@ -1000,7 +992,7 @@ channels.
 While the Lightning Network can also easily extend across multiple independent
 blockchains to allow for the transfer of _value_ via an exchange market, it
 cannot be used to assymetrically transfer _tokens_ from one blockchain to
-another.  The main benefit of the Atom network described here is to enable
+another.  The main benefit of the Cosmos network described here is to enable
 such direct token transfers.  That said, we expect payment channels and the
 Lightning Network to become widely adopted along with our token transfer
 mechanism, for cost-saving and privacy reasons.
@@ -1427,7 +1419,7 @@ timeout](https://raw.githubusercontent.com/gnuclear/atom-whitepaper/master/msc/i
 
 ### Merkle Tree & Proof Specification
 
-There are two types of Merkle trees supported in the Tendermint/Atom
+There are two types of Merkle trees supported in the Tendermint/Cosmos
 ecosystem: The Simple Tree, and the IAVL+ Tree.
 
 #### Simple Tree
@@ -1488,8 +1480,8 @@ TODO
 
 ### Transaction Types
 
-In the canonical implementation, transactions are streamed to the Atom
-hub application via the TMSP interface.
+In the canonical implementation, transactions are streamed to the Cosmos hub
+application via the TMSP interface.
 
 #### SendTx
 
@@ -1544,7 +1536,7 @@ An `IBCPacketHeader` is composed of:
 - `Number (int)`: A unique number for all packets
 - `Status (enum)`: Can be one of `AckPending`, `AckSent`, `AckReceived`,
   `NoAck`, or `Timeout`
-- `Type (string)`: The types are application-dependent.  Atom reserves the
+- `Type (string)`: The types are application-dependent.  Cosmos reserves the
   "coin" packet type
 - `MaxHeight (int)`: If status is not `NoAckWanted` or `AckReceived` by this
   height, status becomes `Timeout`. _Optional_
@@ -1584,7 +1576,7 @@ delivery, as shown below.
 ## Acknowledgements ############################################################
 
 We thank our friends and peers for assistance in conceptualizing, reviewing, and
-providing support for our work with Tendermint and Atom.
+providing support for our work with Tendermint and Cosmos.
 
 * [Zaki Manian](https://github.com/zmanian) of
   [SkuChain](https://www.skuchain.com/) provided much help in formatting and

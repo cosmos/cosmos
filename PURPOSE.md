@@ -5,7 +5,7 @@ We have learned important lessons from the successes and failures of prior
 cryptocurrencies,  and have been creating innovations of our own that will
 unleash a new era of speed, security, scalability, and usability.
 
-Atom is a culmination of these lessons and innovations, designed to be
+Cosmos is a culmination of these lessons and innovations, designed to be
 extended to incorporate even future innovations, to create a cryptocurrency
 platform suitable for generations to come.
 
@@ -71,7 +71,7 @@ something that can interface in a sane manner with the currencies issued by nati
 something that formalizes the relationship between cryptocurrencies and connects them without compromising their independence;
 something with extreme flexibility that does not compromise security.
 
-Enter Atom. Atom is a network and a framework for interoperability between
+Enter Cosmos. Cosmos is a network and a framework for interoperability between
 blockchains.  It consists of a web of "hubs" and "zones", where each "zone" is
 effectively an independent blockchain with an arbitrary cryptocurrency design
 (be it like Bitcoin, Ethereum, ZeroCash, CryptoNote, your local banking
@@ -109,7 +109,7 @@ the correct number of PoW chains is one, and the correct number of PoS chains is
 in the thousands or millions, on par with the number of currencies, rewards
 systems, and various other token-based systems in the world.
 
-Atom reflects this position in that it makes no distinction between hubs - there
+Cosmos reflects this position in that it makes no distinction between hubs - there
 is no "top" hub, and the most popular or successful hub is a matter of adoption
 by zones.  Furthermore, there is no fundamental distinction between zones and
 hubs, such that any zone with sufficient functionality can become a hub.  While
@@ -118,7 +118,7 @@ named Adam hub), there is nothing stopping this hub from becoming obsolete as
 other hubs, even the likes of Bitcoin or Ethereum themselves, come to compete
 with it, and potentially replace it.
 
-Atom thus introduces a new kind of market dynamic that formalizes the power
+Cosmos thus introduces a new kind of market dynamic that formalizes the power
 struggle between the various cryptocurrency offerings, demolishing the barriers
 to interoperability and enabling competition between hubs to contribute to the
 economic security of each hub itself - validators who misbehave will be
@@ -129,5 +129,5 @@ holding stewards of the system accountable and quality of service high.
 
 Whether as testing grounds for new cryptocurrency designs, or an upgrade to
 existing ones, as a means for decentralized exchange, or a platform for scalable
-smart contracts, Atom's potential is that of every existing cryptocurrency and
-more in synergy.  The only question is, what will you build on Atom?
+smart contracts, Cosmos's potential is that of every existing cryptocurrency and
+more in synergy.  The only question is, what will you build on Cosmos?
