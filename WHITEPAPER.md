@@ -205,7 +205,7 @@ security, making it an ideal candidate for mobile and internet-of-things use
 cases.  While a Bitcoin light client must sync chains of block headers and find
 the one with the most proof of work, Tendermint light clients need only to keep
 up with changes to the validator set, and then simply verify the +⅔ PreCommits
-in the latest block to determine the latest state.  
+in the latest block to determine the latest state.
 
 ### Preventing Attacks
 
