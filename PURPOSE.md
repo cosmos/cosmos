@@ -1,4 +1,4 @@
-We believe in the power of cryptocurrency blockchains to provide a public good,
+We believe in the power of public blockchains to provide a public good,
 powered by a collection of self-motivated actors governed by the rules of a
 shared consensus ledger, in an environment of competition and freedom of choice.
 We have learned important lessons from the successes and failures of prior
@@ -6,27 +6,25 @@ cryptocurrencies,  and have been creating innovations of our own that will
 unleash a new era of speed, security, scalability, and usability.
 
 Cosmos is a culmination of these lessons and innovations, designed to be
-extended to incorporate even future innovations, to create a cryptocurrency
+extended to incorporate even future innovations, to create a distributed ledger
 platform suitable for generations to come.
 
-<hr />
-
 One of the great tragedies of cryptocurrencies has been their failure to
-interoperate with existing systems, and even with eachother.  It is as if each
-currency, on its own blockchain and with its own community, were too sovereign
-for its own good.  This is made most apparent when you attempt to buy your first
-Bitcoin: you discover that it is remarkably difficult to buy the new internet
-money over the internet, at least without divulging considerable amounts of
-personal information and allowing weeks for it to be verified by third parties
-(exchanges) you hardly know and have been warned not to trust with too much of
-your money.	
+interoperate with existing systems, and even with each other.  It is as if each
+virtual currency, on its own blockchain and with its own community, were too
+sovereign for its own good.  This is made most apparent when you attempt to buy
+your first Bitcoin: you discover that it is remarkably difficult to buy the new
+internet money over the internet, at least without divulging considerable
+amounts of personal information and allowing weeks for it to be verified by
+third parties (exchanges) you hardly know and have been warned not to trust with
+too much of your money.	
 
 While mechanisms like [atomic
 swaps](https://en.bitcoin.it/wiki/Atomic_cross-chain_trading) between chains can
-help link communities, they suffer from long timeouts and a need for mature
-liquidity markets on each side.  The [altcoin
+help link communities, they suffer from a need for mature liquidity markets and
+active participants on each side (or suffer long timeouts).  The [alt-coin
 ecosystem](https://coinmarketcap.com/) is an alchemical soup of enthusiasts
-experimenting in various ways in new cryptocurrency design, but each altcoin
+experimenting in various ways in new cryptocurrency design, but each alt-coin
 stands alone, siloed by the sovereignty of its own blockchain, many needlessly
 wasting electricty through convoluted Proof-of-Work (PoW) designs.
 

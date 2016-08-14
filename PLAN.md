@@ -2,6 +2,7 @@ Cosmos Crowdfund Plan
 ---------------------
 
 DATE: July 22nd, 2016<br/>
+LAST UPDATED: Aug 12th, 2016<br/>
 NOTE: The details in this plan override what is currently in the whitepaper.
 
 * Cosmos Inc will be a for-profit Canadian entity.  Its mission is to
@@ -128,12 +129,11 @@ legal expenses.
 
 During the Crowdfund, 75% of future Genesis atoms will be sold to sophisticated
 members of the public who wish to support or participate in this project.
-The crowdfund will happen over a period of 42 days as the Ethereum crowdfund,
-and be capped an amount to be determined later.
+The crowdfund will happen over a period of 42 days as the Ethereum crowdfund.
 
-The crowdfund will be capped at $12M equivalent of bitcoins after the first 24
+The crowdfund will be capped at $9M equivalent of bitcoins after the first 24
 hours of the crowfund.  After 24 hours since the beginning of the crowdfund,
-when the total amount raised exceeds $12M given the price of bitcoin at 9am PDT
+when the total amount raised exceeds $9M given the price of bitcoin at 9am PDT
 the morning of, the crowdfund will immediately stop.
 
 ### Funding Milestones
