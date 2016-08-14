@@ -115,3 +115,5 @@ Frong page with some informational content
 * A link to team page, 2 people and many advisors
 * A section on logos of around 5 partners
 
+There is additional content, including a minimal sketch of the front page, at
+https://github.com/cosmos/cosmos/blob/master/images/
