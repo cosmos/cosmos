@@ -114,6 +114,7 @@ Frong page with some informational content
   https://github.com/cosmos/cosmos/blob/master/PURPOSE.md
 * A link to team page, 2 people and many advisors
 * A section on logos of around 5 partners
+* AND IMPORTANTLY, PROMINENTLY, A LINK TO CROWDFUND SITE WITH COUNTDOWN
 
 There is additional content, including a minimal sketch of the front page, at
 https://github.com/cosmos/cosmos/blob/master/images/
