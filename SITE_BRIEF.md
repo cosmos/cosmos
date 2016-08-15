@@ -13,20 +13,22 @@ us scale blockchains horizontally without compromising on security.
 
 This website is about Cosmos, which uses Tendermint technology.
 
-Cosmos is a project with an ambitious mission -- to create a network of
-distributed ledgers that solve long-standing problems in the cryptocurrency and
-blockchain space. 
-
 Cosmos is a network of independent parallel blockchains that are each powered by
 classical BFT consensus algorithms like Tendermint
 [1](http://github.com/tendermint/tendermint).  The first blockchain in this
 network will be the Cosmos Hub.  The Cosomos Hub connects to many other
 blockchains (or _zones_) via a novel inter-blockchain communication protocol.
-The Cosmos Hub can track numerous token types, and keeps track of the total
-number of tokens in each connected zone, and allows for token movements from
-zone to zone.  This architecture solves so many problems that the blockchain
-space faces today, including application interoperability, scalability, seamless
-upgradability; and naturally enables secure distributed exchanges as well.
+The Cosmos Hub tracks numerous token types, and keeps record of the total
+number of tokens in each connected zone.  Tokens can be transferred from one
+zone to another, securely and quickly, without the need for a liquid exchange
+between zones, because all inter-zone coin transfers go through the Cosmos Hub.
+
+This architecture solves so many problems that the blockchain space faces today,
+including application interoperability, scalability, and seamless upgradability.
+For example, zones derived from Bitcoind, Go-Ethereum, CryptoNote, ZCash, or any
+blockchain system can be plugged into the Cosmos Hub.  These zones allow Cosmos
+to scale infinitely to meet global transaction demand.  And, zones are a great
+fit for a distributed exchange, which will be supported as well.
 
 Cosmos is not just a single distributed ledger, and the Cosmos Hub isn't a
 walled garden or the center of its universe.  We are designing a protocol for an
