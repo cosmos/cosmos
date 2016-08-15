@@ -8,23 +8,31 @@ We started in 2014 with Tendermint (see tendermint.com).  Tendermint is an
 open-source, and free blockchain consensus engine.  Instead of using
 proof-of-work mining as in Bitcoin to secure the ledger, we use public-private
 key cryptography and "classical" BFT algorithms.  Tendermint is much faster,
-much more energy efficient, and more secure.  In addition, it lets us scale
-blockchains horizontally without compromising on security.
+much more energy efficient, and potentially more secure.  In addition, it lets
+us scale blockchains horizontally without compromising on security.
+
+This website is about Cosmos, which uses Tendermint technology.
+
+Cosmos is a project with an ambitious mission -- to create a network of
+distributed ledgers that solve long-standing problems in the cryptocurrency and
+blockchain space. 
 
 Cosmos is a network of independent parallel blockchains that are each powered by
-Tendermint.  This is what the website is about.  First we'll start out by
-building the Cosmos Hub.  The Hub connects to many other blockchains (called
-zones) via a novel inter-blockchain communication protocol.  The Hub tracks any
-number of different token types, and keeps track of the total number of tokens
-in each connected zone.  This architecture solves so many problems that the
-blockchain space faces today, including application interoperability,
-scalability, seamless upgradability, and even secure distributed exchanges.
+classical BFT consensus algorithms like Tendermint
+[1](http://github.com/tendermint/tendermint).  The first blockchain in this
+network will be the Cosmos Hub.  The Cosomos Hub connects to many other
+blockchains (or _zones_) via a novel inter-blockchain communication protocol.
+The Cosmos Hub can track numerous token types, and keeps track of the total
+number of tokens in each connected zone, and allows for token movements from
+zone to zone.  This architecture solves so many problems that the blockchain
+space faces today, including application interoperability, scalability, seamless
+upgradability; and naturally enables secure distributed exchanges as well.
 
-Cosmos is not just a single distributed ledger, and the Cosmos hub isn't a
-walled garden or the center of its universe.  We are designing a protocol for a
-network of distributed legers that can serve as a new foundation for our future
-financial system, based on the principles of cryptography, robust theory,
-transparency, and accountability.
+Cosmos is not just a single distributed ledger, and the Cosmos Hub isn't a
+walled garden or the center of its universe.  We are designing a protocol for an
+open network of distributed legers that can serve as a new foundation for our
+future financial systems, based on principles of cryptography, sound economics,
+consensus theory, transparency, and accountability.
 
 ## The products your sell or services you provide
 
