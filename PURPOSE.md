@@ -25,8 +25,9 @@ help link communities, they suffer from a need for mature liquidity markets and
 active participants on each side (or suffer long timeouts).  The [alt-coin
 ecosystem](https://coinmarketcap.com/) is an alchemical soup of enthusiasts
 experimenting in various ways in new cryptocurrency design, but each alt-coin
-stands alone, siloed by the sovereignty of its own blockchain, many needlessly
-wasting electricty through convoluted Proof-of-Work (PoW) designs.
+stands alone, siloed by the lack of a general inter-blockchain communication
+system, many needlessly wasting electricty through convoluted Proof-of-Work
+(PoW) designs.
 
 [Ethereum](https://ethereum.org/) sought to address the problem, somewhat
 indirectly, by inventing a new platform for computation, allowing arbitrary
