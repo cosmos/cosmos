@@ -13,7 +13,8 @@ NOTE: The details in this plan override what is currently in the whitepaper.
 Crowdfunding campaign will go to Cosmos Inc to develop the Essential Cosmos
 Software and Services.
 
-* On Genesis, the distribution of atoms will be split between:
+* There will be 20,000,000 atoms on Genesis day. On Genesis day, the
+  distribution of atoms will be split between:
   * Pre-funders (5%)
   * Cosmos Inc (20%)
   * Crowdfund Funders (75%)
