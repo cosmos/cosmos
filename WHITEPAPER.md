@@ -31,6 +31,7 @@ document.  Please check regularly for updates!._
   * [Issuance and Incentives](#issuance-and-incentives)
     * [The Atom Token](#the-atom-token)
       * [Crowdfund](#crowdfund)
+      * [Vesting](#vesting)
     * [Limitations on the Number of
     Validators](#limitations-on-the-number-of-validators)
     * [Becoming a Validator After Genesis
@@ -194,7 +195,7 @@ commodity cloud instances, Tendermint consensus can process thousands of
 transactions per second, with commit latencies on the order of one or two
 seconds.  Notably, performance of well over a thousand transactions per second
 is maintained even in harsh adversarial conditions, with validators crashing or
-broadcasting maliciously crafted votes. See FIGURE (TODO) for details.
+broadcasting maliciously crafted votes.  See FIGURE (TODO) for details.
 
 ### Light Clients
 
@@ -433,9 +434,6 @@ for for more information on the two IBC transaction types._
 
 ## Use Cases ###################################################################
 
-_TODO: Document how zones can have their own governance and economic policies,
-like when to hard-fork_
-
 ### Pegging to Other Cryptocurrencies
 
 A priveleged zone can act as the source of a pegged token of another
@@ -588,8 +586,6 @@ name-registration zone in Cosmos can have an associated top-level-domain
 (TLD) name such as ".com" or ".org", and each name-registration zone can have
 its own governance and registration rules.
 
-TODO: note on integration with zone discovery, see roadmap
-
 ## Issuance and Incentives #####################################################
 
 ### The Atom Token
@@ -614,6 +610,16 @@ validators and delegators every year.
 
 See the [Crowdfund Plan](https://github.com/cosmos/cosmos/blob/master/PLAN.md)
 for additional details.
+
+#### Vesting
+
+To prevent the crowdfund from attracting short-term speculators only interested
+in a pump-and-dump scheme, the genesis atoms will not be transferrable until
+they have vested.  Each account will vest atoms over a period of 2 years at a
+constant rate every hour, determined by the total number of genesis atoms / (2 *
+365 * 24) hours.  Atoms earned by the inflationary block reward are pre-vested,
+and can be transferred immediately, so bonded validators and delegators can earn
+more than 1/2 of their genesis atoms after the first year.
 
 ### Limitations on the Number of Validators
 
@@ -703,9 +709,21 @@ validator.
 
 ### Incentivizing Hackers
 
-TODO: Note about automatic bounties for hackers, to incentivize hackers to
-publish evidence (like capture-the-flag) that rewards some of the validator's
-atoms to the hacker, and burns some as well.
+The security of the Cosmos Hub is a function of the security of the underlying
+validators and the choice of delegation by delegators.  In order to encourage
+the discovery and early reporting of found vulnerabilities, the Cosmos Hub
+encourages hackers to publish successful exploits via a `ReportHackTx`
+transaction that essentially says, "This validator got hacked.  Please send
+bounty to this address".  Upon such an exploit, the validator and delegators
+will become inactive, `HackPunishmentRatio` (default 5%) of everyone's atoms
+will get slashed, and `HackRewardRatio` (default 5%) of everyone's atoms will
+get rewarded to the hacker's bounty address.  The validator must recover the
+remaining atoms by using their backup key.
+
+In order to prevent this feature from being abused to transfer unvested atoms,
+the portion of vested vs unvested atoms of validators and delegators before and
+after the `ReportHackTx` will remain the same, and the hacker bounty will
+include some unvested atoms, if any.
 
 ## Governance ##################################################################
 
@@ -1452,30 +1470,20 @@ and leaf nodes.  The Merkle proof is on average shorter, being a balanced binary
 tree.  On the other hand, the Merkle root of an IAVL+ tree depends on the order
 of updates.
 
-TODO Replace with Ethereum's Patricia Trie if there is a binary variant.
-
-#### Merkle Proof Path Expression
-
-TODO
+We will support additional efficient Merkle trees, such as Ethereum's Patricia
+Trie when the binary variant becomes available.
 
 ### Transaction Types
 
 In the canonical implementation, transactions are streamed to the Cosmos hub
 application via the TMSP interface.
 
-#### SendTx
-
-#### BondTx
-
-#### UnbondTx
-
-#### SlashTx
-
-#### BurnAtomTx
-
-#### NewProposalTx
-
-#### VoteTx
+The Cosmos Hub will accept a number of primary transaction types, including
+**SendTx**, **BondTx**, **UnbondTx**, **ReportHackTx**, **SlashTx**,
+**BurnAtomTx**, **ProposalCreateTx**, and **ProposalVoteTx**, which are fairly
+self-explanatory and will be documented in a future revision of this paper, we
+document the two primary transaction types for IBC: **IBCBlockCommitTx** and
+**IBCPacketTx**.
 
 #### IBCBlockCommitTx
 
@@ -1546,7 +1554,6 @@ The `PacketProof` must have the correct Merkle-proof path, as follows:
 IBC/<SrcChainID>/<DstChainID>/<Number>
 
 ```
-TODO: CLARIFY
 
 When "Zone1" wants to send a packet to "Zone2" through "Hub", the
 `IBCPacket` data are identical whether the packet is Merkle-ized on "Zone1",
@@ -1568,7 +1575,7 @@ wording, especially under the TMSP section
 * [Greg Slepak](https://fixingtao.com/) for feedback on consensus and wording
 * Also thanks to [Bill Gleim](https://github.com/gleim) and [Seunghwan
   Han](http://www.seunghwanhan.com) for various contributions.
-* TODO Your name and organization here if you want.
+* __Your name and organization here for your contribution__
 
 ## Citations ###################################################################
 
