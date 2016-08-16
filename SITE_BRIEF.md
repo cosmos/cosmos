@@ -100,8 +100,10 @@ so in the future our competition will tie into our network as well.
 
 Again, these aren't actually competitors, but they're in our space.
 
-http://www.rsk.co/ https://lisk.io/ http://maidsafe.net/
-https://blockstream.com/ https://www.augur.net/
+* http://www.stellar.org/
+* http://maidsafe.net/
+* http://www.rsk.co/
+* http://lisk.io/
 
 ## Budget
 
