@@ -31,8 +31,6 @@ document.  Please check regularly for updates!._
   * [Issuance and Incentives](#issuance-and-incentives)
     * [The Atom Token](#the-atom-token)
       * [Crowdfund](#crowdfund)
-      * [Cosmos Foundation](#atom-foundation)
-      * [Cosmos Hub Block Reward](#atom-hub-block-reward)
     * [Limitations on the Number of
     Validators](#limitations-on-the-number-of-validators)
     * [Becoming a Validator After Genesis
@@ -594,7 +592,7 @@ TODO: note on integration with zone discovery, see roadmap
 
 ## Issuance and Incentives #####################################################
 
-### The Cosmos Token
+### The Atom Token
 
 While the Cosmos Hub is a multi-asset distributed ledger, there is a special
 native token called the _atom_.  Atoms are the only staking token of the Cosmos
@@ -610,9 +608,9 @@ tokens from the reserve pool.
 #### Crowdfund
 
 The initial distribution of atom tokens and validators on Genesis will go to the
-funders of the Cosmos Crowdsale (75%), pre-funders (5%), and the Cosmos
-Foundation (20%).  From genesis onward, 1/3 of the total amount of atoms will be
-rewarded to bonded validators and delegators every year.
+funders of the Cosmos Crowdsale (75%), pre-funders (5%), and Cosmos Corp (20%).
+From genesis onward, 1/3 of the total amount of atoms will be rewarded to bonded
+validators and delegators every year.
 
 See the [Crowdfund Plan](https://github.com/cosmos/cosmos/blob/master/PLAN.md)
 for additional details.
