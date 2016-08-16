@@ -3,14 +3,14 @@
 msc {
 
    # The entities
-   Shard1, Hub, Shard2;
+   Zone1, Hub, Zone2;
 
    |||;
 
-   Shard1 -> Hub [ label = "IBCBlockCommitTx\nchainID=Shard1,height=100"];
-   Shard1 -> Hub [ label = "IBCPacketTx\nfrom=Shard1,status=NoAck"];
+   Zone1 -> Hub [ label = "IBCBlockCommitTx\nchainID=Zone1,height=100"];
+   Zone1 -> Hub [ label = "IBCPacketTx\nfrom=Zone1,status=NoAck"];
 
-   Hub -> Shard2 [ label = "IBCBlockCommitTx\nchainID=Hub,height=300"];
-   Hub -> Shard2 [ label = "IBCPacketTx\nfrom=Hub,status=NoAck"];
+   Hub -> Zone2 [ label = "IBCBlockCommitTx\nchainID=Hub,height=300"];
+   Hub -> Zone2 [ label = "IBCPacketTx\nfrom=Hub,status=NoAck"];
 
 }
