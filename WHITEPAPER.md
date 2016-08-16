@@ -70,13 +70,6 @@ document.  Please check regularly for updates!._
     * [Merkle tree &amp; proof
     specification](#merkle-tree--proof-specification)
     * [Transaction Types](#transaction-types)
-      * [SendTx](#sendtx)
-      * [BondTx](#bondtx)
-      * [UnbondTx](#unbondtx)
-      * [SlashTx](#slashtx)
-      * [BurnAtomTx](#burnatomtx)
-      * [NewProposalTx](#newproposaltx)
-      * [VoteTx](#votetx)
       * [IBCBlockCommitTx](#ibcblockcommittx)
       * [IBCPacketTx](#ibcpackettx)
   * [Acknowledgements](#acknowledgements)
