@@ -1472,11 +1472,10 @@ In the canonical implementation, transactions are streamed to the Cosmos hub
 application via the TMSP interface.
 
 The Cosmos Hub will accept a number of primary transaction types, including
-**SendTx**, **BondTx**, **UnbondTx**, **ReportHackTx**, **SlashTx**,
-**BurnAtomTx**, **ProposalCreateTx**, and **ProposalVoteTx**, which are fairly
-self-explanatory and will be documented in a future revision of this paper, we
-document the two primary transaction types for IBC: **IBCBlockCommitTx** and
-**IBCPacketTx**.
+`SendTx`, `BondTx`, `UnbondTx`, `ReportHackTx`, `SlashTx`, `BurnAtomTx`,
+`ProposalCreateTx`, and `ProposalVoteTx`, which are fairly self-explanatory and
+will be documented in a future revision of this paper.  Here we document the two
+primary transaction types for IBC: `IBCBlockCommitTx` and `IBCPacketTx`.
 
 #### IBCBlockCommitTx
 
