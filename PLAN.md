@@ -25,8 +25,12 @@ holds no Ether).  The top 100 validators after delegation will be chosen as
 validators on Genesis.
 
 * Everyone's atoms will vest over a period of two years after Genesis.  Unvested
-  atoms cannot be transferred.  Everyone must participate in governance during
-the first two years after Genesis.  Inactive accounts will become unbonded.
+  atoms cannot be transferred until vested.  Unvested atoms will vest over time,
+at a rate of 1/(24x365x2) of the account's atoms, every hour.
+
+* Every validator must participate in governance, or else become inactivated and
+  eventually unbonded.  Delegators who delegate atoms to such validators will
+also likewise get their delegated atoms inactivated and eventually unbonded.
 
 * Anyone may receive more atoms by passing a proposal with an attached award.
   Such reward atoms will be purely inflationary.
