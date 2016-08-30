@@ -7,7 +7,7 @@ Ethan Buchman ethan@tendermint.com
 For discussions, [join our Slack](http://forum.tendermint.com:3000/)!
 
 _NOTE: If you can read this on GitHub, then we're still actively developing this
-document.  Please check regularly for updates!._
+document.  Please check regularly for updates!_
 
 ## Table of Contents ###########################################################
   * [Introduction](#introduction)
@@ -34,7 +34,7 @@ document.  Please check regularly for updates!._
       * [Vesting](#vesting)
     * [Limitations on the Number of
     Validators](#limitations-on-the-number-of-validators)
-    * [Becoming a Validator After Genesis
+    * [Becoming a Validator after Genesis
     Day](#becoming-a-validator-after-genesis-day)
     * [Penalties for Validators](#penalties-for-validators)
     * [Transaction Fees](#transaction-fees)
@@ -46,7 +46,7 @@ document.  Please check regularly for updates!._
   * [Related Work](#related-work)
     * [Consensus Systems](#consensus-systems)
       * [Classic Byzantine Fault Tolerance](#classic-byzantine-fault-tolerance)
-      * [BitShares delegated stake](#bitshares-delegated-stake)
+      * [BitShares Delegated Stake](#bitshares-delegated-stake)
       * [Stellar](#stellar)
       * [BitcoinNG](#bitcoinng)
       * [Casper](#casper)
@@ -67,8 +67,8 @@ document.  Please check regularly for updates!._
     * [TMSP Specification](#tmsp-specification)
     * [IBC Packet Delivery
     Acknowledgement](#ibc-packet-delivery-acknowledgement)
-    * [Merkle tree &amp; proof
-    specification](#merkle-tree--proof-specification)
+    * [Merkle Tree &amp; Proof
+    Specification](#merkle-tree--proof-specification)
     * [Transaction Types](#transaction-types)
       * [IBCBlockCommitTx](#ibcblockcommittx)
       * [IBCPacketTx](#ibcpackettx)
@@ -77,36 +77,36 @@ document.  Please check regularly for updates!._
 
 ## Introduction ################################################################
 
-The combined success of the open-source ecosystem, of decentralized
-file-sharing, and of public cryptocurrencies, has inspired an understanding that
+The combined success of the open-source ecosystem, decentralized
+file-sharing, and public cryptocurrencies has inspired an understanding that
 decentralized internet protocols can be used to radically improve socio-economic
 infrastructure.  We have seen specialized blockchain applications like Bitcoin
 [\[1\]][1] (a cryptocurrency), Zerocash [\[2\]][2] (a cryptocurrency for
 privacy), and generalized smart contract platforms such as Ethereum [\[3\]][3],
-with countless distributed applications for the EVM such as Augur (a prediction
+with countless distributed applications for the Etherium Virtual Machine (EVM) such as Augur (a prediction
 market) and TheDAO [\[4\]][4] (an investment club).
 
 To date, however, these blockchains have suffered from a number of drawbacks,
 including their gross energy inefficiency, poor or limited performance, and
-immature governance mechanisms.  A number of proposals have been made to scale
-Bitcoin's transaction throughput such as Segregated-Witness [\[5\]][5] and
-BitcoinNG [\[6\]][6], but these are vertical scaling solutions that remain
-limited by the capacity of a single physical machine, lest we sacrifice the
+immature governance mechanisms.  Proposals to scale
+Bitcoin's transaction throughput, such as Segregated-Witness [\[5\]][5] and
+BitcoinNG [\[6\]][6], are vertical scaling solutions that remain
+limited by the capacity of a single physical machine, in order to ensure the
 property of complete auditability.  The Lightning Network [\[7\]][7] can help
 scale Bitcoin transaction volume by leaving some transactions off the ledger
-completely and is well suited for micropayments and privacy preserving payment
+completely, and is well suited for micropayments and privacy-preserving payment
 rails, but may not be suitable for more generalized scaling needs.
 
-An ideal solution would be one that allows multiple parallel blockchains to
-interoperate while retaining their security properties, but this has proven
-difficult, if not impossible, with proof-of-work. Merged-mining, for instance,
-allows the work done to secure a parent chain to be re-used on a child chain,
-but transactions still must be validated, in order, by each node, and a
+An ideal solution is one that allows multiple parallel blockchains to
+interoperate while retaining their security properties. This has proven
+difficult, if not impossible, with proof-of-work. Merged mining, for instance,
+allows the work done to secure a parent chain to be reused on a child chain,
+but transactions must still be validated, in order, by each node, and a
 merge-mined blockchain is vulnerable to attack if a majority of the hashing
 power on the parent is not actively merge-mining the child.  An academic review
 of [alternative blockchain network
 architectures](http://vukolic.com/iNetSec_2015.pdf) is provided for additional
-context, and we provide more summaries of some proposals and their drawbacks in
+context, and we provide summaries of other proposals and their drawbacks in
 [Related Work](#related-work).
 
 Here we present Cosmos, a novel blockchain network architecture that addresses all
