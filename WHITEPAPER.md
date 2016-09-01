@@ -120,16 +120,16 @@ well suited for scaling public proof-of-stake blockchains.
 
 The first zone on Cosmos is called the Cosmos Hub. The Cosmos Hub is a
 multi-asset proof-of-stake cryptocurrency with a simple governance mechanism
-enabling the network to adapt and upgrade.  In addition, the Cosmos Hub can be
+which enables the network to adapt and upgrade.  In addition, the Cosmos Hub can be
 extended by connecting other zones.
 
 The hub and zones of the Cosmos network communicate with each other via an
 inter-blockchain communication (IBC) protocol, a kind of virtual UDP or TCP for
-blockchains.  Tokens can be transferred from one zone to another, securely and
-quickly, without the need for exchange liquidity between zones.  Instead, all
+blockchains.  Tokens can be transferred from one zone to another securely and
+quickly without the need for exchange liquidity between zones.  Instead, all
 inter-zone token transfers go through the Cosmos Hub, which keeps track of the
 total amount of tokens held by each zone.  The hub isolates each zone from the
-failure of other zones.  Since anyone can connect a new zone to the Cosmos Hub,
+failure of other zones.  Because anyone can connect a new zone to the Cosmos Hub,
 zones allow for future-compatibility with new blockchain innovations.
 
 ## Tendermint ##################################################################
@@ -145,7 +145,7 @@ nodes that have positive voting power are called _validators_.  Validators
 participate in the consensus protocol by broadcasting cryptographic signatures,
 or _votes_, to agree upon the next block.
 
-Validators' voting powers are determined at genesis, or is changed
+Validators' voting powers are determined at genesis, or are changed
 deterministically by the blockchain, depending on the application.  For example,
 in a proof-of-stake application such as the Cosmos Hub, the voting power may be
 determined by the amount of staking tokens bonded as collateral.
@@ -160,11 +160,11 @@ _NOTE: +⅔ means "more than ⅔", while ⅓+ means "⅓ or more"._
 Tendermint is a partially synchronous BFT consensus protocol derived from the
 DLS consensus algorithm [\[20\]][20]. Tendermint is notable for its simplicity,
 performance, and [fork-accountability](#fork-accountability).  The protocol
-requires a fixed, known set of validators, where each validator is identified by
-its public key.  Validators attempt to come to consensus on one block at a time,
-where a block is a list of transactions.  Consensus on a block proceeds in
+requires a fixed known set of validators, where each validator is identified by
+their public key.  Validators attempt to come to consensus on one block at a time,
+where a block is a list of transactions.  Voting for consensus on a block proceeds in
 rounds. Each round has a round-leader, or proposer, who proposes a block. The
-validators then vote, in stages, on whether or not to accept the proposed block
+validators then vote, in stages, on whether to accept the proposed block
 or move on to the next round. The proposer for a round is chosen
 deterministically from the ordered list of validators, in proportion to their
 voting power.
@@ -176,19 +176,19 @@ Tendermint’s security derives from its use of optimal Byzantine fault-toleranc
 via super-majority (+⅔) voting and a locking mechanism.  Together, they ensure
 that:
 
-* ⅓+ voting power must be Byzantine to cause a violation of safety, where more
+* +⅓ voting power must be Byzantine to cause a violation of safety, where more
   than two values are committed.  
-* if ever any set of validators succeeds in violating safety, or even attempts
+* if any set of validators ever succeeds in violating safety, or even attempts
   to do so, they can be identified by the protocol.  This includes both voting
 for conflicting blocks and broadcasting unjustified votes.
 
 Despite its strong guarantees, Tendermint provides exceptional performance.  In
 benchmarks of 64 nodes distributed across 7 datacenters on 5 continents, on
 commodity cloud instances, Tendermint consensus can process thousands of
-transactions per second, with commit latencies on the order of one or two
+transactions per second, with commit latencies on the order of one to two
 seconds.  Notably, performance of well over a thousand transactions per second
 is maintained even in harsh adversarial conditions, with validators crashing or
-broadcasting maliciously crafted votes.  See figure below for details.
+broadcasting maliciously crafted votes.  See the figure below for details.
 
 ![Figure of Tendermint throughput performance]
 (https://raw.githubusercontent.com/gnuclear/atom-whitepaper/master/images/tendermint_throughput_blocksize.png)
@@ -199,7 +199,7 @@ A major benefit of Tendermint's consensus algorithm is simplified light client
 security, making it an ideal candidate for mobile and internet-of-things use
 cases.  While a Bitcoin light client must sync chains of block headers and find
 the one with the most proof of work, Tendermint light clients need only to keep
-up with changes to the validator set, and then simply verify the +⅔ PreCommits
+up with changes to the validator set, and then verify the +⅔ PreCommits
 in the latest block to determine the latest state.
 
 Succinct light client proofs also enable [inter-blockchain
@@ -207,7 +207,7 @@ communication](#inter-blockchain-communication-ibc).
 
 ### Preventing Attacks
 
-Tendermint has various protective measures for preventing certain notable
+Tendermint has protective measures for preventing certain notable
 attacks, like [long-range-nothing-at-stake double
 spends](#preventing-long-range-attacks) and
 [censorship](#overcoming-forks-and-censorship-attacks). These are discussed more
@@ -218,15 +218,14 @@ fully in the [appendix](#appendix).
 The Tendermint consensus algorithm is implemented in a program called Tendermint
 Core.  Tendermint Core is an application-agnostic "consensus engine" that can
 turn any deterministic blackbox application into a distributedly replicated
-blockchain.  As the Apache Web Server or Nginx connects to the Wordpress
-application via CGI or FastCGI, Tendermint Core connects to blockchain
+blockchain. Tendermint Core connects to blockchain
 applications via the Tendermint Socket Protocol (TMSP) [\[17\]][17]. Thus, TMSP
 allows for blockchain applications to be programmed in any language, not just
 the programming language that the consensus engine is written in.  Additionally,
 TMSP makes it possible to easily swap out the consensus layer of any existing
 blockchain stack.
 
-We draw an analogy with a well-known cryptocurrency, Bitcoin.  Bitcoin is a
+We draw an analogy with the well-known cryptocurrency Bitcoin. Bitcoin is a
 cryptocurrency blockchain where each node maintains a fully audited Unspent
 Transaction Output (UTXO) database. If one wanted to create a Bitcoin-like
 system on top of TMSP, Tendermint Core would be responsible for
@@ -238,8 +237,8 @@ Meanwhile, the TMSP application would be responsible for
 
 * Maintaining the UTXO database
 * Validating cryptographic signatures of transactions
-* Preventing transactions from spending non-existent transactions
-* Allowing clients to query the UTXO database.
+* Preventing transactions from spending non-existent funds
+* Allowing clients to query the UTXO database
 
 Tendermint is able to decompose the blockchain design by offering a very simple
 API between the application process and consensus process.
@@ -252,34 +251,34 @@ classical BFT consensus algorithms like Tendermint
 
 The first blockchain in this network will be the Cosmos Hub.  The Cosomos Hub
 connects to many other blockchains (or _zones_) via a novel inter-blockchain
-communication protocol.  The Cosmos Hub tracks numerous token types, and keeps
+communication protocol.  The Cosmos Hub tracks numerous token types and keeps
 record of the total number of tokens in each connected zone.  Tokens can be
-transferred from one zone to another, securely and quickly, without the need for
+transferred from one zone to another securely and quickly without the need for
 a liquid exchange between zones, because all inter-zone coin transfers go
 through the Cosmos Hub.
 
-This architecture solves so many problems that the blockchain space faces today,
-including application interoperability, scalability, and seamless upgradability.
+This architecture solves many problems that the blockchain space faces today,
+such as application interoperability, scalability, and seamless upgradability.
 For example, zones derived from Bitcoind, Go-Ethereum, CryptoNote, ZCash, or any
 blockchain system can be plugged into the Cosmos Hub.  These zones allow Cosmos
-to scale infinitely to meet global transaction demand.  And, zones are a great
+to scale infinitely to meet global transaction demand.  Zones are also a great
 fit for a distributed exchange, which will be supported as well.
 
 Cosmos is not just a single distributed ledger, and the Cosmos Hub isn't a
 walled garden or the center of its universe.  We are designing a protocol for an
-open network of distributed legers that can serve as a new foundation for our
+open network of distributed legers that can serve as a new foundation for 
 future financial systems, based on principles of cryptography, sound economics,
 consensus theory, transparency, and accountability.
 
-### Tendermint-BFT DPoS
+### Tendermint-BFT 
 
-The Cosmos Hub is the first public blockchain in the Cosmos Network powered by
+The Cosmos Hub is the first public blockchain in the Cosmos Network, powered by
 Tendermint's BFT consensus algorithm.  The Tendermint open-source project was
 born in 2014 to address the speed, scalability, and environmental issues of
-Bitcoin's proof-of-work consensus algorithm.  By utilizing and improving upon
-proven BFT algorithms developed at MIT in 1988, the Tendermint team was first to
+Bitcoin's proof-of-work consensus algorithm.  By using and improving upon
+proven BFT algorithms developed at MIT in 1988[NEEDS SOURCE], the Tendermint team was the first to
 conceptually demonstrate a proof-of-stake cryptocurrency that addresses the
-nothing-at-stake problem suffered by first-gen proof-of-stake cryptocurrencies
+nothing-at-stake problem suffered by first-generation proof-of-stake cryptocurrencies
 such as NXT and BitShares.
 
 Today, practically all Bitcoin mobile wallets use trusted servers to provide
@@ -289,44 +288,43 @@ irreversibly committed.  Double-spend attacks have already been demonstrated on
 services like CoinBase.
 
 Unlike other blockchain consensus systems, Tendermint offers instant and
-provably-secure mobile-client payment verification. Since the Tendermint is
-designed not to fork at all, mobile wallets can receive instant transaction
-confirmation, finally making trustless and practical payments a reality on your
-smartphone.  This has significant ramifications for IoT applications as well.
+provably secure mobile-client payment verification. Since the Tendermint is
+designed to never fork at all, mobile wallets can receive instant transaction
+confirmation, which makes trustless and practical payments a reality on
+smartphones.  This has significant ramifications for Internet of Things applications as well.
 
-Validators in Cosmos (who have a similar role to Bitcoin miners but instead use
-cryptographic signatures to vote) are meant to be secure, dedicated machines
+Validators in Cosmos have a similar role to Bitcoin miners, but instead use
+cryptographic signatures to vote. Validators are secure, dedicated machines
 that are responsible for committing blocks.  Non-validators can delegate their
 staking tokens (called "atoms") to any validator to earn a portion of block fees
-and atom rewards, but incur the risk of getting punished (slashed) if the
+and atom rewards, but they incur the risk of getting punished (slashed) if the
 delegate validator gets hacked or violates the protocol.  The proven safety
 guarantees of Tendermint BFT consensus, and the collateral deposit of
-stakeholders (of validators and delegators) provide provable, quantifiable
-security for nodes and even light clients.
+stakeholders--validators and delegators--provide provable, quantifiable
+security for nodes and light clients.
 
 ### Governance #################################################################
 
-Distributed public ledgers should have a constitution and a governance system.
-Bitcoin relies on the Bitcoin Foundation (to some degree) and mining to
+Distributed public ledgers should have a constitution and a governance system.[NEEDS SOURCE]
+Bitcoin relies on the Bitcoin Foundation and mining to
 coordinate upgrades, but this is a slow process.  Ethereum split into ETH and
-ETC after the hard-fork to address TheDAO hack, largely because there was no
+ETC after hard-forking to address TheDAO hack, largely because there was no
 prior social contract nor mechanism for making such decisions.
 
 Validators and delegators on the Cosmos Hub can vote on proposals that can
 change preset parameters of the system automatically (such as the block gas
-limit), coordinate upgrades, as well as vote on amendments to a human-readible
+limit), coordinate upgrades, as well as vote on amendments to the human-readable
 constitution that govern the policies of the Cosmos Hub.  The constitution
-allows for cohesion among the stakeholders on issues regarding issues of theft
+allows for cohesion among the stakeholders on issues such as theft
 and bugs (such as TheDAO incident), allowing for quicker and cleaner resolution.
 
 Each zone can also have their own constitution and governance mechanism as well.
 For example, the Cosmos Hub could have a constitution that enforces immutability
 at the Hub (no roll-backs, save for bugs of the Cosmos Hub node implementation),
-while each zone can set their own policies regarding roll-backs in the case of
-theft and bugs.
+while each zone can set their own policies regarding roll-backs.
 
 By enabling interoperability among differing policy zones, the Cosmos network
-gives the users ultimate freedom and potential for permissionless
+gives its users ultimate freedom and potential for permissionless
 experimentation.
 
 ## The Hub and Zones ###########################################################
@@ -334,15 +332,15 @@ experimentation.
 Here we describe a novel model of decentralization and scalability.  Cosmos is a
 network of many blockchains powered by Tendermint.  While existing proposals aim
 to create a "single blockchain" with total global transaction ordering, Cosmos
-permits many blockchains to run concurrently with one another and yet retain
+permits many blockchains to run concurrently with one another while retaining
 interoperability.
 
 At the basis, the Cosmos Hub manages many independent blockchains called "zones"
 (sometimes referred to as "shards", in reference to the database scaling
 technique known as "sharding").  A constant stream of recent block commits from
-zones posted on the hub allows the hub to keep up with the state of each zone.
-Likewise, each zone keeps up with the state of the hub (but zones do not keep up
-with each other except indirectly through the hub).  Packets of information are
+zones posted on the Hub allows the Hub to keep up with the state of each zone.
+Likewise, each zone keeps up with the state of the Hub (but zones do not keep up
+with each other except indirectly through the Hub).  Packets of information are
 then communicated from one zone to another by posting Merkle-proofs as evidence
 that the information was sent and received.  This mechanism is called
 inter-blockchain communication, or IBC for short.
@@ -363,8 +361,8 @@ tokens can be moved from one zone to another in a special IBC packet called a
 the total amount of each token across the zones. IBC coin packet transactions
 must be committed by the sender, hub, and receiver blockchains.
 
-Since the Cosmos Hub acts as a central ledger of tokens for the whole
-system, the security of the hub is of paramount importance.  While each
+Since the Cosmos Hub acts as the central ledger for the whole
+system, the security of the Hub is of paramount importance.  While each
 zone may be a Tendermint blockchain that is secured by as few as 4 (or even
 less if BFT consensus is not needed), the hub must be secured by a globally
 decentralized set of validators that can withstand the most severe attack
