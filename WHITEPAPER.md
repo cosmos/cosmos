@@ -364,7 +364,7 @@ must be committed by the sender, hub, and receiver blockchains.
 Since the Cosmos Hub acts as the central ledger for the whole
 system, the security of the Hub is of paramount importance.  While each
 zone may be a Tendermint blockchain that is secured by as few as 4 (or even
-less if BFT consensus is not needed), the hub must be secured by a globally
+less if BFT consensus is not needed), the Hub must be secured by a globally
 decentralized set of validators that can withstand the most severe attack
 scenarios, such as a continental network partition or a nation-state sponsored
 attack.
@@ -380,7 +380,7 @@ can receive tokens from others who have them. A zone may be designated as an
 supply.
 
 Atoms of the Cosmos Hub may be staked by validators of a zone connected to the
-hub.  While double-spend attacks on these zones would result in the slashing of
+Hub.  While double-spend attacks on these zones would result in the slashing of
 atoms with Tendermint's fork-accountability, a zone where +⅔ of the voting power
 are Byzantine can commit invalid state.  The Cosmos Hub does not verify or
 execute transactions committed on other zones, so it is the responsibility of
@@ -392,28 +392,27 @@ of token transfers) when an attack is detected.
 
 ## Inter-blockchain Communication (IBC) ########################################
 
-Now we look at how the hub and zones communicate with each other.  Say that
+Now we look at how the Hub and zones communicate with each other.  For example, if
 there are three blockchains, "Zone1", "Zone2", and "Hub", and we wish for
-"Zone1" to produce a packet destined for "Zone2" going through "Hub". For a
-packet to move from one blockchain to another, a proof is posted on the
-receiving chain that the sending chain published a packet for the alleged
+"Zone1" to produce a packet destined for "Zone2" going through "Hub". To move a
+packet from one blockchain to another, a proof is posted on the
+receiving chain. The proof states that the sending chain published a packet for the alleged
 destination. For the receiving chain to check this proof, it must be able keep
 up with the sender's block headers.  This mechanism is similar to that used by
-sidechains, requiring two interacting chains to "be aware" of one another via a
+sidechains, which requires two interacting chains to be aware of one another via a
 bidirectional stream of proof-of-existence datagrams (transactions).
 
 The IBC protocol can naturally be defined using two types of transactions: an
 `IBCBlockCommitTx` transaction, which allows a blockchain to prove to any
 observer of its most recent block-hash, and an `IBCPacketTx` transaction, which
 allows a blockchain to prove to any observer that the given packet was indeed
-published by the sender's application via a Merkle-proof to the recent
+published by the sender's application, via a Merkle-proof to the recent
 block-hash.
 
-By splitting the IBC mechanics into two separate transactions `IBCBlockCommitTx`
-and `IBCPacketTx`, we allow the native fee market-mechanism of the receiving
-chain to determine which packets get committed (i.e. acknowledged), while
-allowing for complete freedom on the sending chain as to how many outbound
-packets are allowed.
+By splitting the IBC mechanics into two separate transactions, we allow the 
+native fee market-mechanism of the receiving chain to determine which packets 
+get committed (i.e. acknowledged), while allowing for complete freedom on the 
+sending chain as to how many outbound packets are allowed.
 
 ![Figure of Zone1, Zone2, and Hub IBC without
 acknowledgement](https://raw.githubusercontent.com/gnuclear/atom-whitepaper/master/msc/ibc_without_ack.png)
@@ -430,17 +429,17 @@ for for more information on the two IBC transaction types._
 
 ### Pegging to Other Cryptocurrencies
 
-A priveleged zone can act as the source of a pegged token of another
-cryptocurrency. A peg is in essence similar to the relationship between an
+A privileged zone can act as the source of a pegged token of another
+cryptocurrency. A peg is similar to the relationship between a
 Cosmos hub and zone; both must keep up with the latest blocks of the
 other in order to verify proofs that tokens have moved from one to the other.  A
-peg-zone on the Cosmos network keeps up with both the hub as well as the
+peg-zone on the Cosmos network keeps up with the Hub as well as the
 other cryptocurrency.  The indirection through the peg-zone allows the logic of
-the hub to remain simple and agnostic to other blockchain consensus strategies,
-like Bitcoin's proof-of-work mining.
+the Hub to remain simple and agnostic to other blockchain consensus strategies
+such as Bitcoin's proof-of-work mining.
 
-For instance, a Cosmos zone with some validator set, possibly the same as
-that of the hub, could act as an ether-peg, where the TMSP-application on
+For instance, a Cosmos zone with a specific validator set, possibly the same as
+that of the Hub, could act as an ether-peg, where the TMSP-application on
 the zone (the "peg-zone") has mechanisms to exchange IBC messages with a
 peg-contract on the external Ethereum blockchain (the "origin").  This contract
 would allow ether holders to send ether to the peg-zone by sending it to the
@@ -449,9 +448,9 @@ cannot be withdrawn unless an appropriate IBC packet is received by the
 peg-contract from the peg-zone. When a peg-zone receives an IBC packet proving
 that ether was received in the peg-contract for a particular Ethereum account, a
 corresponding account is created on the peg-zone with that balance.  Ether on
-the peg-zone ("pegged-ether") can then be transferred to and from the hub,
+the peg-zone ("pegged-ether") can then be transferred to and from the Hub,
 and later be destroyed with a transaction that sends it to a particular
-withdrawal address on Ethereum; an IBC packet proving that the transaction
+withdrawal address on Ethereum. An IBC packet proving that the transaction
 occured on the peg-zone can be posted to the Ethereum peg-contract to allow the
 ether to be withdrawn.
 
@@ -461,11 +460,11 @@ peg-contract on Ethereum while keeping the pegged-ether on the peg-zone. Worse,
 +⅔ Byzantine voting power can steal ether outright from those who sent it to the
 peg-contract by deviating from the original pegging logic of the peg-zone.
 
-It is possible to address these issues by designing the peg to be "totally
-accountable".  For example, all IBC packets both from the hub as well as from
-the origin might require acknowledgement by the peg-zone in such a way that all
+It is possible to address these issues by designing the peg to be totally
+accountable.  For example, all IBC packets, from the hub and 
+the origin, might require acknowledgement by the peg-zone in such a way that all
 state transitions of the peg-zone can be efficiently challenged and verified by
-either the hub or the origin's peg-contract.  The hub and the origin should
+either the hub or the origin's peg-contract.  The Hub and the origin should
 allow the peg-zone validators to post collateral, and token transfers out of the
 peg-contract should be delayed (and collateral unbonding period sufficiently
 long) to allow for any challenges to be made by independent auditors.  We leave
@@ -475,43 +474,43 @@ system.
 
 While the socio-political atmosphere is not quite evolved enough yet, we can
 extend the mechanism to allow for zones which peg to the fiat currency of a
-nation states by forming a validator set out of some combination of institutions
+nation state by forming a validator set out of some combination of institutions
 responsible for the nation's currency, most particularly, its banks. Of course,
-extra precautions must be made to only accept currencies backed by strong legal
-systems that can enforce auditability of the banks' activities by a sufficiently
+extra precautions must be taken to only accept currencies backed by strong legal
+systems which can enforce auditability of the banks' activities by a sufficiently
 large group of trusted notaries and institutions.
 
-A result of this integration would be, for instance, the ability of anyone with
-a bank account at a participating bank to move dollars from their bank account,
-which is on the zone, to other accounts on the zone, or to the hub, or to
-another zone entirely.  In this regard, the Cosmos Hub can act as a seamless
-conduit between fiat currencies and cryptocurrencies, removing the barriers that
-have until now limitted their interoperabiltiy to the realm of exchanges.
+A result of this integration could be, for instance, allowing anyone with
+an account at a bank on the zone to move dollars from their bank account
+to other accounts on the zone, or to the hub, or to another zone entirely.  
+In this regard, the Cosmos Hub can act as a seamless conduit between fiat 
+currencies and cryptocurrencies, removing the barriers that have until now limited 
+their interoperability to the realm of exchanges.
 
 ### Ethereum Scaling
 
-An open issue for Ethereum is how to solve the scaling problem.  Currently,
-Ethereum nodes process every single transaction and also stores all the state.
+Solving the scaling problem is an open issue for Ethereum.  Currently,
+Ethereum nodes process every single transaction and also store all the states.
 [link](https://docs.google.com/presentation/d/1CjD0W4l4-CwHKUvfF5Vlps76fKLEC6pIwu1a_kC_YRQ/mobilepresent?slide=id.gd284b9333_0_28).
 
 Since Tendermint can commit blocks much faster than Ethereum's proof-of-work,
 EVM zones powered by Tendermint consensus and operating on pegged-ether can
 provide higher performance to Ethereum blockchains.  Additionally, though the
-Cosmos hub and IBC packet mechanics does not allow for arbitrary contract logic
+Cosmos Hub and IBC packet mechanics does not allow for arbitrary contract logic
 execution per se, it can be used to coordinate token movements between Ethereum
 contracts running on different zones, providing a foundation for token-centric
 Ethereum scaling via sharding.
 
 ### Multi-Application Integration
 
-Cosmos zones run arbitrary application logic, defined at the beginning of the
-zone's life, and potentially updated over time by governance. Such flexibility
-allows Cosmos zones to act as pegs to other cryptocurrencies, like Ethereum or
-Bitcoin, but it also permits derivatives of those blockchains, utilizing the
+Cosmos zones run arbitrary application logic, which is defined at the beginning of the
+zone's life and can potentially be updated over time by governance. Such flexibility
+allows Cosmos zones to act as pegs to other cryptocurrencies such as Ethereum or
+Bitcoin, and it also permits derivatives of those blockchains, utilizing the
 same codebase but with a different validator set and initial distribution. This
-allows many existing cryptocurrency frameworks, such as that of Ethereum,
-Zerocash, Bitcoin, CryptoNote, and so on to be used with a higher performance
-consensus engine (Tendermint Core) on a common network, openning tremendous
+allows many existing cryptocurrency frameworks, such as those of Ethereum,
+Zerocash, Bitcoin, CryptoNote and so on, to be used with Tendermint Core, 
+which is a higher performance consensus engine, on a common network, opening tremendous
 opportunity for interoperability across platforms.  Furthermore, as a
 multi-asset blockchain, a single transaction may contain multiple inputs and
 outputs, where each input can be any token type, enabling Cosmos to serve
@@ -522,20 +521,20 @@ over existing centralized cryptocurrency exchanges which tend to get hacked over
 time. 
 
 Zones can also serve as blockchain-backed versions of enterprise and government
-systems, where pieces of a particular service, traditionally run by an
-organization or group of organizations, are instead run as a TMSP application on
-a certain zone, allowing it to inherit the security and interoperability of the
-public Cosmos network, without sacrificing control over the underlying service.
+systems, where pieces of a particular service that are traditionally run by an
+organization or group of organizations are instead run as a TMSP application on
+a certain zone, which allows it to inherit the security and interoperability of the
+public Cosmos network without sacrificing control over the underlying service.
 Thus, Cosmos may offer the best of both worlds for organizations looking to
-utilize blockchain technology that are wary of relinquishing control completely
-to a (distributed) third party.
+utilize blockchain technology but who are wary of relinquishing control completely
+to a distributed third party.
 
 ### Network Partition Mitigation
 
 Some claim that a major problem with consistency-favouring consensus algorithms
 like Tendermint is that any network partition which causes there to be no single
-partition with +⅔ voting power (e.g. ⅓+ goign offline) will halt consensus
-altogether.  The Cosmos architecture can mitigate this problem by using a global
+partition with +⅔ voting power (e.g. ⅓+ going offline) will halt consensus
+altogether. [NEEDS SOURCE] The Cosmos architecture can help mitigate this problem by using a global
 hub with regional autonomous zones, where voting power for each zone are
 distributed based on a common geographic region.  For instance, a common
 paradigm may be for individual cities, or regions, to operate their own zones
@@ -550,12 +549,12 @@ NameCoin was one of the first blockchains to attempt to solve the
 name-resolution problem by adapting the Bitcoin blockchain.  Unfortunately there
 have been several issues with this approach.
 
-With Namecoin, we can verify that say, <em>@satoshi</em> was registered with a
+With Namecoin, we can verify that, for example, <em>@satoshi</em> was registered with a
 particular public key at some point in the past, but we wouldn’t know whether
 the public key had since been updated recently unless we download all the blocks
 since the last update of that name.  This is due to the limitation of Bitcoin's
-UTXO transaction Merkle-ization model where only the transactions (but not
-mutable application state) are Merkle-ized into the block-hash -- which lets us
+UTXO transaction Merkle-ization model, where only the transactions (but not
+mutable application state) are Merkle-ized into the block-hash. This lets us
 prove existence, but not the non-existence of later updates to a name.  Thus, we
 can't know for certain the most recent value of a name without trusting a full
 node, or incurring significant costs in bandwidth by downloading the whole
@@ -608,11 +607,11 @@ for additional details.
 #### Vesting
 
 To prevent the crowdfund from attracting short-term speculators only interested
-in a pump-and-dump scheme, the genesis atoms will not be transferrable until
+in pump-and-dump schemes, the genesis atoms will not be transferrable until
 they have vested.  Each account will vest atoms over a period of 2 years at a
 constant rate every hour, determined by the total number of genesis atoms / (2 *
 365 * 24) hours.  Atoms earned by the inflationary block reward are pre-vested,
-and can be transferred immediately, so bonded validators and delegators can earn
+and can be transferred immediately, so that bonded validators and delegators can earn
 more than 1/2 of their genesis atoms after the first year.
 
 ### Limitations on the Number of Validators
@@ -645,7 +644,7 @@ Year 10: 300
 
 ### Becoming a Validator After Genesis Day
 
-Atom holders who are not already validators can become one by signing and
+Atom holders who are not already can become validators by signing and
 submitting a `BondTx` transaction.  The amount of atoms provided as collateral
 must be nonzero.  Anyone can become a validator at any time, except when the
 size of the current validator set is greater than the maximum number of
@@ -657,8 +656,8 @@ inactive and all the atoms and delegated atoms enter the unbonding state.
 
 ### Penalties for Validators
 
-There must be some penalty imposed on the validators for when they intentionally
-or unintentionally deviate from the sanctioned protocol. Some evidence is
+There must be some penalty imposed on the validators for any intentional
+or unintentional deviation from the sanctioned protocol. Some evidence is
 immediately admissible, such as a double-sign at the same height and round, or a
 violation of "prevote-the-lock" (a rule of the Tendermint consensus protocol).
 Such evidence will result in the validator losing its good standing and its
@@ -671,7 +670,7 @@ disruptions, power failure, or other reasons.  If, at any point in the past
 the blockchain more than `ValidatorTimeoutMaxAbsent` times, that validator will
 become inactive, and lose `ValidatorTimeoutPenalty` (DEFAULT 1%) of its stake.
 
-Some "malicious" behavior do not produce obviously discernable evidence on the
+Some "malicious" behavior does not produce obviously discernable evidence on the
 blockchain. In these cases, the validators can coordinate out of band to force
 the timeout of these malicious validators, if there is a supermajority
 consensus.
@@ -684,18 +683,18 @@ Attacks").
 
 ### Transaction Fees
 
-Cosmos Hub validators can accept any token type or combination of types as a fee
+Cosmos Hub validators can accept any token type or combination of types as fees
 for processing a transaction.  Each validator can subjectively set whatever
 exchange rate it wants, and choose whatever transactions it wants, as long as
-the `BlockGasLimit` is not exceeded.  The collected fees minus any taxes
-specified below are redistributed to the bonded stakeholders in proportion to
+the `BlockGasLimit` is not exceeded.  The collected fees, minus any taxes
+specified below, are redistributed to the bonded stakeholders in proportion to
 their bonded atoms, every `ValidatorPayoutPeriod` (DEFAULT 1 hour).
 
 Of the collected transaction fees, `ReserveTax` (DEFAULT 2%) will go toward the
 reserve pool to increase the reserve pool and increase the security and value of
 the Cosmos network.  Also, a `CommonsTax` (DEFAULT 3%) will go toward the
 funding of common goods.  These funds will go to the `CustodianAddress` to be
-distributed in accordance with whatever is decided by the governance system.
+distributed in accordance with the decisions made by the governance system.
 
 Atom holders who delegate their voting power to other validators pay a
 commission to the delegated validator.  The commission can be set by each
@@ -707,7 +706,7 @@ The security of the Cosmos Hub is a function of the security of the underlying
 validators and the choice of delegation by delegators.  In order to encourage
 the discovery and early reporting of found vulnerabilities, the Cosmos Hub
 encourages hackers to publish successful exploits via a `ReportHackTx`
-transaction that essentially says, "This validator got hacked.  Please send
+transaction that says, "This validator got hacked.  Please send
 bounty to this address".  Upon such an exploit, the validator and delegators
 will become inactive, `HackPunishmentRatio` (default 5%) of everyone's atoms
 will get slashed, and `HackRewardRatio` (default 5%) of everyone's atoms will
@@ -721,13 +720,13 @@ include some unvested atoms, if any.
 
 ## Governance ##################################################################
 
-The Cosmos Hub is operated by a distributed organization that requires a well
-defined governance mechanism in order to coordinate various changes to the
-blockchain, such as the variable parameters of the system, as well as software
-upgrades and constitutional amendments.
+The Cosmos Hub is operated by a distributed organization that requires a well-defined
+governance mechanism in order to coordinate various changes to the blockchain, 
+such as the variable parameters of the system, as well as software upgrades and 
+constitutional amendments.
 
 All validators are responsible for voting on all proposals.  Failing to vote on
-a proposal in a timely manner will result in the validator becoming inactivated 
+a proposal in a timely manner will result in the validator being deactivated 
 automatically for a period of time called the `AbsenteeismPenaltyPeriod`
 (DEFAULT 1 week).
 
@@ -735,20 +734,20 @@ Delegators automatically inherit the vote of the delegated validator.  This vote
 may be overridden manually.  Unbonded atoms get no vote.
 
 Each proposal requires a deposit of `MinimumProposalDeposit` tokens, which may
-be a combination one or more tokens including atoms.  For each proposal, the
+be a combination of one or more tokens including atoms.  For each proposal, the
 voters may vote to take the deposit. If more than half of the voters choose to
 take the deposit (e.g. because the proposal was spam), the deposit goes to the
 reserve pool, except any atoms which are burned.
 
 For each proposal, voters may vote with the following options:
 
-* Yay
-* YayWithForce
+* Yea
+* YeaWithForce
 * Nay
 * NayWithForce
 * Abstain
 
-A strict majority of Yay or YayWithForce votes (or Nay or NayWithForce votes) is
+A strict majority of Yea or YeaWithForce votes (or Nay or NayWithForce votes) is
 required for the proposal to be decided as accepted (or decided as failed), but
 1/3+ can veto the majority decision by voting "with force".  When a strict
 majority is vetoed, everyone gets punished by losing `VetoPenaltyFeeBlocks`
@@ -781,9 +780,9 @@ of important ones.
 #### Classic Byzantine Fault Tolerance
 
 Consensus in the presence of malicious participants is a problem dating back to
-the early 80s, when Leslie Lamport coined the phrase "Byzantine fault" to refer
+the early 1980s, when Leslie Lamport coined the phrase "Byzantine fault" to refer
 to arbitrary process behavior that deviates from the intended behavior, in
-contrast to a "crash fault", wherein a process simply crashes.  Early solutions
+contrast to a "crash fault", wherein a process simply crashes. [NEEDS SOURCE]  Early solutions
 were discovered for synchronous networks where there is an upper bound on
 message latency, though pratical use was limited to highly controlled
 environments such as airplane controllers and datacenters synchronized via
@@ -791,7 +790,7 @@ atomic clocks.  It was not until the late 90s that Practical Byzantine Fault
 Tolerance (PBFT) [\[11\]][11] was introduced as an efficient partially
 synchronous consensus algorithm able to tolerate up to ⅓ of processes behaving
 arbitrarily.  PBFT became the standard algorithm, spawning many variations,
-including most recently by IBM as part of their contribution to Hyperledger.
+including most recently one created by IBM as part of their contribution to Hyperledger.
 
 The main benefit of Tendermint consensus over PBFT is that Tendermint has an
 improved and simplified underlying structure, some of which is a result of
@@ -823,25 +822,25 @@ While not the first to deploy proof-of-stake (PoS), BitShares [\[12\]][12]
 contributed considerably to research and adoption of PoS blockchains,
 particularly those known as "delegated" PoS.  In BitShares, stake holders elect
 "witnesses", responsible for ordering and committing transactions, and
-"delegates", responsible for co-ordinating software updates and parameter
+"delegates", responsible for coordinating software updates and parameter
 changes.  Though BitShares achieves high performance (100k tx/s, 1s latency) in
 ideal conditions, it is subject to double spend attacks by malicious witnesses
 which fork the blockchain without suffering an explicit economic punishment --
 it suffers from the "nothing-at-stake" problem. BitShares attempts to mitigate
 the problem by allowing transactions to refer to recent block-hashes.
 Additionally, stakeholders can remove or replace misbehaving witnesses on a
-daily basis, though this does nothing to explicitly punish a double-spend attack
-that was successful.
+daily basis, though this does nothing to explicitly punish successful 
+double-spend attacks.
 
 #### Stellar
 
 Building on an approach pioneered by Ripple, Stellar [\[13\]][13] refined a
 model of Federated Byzantine Agreement wherein the processes participating in
 consensus do not constitute a fixed and globally known set.  Rather, each
-process node curates one or more "quorum slices" each constituting a set of
+process node curates one or more "quorum slices", each constituting a set of
 trusted processes. A "quorum" in Stellar is defined to be a set of nodes that
-contain (is a superset of) at least one quorum slice for each node in the set,
-such that agreement can be reached.
+contain at least one quorum slice for each node in the set, such that agreement 
+can be reached.
 
 The security of the Stellar mechanism relies on the assumption that the
 intersection of *any* two quorums is non-empty, while the availability of a node
@@ -860,7 +859,7 @@ The criticism in the Stellar paper of the Tendermint-based proof-of-stake
 systems is mitigated by the token strategy described here, wherein a new type of
 token called the _atom_ is issued that represent claims to future portions of
 fees and rewards. The advantage of Tendermint-based proof-of-stake, then, is its
-relative simplicity, while still providing sufficient, and provable security
+relative simplicity, while still providing sufficient and provable security
 guarantees.
 
 #### BitcoinNG
@@ -879,9 +878,9 @@ the last miner to find a micro-block.
 #### Casper
 
 Casper [\[16\]][16] is a proposed proof-of-stake consensus algorithm for
-Ethereum.  Its prime mode of operation is "consensus-by-bet".  The idea is that
-by letting validators iteratively bet on which block it believes will become
-committed into the blockchain based on the other bets that it's seen so far,
+Ethereum.  Its prime mode of operation is "consensus-by-bet".  By letting 
+validators iteratively bet on which block they believe will become committed 
+into the blockchain based on the other bets that they have seen so far,
 finality can be achieved eventually.
 [link](https://blog.ethereum.org/2015/12/28/understanding-serenity-part-2-casper/).
 This is an active area of research by the Casper team.  The challenge is in
@@ -895,24 +894,24 @@ implementation complexity.
 
 #### Interledger Protocol
 
-The Interledger protocol [\[14\]][14] is not strictly a scalability solution. It
-provides an adhoc interoperation between different ledger systems through a
+The Interledger Protocol [\[14\]][14] is not strictly a scalability solution. It
+provides an ad hoc interoperation between different ledger systems through a
 loosely coupled bilateral relationship network.  Like the Lightning Network, the
 purpose of ILP is to facilitate payments, but it specifically focuses on
 payments across disparate ledger types, and extends the atomic transaction
-mechanism to include not only hash-locks, but also a quroum of notaries (called
+mechanism to include not only hash-locks, but also a quorum of notaries (called
 the Atomic Transport Protocol).  The latter mechanism for enforcing atomicity in
 inter-ledger transactions is similar to Tendermint's light-client SPV echanism,
 so an illustration of the distinction between ILP and Cosmos/IBC is warranted,
 and provided below.
 
-1. The notaries of a connector in ILP does not support membership changes, and
-   does not allow for flexible weighting between notaries.  On the other hand,
+1. The notaries of a connector in ILP do not support membership changes, and
+   do not allow for flexible weighting between notaries.  On the other hand,
 IBC is designed specifically for blockchains, where validators can have
 different weights, and where membership can change over the course of the
 blockchain.
 
-2. As in the Lightning Network, the receiver of payment in ILP must online to
+2. As in the Lightning Network, the receiver of payment in ILP must be online to
    send a confirmation back to the sender.  In a token transfer over IBC, the
 validator-set of the receiver's blockchain is responsible for providing
 confirmation, not the receiving user.
@@ -921,7 +920,7 @@ confirmation, not the receiving user.
    keeping authoritative state about payments, whereas in Cosmos, the validators
 of a hub are the authority of the state of IBC token transfers as well as the
 authority of the amount of tokens held by each zone (but not the amount of
-tokens held by each account within a zone).  This is he fundamental innovation
+tokens held by each account within a zone).  This is the fundamental innovation
 that allows for secure asymmetric tranfer of tokens from zone to zone; the
 analog to ILP's connector in Cosmos is a persistent and maximally secure
 blockchain ledger, the Cosmos Hub.
@@ -968,14 +967,14 @@ Cosmos and Ethereum 2.0 Mauve [\[22\]][22] have different design goals.
 #### Lightning Network
 
 The Lightning Network is a proposed token transfer network operating at a layer
-above the Bitcoin blockchain (and other public blockchains), enabling many
-orders of magnitude improvement in transaction throughput by moving the majority
+above the Bitcoin blockchain (and other public blockchains), enabling improvement of many
+orders of magnitude in transaction throughput by moving the majority
 of transactions outside of the consensus ledger into so-called "payment
 channels". This is made possible by on-chain cryptocurrency scripts, which
-enables parties to enter into bilateral stateful contracts where the state can
+enable parties to enter into bilateral stateful contracts where the state can
 be updated by sharing digital signatures, and contracts can be closed by finally
 publishing evidence onto the blockchain, a mechanism first popularized by
-cross-chain atomic swaps.  By openning payment channels with many parties,
+cross-chain atomic swaps.  By opening payment channels with many parties,
 participants in the Lightning Network can become focal points for routing the
 payments of others, leading to a fully connected payment channel network, at the
 cost of capital being tied up on payment channels.
@@ -996,7 +995,7 @@ to increase the per-block tranasction throughput 2X or 3X, while simultaneously
 making block syncing faster for new nodes.  The brilliance of this solution is
 in how it works within the limitations of Bitcoin's current protocol and allows
 for a soft-fork upgrade (i.e. clients with older versions of the software will
-continue to function after the upgrade).  Tendermint being a new protocol has no
+continue to function after the upgrade).  Tendermint, being a new protocol, has no
 design restrictions, so it has a different scaling priorities.  Primarily,
 Tendermint uses a BFT round-robin algorithm based on cryptographic signatures
 instead of mining, which trivially allows horizontal scaling through multiple
@@ -1020,10 +1019,10 @@ the legal system is unreliable or excessively expensive to invoke, validators ca
 deposits in order to participate, and those deposits can be revoked, or slashed,
 when malicious behaviour is detected [\[10\]][10].
 
-Note this is much unlike Bitcoin, where forking is a regular occurence due to
+Note this is unlike Bitcoin, where forking is a regular occurence due to
 network asynchrony and the probabilistic nature of finding partial hash
-collissions.  Since in many cases, a malicious fork is indistinguishable from a
-fork due to asynchrony, Bitcoin can not reliably implement fork-accountability,
+collisions.  Since in many cases a malicious fork is indistinguishable from a
+fork due to asynchrony, Bitcoin cannot reliably implement fork-accountability,
 other than the implicit opportunity cost paid by miners for mining an orphaned
 block.
 
@@ -1038,7 +1037,7 @@ round, they move to the next round.
 
 Note that strict determinism in the protocol incurs a weak synchrony assumption
 as faulty leaders must be detected and skipped.  Thus, validators wait some
-amount of time _TimeoutPropose_ before they Prevote Nil, and the value of
+amount of time, _TimeoutPropose_, before they Prevote Nil, and the value of
 TimeoutPropose increases with each round.  Progression through the rest of a
 round is fully asychronous, in that progress is only made once a validator hears
 from +⅔ of the network.  In practice, it would take an extremely strong
@@ -1088,8 +1087,8 @@ Buterin in early 2014, solves the nothing-at-stake problem of other
 proof-of-stake cryptocurrencies (see [Related Work](#related-work)). However,
 since validator sets must be able to change, over a long range of time the
 original validators may all become unbonded, and hence would be free to create a
-new chain, from the genesis block, incurring no cost as they no longer have
-deposits locked up.  This attack came to be known as the Long Range Attack (LRA)
+new chain from the genesis block, incurring no cost as they no longer have
+deposits locked up.  This attack came to be known as the Long Range Attack (LRA),
 in contrast to a Short Range Attack, where validators who are currently bonded
 cause a fork and are hence punishable (assuming a fork-accountable BFT algorithm
 like Tendermint consensus). Long Range Attacks are often thought to be a
@@ -1101,7 +1100,7 @@ to participate in the consensus), the deposit must be made untransferable for an
 amount of time known as the "unbonding period", which may be on the order of
 weeks or months.  Second, for a light client to be secure, the first time it
 connects to the network it must verify a recent block-hash against a trusted
-source, or preferably multiple of them.  This condition is sometimes referred to
+source, or preferably multiple sources.  This condition is sometimes referred to
 as "weak subjectivity".  Finally, to remain secure, it must sync up with the
 latest validator set at least as frequently as the length of the unbonding
 period. This ensures that the light client knows about changes to the validator
@@ -1150,7 +1149,7 @@ block commits to a near halt, or engage in any combination of these attacks.
 Finally, it can cause the blockchain to fork, by double-signing or violating the
 locking rules.
 
-If a global active adversary were also involved, it can partition the network in
+If a globally active adversary were also involved, it could partition the network in
 such a way that it may appear that the wrong subset of validators were
 responsible for the slowdown. This is not just a limitation of Tendermint, but
 rather a limitation of all consensus protocols whose network is potentially
@@ -1329,7 +1328,7 @@ sudden spike in the number of incoming packets.
 
 In these cases, the sender can require delivery acknowledgement by setting the
 initial packet status to `AckPending`.  Then, it is the receiving chain's
-responsibility to confirm delivery by including an abbreviated`IBCPacket` in the
+responsibility to confirm delivery by including an abbreviated `IBCPacket` in the
 app Merkle hash.
 
 ![Figure of Zone1, Zone2, and Hub IBC with
@@ -1444,7 +1443,7 @@ block, and the top level elements of the application state root.
 The purpose of the IAVL+ data structure is to provide persistent storage for
 key-value pairs in the application state such that a deterministic Merkle root
 hash can be computed efficiently.  The tree is balanced using a variant of the
-[AVL algortihm](http://en.wikipedia.org/wiki/AVL_tree), and all operations are
+[AVL algorithm](http://en.wikipedia.org/wiki/AVL_tree), and all operations are
 O(log(n)).
 
 In an AVL tree, the heights of the two child subtrees of any node differ by at
