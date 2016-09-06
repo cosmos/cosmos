@@ -152,7 +152,7 @@ Timeline
 --------
 
 1. Prefund for 5% of Genesis atoms
-1. Canadian non-profit is created
+1. Canadian for-profit is created
 1. Begin Crowdfund
 1. End of Crowdfund after 42 days or cap reache (EoCF)
 1. EoCF + 2 months: alpha release candidate of TendermintCore for security audit
