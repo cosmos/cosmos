@@ -176,7 +176,7 @@ Tendermint’s security derives from its use of optimal Byzantine fault-toleranc
 via super-majority (+⅔) voting and a locking mechanism.  Together, they ensure
 that:
 
-* +⅓ voting power must be Byzantine to cause a violation of safety, where more
+* ⅓+ voting power must be Byzantine to cause a violation of safety, where more
   than two values are committed.  
 * if any set of validators ever succeeds in violating safety, or even attempts
   to do so, they can be identified by the protocol.  This includes both voting
@@ -276,7 +276,7 @@ The Cosmos Hub is the first public blockchain in the Cosmos Network, powered by
 Tendermint's BFT consensus algorithm.  The Tendermint open-source project was
 born in 2014 to address the speed, scalability, and environmental issues of
 Bitcoin's proof-of-work consensus algorithm.  By using and improving upon
-proven BFT algorithms developed at MIT in 1988[NEEDS SOURCE], the Tendermint team was the first to
+proven BFT algorithms developed at MIT in 1988 [\[20\]][20], the Tendermint team was the first to
 conceptually demonstrate a proof-of-stake cryptocurrency that addresses the
 nothing-at-stake problem suffered by first-generation proof-of-stake cryptocurrencies
 such as NXT and BitShares.
@@ -305,7 +305,7 @@ security for nodes and light clients.
 
 ### Governance #################################################################
 
-Distributed public ledgers should have a constitution and a governance system.[NEEDS SOURCE]
+Distributed public ledgers should have a constitution and a governance system.
 Bitcoin relies on the Bitcoin Foundation and mining to
 coordinate upgrades, but this is a slow process.  Ethereum split into ETH and
 ETC after hard-forking to address TheDAO hack, largely because there was no
@@ -534,7 +534,7 @@ to a distributed third party.
 Some claim that a major problem with consistency-favouring consensus algorithms
 like Tendermint is that any network partition which causes there to be no single
 partition with +⅔ voting power (e.g. ⅓+ going offline) will halt consensus
-altogether. [NEEDS SOURCE] The Cosmos architecture can help mitigate this problem by using a global
+altogether. The Cosmos architecture can help mitigate this problem by using a global
 hub with regional autonomous zones, where voting power for each zone are
 distributed based on a common geographic region.  For instance, a common
 paradigm may be for individual cities, or regions, to operate their own zones
@@ -782,7 +782,7 @@ of important ones.
 Consensus in the presence of malicious participants is a problem dating back to
 the early 1980s, when Leslie Lamport coined the phrase "Byzantine fault" to refer
 to arbitrary process behavior that deviates from the intended behavior, in
-contrast to a "crash fault", wherein a process simply crashes. [NEEDS SOURCE]  Early solutions
+contrast to a "crash fault", wherein a process simply crashes. Early solutions
 were discovered for synchronous networks where there is an upper bound on
 message latency, though pratical use was limited to highly controlled
 environments such as airplane controllers and datacenters synchronized via
