@@ -23,6 +23,7 @@ document.  Please check regularly for updates!_
     * [The Zones](#the-zones)
   * [Inter-blockchain Communication (IBC)](#inter-blockchain-communication-ibc)
   * [Use Cases](#use-cases)
+    * [Distributed Exchange](#distributed-exchange)
     * [Pegging to Other Cryptocurrencies](#pegging-to-other-cryptocurrencies)
     * [Ethereum Scaling](#ethereum-scaling)
     * [Multi-Application Integration](#multi-application-integration)
@@ -426,6 +427,54 @@ _See [IBCBlockCommitTx](#ibcblockcommittx) and [IBCPacketTx](#ibcpacketcommit)
 for for more information on the two IBC transaction types._
 
 ## Use Cases ###################################################################
+
+### Distributed Exchange
+
+In the same way that Bitcoin is more secure by being a distributed,
+mass-replicated ledger, we can make exchanges less vulnerable to external and
+internal hacks by running it on the blockchain.  We call this a distributed
+exchange.
+
+What the cryptocurrency community calls a decentralized exchange today are
+based on something called "atomic cross-chain" (AXC) transactions.  With an AXC
+transaction, two users on two different chains can make two transfer
+transactions that are committed together on both ledgers, or none at all (i.e.
+atomically).  For example, two users can trade bitcoins for ether (or any two
+tokens on two different ledgers) using AXC transactions, even though Bitcoin
+and Ethereum are not connected to each other.  The benefit of running an
+exchange on AXC transactions is that neither users need to trust each other or
+the trade-matching service.  The downside is that both parties need to be
+online for the trade to occur.
+
+Another type of decentralized exchange is a mass-replicated distributed
+exchange that runs on its own blockchain.  Users on this kind of exchange can
+submit a limit order and turn their computer off, and the trade can execute
+without the user being online.  The blockchain matches and completes the trade
+on behalf of the trader.
+
+A centralized exchange can create a deep orderbook of limit orders and thereby
+attract more traders.  Liquidity begets more liquidity in the exchange world,
+and so there is a strong network effect (or at least a winner-take-most effect)
+in the exchange business.  The current leader for cryptocurrency exchanges
+today is Poloniex with a 24-hour volume of $20M, and in second place is
+Bitfinex with a 24-hour volume of $5M.  Given such strong network effects, it
+is unlikely for AXC-based decentralized exchanges to win volume over the
+centralized exchanges.  For a decentralized exchange to compete with a
+centralized exchange, it would need to support deep orderbooks with limit
+orders.  Only a distributed exchange on a blockchain can provide that.
+
+Tendermint provides additional benefits of faster transaction commits.  By
+prioritizing fast finality without sacrificing consistency, zones in Cosmos can
+finalize transactions fast -- for both exchange order transactions as well as
+IBC token transfers to and from other zones.
+
+Given the state of cryptocurrency exchanges today, a great application for
+Cosmos is the distributed exchange (aka the Cosmos DEX).  The transaction
+throughput capacity as well as commit latency can be comparable to those of
+centralized exchanges.  Traders can submit limit orders that can be executed
+without both parties having to be online.  And with Tendermint, the Cosmos hub,
+and IBC, traders can move funds in and out of the exchange to and from other
+zones with speed.
 
 ### Pegging to Other Cryptocurrencies
 
