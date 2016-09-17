@@ -45,7 +45,7 @@ years after Genesis.
 **Cosmos Ecosystem**: Includes the Cosmos Network and other software and
 services, including validator and client software.
 
-**Cosmos Foundation**: Cosmos Foundation is a for-profit legal entity that manages the
+**Cosmos Foundation**: Cosmos Foundation is a non-profit legal entity that manages the
 Crowdfund and Genesis of the Cosmos Hub.  Besides the initial development of the
 Essential Cosmos Software and Services, Cosmos Foundation has no further obligations
 with regards to the Cosmos Ecosystem, Cosmos Hub, or derivatives
