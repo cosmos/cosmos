@@ -5,21 +5,21 @@ DATE: July 22nd, 2016<br/>
 LAST UPDATED: Aug 12th, 2016<br/>
 NOTE: The details in this plan override what is currently in the whitepaper.
 
-* Cosmos Inc will be a for-profit Canadian entity.  Its mission is to
+* Cosmos Foundation will be a non-profit Canadian entity.  Its mission is to
   create, maintain, and further develop, the Cosmos Ecosystem.
 
 * There will be a Crowdfunding campaign to sell tokens, called "atoms", that
   give the holder limited license to use the Cosmos Hub.  The proceeds of the
-Crowdfunding campaign will go to Cosmos Inc to develop the Essential Cosmos
+Crowdfunding campaign will go to Cosmos Foundation to develop the Essential Cosmos
 Software and Services.
 
 * There will be 20,000,000 atoms on Genesis day. On Genesis day, the
   distribution of atoms will be split between:
   * Pre-funders (5%)
-  * Cosmos Inc (20%)
+  * Cosmos Foundation (20%)
   * Crowdfund Funders (75%)
 
-* Upon completion of the Crowdfund, all the atom holders, including Cosmos Inc,
+* Upon completion of the Crowdfund, all the atom holders, including Cosmos Foundation,
   play the Delegation Game in a special purpose Ethereum smart contract (which
 holds no Ether).  The top 100 validators after delegation will be chosen as
 validators on Genesis.
@@ -42,14 +42,14 @@ years after Genesis.
 
 ## Definitions
 
-**Cosmos Inc**: Cosmos Inc is a for-profit legal entity that manages the
-Crowdfund and Genesis of the Cosmos Hub.  Besides the initial development of the
-Essential Cosmos Software and Services, Cosmos Inc has no further obligations
-with regards to the Cosmos Ecosystem, Cosmos Hub, or derivatives
-(forks) of the Cosmos Hub, but instead is a general participant in the network.
-
 **Cosmos Ecosystem**: Includes the Cosmos Network and other software and
 services, including validator and client software.
+
+**Cosmos Foundation**: Cosmos Foundation is a for-profit legal entity that manages the
+Crowdfund and Genesis of the Cosmos Hub.  Besides the initial development of the
+Essential Cosmos Software and Services, Cosmos Foundation has no further obligations
+with regards to the Cosmos Ecosystem, Cosmos Hub, or derivatives
+(forks) of the Cosmos Hub, but instead is a general participant in the network.
 
 **Cosmos Hub**: An Cosmos hub is itself a blockchain, or zone, that connects to
 many other zones.  The hub facilitates token movement between zones.  The Cosmos
@@ -79,7 +79,7 @@ will be penalized, but they will inherit the vote of the delegated validator.
 **Early Funders**: The Early Funders are qualified investors who purchase 5% of
 the Genesis atoms prior to the crowdfund.  The majority of the proceeds from the
 early funding will go toward legal and PR fees, and also help pay salary for
-Cosmos Inc until the crowdfunding is complete.
+Cosmos Foundation until the crowdfunding is complete.
 
 **Validator**: Validators are full nodes of a Cosmos zone that have the
 responsibility of committing blocks in that zone.  The Cosmos Hub will start
@@ -121,7 +121,7 @@ determine the top 100 bonded delegates who will become the genesis validators.
 
 ## Funding
 
-Funds will be raised by Cosmos Inc in 2 phases.
+Funds will be raised by Cosmos Foundation in 2 phases.
 
 ### Phase 0: the Prefund
 
@@ -164,7 +164,7 @@ Timeline
    milestone reached)
 1. EoCF + 13 months: beta release candidate of Alpha Hub for security audit
 1. EoCF + 15 months: launch Cosmos Hub beta
-1. EoCF + 15 months+: Continuous development, timeline set by Cosmos Inc
+1. EoCF + 15 months+: Continuous development, timeline set by Cosmos Foundation
 
 * Timeline for Bitcoin peg support depends on partnership
 * Timeline for Ethereum peg support set after alpha release of Cosmos Hub
