@@ -646,7 +646,7 @@ tokens from the reserve pool.
 #### Crowdfund
 
 The initial distribution of atom tokens and validators on Genesis will go to the
-funders of the Cosmos Crowdsale (75%), pre-funders (5%), and Cosmos Foundation (20%).
+funders of the Cosmos Crowdsale (75%), pre-funders (5%), and ALL IN BITS, Inc (20%).
 From genesis onward, 1/3 of the total amount of atoms will be rewarded to bonded
 validators and delegators every year.
 
