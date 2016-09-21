@@ -18,6 +18,8 @@ document.  Please check regularly for updates!_
     * [Preventing Attacks](#preventing-attacks)
     * [TMSP](#tmsp)
   * [Cosmos Overview](#cosmos-overview)
+    * [Tendermint-BFT](#tendermint-bft)
+    * [Governance](#governance)
   * [The Hub and Zones](#the-hub-and-zones)
     * [The Hub](#the-hub)
     * [The Zones](#the-zones)
@@ -40,7 +42,7 @@ document.  Please check regularly for updates!_
     * [Penalties for Validators](#penalties-for-validators)
     * [Transaction Fees](#transaction-fees)
     * [Incentivizing Hackers](#incentivizing-hackers)
-  * [Governance](#governance)
+  * [Governance Specification](#governance-specification)
     * [Parameter Change Proposal](#parameter-change-proposal)
     * [Text Proposal](#text-proposal)
   * [Roadmap](#roadmap)
@@ -767,7 +769,7 @@ the portion of vested vs unvested atoms of validators and delegators before and
 after the `ReportHackTx` will remain the same, and the hacker bounty will
 include some unvested atoms, if any.
 
-## Governance ##################################################################
+### Governance Specification ###################################################
 
 The Cosmos Hub is operated by a distributed organization that requires a well-defined
 governance mechanism in order to coordinate various changes to the blockchain, 
@@ -1246,7 +1248,7 @@ validators of a Tendermint blockchain may be expected to be identifiable,
 commitment of an invalid state may even be punishable by law or some external
 jurisprudence, if desired.
 
-### TMSP specification
+### TMSP Specification
 
 TMSP consists of 3 primary message types that get delivered from the core to the
 application. The application replies with corresponding response messages.
@@ -1279,7 +1281,7 @@ the height and the commit votes.
 TMSP requests/responses are simple Protobuf messages.  Check out the [schema
 file](https://github.com/tendermint/tmsp/blob/master/types/types.proto).
 
-#### AppendTx
+##### AppendTx
   * __Arguments__:
     * `Data ([]byte)`: The request transaction bytes
   * __Returns__:
@@ -1290,7 +1292,7 @@ file](https://github.com/tendermint/tmsp/blob/master/types/types.proto).
     Append and run a transaction.  If the transaction is valid, returns
 CodeType.OK
 
-#### CheckTx
+##### CheckTx
   * __Arguments__:
     * `Data ([]byte)`: The request transaction bytes
   * __Returns__:
@@ -1305,14 +1307,14 @@ mempool layer.
 `BeginBlock`,
     to allow for dependent sequences of transactions in the same block.
 
-#### Commit
+##### Commit
   * __Returns__:
     * `Data ([]byte)`: The Merkle root hash
     * `Log (string)`: Debug or error message
   * __Usage__:<br/>
     Return a Merkle root hash of the application state.
 
-#### Query
+##### Query
   * __Arguments__:
     * `Data ([]byte)`: The query request bytes
   * __Returns__:
@@ -1320,18 +1322,18 @@ mempool layer.
     * `Data ([]byte)`: The query response bytes
     * `Log (string)`: Debug or error message
 
-#### Flush
+##### Flush
   * __Usage__:<br/>
     Flush the response queue.  Applications that implement `types.Application`
 need not implement this message -- it's handled by the project.
 
-#### Info
+##### Info
   * __Returns__:
     * `Data ([]byte)`: The info bytes
   * __Usage__:<br/>
     Return information about the application state.  Application specific.
 
-#### SetOption
+##### SetOption
   * __Arguments__:
     * `Key (string)`: Key to set
     * `Value (string)`: Value to set for key
@@ -1342,19 +1344,19 @@ need not implement this message -- it's handled by the project.
 connection, or Key="mode", Value="consensus" for a consensus connection.
     Other options are application specific.
 
-#### InitChain
+##### InitChain
   * __Arguments__:
     * `Validators ([]Validator)`: Initial genesis-validators
   * __Usage__:<br/>
     Called once upon genesis
 
-#### BeginBlock
+##### BeginBlock
   * __Arguments__:
     * `Height (uint64)`: The block height that is starting
   * __Usage__:<br/>
     Signals the beginning of a new block. Called prior to any AppendTxs.
 
-#### EndBlock
+##### EndBlock
   * __Arguments__:
     * `Height (uint64)`: The block height that ended
   * __Returns__:
