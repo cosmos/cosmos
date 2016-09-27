@@ -34,7 +34,7 @@ trader even if the trader's computer/client goes offline.
 The biggest problem with centralized exchanges is that they take custody of the
 traders' funds.  A long history of centralized cryptocurrency exchange hacks
 has shown that this is unacceptably insecure.  And yet, traders continue to use
-decentralized exchanges because they don't have a better option -- the
+centralized exchanges because they don't have a better option -- the
 convenience, speed, and volume of centralized exchanges has thus far been hard
 to beat.
 
@@ -65,17 +65,17 @@ can tolerate up to 1/3 of Byzantine voting power requires at least 2 rounds of
 signature communication to come to consensus (e.g. commit a block to finality).
 When the ledger's validators are distributed globally, and when there are many
 validators (both desirable qualities for a secure distributed exchange), the
-block-times will be significant, on the order of 1 second (or or less) due to
+block-times will be significant, on the order of 1 second due to
 the limited speed of light.
 
 What traders want, on the other hand, is "instant" trade matching akin to what
 centralized exchanges are already providing -- orders confirmed or matched on
-the order of milliseconds, sometimes less.
+the order of milliseconds.
 
 The other problem is that a distributed ledger allows for validators to "cheat"
 by determining the order of transactions.  In the case of Tendermint, each
 round-robin block proposer has a chance to order transactions however it wishes
-within each proposed block.  Although each validator may get each get a "fair"
+within each proposed block.  Although each validator may get a "fair"
 chance to "cheat", it doesn't change the fact that every validator gets to
 cheat.
 
@@ -101,7 +101,7 @@ transaction is committed by the DEX, the trader has funds in "semi-custody" by
 the CEX.
 
 Then, the trader can submit trade orders to the CEX.  Orders submitted to the
-CEX are signed by the trader.  The CEX responds with a receipt which is the a
+CEX are signed by the trader.  The CEX responds with a receipt which is a
 signed message which includes the order, the current time T, an incrementing
 sequence number S, and hash H of the previous order (from potentially another
 trader with sequence number S-1).
@@ -131,8 +131,8 @@ subledger), then the CEX can be punished as described above.  In addition,
 subledger transactions that do not increment the subledger's last sequnce
 number by 1 are considered invalid transactions.
 
-If a trader is not satisfied with the performance of service of one centralized
-exchange (e.g. it feels that it is not receiving a receipt in a timely manner),
+If a trader is not satisfied with the performance or service of one CEX
+ (e.g. it feels that it is not receiving a receipt in a timely manner),
 it can move its funds over to the "semi-custody" of another CEX, all via
 transactions that are posted onto the underlying DEX ledger.  These "exit"
 transactions do not need to be signed by the corresponding CEX.  Exit
@@ -147,8 +147,9 @@ punished.
 
 Most importantly, no CEX has custody of any trader's funds.  No funds may be
 withdrawn (moved out of a subledger) or traded without the express permission
-of the trader (as evidenced by the trader's signature), which the trader wanted
-to do anyways.  Recall that all validators of the DEX validate all the
+of the trader (as evidenced by the trader's signature). The worst a CEX could do
+is match an order, which the trader wanted to do anyways.  
+Recall that all validators of the DEX validate all the
 transactions of all subledgers, enforcing the rules of the system.
 
 We incentivize third party pen testers to hack into the validators and publish
