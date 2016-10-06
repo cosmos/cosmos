@@ -1,118 +1,138 @@
 Cosmos Plan
 -----------
 
-LAST UPDATED: Oct 3rd, 2016<br/>
+LAST UPDATED: Oct 6th, 2016<br/>
 NOTE: The details in this plan override what is currently in the whitepaper,
 and all other plans published prior.
 
 <hr />
 
 * Cosmos Foundation (CF) is a non-profit Switzerland Foundation. Its purpose is
-  to conduct the Cosmos Atom Sale, and to contract other entities for the
-  development of the Cosmos Essential Software and Services (CESS), and to help
-  fostor a community about the technology.
+  to conduct a Fundraiser designed to collect donations, to contract with
+  entities and their agents for the development of the Cosmos Essential
+  Software and Services (CESS), and to help foster a community around the CESS.
 
-* There will be a crowdfund for future staking tokens, called "atoms", that
+* CF is planning a Fundraiser for future staking tokens, called "atoms", that
   give the holder limited license to validate the Cosmos Hub and Dex. The
-  proceeds of the sale will go to the CF to develop the CESS.
+  contributions made in connection with the Fundraiser will go to the CF to
+  develop the CESS.
 
-* ATOMS ARE NOT AN INVESTMENT, SECURITY, MEDIUM OF EXCHANGE, OR STORE OF VALUE.
-
-* All in Bits, Inc (AIB) is a for-profit Delaware C-Corp behind Tendermint.
+* All in Bits, Inc. (AIB) is a for-profit Delaware C-Corp behind Tendermint.
   The CF has contracted with AIB to develop the CESS.
 
-* The CF has received several commitments for future token purchases.  The lead
-  funder has purchased 5% of all future genesis atoms.  Strategic partners have
-  purchased atoms at a discount rate of 25%.  Some other non-US and
-  US-accredited prefunders who have already expressed interest in the prefund
-  have purchased atoms at a discount rate of 12%.
+* The CF has received several commitments for donations from various
+  individuals that will be tied to a portion of future atoms.  The CF’s initial
+  donors committed an amount equal to 5% of CF’s initial donation goal. Further,
+  the CF has entered into a number of strategic partnerships and received
+  commitments for donations from interested individuals pre-Fundraiser for an
+  amount equal to [ XX %] of the CF fundraising goal. 
 
 * THE PREFUND IS CLOSED FOR THE GENERAL PUBLIC. If you have to ask about the
-  prefund now, you don't qualify.  The only exception is for strategic
-  partners, such as crypto exchanges, who would make ideal validators.
+  prefund now, you don't qualify. The only exception is for strategic partners,
+  such as crypto exchanges, who would make ideal validators.
 
-* The CF reserves the right to receive further funding in the future from
+* The CF reserves the right to receive further donations in the future from
   strategic partners at a discount rate of up to 25%.
 
-* Prior to Crowdfund day, the total number of atoms purchased as well as the
-  total amount of prefunding received, and a pseudonymous list of distinct
-  persons and entities along with their discount rates, will be published.
+* Before the first day the Fundraiser is opened, the total number of atoms
+  granted, the total amount of donations received, and a pseudonymous list of
+  distinct persons and entities along with their discount rates, will be
+  published.
 
-* The projected date of first day of the crowdfund is Q1 of 2017.
+* The projected date of the Fundraiser for all other parties, notwithstanding
+  the initial donors and pre-Fundraiser donors, is Q1 of 2017.
 
-* The crowdfund will last for at most 6 weeks.  After the crowdfund, no more
-  atoms will be sold by the CF (unless approved by the on-chain governance
-  mechanism).
+* At most the Fundraiser will last for 6 weeks. Note that after the Fundraiser,
+  no more atoms will be distributed by the CF (unless approved by the on-chain
+  governance mechanism).
 
-* Governance can approve proposals for the creation of new atoms. See the
-  whitepaper for details on the proposed governance mechanism.
+* Governance can approve proposals for the creation of new atoms. For further
+  information concerning the proposed on-chain governance mechanism for the
+  creation of more atoms, please see the whitepaper for details.
 
-* The atoms will not be available for usage and trading until after genesis
-  day, some time in Q3 2017 at the earliest.  Even after genesis day, there is
-  an initial vesting period.
+* The atoms will not be available for use until after genesis day. At the
+  earliest, genesis day is estimated to be sometime in Q3 2017. Even after
+  genesis day however, there is an initial vesting period.
 
-* Everyone's atoms will vest over a period of two years after Genesis. Unvested
-  atoms cannot be transferred until vested.  Unvested atoms will vest over
-  time, at a rate of 1/(24x365x2) of the account's atoms, every hour.
+* Atoms will vest over a period of two years after Genesis. Unvested atoms
+  cannot be transferred until vested. Unvested atoms will vest over time, at a
+  rate of 1/(24x365x2) of the account's atoms, every hour.
 
-* In the first day of the crowdfund, the price of an atom will be $0.10.  A
-  discount of 25% for strategic funders implies an atom price of $0.075.  A
-  discount of 12% for prefunders implies an atom price of $0.088.
+* In the first day of the Fundraiser, suggested donations per atom will be
+  $0.10. A discount of 25% for strategic funders implies an atom price of
+  $0.075. A discount of 12% for Pre-Fundraisers implies an atom price of
+  $0.088.
 
-* The crowdfund will be capped at a market-cap valuation of $9M ~ $11M.
-  More details will be released soon.
+* The CF’s fundraising goal will be capped at $9M ~ $11M. More details will be
+  released soon.
 
-* After the Crowdfund, the total number of atoms sold times 1/3 is
-  inflated and allocated for the CF, AIB, and the Lead Funders.
+* After the Fundraiser, the total number of atoms distributed multiplied by 1/3
+  is inflated and allocated for the CF, AIB, and the Initial Donors.
 
 * On Genesis day, the distribution of atoms will be split between:
   * CF (10%)
   * AIB (10%)
-  * Lead Funders (5%)
-  * Prefunders + Crowdfunders (75%)
+  * Initial Donors (5%)
+  * Pre-Fundraiser Donors + Fundraiser Donors (75%)
 
-* Upon completion of the Crowdfund, all the atom holders, including the CF and
-  AIB play the Delegation Game in a special purpose Ethereum smart contract
-  (which holds no Ether).  The top 100 validators after delegation will be
-  chosen as validators on Genesis.
+* Upon completion of the Fundraiser, all atom holders, including the CF and AIB
+  play the Delegation Game in a special purpose Ethereum smart contract (which
+  holds no Ether). The top 100 validators after delegation will be chosen as
+  validators on Genesis. For more information on the Delegation Game please
+  refer to the white paper for details.
 
-* Every validator must participate in governance, or else become inactivated
-  and eventually unbonded. Delegators who delegate atoms to such validators
-  will also likewise get their delegated atoms inactivated and eventually
-  unbonded.
+* Every validator must participate in governance, or else run the risk that
+  they will become inactivated and eventually unbonded.  Similarly, Delegators
+  who delegate atoms to validators who fail to participate in governance, risk
+  that their delegated atoms will be inactivated and eventually unbonded. 
 
 * 1/5 of the total number of atoms will be inflated every year and distributed
   back to the bonded and active atom holders (validators and delegators) for
   their work validating and securing the ledger.
 
-* Inactive or unbonded atom holders do not earn the inflationary atoms, and
-  are thus taxed.  This makes atoms ill-suited as a medium of exchange or a
-  store of value.  Instead, atoms are a tool, like Bitcoin miners are a tool.
+* Inactive or unbonded atom holders do not earn the inflationary atoms, and are
+  thus taxed. This makes atoms ill-suited as a medium of exchange or a store of
+  value. Instead, atoms are a tool, like Bitcoin miners are a tool. 
 
 * Bonding atoms and staking them put the atoms at risk of slashing. Validators
-  must run the sanctioned consensus protocol without deviating, or risk losing
-  some or all of their atoms; this requires expert ability to run secure
-  servers that can't get hacked. Delegators must choose who to validate to
+  must run the sanctioned consensus protocol without deviation, or risk losing
+  some or all of their atoms. Running the Cosmos sanctioned consensus protocol
+  requires expert ability to run secure servers that must take extraordinary
+  measures to prevent hacking. Delegators must choose who to validate to
   wisely, or risk losing those portions of atoms delegated to the incompetent,
   malicious, or hacked validator.
 
-* Tokens are virtual concepts on the blockchain.  All mentions of tokens, like
+* Tokens are virtual concepts on the blockchain. All mentions of tokens, like
   atoms, as if they were physical objects, are an approximation of what they
-  actually are.  As we've seen with the ETH/ETC hard-fork, political tensions
-  can cause the ledger to split.  Furthermore, there is no central entity that
-  is responsible for the upkeep of the blockchain.  Atoms are not a claim to
-  anything or anyone, not even the Cosmos Foundation.  The software may be
-  buggy, and even the theory may be flawed, causing confusion, contention, and
-  even economic harm for those involved.  There are a whole host of reasons why
-  atoms would make a terrible investment, especially to anyone who is new to
-  the space of cryptocurrencies.
+  actually represent.  As we have observed with the ETH/ETC hard-fork,
+  political tensions can cause the ledger to split. Furthermore, there is no
+  central entity that is responsible for the upkeep of the blockchain. Atoms
+  are not a claim to anything or anyone, not even the Cosmos Foundation. The
+  software may be buggy, and even its underlying theory may be flawed, causing
+  confusion, contention, and critical network failure for all those
+  participating in the Cosmos network.
 
-* The CF, AIB, and all funders as well as any atom token holders hold
-  each other harmless for any activity arising in relation to the Cosmos
-  Network.  All atom holders are free to fork, slash, and hack each other in
-  accordance with the spirit of the Cosmos Constitution.
+* The CF, AIB, all donors as well as any atom token holders or any Cosmos
+  network participant, understand and accept that the Cosmos Network is still
+  in an early development stage, and its application is experimental in nature
+  that carries significant operational, technological, regulatory, reputational
+  risk.  Nothing contained herein represents any form of warranty.  All
+  participants in the Cosmos Network understand and agree, to the fullest
+  extent permitted by applicable law, that no Cosmos Network participant will
+  hold any of the developers, contractors, third parties or any other Cosmos
+  Network participant liable for any and all damages or injury caused by or
+  related to the use of, or inability to use, the Cosmos Network and the CESS
+  under any cause of action in all jurisdictions, including, but not limited
+  to, actions for breach of warranty, breach of contract, negligence, Nor shall
+  any developers, contractors, third parties or Cosmos Network participants be
+  liable for any indirect, incidental, special, exemplary or consequential
+  damages, including for loss of profits, goodwill or data, in any way arising
+  out of the use of, or the inability to use of the Cosmos Network and the CESS
 
-* All validators and delegators must abided by the Cosmos Constitution.
+* All atom holders are free to fork, slash, and hack each other in accordance
+  with the spirit of the Cosmos Constitution.
+
+* All validators and delegators must abide by the Cosmos Constitution.
 
 * A more fleshed out list of risks will be published soon.
 
@@ -121,54 +141,57 @@ and all other plans published prior.
 ## Definitions
 
 **Cosmos Constitution**: A plainly written document that includes the social
-contract of the Cosmos Network.  All bonded validators and delegators must
-abide by the Cosomos Constitution.
+contract of the Cosmos Network. All bonded validators and delegators must abide
+by the Cosmos Constitution.
 
-**Cosmos Dex**: A distributed exchange zone that connects to the hub zone.  The
+**Cosmos Dex**: A distributed exchange zone that connects to the hub zone. The
 Cosmos Dex provides fast centralized matching with distributed custody of
 funds.
 
-**Cosmos Hub**: A zone that connects to many other zones.  The hub acts as a
+**Cosmos Hub**: A zone that connects to many other zones. The hub acts as a
 root custodian and facilitates token movement between zones.
 
 **Cosmos Hub Block Reward**: The blockchain will reward the Validators and
 Delegators in proportion to their bonded atoms, and afterwards account for any
-commissions that delegators pay to the delegated validators.  The reward will
-consist of two types -- transaction fees, and inflationary atoms.  The
-transction fees will be any fee collected by a validator.  In addition, there
+commissions that delegators pay to the delegated validators. The reward will
+consist of two types -- transaction fees, and inflationary atoms. The
+transaction fees will be any fee collected by a validator. In addition, there
 will be inflationary atoms at a rate of 1/5 of the total number of atoms per
-year.  Cosmos holders who do not put their atoms at stake by being a validator
+year. Cosmos holders who do not put their atoms at stake by being a validator
 or delegating to a validator will not receive any of the Cosmos Hub Block
 Rewards.
 
 **Cosmos Network**: Includes the Cosmos Hub, Dex, and all other connected
 zones.
 
+**Cosmos Network Participant**: any party, individual, enterprise, blockchain
+or network that uses, develops, creates or interacts with any aspect of the
+Cosmos Network or any component that constitutes the CESS.  
+
 **Delegator**: An atom holder who puts their atoms at stake by delegating its
-validating power and voting power to a validator.  They are still responsible
-for voting on proposals during the vesting period.  If they don't vote they
-will be penalized, but they will inherit the vote of the delegated validator.
+validating power and voting power to a validator. They are still responsible
+for voting on proposals during the vesting period. If they don't vote they will
+be penalized, but they will inherit the vote of the delegated validator.
 
 **Governance**: An ongoing process where the bonded atom holders can vote to
-ratify or reject proposals as proposed by any atom holder.  Proposals can
-change preset parameters, amend the Constitution, inflate the atom supply,
-and more.
+ratify or reject proposals as proposed by any atom holder. Proposals can change
+preset parameters, amend the Constitution, inflate the atom supply, and more.
 
 **Validator**: Validators are full nodes of a Cosmos zone that have the
-responsibility of committing blocks in that zone.  The Cosmos Hub will start
-with 100 validator spots.  Due to the limited number of validator spots, not
-everyone who has atoms can be a validator.  Instead, everyone else can bond
+responsibility of committing blocks in that zone. The Cosmos Hub will start
+with 100 validator spots. Due to the limited number of validator spots, not
+everyone who has atoms can be a validator. Instead, everyone else can bond
 atoms and delegate their consensus voting power to any of the 100 validators.
 Before Genesis, the Cosmos Crowdfund funders will play the Delegation Game to
 determine the top 100 bonded delegates who will become the genesis validators.
 Validators can lose some or all their stake if they get hacked, deviate from
-the sanctioned protocol, or otherwise collude to disrupt the network. 
+the sanctioned protocol, or otherwise collude to disrupt the network.
 
 ### Cosmos Essential Software and Services
 
 * **Tendermint**
 * **Cosmos Hub**
-* **Cosmoe Dex**
+* **Cosmos Dex**
 * **Ethereum Peg**
 * **Bitcoin Peg**
 * **EVM Zone**
