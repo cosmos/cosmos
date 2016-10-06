@@ -107,18 +107,29 @@ and all other plans published prior.
   atoms would make a terrible investment, especially to anyone who is new to
   the space of cryptocurrencies.
 
+* The CF, AIB, and all funders as well as any atom token holders hold
+  each other harmless for any activity arising in relation to the Cosmos
+  Network.  All atom holders are free to fork, slash, and hack each other in
+  accordance with the spirit of the Cosmos Constitution.
+
+* All validators and delegators must abided by the Cosmos Constitution.
+
 * A more fleshed out list of risks will be published soon.
 
-* A roadmap will be released soon.
+* A roadmap and the constitution will be released soon.
 
 ## Definitions
 
-**Cosmos Dex**: A Cosmos dex is a distributed exchange zone that connects to
-the hub zone.  The Cosmos Dex provides fast centralized matching with
-distributed custody of funds.
+**Cosmos Constitution**: A plainly written document that includes the social
+contract of the Cosmos Network.  All bonded validators and delegators must
+abide by the Cosomos Constitution.
 
-**Cosmos Hub**: A Cosmos hub is a zone that connects to many other zones.  The
-hub acts as a root custodian and facilitates token movement between zones.
+**Cosmos Dex**: A distributed exchange zone that connects to the hub zone.  The
+Cosmos Dex provides fast centralized matching with distributed custody of
+funds.
+
+**Cosmos Hub**: A zone that connects to many other zones.  The hub acts as a
+root custodian and facilitates token movement between zones.
 
 **Cosmos Hub Block Reward**: The blockchain will reward the Validators and
 Delegators in proportion to their bonded atoms, and afterwards account for any
@@ -137,6 +148,11 @@ zones.
 validating power and voting power to a validator.  They are still responsible
 for voting on proposals during the vesting period.  If they don't vote they
 will be penalized, but they will inherit the vote of the delegated validator.
+
+**Governance**: An ongoing process where the bonded atom holders can vote to
+ratify or reject proposals as proposed by any atom holder.  Proposals can
+change preset parameters, amend the Constitution, inflate the atom supply,
+and more.
 
 **Validator**: Validators are full nodes of a Cosmos zone that have the
 responsibility of committing blocks in that zone.  The Cosmos Hub will start
