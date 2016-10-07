@@ -33,7 +33,7 @@ document.  Please check regularly for updates!_
     * [Federated Name Resolution System](#federated-name-resolution-system)
   * [Issuance and Incentives](#issuance-and-incentives)
     * [The Atom Token](#the-atom-token)
-      * [Crowdfund](#crowdfund)
+      * [Fundraiser](#fundraiser)
       * [Vesting](#vesting)
     * [Limitations on the Number of
     Validators](#limitations-on-the-number-of-validators)
@@ -645,19 +645,19 @@ validators.
 The `BurnAtomTx` transaction can be used to recover any proportionate amount of
 tokens from the reserve pool.
 
-#### Crowdfund
+#### Fundraiser
 
 The initial distribution of atom tokens and validators on Genesis will go to the
-funders of the Cosmos Crowdsale (75%), pre-funders (5%), and ALL IN BITS, Inc (20%).
+donors of the Cosmos Fundraiser (75%), lead donors (5%), and ALL IN BITS, Inc (20%).
 From genesis onward, 1/3 of the total amount of atoms will be rewarded to bonded
 validators and delegators every year.
 
-See the [Crowdfund Plan](https://github.com/cosmos/cosmos/blob/master/PLAN.md)
+See the [Cosmos Plan](https://github.com/cosmos/cosmos/blob/master/PLAN.md)
 for additional details.
 
 #### Vesting
 
-To prevent the crowdfund from attracting short-term speculators only interested
+To prevent the fundraiser from attracting short-term speculators only interested
 in pump-and-dump schemes, the genesis atoms will not be transferrable until
 they have vested.  Each account will vest atoms over a period of 2 years at a
 constant rate every hour, determined by the total number of genesis atoms / (2 *
