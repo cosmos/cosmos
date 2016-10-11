@@ -56,14 +56,14 @@ and all other plans published prior.
 
 * Atoms will vest over a period of two years after Genesis. Unvested atoms
   cannot be transferred until vested. Unvested atoms will vest over time, at a
-  rate of 1/(24x365x2) of the account's atoms, every hour.
+  rate of 1/(24x365x2) of the account's initial (genesis) atoms, every hour.
 
 * In the first day of the Fundraiser, suggested donations per atom will be
   $0.10. A discount of 25% for strategic funders implies an atom price of
   $0.075. A discount of 12% for Pre-Fundraisers implies an atom price of
   $0.088.
 
-* The CF’s fundraising goal will be capped at $9M ~ $11M. More details will be
+* The CF’s fundraising goal may be capped. More details will be
   released soon.
 
 * After the Fundraiser, the total number of atoms distributed multiplied by 1/3
@@ -82,13 +82,15 @@ and all other plans published prior.
   refer to the white paper for details.
 
 * Every validator must participate in governance, or else run the risk that
-  they will become inactivated and eventually unbonded.  Similarly, Delegators
-  who delegate atoms to validators who fail to participate in governance, risk
-  that their delegated atoms will be inactivated and eventually unbonded. 
+  they will become inactivated and eventually unbonded.  Delegators who
+  delegate atoms to such validators will also likewise get their delegated
+  atoms inactivated and eventually unbonded. 
 
 * 1/5 of the total number of atoms will be inflated every year and distributed
   back to the bonded and active atom holders (validators and delegators) for
   their work validating and securing the ledger.
+
+* The Unbonding Period is 1 month long.
 
 * Inactive or unbonded atom holders do not earn the inflationary atoms, and are
   thus taxed. This makes atoms ill-suited as a medium of exchange or a store of
@@ -140,6 +142,19 @@ and all other plans published prior.
 
 ## Definitions
 
+**Activate Atoms**: Atoms that are staked by active validators (or delegators
+that delegate to active validators).  A validator that goes offline or fails to
+participate in governance will become inactivated.  Their atoms and delegated
+atoms then become inactive, before eventually becoming unbonded.  Inactive
+atoms do not earn transaction fees or inflationary atoms.  Inactive atoms may
+become reactivated by fixing the infraction.
+
+**Bonded Atoms**: Atoms that have been posted as collateral and are “at stake”,
+either directly as a validator, or indirectly as a delegator delegating to
+another validator.  Bonded atoms are at risk of being slashed partially or
+completely if the validator gets hacked or is used to coordinate an attack on
+the network.
+
 **Cosmos Constitution**: A plainly written document that includes the social
 contract of the Cosmos Network. All bonded validators and delegators must abide
 by the Cosmos Constitution.
@@ -169,13 +184,16 @@ or network that uses, develops, creates or interacts with any aspect of the
 Cosmos Network or any component that constitutes the CESS.  
 
 **Delegator**: An atom holder who puts their atoms at stake by delegating its
-validating power and voting power to a validator. They are still responsible
-for voting on proposals during the vesting period. If they don't vote they will
-be penalized, but they will inherit the vote of the delegated validator.
+validating power and voting power to a validator.  Delegators risk losing their
+tokens if the delegated validator gets hacked or participates in an attack.
 
 **Governance**: An ongoing process where the bonded atom holders can vote to
 ratify or reject proposals as proposed by any atom holder. Proposals can change
 preset parameters, amend the Constitution, inflate the atom supply, and more.
+
+**Unbonding Period**: A fixed amount of time.  Previously bonded atoms must
+post a special UnbondTx transaction and wait the unbonding period before atoms
+become freely transferrable.
 
 **Validator**: Validators are full nodes of a Cosmos zone that have the
 responsibility of committing blocks in that zone. The Cosmos Hub will start
