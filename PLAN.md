@@ -7,31 +7,31 @@ and all other plans published prior.
 
 <hr />
 
-* Cosmos Foundation (CF) is a non-profit Switzerland Foundation. Its purpose is
+* Cosmos Network Foundation (CNF) is a non-profit Switzerland Foundation. Its purpose is
   to conduct a Fundraiser designed to collect donations, to contract with
   entities and their agents for the development of the Cosmos Essential
   Software and Services (CESS), and to help foster a community around the CESS.
 
-* CF is planning a Fundraiser for future staking tokens, called "atoms", that
+* CNF is planning a Fundraiser for future staking tokens, called "atoms", that
   give the holder limited license to validate the Cosmos Hub and Dex. The
-  contributions made in connection with the Fundraiser will go to the CF to
+  contributions made in connection with the Fundraiser will go to the CNF to
   develop the CESS.
 
 * All in Bits, Inc. (AIB) is a for-profit Delaware C-Corp behind Tendermint.
-  The CF has contracted with AIB to develop the CESS.
+  The CNF has contracted with AIB to develop the CESS.
 
-* The CF has received several commitments for donations from various
-  individuals that will be tied to a portion of future atoms.  The CF’s initial
-  donors committed an amount equal to 5% of CF’s initial donation goal. Further,
-  the CF has entered into a number of strategic partnerships and received
+* The CNF has received several commitments for donations from various
+  individuals that will be tied to a portion of future atoms.  The CNF’s initial
+  donors committed an amount equal to 5% of CNF’s initial donation goal. Further,
+  the CNF has entered into a number of strategic partnerships and received
   commitments for donations from interested individuals pre-Fundraiser for an
-  amount equal to [ XX %] of the CF fundraising goal. 
+  amount equal to [ XX %] of the CNF fundraising goal. 
 
 * THE PREFUND IS CLOSED FOR THE GENERAL PUBLIC. If you have to ask about the
   prefund now, you don't qualify. The only exception is for strategic partners,
   such as crypto exchanges, who would make ideal validators.
 
-* The CF reserves the right to receive further donations in the future from
+* The CNF reserves the right to receive further donations in the future from
   strategic partners at a discount rate of up to 25%.
 
 * Before the first day the Fundraiser is opened, the total number of atoms
@@ -43,7 +43,7 @@ and all other plans published prior.
   the initial donors and pre-Fundraiser donors, is Q1 of 2017.
 
 * At most the Fundraiser will last for 6 weeks. Note that after the Fundraiser,
-  no more atoms will be distributed by the CF (unless approved by the on-chain
+  no more atoms will be distributed by the CNF (unless approved by the on-chain
   governance mechanism).
 
 * Governance can approve proposals for the creation of new atoms. For further
@@ -63,19 +63,19 @@ and all other plans published prior.
   $0.075. A discount of 12% for Pre-Fundraisers implies an atom price of
   $0.088.
 
-* The CF’s fundraising goal may be capped. More details will be
+* The CNF’s fundraising goal may be capped. More details will be
   released soon.
 
 * After the Fundraiser, the total number of atoms distributed multiplied by 1/3
-  is inflated and allocated for the CF, AIB, and the Initial Donors.
+  is inflated and allocated for the CNF, AIB, and the Initial Donors.
 
 * On Genesis day, the distribution of atoms will be split between:
-  * CF (10%)
+  * CNF (10%)
   * AIB (10%)
   * Initial Donors (5%)
   * Pre-Fundraiser Donors + Fundraiser Donors (75%)
 
-* Upon completion of the Fundraiser, all atom holders, including the CF and AIB
+* Upon completion of the Fundraiser, all atom holders, including the CNF and AIB
   play the Delegation Game in a special purpose Ethereum smart contract (which
   holds no Ether). The top 100 validators after delegation will be chosen as
   validators on Genesis. For more information on the Delegation Game please
@@ -109,12 +109,12 @@ and all other plans published prior.
   actually represent.  As we have observed with the ETH/ETC hard-fork,
   political tensions can cause the ledger to split. Furthermore, there is no
   central entity that is responsible for the upkeep of the blockchain. Atoms
-  are not a claim to anything or anyone, not even the Cosmos Foundation. The
+  are not a claim to anything or anyone, not even the Cosmos Network Foundation. The
   software may be buggy, and even its underlying theory may be flawed, causing
   confusion, contention, and critical network failure for all those
   participating in the Cosmos network.
 
-* The CF, AIB, all donors as well as any atom token holders or any Cosmos
+* The CNF, AIB, all donors as well as any atom token holders or any Cosmos
   network participant, understand and accept that the Cosmos Network is still
   in an early development stage, and its application is experimental in nature
   that carries significant operational, technological, regulatory, reputational

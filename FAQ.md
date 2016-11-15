@@ -142,7 +142,7 @@ safety, like "don't send money to zones you don't know".
 
 We can accomodate other PoS consensus mechanisms as long as they have a very
 clean and consise light-client verification protocol.  Or, even Tendermint might
-upgrade to support additional features.  It will be up to the Cosmos Foundation
+upgrade to support additional features.  It will be up to the Cosmos Network Foundation
 and the Cosmos governance to decide whether to support them.  It isn't necessary
 if there can be adapter zones.  That's what a Bitcoin peg zone is -- an adapter
 zone to sit between PoW and Tendermint.
