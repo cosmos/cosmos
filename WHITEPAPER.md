@@ -648,9 +648,10 @@ tokens from the reserve pool.
 #### Fundraiser
 
 The initial distribution of atom tokens and validators on Genesis will go to the
-donors of the Cosmos Fundraiser (75%), lead donors (5%), and ALL IN BITS, Inc (20%).
-From genesis onward, 1/3 of the total amount of atoms will be rewarded to bonded
-validators and delegators every year.
+donors of the Cosmos Fundraiser (75%), lead donors (5%), Cosmos Network
+Foundation (10%), and ALL IN BITS, Inc (10%).  From genesis onward, 1/3 of the
+total amount of atoms will be rewarded to bonded validators and delegators
+every year.
 
 See the [Cosmos Plan](https://github.com/cosmos/cosmos/blob/master/PLAN.md)
 for additional details.
