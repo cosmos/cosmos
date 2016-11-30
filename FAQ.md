@@ -156,14 +156,14 @@ could in the future).  Different atoms bonded in each zone, but all the same
 atom token.
 
 
-- **Do the validatiors that are chosen, validate transactions for every zone and
+- **Do the validators that are chosen, validate transactions for every zone and
   Hub?**
 
 No.  Validators for a zone only validate transactions for their zone.
 
 
 - **The whitepaper states "Zones communicate with one another through a hub,
-  primarily in the form of assymetric transfer of some set of tokens from one
+  primarily in the form of asymmetric transfer of some set of tokens from one
 zone to another." Can you talk about what exactly the asymmetric transfer is?**
 
 It's maybe not the best term, but we coined it to refer to the kind of
@@ -174,8 +174,8 @@ is that there is a common crypto "depository" -- the Cosmos Hub.
 
 
 - **According to the whitepaper: "Cosmos reflects this position in that it makes
-  no distinction between hubs - there is no "top" hub, and the most popular or
-successful hub is a matter of adoption by zones. "  In your view what will make
+  no distinction between hubs - there is no 'top' hub, and the most popular or
+successful hub is a matter of adoption by zones."  In your view what will make
 hubs more successful and what will make them unsuccessful?**
 
 There will be different features... speed (limiting to 100 validators),
@@ -220,7 +220,7 @@ In some way it doesn't matter, because even if there are attacks and mishaps
 along the way, eventually through hard-forks the blockchain can purge the bad
 actors.  It's antifragile.
 
-- **Can you give some details about what you took(derived) from the DLS
+- **Can you give some details about what you took (derived) from the DLS
   consensus algorithm?**
 
 The locking mechanism was something that I hadn't seen in other papers, like
