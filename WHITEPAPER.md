@@ -180,7 +180,7 @@ via super-majority (+⅔) voting and a locking mechanism.  Together, they ensure
 that:
 
 * ⅓+ voting power must be Byzantine to cause a violation of safety, where more
-  than two values are committed.  
+  than two values are committed.
 * if any set of validators ever succeeds in violating safety, or even attempts
   to do so, they can be identified by the protocol.  This includes both voting
 for conflicting blocks and broadcasting unjustified votes.
@@ -269,11 +269,11 @@ fit for a distributed exchange, which will be supported as well.
 
 Cosmos is not just a single distributed ledger, and the Cosmos Hub isn't a
 walled garden or the center of its universe.  We are designing a protocol for an
-open network of distributed legers that can serve as a new foundation for 
+open network of distributed legers that can serve as a new foundation for
 future financial systems, based on principles of cryptography, sound economics,
 consensus theory, transparency, and accountability.
 
-### Tendermint-BFT 
+### Tendermint-BFT
 
 The Cosmos Hub is the first public blockchain in the Cosmos Network, powered by
 Tendermint's BFT consensus algorithm.  The Tendermint open-source project was
@@ -412,9 +412,9 @@ allows a blockchain to prove to any observer that the given packet was indeed
 published by the sender's application, via a Merkle-proof to the recent
 block-hash.
 
-By splitting the IBC mechanics into two separate transactions, we allow the 
-native fee market-mechanism of the receiving chain to determine which packets 
-get committed (i.e. acknowledged), while allowing for complete freedom on the 
+By splitting the IBC mechanics into two separate transactions, we allow the
+native fee market-mechanism of the receiving chain to determine which packets
+get committed (i.e. acknowledged), while allowing for complete freedom on the
 sending chain as to how many outbound packets are allowed.
 
 ![Figure of Zone1, Zone2, and Hub IBC without
@@ -512,7 +512,7 @@ peg-contract on Ethereum while keeping the pegged-ether on the peg-zone. Worse,
 peg-contract by deviating from the original pegging logic of the peg-zone.
 
 It is possible to address these issues by designing the peg to be totally
-accountable.  For example, all IBC packets, from the hub and 
+accountable.  For example, all IBC packets, from the hub and
 the origin, might require acknowledgement by the peg-zone in such a way that all
 state transitions of the peg-zone can be efficiently challenged and verified by
 either the hub or the origin's peg-contract.  The Hub and the origin should
@@ -533,9 +533,9 @@ large group of trusted notaries and institutions.
 
 A result of this integration could be, for instance, allowing anyone with
 an account at a bank on the zone to move dollars from their bank account
-to other accounts on the zone, or to the hub, or to another zone entirely.  
-In this regard, the Cosmos Hub can act as a seamless conduit between fiat 
-currencies and cryptocurrencies, removing the barriers that have until now limited 
+to other accounts on the zone, or to the hub, or to another zone entirely.
+In this regard, the Cosmos Hub can act as a seamless conduit between fiat
+currencies and cryptocurrencies, removing the barriers that have until now limited
 their interoperability to the realm of exchanges.
 
 ### Ethereum Scaling
@@ -560,7 +560,7 @@ allows Cosmos zones to act as pegs to other cryptocurrencies such as Ethereum or
 Bitcoin, and it also permits derivatives of those blockchains, utilizing the
 same codebase but with a different validator set and initial distribution. This
 allows many existing cryptocurrency frameworks, such as those of Ethereum,
-Zerocash, Bitcoin, CryptoNote and so on, to be used with Tendermint Core, 
+Zerocash, Bitcoin, CryptoNote and so on, to be used with Tendermint Core,
 which is a higher performance consensus engine, on a common network, opening tremendous
 opportunity for interoperability across platforms.  Furthermore, as a
 multi-asset blockchain, a single transaction may contain multiple inputs and
@@ -569,7 +569,7 @@ directly as a platform for decentralized exchange, though orders are assumed to
 be matched via other platforms. Alternatively, a zone can serve as a distributed
 fault-tolerant exchange (with orderbooks), which can be a strict improvement
 over existing centralized cryptocurrency exchanges which tend to get hacked over
-time. 
+time.
 
 Zones can also serve as blockchain-backed versions of enterprise and government
 systems, where pieces of a particular service that are traditionally run by an
@@ -773,12 +773,12 @@ include some unvested atoms, if any.
 ### Governance Specification ###################################################
 
 The Cosmos Hub is operated by a distributed organization that requires a well-defined
-governance mechanism in order to coordinate various changes to the blockchain, 
-such as the variable parameters of the system, as well as software upgrades and 
+governance mechanism in order to coordinate various changes to the blockchain,
+such as the variable parameters of the system, as well as software upgrades and
 constitutional amendments.
 
 All validators are responsible for voting on all proposals.  Failing to vote on
-a proposal in a timely manner will result in the validator being deactivated 
+a proposal in a timely manner will result in the validator being deactivated
 automatically for a period of time called the `AbsenteeismPenaltyPeriod`
 (DEFAULT 1 week).
 
@@ -890,7 +890,7 @@ model of Federated Byzantine Agreement wherein the processes participating in
 consensus do not constitute a fixed and globally known set.  Rather, each
 process node curates one or more "quorum slices", each constituting a set of
 trusted processes. A "quorum" in Stellar is defined to be a set of nodes that
-contain at least one quorum slice for each node in the set, such that agreement 
+contain at least one quorum slice for each node in the set, such that agreement
 can be reached.
 
 The security of the Stellar mechanism relies on the assumption that the
@@ -920,17 +920,17 @@ vertical scalability, such as increasing the block size, without the negative
 economic consequences typically associated with such a change, such as the
 disproportionately large impact on small miners.  This improvement is achieved
 by separating leader election from transaction broadcast: leaders are first
-elected by proof-of-work in "micro-blocks", and then able to broadcast
-transactions to be committed until a new micro-block is found. This reduces the
+elected by proof-of-work in "key-blocks", and then able to broadcast
+transactions to be committed until a new key-block is found. This reduces the
 bandwidth requirements necessary to win the PoW race, allowing small miners to
 more fairly compete, and allowing transactions to be committed more regularly by
-the last miner to find a micro-block.
+the last miner to find a key-block.
 
 #### Casper
 
 Casper [\[16\]][16] is a proposed proof-of-stake consensus algorithm for
-Ethereum.  Its prime mode of operation is "consensus-by-bet".  By letting 
-validators iteratively bet on which block they believe will become committed 
+Ethereum.  Its prime mode of operation is "consensus-by-bet".  By letting
+validators iteratively bet on which block they believe will become committed
 into the blockchain based on the other bets that they have seen so far,
 finality can be achieved eventually.
 [link](https://blog.ethereum.org/2015/12/28/understanding-serenity-part-2-casper/).
@@ -1004,7 +1004,7 @@ Ethereum Virtual Machine across the shared state space. Multiple research
 efforts are underway at this time. [\[18\]][18][\[22\]][22]
 
 ##### Cosmos vs Ethereum 2.0 Mauve
- 
+
 Cosmos and Ethereum 2.0 Mauve [\[22\]][22] have different design goals.
 
 * Cosmos is specifically about tokens.  Mauve is about scaling general computation.
@@ -1078,7 +1078,7 @@ other than the implicit opportunity cost paid by miners for mining an orphaned
 block.
 
 
-### Tendermint Consensus 
+### Tendermint Consensus
 
 We call the voting stages _PreVote_ and _PreCommit_. A vote can be for a
 particular block or for _Nil_.  We call a collection of +⅔ PreVotes for a single
@@ -1276,7 +1276,7 @@ by a quorum of validators (by voting power).
 
 Additional TMSP messages allow the application to keep track of and change the
 validator set, and for the application to receive the block information, such as
-the height and the commit votes.  
+the height and the commit votes.
 
 TMSP requests/responses are simple Protobuf messages.  Check out the [schema
 file](https://github.com/tendermint/tmsp/blob/master/types/types.proto).
