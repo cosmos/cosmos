@@ -155,8 +155,7 @@ determined by the amount of staking tokens bonded as collateral.
 
 _NOTE: Fractions like ⅔ and ⅓ refer to fractions of the total voting power,
 never the total number of validators, unless all the validators have equal
-weight._
-_NOTE: +⅔ means "more than ⅔", while ⅓+ means "⅓ or more"._
+weight. >⅔ means "more than ⅔", ≥⅓ means "at least ⅓"._
 
 ### Consensus
 
@@ -176,10 +175,10 @@ The full details of the protocol are described
 [here](https://github.com/tendermint/tendermint/wiki/Byzantine-Consensus-Algorithm).
 
 Tendermint’s security derives from its use of optimal Byzantine fault-tolerance
-via super-majority (+⅔) voting and a locking mechanism.  Together, they ensure
+via super-majority (>⅔) voting and a locking mechanism.  Together, they ensure
 that:
 
-* ⅓+ voting power must be Byzantine to cause a violation of safety, where more
+* ≥⅓ voting power must be Byzantine to cause a violation of safety, where more
   than two values are committed.  
 * if any set of validators ever succeeds in violating safety, or even attempts
   to do so, they can be identified by the protocol.  This includes both voting
@@ -202,7 +201,7 @@ A major benefit of Tendermint's consensus algorithm is simplified light client
 security, making it an ideal candidate for mobile and internet-of-things use
 cases.  While a Bitcoin light client must sync chains of block headers and find
 the one with the most proof of work, Tendermint light clients need only to keep
-up with changes to the validator set, and then verify the +⅔ PreCommits
+up with changes to the validator set, and then verify the >⅔ PreCommits
 in the latest block to determine the latest state.
 
 Succinct light client proofs also enable [inter-blockchain
@@ -384,7 +383,7 @@ supply.
 
 Atoms of the Cosmos Hub may be staked by validators of a zone connected to the
 Hub.  While double-spend attacks on these zones would result in the slashing of
-atoms with Tendermint's fork-accountability, a zone where +⅔ of the voting power
+atoms with Tendermint's fork-accountability, a zone where >⅔ of the voting power
 are Byzantine can commit invalid state.  The Cosmos Hub does not verify or
 execute transactions committed on other zones, so it is the responsibility of
 users to send tokens to zones that they trust.  In the future, the Cosmos Hub's
@@ -505,10 +504,10 @@ withdrawal address on Ethereum. An IBC packet proving that the transaction
 occured on the peg-zone can be posted to the Ethereum peg-contract to allow the
 ether to be withdrawn.
 
-Of course, the risk of such a pegging contract is a rogue validator set.  ⅓+
+Of course, the risk of such a pegging contract is a rogue validator set.  ≥⅓
 Byzantine voting power could cause a fork, withdrawing ether from the
 peg-contract on Ethereum while keeping the pegged-ether on the peg-zone. Worse,
-+⅔ Byzantine voting power can steal ether outright from those who sent it to the
+>⅔ Byzantine voting power can steal ether outright from those who sent it to the
 peg-contract by deviating from the original pegging logic of the peg-zone.
 
 It is possible to address these issues by designing the peg to be totally
@@ -584,7 +583,7 @@ to a distributed third party.
 
 Some claim that a major problem with consistency-favouring consensus algorithms
 like Tendermint is that any network partition which causes there to be no single
-partition with +⅔ voting power (e.g. ⅓+ going offline) will halt consensus
+partition with >⅔ voting power (e.g. ≥⅓ going offline) will halt consensus
 altogether. The Cosmos architecture can help mitigate this problem by using a global
 hub with regional autonomous zones, where voting power for each zone are
 distributed based on a common geographic region.  For instance, a common
@@ -727,8 +726,8 @@ blockchain. In these cases, the validators can coordinate out of band to force
 the timeout of these malicious validators, if there is a supermajority
 consensus.
 
-In situations where the Cosmos Hub halts due to a ⅓+ coalition of voting power
-going offline, or in situations where a ⅓+ coalition of voting power censor
+In situations where the Cosmos Hub halts due to a ≥⅓ coalition of voting power
+going offline, or in situations where a ≥⅓ coalition of voting power censor
 evidence of malicious behavior from entering the blockchain, the hub must
 recover with a hard-fork reorg-proposal.  (Link to "Forks and Censorship
 Attacks").
@@ -937,7 +936,7 @@ finality can be achieved eventually.
 This is an active area of research by the Casper team.  The challenge is in
 constructing a betting mechanism that can be proven to be an evolutionarily
 stable strategy.  The main benefit of Casper as compared to Tendermint may be in
-offering "availability over consistency" -- consensus does not require a +⅔
+offering "availability over consistency" -- consensus does not require a >⅔
 quorum of voting power -- perhaps at the cost of commit speed or
 implementation complexity.
 
@@ -1081,9 +1080,9 @@ block.
 ### Tendermint Consensus 
 
 We call the voting stages _PreVote_ and _PreCommit_. A vote can be for a
-particular block or for _Nil_.  We call a collection of +⅔ PreVotes for a single
-block in the same round a _Polka_, and a collection of +⅔ PreCommits for a
-single block in the same round a _Commit_.  If +⅔ PreCommit for Nil in the same
+particular block or for _Nil_.  We call a collection of >⅔ PreVotes for a single
+block in the same round a _Polka_, and a collection of >⅔ PreCommits for a
+single block in the same round a _Commit_.  If >⅔ PreCommit for Nil in the same
 round, they move to the next round.
 
 Note that strict determinism in the protocol incurs a weak synchrony assumption
@@ -1091,7 +1090,7 @@ as faulty leaders must be detected and skipped.  Thus, validators wait some
 amount of time, _TimeoutPropose_, before they Prevote Nil, and the value of
 TimeoutPropose increases with each round.  Progression through the rest of a
 round is fully asychronous, in that progress is only made once a validator hears
-from +⅔ of the network.  In practice, it would take an extremely strong
+from >⅔ of the network.  In practice, it would take an extremely strong
 adversary to indefinetely thwart the weak synchrony assumption (causing the
 consensus to fail to ever commit a block), and doing so can be made even more
 difficult by using randomized values of TimeoutPropose on each validator.
@@ -1116,7 +1115,7 @@ The full details of the protocol are described
 ### Tendermint Light Clients
 
 The need to sync all block headers is eliminated in Tendermint-PoS as the
-existence of an alternative chain (a fork) means ⅓+ of bonded stake can be
+existence of an alternative chain (a fork) means ≥⅓ of bonded stake can be
 slashed.  Of course, since slashing requires that _someone_ share evidence of a
 fork, light clients should store any block-hash commits that it sees.
 Additionally, light clients could periodically stay synced with changes to the
@@ -1189,7 +1188,7 @@ light-client LRA security.
 
 ### Overcoming Forks and Censorship Attacks
 
-Due to the definition of a block commit, any ⅓+ coalition of voting power can
+Due to the definition of a block commit, any ≥⅓ coalition of voting power can
 halt the blockchain by going offline or not broadcasting their votes. Such a
 coalition can also censor particular transactions by rejecting blocks that
 include these transactions, though this would result in a significant proportion
@@ -1217,7 +1216,7 @@ refrigerator may accept any reorg-proposal signed by +½ of the original
 validators by voting power.
 
 No non-synchronous Byzantine fault-tolerant algorithm can come to consensus when
-⅓+ of voting power are dishonest, yet a fork assumes that ⅓+ of voting power
+≥⅓ of voting power are dishonest, yet a fork assumes that ≥⅓ of voting power
 have already been dishonest by double-signing or lock-changing without
 justification.  So, signing the reorg-proposal is a coordination problem that
 cannot be solved by any non-synchronous protocol (i.e. automatically, and
@@ -1231,8 +1230,8 @@ signed.
 Assuming that the external coordination medium and protocol is robust, it
 follows that forks are less of a concern than censorship attacks.
 
-In addition to forks and censorship, which require ⅓+ Byzantine voting power, a
-coalition of +⅔ voting power may commit arbitrary, invalid state.  This is
+In addition to forks and censorship, which require ≥⅓ Byzantine voting power, a
+coalition of >⅔ voting power may commit arbitrary, invalid state.  This is
 characteristic of any (BFT) consensus system. Unlike double-signing, which
 creates forks with easily verifiable evidence, detecting committment of an
 invalid state requires non-validating peers to verify whole blocks, which
@@ -1539,7 +1538,7 @@ An `IBCBlockCommitTx` transaction is composed of:
   needed to verify vote signatures
 - `BlockHeight (int)`: The height of the commit
 - `BlockRound (int)`: The round of the commit
-- `Commit ([]Vote)`: The +⅔ Tendermint `Precommit` votes that comprise a block
+- `Commit ([]Vote)`: The >⅔ Tendermint `Precommit` votes that comprise a block
   commit
 - `ValidatorsHash ([]byte)`: A Merkle-tree root hash of the new validator set
 - `ValidatorsHashProof (SimpleProof)`: A SimpleTree Merkle-proof for proving the
