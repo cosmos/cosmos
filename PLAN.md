@@ -1,11 +1,10 @@
-Cosmos Plan
------------
+# Cosmos Plan
 
 LAST UPDATED: Feb 10th, 2017<br/>
-NOTE: The details in this plan override what is currently in the whitepaper,
-and all other plans published prior.
+_NOTE: The details in this plan override what is currently in the whitepaper,
+and all other plans published prior._
 
-<hr />
+----------
 
 * Interchain Foundation (ICF) is a non-profit Switzerland Foundation. Its purpose is
   to conduct a Fundraiser designed to collect donations, to contract with
@@ -206,11 +205,29 @@ determine the top 100 bonded delegates who will become the genesis validators.
 Validators can lose some or all their stake if they get hacked, deviate from
 the sanctioned protocol, or otherwise collude to disrupt the network.
 
-### Cosmos Essential Software and Services
+### Cosmos Roadmap
 
-* **Tendermint**
-* **Cosmos Hub**
-* **Cosmos Dex**
-* **Ethereum Peg**
-* **Bitcoin Peg**
-* **EVM Zone**
+_See the [Cosmos Roadmap](https://cosmos.network/blog/cosmos-roadmap) for more info._
+
+#### Cosmos Essential Software and Services
+
+ - **Tendermint**
+ - **Basecoin Framework**
+ - **Hub** (IBC, PoS/Delegation, Governance)
+ - **Bitcoin and Ethereum bridges**
+ - **DEX**
+ - **Ethermint**
+
+#### Cosmos Auxiliary Software and Services
+
+ - **Blockchain Explorer**
+ - **Fluidity Smart Contract Framework**
+ - **Community Events and Support**
+ - **Additional Zones**
+ - **Cosmic Grants**
+
+#### Cosmos Development Timeline
+
+The development timeline for Cosmos is split across five eras: Synthesis,
+Atomic Era, Galactic Era, Planetary Era, and Lunar Era.
+
