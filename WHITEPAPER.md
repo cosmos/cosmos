@@ -16,7 +16,7 @@ document.  Please check regularly for updates!_
     * [Consensus](#consensus)
     * [Light Clients](#light-clients)
     * [Preventing Attacks](#preventing-attacks)
-    * [TMSP](#tmsp)
+    * [ABCI](#abci)
   * [Cosmos Overview](#cosmos-overview)
     * [Tendermint-BFT](#tendermint-bft)
     * [Governance](#governance)
@@ -67,7 +67,7 @@ document.  Please check regularly for updates!_
     * [Preventing Long Range Attacks](#preventing-long-range-attacks)
     * [Overcoming Forks and Censorship
     Attacks](#overcoming-forks-and-censorship-attacks)
-    * [TMSP Specification](#tmsp-specification)
+    * [ABCI Specification](#abci-specification)
     * [IBC Packet Delivery
     Acknowledgement](#ibc-packet-delivery-acknowledgement)
     * [Merkle Tree &amp; Proof
@@ -215,27 +215,27 @@ spends](#preventing-long-range-attacks) and
 [censorship](#overcoming-forks-and-censorship-attacks). These are discussed more
 fully in the [appendix](#appendix).
 
-### TMSP
+### ABCI 
 
 The Tendermint consensus algorithm is implemented in a program called Tendermint
 Core.  Tendermint Core is an application-agnostic "consensus engine" that can
 turn any deterministic blackbox application into a distributedly replicated
 blockchain. Tendermint Core connects to blockchain
-applications via the Tendermint Socket Protocol (TMSP) [\[17\]][17]. Thus, TMSP
+applications via the Application Blockchain Interface (ABCI) [\[17\]][17]. Thus, ABCI
 allows for blockchain applications to be programmed in any language, not just
 the programming language that the consensus engine is written in.  Additionally,
-TMSP makes it possible to easily swap out the consensus layer of any existing
+ABCI makes it possible to easily swap out the consensus layer of any existing
 blockchain stack.
 
 We draw an analogy with the well-known cryptocurrency Bitcoin. Bitcoin is a
 cryptocurrency blockchain where each node maintains a fully audited Unspent
 Transaction Output (UTXO) database. If one wanted to create a Bitcoin-like
-system on top of TMSP, Tendermint Core would be responsible for
+system on top of ABCI, Tendermint Core would be responsible for
 
 * Sharing blocks and transactions between nodes
 * Establishing a canonical/immutable order of transactions (the blockchain)
 
-Meanwhile, the TMSP application would be responsible for
+Meanwhile, the ABCI application would be responsible for
 
 * Maintaining the UTXO database
 * Validating cryptographic signatures of transactions
@@ -584,7 +584,7 @@ time.
 
 Zones can also serve as blockchain-backed versions of enterprise and government
 systems, where pieces of a particular service that are traditionally run by an
-organization or group of organizations are instead run as a TMSP application on
+organization or group of organizations are instead run as a ABCI application on
 a certain zone, which allows it to inherit the security and interoperability of the
 public Cosmos network without sacrificing control over the underlying service.
 Thus, Cosmos may offer the best of both worlds for organizations looking to
@@ -1261,9 +1261,9 @@ validators of a Tendermint blockchain may be expected to be identifiable,
 commitment of an invalid state may even be punishable by law or some external
 jurisprudence, if desired.
 
-### TMSP Specification
+### ABCI Specification
 
-TMSP consists of 3 primary message types that get delivered from the core to the
+ABCI consists of 3 primary message types that get delivered from the core to the
 application. The application replies with corresponding response messages.
 
 The `AppendTx` message is the work horse of the application. Each transaction in
@@ -1287,12 +1287,12 @@ simplifies the development of secure lightweight clients, as Merkle-hash proofs
 can be verified by checking against the block-hash, and the block-hash is signed
 by a quorum of validators (by voting power).
 
-Additional TMSP messages allow the application to keep track of and change the
+Additional ABCI messages allow the application to keep track of and change the
 validator set, and for the application to receive the block information, such as
-the height and the commit votes.  
+the height and the commit votes.
 
-TMSP requests/responses are simple Protobuf messages.  Check out the [schema
-file](https://github.com/tendermint/tmsp/blob/master/types/types.proto).
+ABCI requests/responses are simple Protobuf messages.  Check out the [schema
+file](https://github.com/tendermint/abci/blob/master/types/types.proto).
 
 ##### AppendTx
   * __Arguments__:
@@ -1379,7 +1379,7 @@ connection, or Key="mode", Value="consensus" for a consensus connection.
     Signals the end of a block.  Called prior to each Commit after all
 transactions
 
-See [the TMSP repository](https://github.com/tendermint/tmsp#message-types) for more details.
+See [the ABCI repository](https://github.com/tendermint/abci#message-types) for more details.
 
 ### IBC Packet Delivery Acknowledgement
 
@@ -1533,7 +1533,7 @@ Trie when the binary variant becomes available.
 ### Transaction Types
 
 In the canonical implementation, transactions are streamed to the Cosmos hub
-application via the TMSP interface.
+application via the ABCI interface.
 
 The Cosmos Hub will accept a number of primary transaction types, including
 `SendTx`, `BondTx`, `UnbondTx`, `ReportHackTx`, `SlashTx`, `BurnAtomTx`,
@@ -1623,7 +1623,7 @@ providing support for our work with Tendermint and Cosmos.
 
 * [Zaki Manian](https://github.com/zmanian) of
   [SkuChain](https://www.skuchain.com/) provided much help in formatting and
-wording, especially under the TMSP section
+wording, especially under the ABCI section
 * [Jehan Tremback](https://github.com/jtremback) of Althea and Dustin Byington
   for helping with initial iterations
 * [Andrew Miller](http://soc1024.com/) of [Honey
@@ -1651,7 +1651,7 @@ wording, especially under the TMSP section
 [14]: https://interledger.org/rfcs/0001-interledger-architecture/
 [15]: https://blockstream.com/sidechains.pdf
 [16]: https://blog.ethereum.org/2015/08/01/introducing-casper-friendly-ghost/
-[17]: https://github.com/tendermint/tmsp
+[17]: https://github.com/tendermint/abci
 [18]: https://github.com/ethereum/EIPs/issues/53
 [19]: http://www.ds.ewi.tudelft.nl/fileadmin/pds/papers/PerformanceAnalysisOfLibswift.pdf
 [20]: http://groups.csail.mit.edu/tds/papers/Lynch/jacm88.pdf
@@ -1674,7 +1674,7 @@ wording, especially under the TMSP section
 * [14] Interledger: https://interledger.org/rfcs/0001-interledger-architecture/
 * [15] Sidechains: https://blockstream.com/sidechains.pdf
 * [16] Casper: https://blog.ethereum.org/2015/08/01/introducing-casper-friendly-ghost/
-* [17] TMSP: https://github.com/tendermint/tmsp
+* [17] ABCI: https://github.com/tendermint/abci
 * [18] Ethereum Sharding: https://github.com/ethereum/EIPs/issues/53
 * [19] LibSwift: http://www.ds.ewi.tudelft.nl/fileadmin/pds/papers/PerformanceAnalysisOfLibswift.pdf
 * [20] DLS: http://groups.csail.mit.edu/tds/papers/Lynch/jacm88.pdf
