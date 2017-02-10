@@ -1,37 +1,37 @@
 Cosmos Plan
 -----------
 
-LAST UPDATED: Oct 6th, 2016<br/>
+LAST UPDATED: Feb 10th, 2017<br/>
 NOTE: The details in this plan override what is currently in the whitepaper,
 and all other plans published prior.
 
 <hr />
 
-* Cosmos Network Foundation (CNF) is a non-profit Switzerland Foundation. Its purpose is
+* Interchain Foundation (ICF) is a non-profit Switzerland Foundation. Its purpose is
   to conduct a Fundraiser designed to collect donations, to contract with
   entities and their agents for the development of the Cosmos Essential
   Software and Services (CESS), and to help foster a community around the CESS.
 
-* CNF is planning a Fundraiser for future staking tokens, called "atoms", that
+* ICF is planning a Fundraiser for future staking tokens, called "atoms", that
   give the holder limited license to validate the Cosmos Hub and Dex. The
-  contributions made in connection with the Fundraiser will go to the CNF to
+  contributions made in connection with the Fundraiser will go to the ICF to
   develop the CESS.
 
 * All in Bits, Inc. (AIB) is a for-profit Delaware C-Corp behind Tendermint.
-  The CNF has contracted with AIB to develop the CESS.
+  The ICF has contracted with AIB to develop the CESS.
 
-* The CNF has received several commitments for donations from various
-  individuals that will be tied to a portion of future atoms.  The CNF’s initial
-  donors committed an amount equal to 5% of CNF’s initial donation goal. Further,
-  the CNF has entered into a number of strategic partnerships and received
+* The ICF has received several commitments for donations from various
+  individuals that will be tied to a portion of future atoms.  The ICF’s initial
+  donors committed an amount equal to 5% of ICF’s initial donation goal. Further,
+  the ICF has entered into a number of strategic partnerships and received
   commitments for donations from interested individuals pre-Fundraiser for an
-  amount equal to [ XX %] of the CNF fundraising goal. 
+  amount equal to [ XX %] of the ICF fundraising goal. 
 
 * THE PREFUND IS CLOSED FOR THE GENERAL PUBLIC. If you have to ask about the
   prefund now, you don't qualify. The only exception is for strategic partners,
   such as crypto exchanges, who would make ideal validators.
 
-* The CNF reserves the right to receive further donations in the future from
+* The ICF reserves the right to receive further donations in the future from
   strategic partners at a discount rate of up to 25%.
 
 * Before the first day the Fundraiser is opened, the total number of atoms
@@ -43,7 +43,7 @@ and all other plans published prior.
   the initial donors and pre-Fundraiser donors, is Q1 of 2017.
 
 * At most the Fundraiser will last for 6 weeks. Note that after the Fundraiser,
-  no more atoms will be distributed by the CNF (unless approved by the on-chain
+  no more atoms will be distributed by the ICF (unless approved by the on-chain
   governance mechanism).
 
 * Governance can approve proposals for the creation of new atoms. For further
@@ -51,35 +51,36 @@ and all other plans published prior.
   creation of more atoms, please see the whitepaper for details.
 
 * The atoms will not be available for use until after genesis day. At the
-  earliest, genesis day is estimated to be sometime in Q3 2017. Even after
-  genesis day however, there is an initial vesting period.
+  earliest, genesis day is estimated to be sometime in Q3 2017.
 
-* Atoms will vest over a period of two years after Genesis. Unvested atoms
-  cannot be transferred until vested. Unvested atoms will vest over time, at a
-  rate of 1/(24x365x2) of the account's initial (genesis) atoms, every hour.
+* AIB's atoms will vest over a priod of two years after Genesis.  None of the
+  funders' atoms will need to vest.
 
 * In the first day of the Fundraiser, suggested donations per atom will be
   $0.10. A discount of 25% for strategic funders implies an atom price of
   $0.075. A discount of 12% for Pre-Fundraisers implies an atom price of
   $0.088.
 
-* The CNF’s fundraising goal may be capped. More details will be
+* The ICF’s fundraising goal may be capped. More details will be
   released soon.
 
 * After the Fundraiser, the total number of atoms distributed multiplied by 1/3
-  is inflated and allocated for the CNF, AIB, and the Initial Donors.
+  is inflated and allocated for the ICF, AIB, and the Initial Donors.
 
 * On Genesis day, the distribution of atoms will be split between:
-  * CNF (10%)
+  * ICF (10%)
   * AIB (10%)
   * Initial Donors (5%)
   * Pre-Fundraiser Donors + Fundraiser Donors (75%)
 
-* Upon completion of the Fundraiser, all atom holders, including the CNF and AIB
-  play the Delegation Game in a special purpose Ethereum smart contract (which
-  holds no Ether). The top 100 validators after delegation will be chosen as
-  validators on Genesis. For more information on the Delegation Game please
-  refer to the white paper for details.
+* The genesis distribution is subject to change based on any partnership
+  negotiations.  The final distribution will be announced 2 weeks prior to the
+  fundraiser.
+
+* Upon completion of the Fundraiser, all atom holders, including the ICF and
+  AIB play the Delegation Game. The top 100 validators after delegation will be
+  chosen as validators on Genesis. For more information on the Delegation Game
+  please refer to the white paper for details.
 
 * Every validator must participate in governance, or else run the risk that
   they will become inactivated and eventually unbonded.  Delegators who
@@ -114,7 +115,7 @@ and all other plans published prior.
   confusion, contention, and critical network failure for all those
   participating in the Cosmos network.
 
-* The CNF, AIB, all donors as well as any atom token holders or any Cosmos
+* The ICF, AIB, all donors as well as any atom token holders or any Cosmos
   network participant, understand and accept that the Cosmos Network is still
   in an early development stage, and its application is experimental in nature
   that carries significant operational, technological, regulatory, reputational
