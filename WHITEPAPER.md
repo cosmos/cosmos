@@ -34,7 +34,6 @@ document.  Please check regularly for updates!_
   * [Issuance and Incentives](#issuance-and-incentives)
     * [The Atom Token](#the-atom-token)
       * [Fundraiser](#fundraiser)
-      * [Vesting](#vesting)
     * [Limitations on the Number of
     Validators](#limitations-on-the-number-of-validators)
     * [Becoming a Validator after Genesis
@@ -488,8 +487,6 @@ other cryptocurrency.  The indirection through the bridge-zone allows the logic 
 the Hub to remain simple and agnostic to other blockchain consensus strategies
 such as Bitcoin's proof-of-work mining.
 
-#### The Bridge Zone
-
 #### Sending Tokens to the Cosmos Hub
 
 Each bridge-zone validator would run a Tendermint-powered blockchain with a special
@@ -666,16 +663,6 @@ every year.
 
 See the [Cosmos Plan](https://github.com/cosmos/cosmos/blob/master/PLAN.md)
 for additional details.
-
-#### Vesting
-
-To prevent the fundraiser from attracting short-term speculators only interested
-in pump-and-dump schemes, the genesis atoms will not be transferrable until
-they have vested.  Each account will vest atoms over a period of 2 years at a
-constant rate every hour, determined by the total number of genesis atoms / (2 *
-365 * 24) hours.  Atoms earned by the inflationary block reward are pre-vested,
-and can be transferred immediately, so that bonded validators and delegators can earn
-more than 1/2 of their genesis atoms after the first year.
 
 ### Limitations on the Number of Validators
 
@@ -1614,7 +1601,7 @@ IBC/<SrcChainID>/<DstChainID>/<Number>
 When "Zone1" wants to send a packet to "Zone2" through "Hub", the
 `IBCPacket` data are identical whether the packet is Merkle-ized on "Zone1",
 the "Hub", or "Zone2".  The only mutable field is `Status` for tracking
-delivery, as shown below.
+delivery.
 
 ## Acknowledgements ############################################################
 
