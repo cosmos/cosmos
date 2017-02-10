@@ -488,54 +488,66 @@ other cryptocurrency.  The indirection through the peg-zone allows the logic of
 the Hub to remain simple and agnostic to other blockchain consensus strategies
 such as Bitcoin's proof-of-work mining.
 
-For instance, a Cosmos zone with a specific validator set, possibly the same as
-that of the Hub, could act as an ether-peg, where the TMSP-application on
-the zone (the "peg-zone") has mechanisms to exchange IBC messages with a
-peg-contract on the external Ethereum blockchain (the "origin").  This contract
-would allow ether holders to send ether to the peg-zone by sending it to the
-peg-contract on Ethereum.  Once ether is received by the peg-contract, the ether
-cannot be withdrawn unless an appropriate IBC packet is received by the
-peg-contract from the peg-zone. When a peg-zone receives an IBC packet proving
-that ether was received in the peg-contract for a particular Ethereum account, a
-corresponding account is created on the peg-zone with that balance.  Ether on
-the peg-zone ("pegged-ether") can then be transferred to and from the Hub,
+#### The Peg Zone
+
+#### Sending Tokens to the Cosmos Hub
+
+Each peg-zone validator would run a Tendermint-powered blockchain with a special
+ABCI peg-app, but also a full-node of the "origin" blockchain.
+
+When new blocks are mined on the origin, the "peg-zone" validators will come
+to agreement on committed blocks by signing and sharing their respective local
+view of the origin's blockchain tip.  When a peg-zone receives payment on the
+origin (and sufficient confirmations were agreed to have been seen in the case
+of a PoW chain such as Ethereum or Bitcoin), a corresponding account is created
+on the peg-zone with that balance.
+
+In the case of Ethereum, the peg-zone can share the same validator-set as the
+Cosmos Hub.  On the Ethereum side (the origin), a peg-contract would allow
+ether holders to send ether to the peg-zone by sending it to the peg-contract
+on Ethereum.  Once ether is received by the peg-contract, the ether cannot be
+withdrawn unless an appropriate IBC packet is received by the peg-contract from
+the peg-zone.  The peg-contract tracks the validator-set of the peg-zone, which
+may be identical to the Cosmos Hub's validator-set.
+
+In the case of Bitcoin, the concept is similar except that instead of a single
+peg-contract, each UTXO would be controlled by a threshold multisignature P2SH
+pubscript.  Due to the limitations of the P2SH system, the signers cannot be
+identical to the Cosmos Hub validator-set.
+
+#### Withdrawing Tokens from Cosmos Hub
+
+Ether on the peg-zone ("pegged-ether") can be transferred to and from the Hub,
 and later be destroyed with a transaction that sends it to a particular
 withdrawal address on Ethereum. An IBC packet proving that the transaction
 occured on the peg-zone can be posted to the Ethereum peg-contract to allow the
 ether to be withdrawn.
 
-Of course, the risk of such a pegging contract is a rogue validator set.  ≥⅓
-Byzantine voting power could cause a fork, withdrawing ether from the
-peg-contract on Ethereum while keeping the pegged-ether on the peg-zone. Worse,
->⅔ Byzantine voting power can steal ether outright from those who sent it to the
+In the case of Bitcoin, the restricted scripting system makes it difficult to
+mirror the IBC coin-transfer mechanism.  Each UTXO has its own independent
+pubscript, so every UTXO must be migrated to a new UTXO when there is a change
+in the set of Bitcoin escrow signers. One solution is to compress and
+decompress the UTXO-set as necessary to keep the total number of UTXOs down.
+
+#### Total Accountability of Peg Zones
+
+The risk of such a pegging contract is a rogue validator set.  ≥⅓ Byzantine
+voting power could cause a fork, withdrawing ether from the peg-contract on
+Ethereum while keeping the pegged-ether on the peg-zone. Worse, >⅔ Byzantine
+voting power can steal ether outright from those who sent it to the
 peg-contract by deviating from the original pegging logic of the peg-zone.
 
 It is possible to address these issues by designing the peg to be totally
-accountable.  For example, all IBC packets, from the hub and 
-the origin, might require acknowledgement by the peg-zone in such a way that all
-state transitions of the peg-zone can be efficiently challenged and verified by
+accountable.  For example, all IBC packets, from the hub and the origin, might
+require acknowledgement by the peg-zone in such a way that all state
+transitions of the peg-zone can be efficiently challenged and verified by
 either the hub or the origin's peg-contract.  The Hub and the origin should
-allow the peg-zone validators to post collateral, and token transfers out of the
-peg-contract should be delayed (and collateral unbonding period sufficiently
-long) to allow for any challenges to be made by independent auditors.  We leave
-the design of the specification and implementation of this system open as a
-future Cosmos improvement proposal, to be passed by the Cosmos Hub's governance
-system.
-
-While the socio-political atmosphere is not quite evolved enough yet, we can
-extend the mechanism to allow for zones which peg to the fiat currency of a
-nation state by forming a validator set out of some combination of institutions
-responsible for the nation's currency, most particularly, its banks. Of course,
-extra precautions must be taken to only accept currencies backed by strong legal
-systems which can enforce auditability of the banks' activities by a sufficiently
-large group of trusted notaries and institutions.
-
-A result of this integration could be, for instance, allowing anyone with
-an account at a bank on the zone to move dollars from their bank account
-to other accounts on the zone, or to the hub, or to another zone entirely.  
-In this regard, the Cosmos Hub can act as a seamless conduit between fiat 
-currencies and cryptocurrencies, removing the barriers that have until now limited 
-their interoperability to the realm of exchanges.
+allow the peg-zone validators to post collateral, and token transfers out of
+the peg-contract should be delayed (and collateral unbonding period
+sufficiently long) to allow for any challenges to be made by independent
+auditors.  We leave the design of the specification and implementation of this
+system open as a future Cosmos improvement proposal, to be passed by the Cosmos
+Hub's governance system.
 
 ### Ethereum Scaling
 
