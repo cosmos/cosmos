@@ -26,7 +26,7 @@ document.  Please check regularly for updates!_
   * [Inter-blockchain Communication (IBC)](#inter-blockchain-communication-ibc)
   * [Use Cases](#use-cases)
     * [Distributed Exchange](#distributed-exchange)
-    * [Pegging to Other Cryptocurrencies](#pegging-to-other-cryptocurrencies)
+    * [Bridging to Other Cryptocurrencies](#bridging-to-other-cryptocurrencies)
     * [Ethereum Scaling](#ethereum-scaling)
     * [Multi-Application Integration](#multi-application-integration)
     * [Network Partition Mitigation](#network-partition-mitigation)
@@ -477,50 +477,50 @@ without both parties having to be online.  And with Tendermint, the Cosmos hub,
 and IBC, traders can move funds in and out of the exchange to and from other
 zones with speed.
 
-### Pegging to Other Cryptocurrencies
+### Bridging to Other Cryptocurrencies
 
-A privileged zone can act as the source of a pegged token of another
-cryptocurrency. A peg is similar to the relationship between a
+A privileged zone can act as the source of a bridged token of another
+cryptocurrency. A bridge is similar to the relationship between a
 Cosmos hub and zone; both must keep up with the latest blocks of the
 other in order to verify proofs that tokens have moved from one to the other.  A
-peg-zone on the Cosmos network keeps up with the Hub as well as the
-other cryptocurrency.  The indirection through the peg-zone allows the logic of
+"bridge-zone" on the Cosmos network keeps up with the Hub as well as the
+other cryptocurrency.  The indirection through the bridge-zone allows the logic of
 the Hub to remain simple and agnostic to other blockchain consensus strategies
 such as Bitcoin's proof-of-work mining.
 
-#### The Peg Zone
+#### The Bridge Zone
 
 #### Sending Tokens to the Cosmos Hub
 
-Each peg-zone validator would run a Tendermint-powered blockchain with a special
-ABCI peg-app, but also a full-node of the "origin" blockchain.
+Each bridge-zone validator would run a Tendermint-powered blockchain with a special
+ABCI bridge-app, but also a full-node of the "origin" blockchain.
 
-When new blocks are mined on the origin, the "peg-zone" validators will come
+When new blocks are mined on the origin, the bridge-zone validators will come
 to agreement on committed blocks by signing and sharing their respective local
-view of the origin's blockchain tip.  When a peg-zone receives payment on the
+view of the origin's blockchain tip.  When a bridge-zone receives payment on the
 origin (and sufficient confirmations were agreed to have been seen in the case
 of a PoW chain such as Ethereum or Bitcoin), a corresponding account is created
-on the peg-zone with that balance.
+on the bridge-zone with that balance.
 
-In the case of Ethereum, the peg-zone can share the same validator-set as the
-Cosmos Hub.  On the Ethereum side (the origin), a peg-contract would allow
-ether holders to send ether to the peg-zone by sending it to the peg-contract
-on Ethereum.  Once ether is received by the peg-contract, the ether cannot be
-withdrawn unless an appropriate IBC packet is received by the peg-contract from
-the peg-zone.  The peg-contract tracks the validator-set of the peg-zone, which
+In the case of Ethereum, the bridge-zone can share the same validator-set as the
+Cosmos Hub.  On the Ethereum side (the origin), a bridge-contract would allow
+ether holders to send ether to the bridge-zone by sending it to the bridge-contract
+on Ethereum.  Once ether is received by the bridge-contract, the ether cannot be
+withdrawn unless an appropriate IBC packet is received by the bridge-contract from
+the bridge-zone.  The bridge-contract tracks the validator-set of the bridge-zone, which
 may be identical to the Cosmos Hub's validator-set.
 
 In the case of Bitcoin, the concept is similar except that instead of a single
-peg-contract, each UTXO would be controlled by a threshold multisignature P2SH
+bridge-contract, each UTXO would be controlled by a threshold multisignature P2SH
 pubscript.  Due to the limitations of the P2SH system, the signers cannot be
 identical to the Cosmos Hub validator-set.
 
 #### Withdrawing Tokens from Cosmos Hub
 
-Ether on the peg-zone ("pegged-ether") can be transferred to and from the Hub,
+Ether on the bridge-zone ("bridged-ether") can be transferred to and from the Hub,
 and later be destroyed with a transaction that sends it to a particular
 withdrawal address on Ethereum. An IBC packet proving that the transaction
-occured on the peg-zone can be posted to the Ethereum peg-contract to allow the
+occured on the bridge-zone can be posted to the Ethereum bridge-contract to allow the
 ether to be withdrawn.
 
 In the case of Bitcoin, the restricted scripting system makes it difficult to
@@ -529,21 +529,21 @@ pubscript, so every UTXO must be migrated to a new UTXO when there is a change
 in the set of Bitcoin escrow signers. One solution is to compress and
 decompress the UTXO-set as necessary to keep the total number of UTXOs down.
 
-#### Total Accountability of Peg Zones
+#### Total Accountability of Bridge Zones
 
-The risk of such a pegging contract is a rogue validator set.  ≥⅓ Byzantine
-voting power could cause a fork, withdrawing ether from the peg-contract on
-Ethereum while keeping the pegged-ether on the peg-zone. Worse, >⅔ Byzantine
+The risk of such a bridgeging contract is a rogue validator set.  ≥⅓ Byzantine
+voting power could cause a fork, withdrawing ether from the bridge-contract on
+Ethereum while keeping the bridged-ether on the bridge-zone. Worse, >⅔ Byzantine
 voting power can steal ether outright from those who sent it to the
-peg-contract by deviating from the original pegging logic of the peg-zone.
+bridge-contract by deviating from the original bridgeging logic of the bridge-zone.
 
-It is possible to address these issues by designing the peg to be totally
+It is possible to address these issues by designing the bridge to be totally
 accountable.  For example, all IBC packets, from the hub and the origin, might
-require acknowledgement by the peg-zone in such a way that all state
-transitions of the peg-zone can be efficiently challenged and verified by
-either the hub or the origin's peg-contract.  The Hub and the origin should
-allow the peg-zone validators to post collateral, and token transfers out of
-the peg-contract should be delayed (and collateral unbonding period
+require acknowledgement by the bridge-zone in such a way that all state
+transitions of the bridge-zone can be efficiently challenged and verified by
+either the hub or the origin's bridge-contract.  The Hub and the origin should
+allow the bridge-zone validators to post collateral, and token transfers out of
+the bridge-contract should be delayed (and collateral unbonding period
 sufficiently long) to allow for any challenges to be made by independent
 auditors.  We leave the design of the specification and implementation of this
 system open as a future Cosmos improvement proposal, to be passed by the Cosmos
@@ -556,7 +556,7 @@ Ethereum nodes process every single transaction and also store all the states.
 [link](https://docs.google.com/presentation/d/1CjD0W4l4-CwHKUvfF5Vlps76fKLEC6pIwu1a_kC_YRQ/mobilepresent?slide=id.gd284b9333_0_28).
 
 Since Tendermint can commit blocks much faster than Ethereum's proof-of-work,
-EVM zones powered by Tendermint consensus and operating on pegged-ether can
+EVM zones powered by Tendermint consensus and operating on bridged-ether can
 provide higher performance to Ethereum blockchains.  Additionally, though the
 Cosmos Hub and IBC packet mechanics does not allow for arbitrary contract logic
 execution per se, it can be used to coordinate token movements between Ethereum
@@ -567,7 +567,7 @@ Ethereum scaling via sharding.
 
 Cosmos zones run arbitrary application logic, which is defined at the beginning of the
 zone's life and can potentially be updated over time by governance. Such flexibility
-allows Cosmos zones to act as pegs to other cryptocurrencies such as Ethereum or
+allows Cosmos zones to act as bridges to other cryptocurrencies such as Ethereum or
 Bitcoin, and it also permits derivatives of those blockchains, utilizing the
 same codebase but with a different validator set and initial distribution. This
 allows many existing cryptocurrency frameworks, such as those of Ethereum,
@@ -993,18 +993,20 @@ the transfer of value or market equivalents.
 
 #### Sidechains
 
-Sidechains [\[15\]][15] are a proposed mechanism for scaling the Bitcoin network
-via alternative blockchains that are "pegged" to the Bitcoin blockchain.
-Sidechains allow bitcoins to effectively move from the Bitcoin blockchain to the
-sidechain and back, and allow for experimentation in new features on the
-sidechain.  As in the Cosmos Hub, the sidechain and Bitcoin serve as
-light-clients of each other, using SPV proofs to determine when coins should be
-transferred to the sidechain and back.  Of course, since Bitcoin uses
-proof-of-work, sidechains centered around Bitcoin suffer from the many problems
-and risks of proof-of-work as a consensus mechanism.  Furthermore, this is a
-Bitcoin-maximalist solution that doesn't natively support a variety of tokens
-and inter-zone network topology as Cosmos does. That said, the core mechanism of
-the two-way peg is in principle the same as that employed by the Cosmos network.
+Sidechains [\[15\]][15] are a proposed mechanism for scaling the Bitcoin
+network via alternative blockchains that are "two-way pegged" to the Bitcoin
+blockchain. (Two-way pegging is equivalent to bridging. In Cosmos we say
+"bridging" to distinguish from market-pegging).  Sidechains allow bitcoins to
+effectively move from the Bitcoin blockchain to the sidechain and back, and
+allow for experimentation in new features on the sidechain.  As in the Cosmos
+Hub, the sidechain and Bitcoin serve as light-clients of each other, using SPV
+proofs to determine when coins should be transferred to the sidechain and back.
+Of course, since Bitcoin uses proof-of-work, sidechains centered around Bitcoin
+suffer from the many problems and risks of proof-of-work as a consensus
+mechanism.  Furthermore, this is a Bitcoin-maximalist solution that doesn't
+natively support a variety of tokens and inter-zone network topology as Cosmos
+does. That said, the core mechanism of the two-way peg is in principle the same
+as that employed by the Cosmos network.
 
 #### Ethereum Scalability Efforts
 
