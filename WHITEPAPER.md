@@ -742,9 +742,8 @@ their bonded atoms, every `ValidatorPayoutPeriod` (DEFAULT 1 hour).
 
 Of the collected transaction fees, `ReserveTax` (DEFAULT 2%) will go toward the
 reserve pool to increase the reserve pool and increase the security and value of
-the Cosmos network.  Also, a `CommonsTax` (DEFAULT 3%) will go toward the
-funding of common goods.  These funds will go to the `CustodianAddress` to be
-distributed in accordance with the decisions made by the governance system.
+the Cosmos network. These funds can also be distributed in accordance with the
+decisions made by the governance system.
 
 Atom holders who delegate their voting power to other validators pay a
 commission to the delegated validator.  The commission can be set by each
