@@ -797,7 +797,7 @@ For each proposal, voters may vote with the following options:
 * Abstain
 
 A strict majority of Yea or YeaWithForce votes (or Nay or NayWithForce votes) is
-required for the proposal to be decided as accepted (or decided as failed), but
+required for the proposal to be decided as passed (or decided as failed), but
 1/3+ can veto the majority decision by voting "with force".  When a strict
 majority is vetoed, everyone gets punished by losing `VetoPenaltyFeeBlocks`
 (DEFAULT 1 day's worth of blocks) worth of fees (except taxes which will not be
@@ -806,13 +806,18 @@ punished by losing `VetoPenaltyAtoms` (DEFAULT 0.1%) of its atoms.
 
 ### Parameter Change Proposal
 
-Any of the parameters defined here can be changed with the acceptance of a
+Any of the parameters defined here can be changed with the passing of a
 `ParameterChangeProposal`.
+
+### Bounty Proposal
+
+Atoms can be inflated and reserve pool funds spent with the passing of a `BountyProposal`.
 
 ### Text Proposal
 
 All other proposals, such as a proposal to upgrade the protocol, will be
 coordinated via the generic `TextProposal`.
+
 
 ## Roadmap #####################################################################
 
