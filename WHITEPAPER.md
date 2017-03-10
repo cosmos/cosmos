@@ -178,7 +178,7 @@ via super-majority (>⅔) voting and a locking mechanism.  Together, they ensure
 that:
 
 * ≥⅓ voting power must be Byzantine to cause a violation of safety, where more
-  than two values are committed.  
+  than two values are committed.
 * if any set of validators ever succeeds in violating safety, or even attempts
   to do so, they can be identified by the protocol.  This includes both voting
 for conflicting blocks and broadcasting unjustified votes.
@@ -214,7 +214,7 @@ spends](#preventing-long-range-attacks) and
 [censorship](#overcoming-forks-and-censorship-attacks). These are discussed more
 fully in the [appendix](#appendix).
 
-### ABCI 
+### ABCI
 
 The Tendermint consensus algorithm is implemented in a program called Tendermint
 Core.  Tendermint Core is an application-agnostic "consensus engine" that can
@@ -250,7 +250,7 @@ Cosmos is a network of independent parallel blockchains that are each powered by
 classical BFT consensus algorithms like Tendermint
 [1](http://github.com/tendermint/tendermint).
 
-The first blockchain in this network will be the Cosmos Hub.  The Cosomos Hub
+The first blockchain in this network will be the Cosmos Hub.  The Cosmos Hub
 connects to many other blockchains (or _zones_) via a novel inter-blockchain
 communication protocol.  The Cosmos Hub tracks numerous token types and keeps
 record of the total number of tokens in each connected zone.  Tokens can be
@@ -266,12 +266,12 @@ to scale infinitely to meet global transaction demand.  Zones are also a great
 fit for a distributed exchange, which will be supported as well.
 
 Cosmos is not just a single distributed ledger, and the Cosmos Hub isn't a
-walled garden or the center of its universe.  We are designing a protocol for an
-open network of distributed legers that can serve as a new foundation for 
+walled garden or the center of its universe.  We are designing a protocol for
+an open network of distributed ledgers that can serve as a new foundation for
 future financial systems, based on principles of cryptography, sound economics,
 consensus theory, transparency, and accountability.
 
-### Tendermint-BFT 
+### Tendermint-BFT
 
 The Cosmos Hub is the first public blockchain in the Cosmos Network, powered by
 Tendermint's BFT consensus algorithm.  The Tendermint open-source project was
@@ -410,9 +410,9 @@ allows a blockchain to prove to any observer that the given packet was indeed
 published by the sender's application, via a Merkle-proof to the recent
 block-hash.
 
-By splitting the IBC mechanics into two separate transactions, we allow the 
-native fee market-mechanism of the receiving chain to determine which packets 
-get committed (i.e. acknowledged), while allowing for complete freedom on the 
+By splitting the IBC mechanics into two separate transactions, we allow the
+native fee market-mechanism of the receiving chain to determine which packets
+get committed (i.e. acknowledged), while allowing for complete freedom on the
 sending chain as to how many outbound packets are allowed.
 
 ![Figure of Zone1, Zone2, and Hub IBC without
@@ -514,11 +514,11 @@ identical to the Cosmos Hub validator-set.
 
 #### Withdrawing Tokens from Cosmos Hub
 
-Ether on the bridge-zone ("bridged-ether") can be transferred to and from the Hub,
-and later be destroyed with a transaction that sends it to a particular
+Ether on the bridge-zone ("bridged-ether") can be transferred to and from the
+Hub, and later be destroyed with a transaction that sends it to a particular
 withdrawal address on Ethereum. An IBC packet proving that the transaction
-occured on the bridge-zone can be posted to the Ethereum bridge-contract to allow the
-ether to be withdrawn.
+occurred on the bridge-zone can be posted to the Ethereum bridge-contract to
+allow the ether to be withdrawn.
 
 In the case of Bitcoin, the restricted scripting system makes it difficult to
 mirror the IBC coin-transfer mechanism.  Each UTXO has its own independent
@@ -568,7 +568,7 @@ allows Cosmos zones to act as bridges to other cryptocurrencies such as Ethereum
 Bitcoin, and it also permits derivatives of those blockchains, utilizing the
 same codebase but with a different validator set and initial distribution. This
 allows many existing cryptocurrency frameworks, such as those of Ethereum,
-Zerocash, Bitcoin, CryptoNote and so on, to be used with Tendermint Core, 
+Zerocash, Bitcoin, CryptoNote and so on, to be used with Tendermint Core,
 which is a higher performance consensus engine, on a common network, opening tremendous
 opportunity for interoperability across platforms.  Furthermore, as a
 multi-asset blockchain, a single transaction may contain multiple inputs and
@@ -577,7 +577,7 @@ directly as a platform for decentralized exchange, though orders are assumed to
 be matched via other platforms. Alternatively, a zone can serve as a distributed
 fault-tolerant exchange (with orderbooks), which can be a strict improvement
 over existing centralized cryptocurrency exchanges which tend to get hacked over
-time. 
+time.
 
 Zones can also serve as blockchain-backed versions of enterprise and government
 systems, where pieces of a particular service that are traditionally run by an
@@ -770,12 +770,12 @@ include some unvested atoms, if any.
 ### Governance Specification ###################################################
 
 The Cosmos Hub is operated by a distributed organization that requires a well-defined
-governance mechanism in order to coordinate various changes to the blockchain, 
-such as the variable parameters of the system, as well as software upgrades and 
+governance mechanism in order to coordinate various changes to the blockchain,
+such as the variable parameters of the system, as well as software upgrades and
 constitutional amendments.
 
 All validators are responsible for voting on all proposals.  Failing to vote on
-a proposal in a timely manner will result in the validator being deactivated 
+a proposal in a timely manner will result in the validator being deactivated
 automatically for a period of time called the `AbsenteeismPenaltyPeriod`
 (DEFAULT 1 week).
 
@@ -834,17 +834,18 @@ of important ones.
 #### Classic Byzantine Fault Tolerance
 
 Consensus in the presence of malicious participants is a problem dating back to
-the early 1980s, when Leslie Lamport coined the phrase "Byzantine fault" to refer
-to arbitrary process behavior that deviates from the intended behavior, in
-contrast to a "crash fault", wherein a process simply crashes. Early solutions
-were discovered for synchronous networks where there is an upper bound on
-message latency, though pratical use was limited to highly controlled
+the early 1980s, when Leslie Lamport coined the phrase "Byzantine fault" to
+refer to arbitrary process behavior that deviates from the intended behavior,
+in contrast to a "crash fault", wherein a process simply crashes. Early
+solutions were discovered for synchronous networks where there is an upper
+bound on message latency, though practical use was limited to highly controlled
 environments such as airplane controllers and datacenters synchronized via
 atomic clocks.  It was not until the late 90s that Practical Byzantine Fault
 Tolerance (PBFT) [\[11\]][11] was introduced as an efficient partially
 synchronous consensus algorithm able to tolerate up to ⅓ of processes behaving
 arbitrarily.  PBFT became the standard algorithm, spawning many variations,
-including most recently one created by IBM as part of their contribution to Hyperledger.
+including most recently one created by IBM as part of their contribution to
+Hyperledger.
 
 The main benefit of Tendermint consensus over PBFT is that Tendermint has an
 improved and simplified underlying structure, some of which is a result of
@@ -880,7 +881,7 @@ particularly those known as "delegated" PoS.  In BitShares, stake holders elect
 changes.  BitShares2.0 aims to achieve high performance (100k tx/s, 1s latency)
 in ideal conditions, with each block signed by a single signer, and transaction
 finality taking quite a bit longer than the block interval.  A canonical
-specificaiton is still in development.  Stakeholders can remove or replace
+specification is still in development.  Stakeholders can remove or replace
 misbehaving witnesses on a daily basis, but there is no significant collateral
 of witnesses or delegators in the likeness of Tendermint PoS that get slashed
 in the case of a successful double-spend attack.
@@ -892,7 +893,7 @@ model of Federated Byzantine Agreement wherein the processes participating in
 consensus do not constitute a fixed and globally known set.  Rather, each
 process node curates one or more "quorum slices", each constituting a set of
 trusted processes. A "quorum" in Stellar is defined to be a set of nodes that
-contain at least one quorum slice for each node in the set, such that agreement 
+contain at least one quorum slice for each node in the set, such that agreement
 can be reached.
 
 The security of the Stellar mechanism relies on the assumption that the
@@ -903,7 +904,7 @@ difficult to balance without imposing significant assumptions about trust.
 Ultimately, nodes must somehow choose adequate quorum slices for there to be
 sufficient fault-tolerance (or any "intact nodes" at all, of which much of the
 results of the paper depend on), and the only provided strategy for ensuring
-such a configuration is heirarchical and similar to the Border Gateway Protocol
+such a configuration is hierarchical and similar to the Border Gateway Protocol
 (BGP), used by top-tier ISPs on the internet to establish global routing tables,
 and by that used by browsers to manage TLS certificates; both notorious for
 their insecurity.
@@ -931,8 +932,8 @@ the last miner to find a micro-block.
 #### Casper
 
 Casper [\[16\]][16] is a proposed proof-of-stake consensus algorithm for
-Ethereum.  Its prime mode of operation is "consensus-by-bet".  By letting 
-validators iteratively bet on which block they believe will become committed 
+Ethereum.  Its prime mode of operation is "consensus-by-bet".  By letting
+validators iteratively bet on which block they believe will become committed
 into the blockchain based on the other bets that they have seen so far,
 finality can be achieved eventually.
 [link](https://blog.ethereum.org/2015/12/28/understanding-serenity-part-2-casper/).
@@ -947,16 +948,16 @@ implementation complexity.
 
 #### Interledger Protocol
 
-The Interledger Protocol [\[14\]][14] is not strictly a scalability solution. It
-provides an ad hoc interoperation between different ledger systems through a
-loosely coupled bilateral relationship network.  Like the Lightning Network, the
-purpose of ILP is to facilitate payments, but it specifically focuses on
+The Interledger Protocol [\[14\]][14] is not strictly a scalability solution.
+It provides an ad hoc interoperation between different ledger systems through a
+loosely coupled bilateral relationship network.  Like the Lightning Network,
+the purpose of ILP is to facilitate payments, but it specifically focuses on
 payments across disparate ledger types, and extends the atomic transaction
 mechanism to include not only hash-locks, but also a quorum of notaries (called
-the Atomic Transport Protocol).  The latter mechanism for enforcing atomicity in
-inter-ledger transactions is similar to Tendermint's light-client SPV echanism,
-so an illustration of the distinction between ILP and Cosmos/IBC is warranted,
-and provided below.
+the Atomic Transport Protocol).  The latter mechanism for enforcing atomicity
+in inter-ledger transactions is similar to Tendermint's light-client SPV
+mechanism, so an illustration of the distinction between ILP and Cosmos/IBC is
+warranted, and provided below.
 
 1. The notaries of a connector in ILP do not support membership changes, and
    do not allow for flexible weighting between notaries.  On the other hand,
@@ -974,7 +975,7 @@ confirmation, not the receiving user.
 of a hub are the authority of the state of IBC token transfers as well as the
 authority of the amount of tokens held by each zone (but not the amount of
 tokens held by each account within a zone).  This is the fundamental innovation
-that allows for secure asymmetric tranfer of tokens from zone to zone; the
+that allows for secure asymmetric transfer of tokens from zone to zone; the
 analog to ILP's connector in Cosmos is a persistent and maximally secure
 blockchain ledger, the Cosmos Hub.
 
@@ -1008,7 +1009,7 @@ Ethereum Virtual Machine across the shared state space. Multiple research
 efforts are underway at this time. [\[18\]][18][\[22\]][22]
 
 ##### Cosmos vs Ethereum 2.0 Mauve
- 
+
 Cosmos and Ethereum 2.0 Mauve [\[22\]][22] have different design goals.
 
 * Cosmos is specifically about tokens.  Mauve is about scaling general computation.
@@ -1036,7 +1037,7 @@ cost of capital being tied up on payment channels.
 
 While the Lightning Network can also easily extend across multiple independent
 blockchains to allow for the transfer of _value_ via an exchange market, it
-cannot be used to assymetrically transfer _tokens_ from one blockchain to
+cannot be used to asymmetrically transfer _tokens_ from one blockchain to
 another.  The main benefit of the Cosmos network described here is to enable
 such direct token transfers.  That said, we expect payment channels and the
 Lightning Network to become widely adopted along with our token transfer
@@ -1046,7 +1047,7 @@ mechanism, for cost-saving and privacy reasons.
 
 Segregated Witness is a Bitcoin improvement proposal
 [link](https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki) that aims
-to increase the per-block tranasction throughput 2X or 3X, while simultaneously
+to increase the per-block transaction throughput 2X or 3X, while simultaneously
 making block syncing faster for new nodes.  The brilliance of this solution is
 in how it works within the limitations of Bitcoin's current protocol and allows
 for a soft-fork upgrade (i.e. clients with older versions of the software will
@@ -1082,7 +1083,7 @@ other than the implicit opportunity cost paid by miners for mining an orphaned
 block.
 
 
-### Tendermint Consensus 
+### Tendermint Consensus
 
 We call the voting stages _PreVote_ and _PreCommit_. A vote can be for a
 particular block or for _Nil_.  We call a collection of >⅔ PreVotes for a single
@@ -1094,9 +1095,9 @@ Note that strict determinism in the protocol incurs a weak synchrony assumption
 as faulty leaders must be detected and skipped.  Thus, validators wait some
 amount of time, _TimeoutPropose_, before they Prevote Nil, and the value of
 TimeoutPropose increases with each round.  Progression through the rest of a
-round is fully asychronous, in that progress is only made once a validator hears
+round is fully asynchronous, in that progress is only made once a validator hears
 from >⅔ of the network.  In practice, it would take an extremely strong
-adversary to indefinetely thwart the weak synchrony assumption (causing the
+adversary to indefinitely thwart the weak synchrony assumption (causing the
 consensus to fail to ever commit a block), and doing so can be made even more
 difficult by using randomized values of TimeoutPropose on each validator.
 
