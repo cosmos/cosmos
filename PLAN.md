@@ -57,8 +57,8 @@ and all other plans published prior._
 
 * In the first day of the Fundraiser, suggested donations per atom will be
   $0.10. A discount of 25% for strategic funders implies an atom price of
-  $0.075. A discount of 12% for Pre-Fundraisers implies an atom price of
-  $0.088.
+  $0.075. A discount of 15% for Pre-Fundraisers implies an atom price of
+  $0.085.
 
 * The ICF’s fundraising goal may be capped. More details will be
   released soon.
