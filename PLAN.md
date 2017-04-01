@@ -1,6 +1,6 @@
 # Cosmos Plan
 
-LAST UPDATED: Feb 10th, 2017<br/>
+LAST UPDATED: Mar 23rd, 2017<br/>
 _NOTE: The details in this plan override what is currently in the whitepaper,
 and all other plans published prior._
 
@@ -17,14 +17,15 @@ and all other plans published prior._
   develop the CESS.
 
 * All in Bits, Inc. (AIB) is a for-profit Delaware C-Corp behind Tendermint.
-  The ICF has contracted with AIB to develop the CESS.
+  The ICF has contracted with AIB to develop the initial portion of the CESS,
+  including Tendermint v1.
 
 * The ICF has received several commitments for donations from various
   individuals that will be tied to a portion of future atoms.  The ICF’s initial
   donors committed an amount equal to 5% of ICF’s initial donation goal. Further,
   the ICF has entered into a number of strategic partnerships and received
   commitments for donations from interested individuals pre-Fundraiser for an
-  amount equal to [ XX %] of the ICF fundraising goal. 
+  amount equal to [ XX ]% of the ICF fundraising goal. 
 
 * THE PREFUND IS CLOSED FOR THE GENERAL PUBLIC. If you have to ask about the
   prefund now, you don't qualify. The only exception is for strategic partners,
@@ -39,11 +40,9 @@ and all other plans published prior._
   published.
 
 * The projected date of the Fundraiser for all other parties, notwithstanding
-  the initial donors and pre-Fundraiser donors, is Q1 of 2017.
+  the initial donors and pre-Fundraiser donors, is March 31st, 2017.
 
-* At most the Fundraiser will last for 6 weeks. Note that after the Fundraiser,
-  no more atoms will be distributed by the ICF (unless approved by the on-chain
-  governance mechanism).
+* The Fundraiser will last for 2 weeks.
 
 * Governance can approve proposals for the creation of new atoms. For further
   information concerning the proposed on-chain governance mechanism for the
@@ -72,23 +71,22 @@ and all other plans published prior._
   * Initial Donors (5%)
   * Pre-Fundraiser Donors + Fundraiser Donors (75%)
 
-* The genesis distribution is subject to change based on any partnership
-  negotiations.  The final distribution will be announced 2 weeks prior to the
-  fundraiser.
-
 * Upon completion of the Fundraiser, all atom holders, including the ICF and
   AIB play the Delegation Game. The top 100 validators after delegation will be
-  chosen as validators on Genesis. For more information on the Delegation Game
-  please refer to the white paper for details.
+  chosen as validators on Genesis. More information will be released about the
+  delegation game after the Fundraiser.
 
 * Every validator must participate in governance, or else run the risk that
   they will become inactivated and eventually unbonded.  Delegators who
   delegate atoms to such validators will also likewise get their delegated
   atoms inactivated and eventually unbonded. 
 
-* 1/5 of the total number of atoms will be inflated every year and distributed
+* Initially, 7% of atoms will be inflated every year and distributed
   back to the bonded and active atom holders (validators and delegators) for
-  their work validating and securing the ledger.
+  their work validating and securing the ledger.  This value will adjust
+  over time to incentivize at least 2/3 of the atoms to be bonded.
+  
+* Atoms are not designed to be a medium of exchange nor a store of value.
 
 * The Unbonding Period is 1 month long.
 
