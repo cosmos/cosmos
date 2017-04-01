@@ -1,6 +1,6 @@
 # Cosmos Plan
 
-LAST UPDATED: Mar 23rd, 2017<br/>
+LAST UPDATED: Mar 31st, 2017<br/>
 _NOTE: The details in this plan override what is currently in the whitepaper,
 and all other plans published prior._
 
@@ -25,14 +25,7 @@ and all other plans published prior._
   donors committed an amount equal to 5% of ICF’s initial donation goal. Further,
   the ICF has entered into a number of strategic partnerships and received
   commitments for donations from interested individuals pre-Fundraiser for an
-  amount equal to [ XX ]% of the ICF fundraising goal. 
-
-* THE PREFUND IS CLOSED FOR THE GENERAL PUBLIC. If you have to ask about the
-  prefund now, you don't qualify. The only exception is for strategic partners,
-  such as crypto exchanges, who would make ideal validators.
-
-* The ICF reserves the right to receive further donations in the future from
-  strategic partners at a discount rate of up to 25%.
+  amount equal to $1,329,472 of the ICF fundraising goal. 
 
 * Before the first day the Fundraiser is opened, the total number of atoms
   granted, the total amount of donations received, and a pseudonymous list of
@@ -40,7 +33,7 @@ and all other plans published prior._
   published.
 
 * The projected date of the Fundraiser for all other parties, notwithstanding
-  the initial donors and pre-Fundraiser donors, is March 31st, 2017.
+  the initial donors and pre-Fundraiser donors, is April 6th, 2017.
 
 * The Fundraiser will last for 2 weeks.
 
@@ -48,8 +41,8 @@ and all other plans published prior._
   information concerning the proposed on-chain governance mechanism for the
   creation of more atoms, please see the whitepaper for details.
 
-* The atoms will not be available for use until after genesis day. At the
-  earliest, genesis day is estimated to be sometime in Q3 2017.
+* The atoms will not be available for use until after genesis day. Genesis
+  day is estimated to be sometime in early Q4 2017.
 
 * AIB's atoms will vest over a priod of two years after Genesis.  None of the
   funders' atoms will need to vest.
@@ -85,7 +78,7 @@ and all other plans published prior._
   back to the bonded and active atom holders (validators and delegators) for
   their work validating and securing the ledger.  This value will adjust
   over time to incentivize at least 2/3 of the atoms to be bonded.
-  
+
 * Atoms are not designed to be a medium of exchange nor a store of value.
 
 * The Unbonding Period is 1 month long.
@@ -228,4 +221,3 @@ _See the [Cosmos Roadmap](https://cosmos.network/blog/cosmos-roadmap) for more i
 
 The development timeline for Cosmos is split across five eras: Synthesis,
 Atomic Era, Galactic Era, Planetary Era, and Lunar Era.
-
