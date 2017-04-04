@@ -1,8 +1,9 @@
 # Cosmos Plan
 
 LAST UPDATED: Mar 31st, 2017<br/>
-_NOTE: The details in this plan override what is currently in the whitepaper,
-and all other plans published prior._
+The details in this plan override what is currently in the whitepaper,
+and all other plans published prior. The Cosmos Fundraiser Contribution Terms
+override any information in this plan in case of any conflicts.
 
 ----------
 
@@ -33,7 +34,7 @@ and all other plans published prior._
   published.
 
 * The projected date of the Fundraiser for all other parties, notwithstanding
-  the initial donors and pre-Fundraiser donors, is April 6th, 2017.
+  the initial donors and pre-Fundraiser donors, is April 6, 2017 at 6AM PDT.
 
 * The Fundraiser will last for 2 weeks.
 
@@ -88,7 +89,7 @@ and all other plans published prior._
   value. Instead, atoms are a tool, like Bitcoin miners are a tool. 
 
 * Bonding atoms and staking them put the atoms at risk of slashing. Validators
-  must run the sanctioned consensus protocol without deviation, or risk losing
+  must run the sanctioned consensus protocol without modification, or risk losing
   some or all of their atoms. Running the Cosmos sanctioned consensus protocol
   requires expert ability to run secure servers that must take extraordinary
   measures to prevent hacking. Delegators must choose who to validate to
@@ -172,7 +173,7 @@ zones.
 
 **Cosmos Network Participant**: any party, individual, enterprise, blockchain
 or network that uses, develops, creates or interacts with any aspect of the
-Cosmos Network or any component that constitutes the CESS.  
+Cosmos Network or any component that constitutes the CESS.
 
 **Delegator**: An atom holder who puts their atoms at stake by delegating its
 validating power and voting power to a validator.  Delegators risk losing their
@@ -198,7 +199,7 @@ the sanctioned protocol, or otherwise collude to disrupt the network.
 
 ### Cosmos Roadmap
 
-_See the [Cosmos Roadmap](https://cosmos.network/blog/cosmos-roadmap) for more info._
+_See the [Cosmos Roadmap](/blog/cosmos-roadmap) for more info._
 
 #### Cosmos Essential Software and Services
 
