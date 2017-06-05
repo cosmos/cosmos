@@ -85,7 +85,7 @@ decentralized internet protocols can be used to radically improve socio-economic
 infrastructure.  We have seen specialized blockchain applications like Bitcoin
 [\[1\]][1] (a cryptocurrency), Zerocash [\[2\]][2] (a cryptocurrency for
 privacy), and generalized smart contract platforms such as Ethereum [\[3\]][3],
-with countless distributed applications for the Etherium Virtual Machine (EVM) such as Augur (a prediction
+with countless distributed applications for the Ethereum Virtual Machine (EVM) such as Augur (a prediction
 market) and TheDAO [\[4\]][4] (an investment club).
 
 To date, however, these blockchains have suffered from a number of drawbacks,
