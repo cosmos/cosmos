@@ -85,7 +85,7 @@ decentralized internet protocols can be used to radically improve socio-economic
 infrastructure.  We have seen specialized blockchain applications like Bitcoin
 [\[1\]][1] (a cryptocurrency), Zerocash [\[2\]][2] (a cryptocurrency for
 privacy), and generalized smart contract platforms such as Ethereum [\[3\]][3],
-with countless distributed applications for the Etherium Virtual Machine (EVM) such as Augur (a prediction
+with countless distributed applications for the Ethereum Virtual Machine (EVM) such as Augur (a prediction
 market) and TheDAO [\[4\]][4] (an investment club).
 
 To date, however, these blockchains have suffered from a number of drawbacks,
@@ -720,7 +720,7 @@ disruptions, power failure, or other reasons.  If, at any point in the past
 the blockchain more than `ValidatorTimeoutMaxAbsent` times, that validator will
 become inactive, and lose `ValidatorTimeoutPenalty` (DEFAULT 1%) of its stake.
 
-Some "malicious" behavior does not produce obviously discernable evidence on the
+Some "malicious" behavior does not produce obviously discernible evidence on the
 blockchain. In these cases, the validators can coordinate out of band to force
 the timeout of these malicious validators, if there is a supermajority
 consensus.
@@ -1075,7 +1075,7 @@ the legal system is unreliable or excessively expensive to invoke, validators ca
 deposits in order to participate, and those deposits can be revoked, or slashed,
 when malicious behaviour is detected [\[10\]][10].
 
-Note this is unlike Bitcoin, where forking is a regular occurence due to
+Note this is unlike Bitcoin, where forking is a regular occurrence due to
 network asynchrony and the probabilistic nature of finding partial hash
 collisions.  Since in many cases a malicious fork is indistinguishable from a
 fork due to asynchrony, Bitcoin cannot reliably implement fork-accountability,
@@ -1239,7 +1239,7 @@ follows that forks are less of a concern than censorship attacks.
 In addition to forks and censorship, which require ≥⅓ Byzantine voting power, a
 coalition of >⅔ voting power may commit arbitrary, invalid state.  This is
 characteristic of any (BFT) consensus system. Unlike double-signing, which
-creates forks with easily verifiable evidence, detecting committment of an
+creates forks with easily verifiable evidence, detecting commitment of an
 invalid state requires non-validating peers to verify whole blocks, which
 implies that they keep a local copy of the state and execute each transaction,
 computing the state root independently for themselves.  Once detected, the only
