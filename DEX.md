@@ -60,12 +60,12 @@ and the details of the PoS system is beyond the scope of this document.
 The problem with this solution is twofold.  First, even if the DEX were powered
 by Tendermint (or any fork-accountable BFT middleware), a global distributed
 validator set will necessarily take some time to commit blocks.  It is known
-that any BFT algorthm in the partially-synchronous or asynchronous context that
-can tolerate up to 1/3 of Byzantine voting power requires at least 2 rounds of
-signature communication to come to consensus (e.g. commit a block to finality).
-When the ledger's validators are distributed globally, and when there are many
-validators (both desirable qualities for a secure distributed exchange), the
-block-times will be significant, on the order of 1 second due to
+that any BFT algorithm in the partially-synchronous or asynchronous context
+that can tolerate up to 1/3 of Byzantine voting power requires at least 2
+rounds of signature communication to come to consensus (e.g. commit a block to
+finality). When the ledger's validators are distributed globally, and when
+there are many validators (both desirable qualities for a secure distributed
+exchange), the block-times will be significant, on the order of 1 second due to
 the limited speed of light.
 
 What traders want, on the other hand, is "instant" trade matching akin to what
@@ -111,10 +111,10 @@ committed onto the underlying DEX ledger.  The orders must be in incrementing
 sequence order, and all the hashes must match the previous order's hash.
 
 Users can also withdraw funds from the CEX's subledger onto the the base DEX or
-another CEX's subledger by signing a withdrawl transaction and submitting it to
-the CEX for sequencing and signing, just like any order transaction.  As we'll
-see in the next section, the CEX's cooperation is not necessary to withdraw
-funds from the subledger.
+another CEX's subledger by signing a withdrawal transaction and submitting it
+to the CEX for sequencing and signing, just like any order transaction.  As
+we'll see in the next section, the CEX's cooperation is not necessary to
+withdraw funds from the subledger.
 
 ### Security
 
@@ -124,12 +124,12 @@ conflicting orders with the same sequence number, or the CEX not committing
 transactions in a timely manner onto the DEX), these actors can be punished by
 slashing the collateral.
 
-All validators of the DEX ledger must validate the orders of all subledgers.
-If a CEX is found to have submitted an invalid order (e.g. signed the market
-order of a trader even though the trader doesn't have any funds in the
-subledger), then the CEX can be punished as described above.  In addition,
-subledger transactions that do not increment the subledger's last sequnce
-number by 1 are considered invalid transactions.
+All validators of the DEX ledger must validate the orders of all subledgers. If
+a CEX is found to have submitted an invalid order (e.g. signed the market order
+of a trader even though the trader doesn't have any funds in the subledger),
+then the CEX can be punished as described above.  In addition, subledger
+transactions that do not increment the subledger's last sequence number by 1
+are considered invalid transactions.
 
 If a trader is not satisfied with the performance or service of one CEX
  (e.g. it feels that it is not receiving a receipt in a timely manner),
@@ -148,11 +148,11 @@ punished.
 Most importantly, no CEX has custody of any trader's funds.  No funds may be
 withdrawn (moved out of a subledger) or traded without the express permission
 of the trader (as evidenced by the trader's signature). The worst a CEX could do
-is match an order, which the trader wanted to do anyways.  
+is match an order, which the trader wanted to do anyways.
 Recall that all validators of the DEX validate all the
 transactions of all subledgers, enforcing the rules of the system.
 
-We incentivize third party pen testers to hack into the validators and publish
+We incentivize third-party pen testers to hack into the validators and publish
 their success as soon as possible, as described in the Cosmos whitepaper.
 Since the DEX is a distributed/mass-replicated BFT ledger, a single CEX
 validator getting hacked does not affect the security of the overall system.
