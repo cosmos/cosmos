@@ -37,7 +37,7 @@ they will all have some capacity for interoperability.  Ethereum is a wonderful
 idea, but the design decisions, while motivated by important considerations
 (like the need for a simple specification and guaranteed determinism), neglect a
 great many more (like the difficulty of designing a secure general purpose
-programming environment), and lends Ethereum it's own sovereignty problem, which
+programming environment), and lends Ethereum its own sovereignty problem, which
 is that it excludes users who want access to the platform but want alternatives
 to the current state transition machine.
 
