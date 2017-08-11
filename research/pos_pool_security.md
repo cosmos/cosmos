@@ -72,10 +72,10 @@ of equal strength and all parties all nodes are of equal opportunity of being
 compromised than 16 nodes pooled by groups of 4 is more secure than 4
 non-pooled nodes (but not as secure as 16 non-pooled nodes).  The above
 assumptions may of course not be true in practice as pooling resources to a
-smaller number of nodes may enable a those fewer number of nodes to invest in
+smaller number of nodes may enable those fewer number of nodes to invest in
 better security practices. 
 
-#### Futher Questions
+#### Further Questions
  - How are the many different forms of malicious activity affected by pooling?
  - What are the relationships between rewards for validators and their investment 
    in further security which make pooling more or less secure than non-pooled systems?
