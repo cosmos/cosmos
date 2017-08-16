@@ -1,4 +1,4 @@
-# Disclaimers for Crowdfund Participants
+# Disclaimers for Fundraiser Participants
 
 * The Essential Cosmos Software and Services may not complete in the advertised
   timeline due to unforeseen issues and circumstances.
@@ -6,12 +6,12 @@
 * The Cosmos Hub may not gain significant market adoption due to a failure for
   the atom holders to coorinate effectively, or due to competition.
 
-* The first 24 hours of the Crowdfund is uncapped, so there may be significant
+* The first 6 hours of the Fundraiser is uncapped, so there may be significant
   dillution relative to the total number of atoms at Genesis.
 
 * There may be unintended bugs in software and theory that cause the project to
   fail for any number of reasons, including but not limited to, bugs in
-Tendermint Core, bugs in the Cosmos Hub TMSP application, bugs in client or
+Tendermint Core, bugs in the Cosmos Hub ABCI application, bugs in client or
 wallet software, etc.
 
 * There may be irreconciliable differences among atom holders that cause the

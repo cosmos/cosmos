@@ -923,11 +923,11 @@ vertical scalability, such as increasing the block size, without the negative
 economic consequences typically associated with such a change, such as the
 disproportionately large impact on small miners.  This improvement is achieved
 by separating leader election from transaction broadcast: leaders are first
-elected by proof-of-work in "micro-blocks", and then able to broadcast
-transactions to be committed until a new micro-block is found. This reduces the
+elected by proof-of-work in "key-blocks", and then able to broadcast
+transactions to be committed until a new key-block is found. This reduces the
 bandwidth requirements necessary to win the PoW race, allowing small miners to
 more fairly compete, and allowing transactions to be committed more regularly by
-the last miner to find a micro-block.
+the last miner to find a key-block.
 
 #### Casper
 
