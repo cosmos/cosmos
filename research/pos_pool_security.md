@@ -1,7 +1,7 @@
 # Proof-of-Stake Consensus Pool Considerations
 
 One example of the trade off between speed of transactions and security is the
-number of validator nodes in a Proof of Stake (Pos) system. The more nodes
+number of validator nodes in a Proof of Stake (PoS) system. The more nodes
 within a consensus group, the more robust the system becomes against byzantine attacks
 as more nodes need to be byzantine, while conversely the longer the
 consensus engine will take to run. This concept leads to the conclusion that
