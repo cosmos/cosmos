@@ -112,13 +112,13 @@ context, and we provide summaries of other proposals and their drawbacks in
 [Related Work](#related-work).
 
 Here we present Cosmos, a novel blockchain network architecture that addresses all
-of these problems.  Cosmos is a network of many independent blockchains, called
+of these problems.  Cosmos is a network connecting many independent blockchains, called
 zones.  The zones are powered by Tendermint Core [\[8\]][8], which provides a
 high-performance, consistent, secure
 [PBFT-like](http://tendermint.com/blog/tendermint-vs-pbft/) consensus engine,
 where strict [fork-accountability](#fork-accountability) guarantees hold over
 the behaviour of malicious actors.  Tendermint Core's BFT consensus algorithm is
-well suited for scaling public proof-of-stake blockchains.
+well suited for scaling public proof-of-stake blockchains.  Blockchains with other consensus models, including proof-of-work blockchains like Ethereum and Bitcoin can be connected to the Cosmos network using adapter zones.
 
 The first zone on Cosmos is called the Cosmos Hub. The Cosmos Hub is a
 multi-asset proof-of-stake cryptocurrency with a simple governance mechanism
@@ -133,6 +133,8 @@ inter-zone token transfers go through the Cosmos Hub, which keeps track of the
 total amount of tokens held by each zone.  The hub isolates each zone from the
 failure of other zones.  Because anyone can connect a new zone to the Cosmos Hub,
 zones allow for future-compatibility with new blockchain innovations.
+
+With Cosmos interoperability between blockchains can be achieved. The potential of an internet of value, where assets are issued and controlled by different sets of validators, yet can be moved and exchanged seamlessly between blockchains without relying on trusted third parties can be realized.
 
 ## Tendermint ##################################################################
 
