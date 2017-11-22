@@ -12,11 +12,12 @@ A full node is a program that fully validates transactions and blocks of a block
 
 ### What is a delegator?
 
-Delegators are Atoms holders who  cannot ordo not want to run validator operations, which involve IT admin and secure data center, themselves. Through the Cosmos UI, a user can delegate to a validator and obtain a part of its reward in exchange.
+Delegators are ATOMs holders who  cannot ordo not want to run validator operations, which involve IT admin and secure data center, themselves. Through the Cosmos UI, a user can delegate to a validator and obtain a part of its reward in exchange.
 
 ### How to become a validator?
 
 Any participant in the network can signal that they want to become a validator by sending a “self-designation” transaction, where they must fill out the following parameters:
+
 * Validator's name
 * Validator's website
 * Validator's description
@@ -24,7 +25,7 @@ Any participant in the network can signal that they want to become a validator b
 * Minimum self-bond amount
 * Initial self-bond amount
 
-After that, users can bond Atoms to this address, effectively adding stake to it. The total stake of an address is the combination of atoms bonded by users (called delegators) and atoms self-bonded by the participant who designated himself.
+After that, users can bond ATOMs to this address, effectively adding stake to it. The total stake of an address is the combination of ATOMs bonded by users (called delegators) and ATOMs self-bonded by the participant who designated himself.
 
 Out of all the addresses that signaled themselves, the 100 with the most stake are the ones who are designated as validators. If a validator’s total stake falls below the top 100 then that validator loses its validator’s privileges. Over time, the maximum number of validators will increase, according to a predefined schedule:
 
@@ -40,12 +41,16 @@ Out of all the addresses that signaled themselves, the 100 with the most stake a
 * **Year 9:** 300
 * **Year 10:** 300
 
+### Is there a minimum amount of ATOMs that must be staked to be a validator?
+
+There is no minimum. The top 100 validator candidates with the highest total stake (where total stake = self-bonded stake + delegators stake) are the one that become validators. 
+
 ### How will delegators choose their validators?
 
 Delegators are free to choose validators according to their own subjective criteria. However, there are a number of objective criteria that can be expected to influence delegators decision when it comes to choosing their validators, namely:
 * **Commission rate:** Validators with low commissions will likely be more attractive.
-* **Amount of self-bonded atoms:** Number of atoms a validator self-bonded to its staking pool. A validator with higher amount of self-bonded atoms has more skin-in-the-game, making it more liable for its actions.
-* **Amount of delegated atoms:** Total number of atoms delegated to a validator. A high stake shows that the community trusts this validator, but it also means that this validator is a bigger target for hackers. Indeed, hackers are incentivized to hack bigger validators as they receive a reward proportionate to the stake of the validator they can prove to have compromised. We expect validators to become less and less attractive as their amount of delegated atoms grows.
+* **Amount of self-bonded ATOMs:** Number of ATOMs a validator self-bonded to its staking pool. A validator with higher amount of self-bonded ATOMs has more skin-in-the-game, making it more liable for its actions.
+* **Amount of delegated ATOMs:** Total number of ATOMs delegated to a validator. A high stake shows that the community trusts this validator, but it also means that this validator is a bigger target for hackers. Indeed, hackers are incentivized to hack bigger validators as they receive a reward proportionate to the stake of the validator they can prove to have compromised. We expect validators to become less and less attractive as their amount of delegated ATOMs grows.
 * **Track record:** Delegators will likely look at the track record of the validators they plan to delegate to. This includes seniority, past votes on proposals, historical average uptime and how often the node was compromised.
 
 Apart from these objective criteria that will be displayed in the Tendermint wallet’s UI, there will be a possibility for validators to signal a website address to complete their resume. Validators will need to build reputation one way or another to attract delegators. For example, it would be a good practice for validators to have their setup audited by third parties. Note though that the Tendermint company will not approve or conduct any audit itself.
@@ -70,74 +75,78 @@ Validators play a special role in the governance system. Being the pillars of th
 
 ### What does staking imply?
 
-Bonded atom holders receive rewards and the right to participate in governance. In exchange, they accept to lock their funds. If they want to retrieve them, they need to wait for a *three weeks unbonding period*.
+Bonded ATOM holders receive rewards and the right to participate in governance. In exchange, they accept to lock their funds. If they want to retrieve them, they need to wait for a *three weeks unbonding period*.
 
-If a validator misbehaves, a certain portion of its total stake is slashed (the severity of the penalty depends on the type of fault). This means that every user that bonded atoms to this validator gets penalized in proportion of its stake. Delegators are therefore incentivized to delegate to validators that they believe will behave correctly.
+If a validator misbehaves, a certain portion of its total stake is slashed (the severity of the penalty depends on the type of fault). This means that every user that bonded ATOMs to this validator gets penalized in proportion of its stake. Delegators are therefore incentivized to delegate to validators that they believe will behave correctly.
 
-### Can a validator run away with its delegator’s atom?
+### Can a validator run away with its delegator’s ATOM?
 
-By delegating to a validator, a user delegates staking power. The more staking power a validator has, the more weight it has in the consensus and governance processes. However, this does not mean that the validator has custody of its delegator’s atoms. *By no means a validator can run away with its delegator’s funds*. 
+By delegating to a validator, a user delegates staking power. The more staking power a validator has, the more weight it has in the consensus and governance processes. However, this does not mean that the validator has custody of its delegator’s ATOMs. *By no means a validator can run away with its delegator’s funds*. 
 
 Even though delegator’s funds cannot be stolen by their validators, they are still liable if their validators misbehave. In such case, each delegator’s stake will be partially slashed in proportion of the total stake of the validator.
 
 ### What is the incentive to stake?
 
 Each member of a validator’s staking pool earns different types of rewards:
-* **Block rewards:** Native tokens of applications run by validators (e.g. atoms) are inflated to produce block rewards. 
+* **Block rewards:** Native tokens of applications run by validators (e.g. ATOMs) are inflated to produce block rewards. 
 * **Transaction fees:** The Hub maintains a whitelist of token that are accepted as fee payment. These fees are part of the total reward received by validators and delegators.
 
 These rewards are divided among validator’s staking pools according to each validator’s weight. Then, they are divided among delegators in proportion to each delegator’s stake.
 
 ### What is the incentive to run a validator ?
 
-Validators earn additional rewards in the form of commissions on the fees that are collected. These fees can be collected not only in atoms but in any token that has been whitelisted by atom holders. 
+Validators earn additional rewards in the form of commissions on the fees that are collected. These fees can be collected not only in ATOMs but in any token that has been whitelisted by ATOM holders. 
 
 Validators also play a major role in governance. If a delegator does not vote, it inherits the vote from its validator. This gives validators a major responsibility in the ecosystem.
+
+### What is the probability of being chosen as a proposer for any given block? Does it go up with the quantity of ATOMs staked ?
+
+The validator that is selected to propose the next block is called proposer. The probability of being chosen is equal to the relative total stake (where total stake = self-bonded stake + delegators stake) of the validator. For example, if the total bonded stake across all validators is 100 ATOMs and a validator's total stake is 10 ATOMs, then this validator has a 10% probability to be chosen as the next proposer.
 
 ### What is a commission?
 
 Fee rewards received by a validator’s pool are split between the validator and its delegators. The part that goes to the validator is called the validator’s commission. Each validator is free to set its initial commission, but there will be rules on how to change it.
 
-Note that validators cannot set commission on block rewards (also called inflationary rewards or provisions). This is to prevent a continuous shift in distribution from delegators to validators which would further the concentration of atoms and ultimately weaken the security of the system.
+Note that validators cannot set commission on block rewards (also called inflationary rewards or provisions). This is to prevent a continuous shift in distribution from delegators to validators which would further the concentration of ATOMs and ultimately weaken the security of the system.
 
-### How are the block rewards distributed?
+### How are block rewards distributed?
 
 Block rewards are socially distributed, meaning that each block reward is distributed to each validator according to their stake.
 
-Let’s take an example where we have 10 validators with equal staking power and commission rate of 1%. Let’s also assume that the reward for a block is 1000 atoms and that each validator has 20% of self-bonded atoms. These tokens do not go directly to the proposer. Instead, they are evenly spread among validators. So now each validator’s pool has 100 atoms. These 100 atoms will be distributed according to each participant’s stake:
-* Validator will get 20 atoms
-* All delegators will get 80 atoms
+Let’s take an example where we have 10 validators with equal staking power and commission rate of 1%. Let’s also assume that the reward for a block is 1000 ATOMs and that each validator has 20% of self-bonded ATOMs. These tokens do not go directly to the proposer. Instead, they are evenly spread among validators. So now each validator’s pool has 100 ATOMs. These 100 ATOMs will be distributed according to each participant’s stake:
+* Validator will get 20 ATOMs
+* All delegators will get 80 ATOMs
 
-Then, each delegator can claim its part of the 80 atoms in proportion of their stake in the validator’s staking pool.
+Then, each delegator can claim its part of the 80 ATOMs in proportion of their stake in the validator’s staking pool.
 
-### How are the fees distributed?
+### How are fees distributed?
 
 Fees are also socially distributed, but the block proposer can get a bonus on the fees of the block it proposes if it includes more than the strict minimum of required precommits.
 
-When a validator is selected to propose the next block, it must include at least +⅔ precommits for the previous block in the form of validators signatures. However, there is an incentive to include more than ⅔ precommits in the form of a bonus. If a proposer includes all the signatures in its block, then it will get the full bonus of 5% on the fees it included in the block. The bonus ranges from 1 to 5% for ⅔ to 100% included signatures. Of course the proposer should not wait too long or other validator would timeout and move on to the next proposer. Validators thus have to find a balance between wait time to get the most signatures and risk of losing out on proposing the next block. This mechanism aims to incentivize non-empty block proposals, better networking between validators as well as mitigating censorship.
+When a validator is selected to propose the next block, it must include at least +⅔ precommits for the previous block in the form of validators signatures. However, there is an incentive to include more than ⅔ precommits in the form of a bonus. The bonus is linear: it ranges from 1% if the proposer includes 2/3rd precommits (minimum for the block to be valid) to 5% if the proposer includes 100% precommits. Of course the proposer should not wait too long or other validator would timeout and move on to the next proposer. Validators thus have to find a balance between wait time to get the most signatures and risk of losing out on proposing the next block. This mechanism aims to incentivize non-empty block proposals, better networking between validators as well as mitigating censorship.
 
 
-Let’s take a concrete example to illustrate the aforementioned concept. In this example, there are 10 validators with equal stake. Each of them applies a 1% commission and has 20% of self-bonded atoms. We consider a successful block collects a total of 1025.51020408 atoms in fees.
+Let’s take a concrete example to illustrate the aforementioned concept. In this example, there are 10 validators with equal stake. Each of them applies a 1% commission and has 20% of self-bonded ATOMs. We consider a successful block collects a total of 1025.51020408 ATOMs in fees.
 
 First, a 2% tax is applied.
-* 2% * 1025.51020408 = 20.51020408 atoms go to the reserve pool
+* 2% * 1025.51020408 = 20.51020408 ATOMs go to the reserve pool
 
-1005 atoms now remain. Let’s assume that the proposer included 100% of the signatures in its block. It thus obtains the full bonus of 5%.
+1005 ATOMs now remain. Let’s assume that the proposer included 100% of the signatures in its block. It thus obtains the full bonus of 5%.
 
 We have to solve this simple equation to find the reward R for each validator:
 
 `9*R + R + R*5% = 1005 ⇔ R = 1005/10.05 = 100`
 
 * For the proposer validator
-  * The pool obtains R + R*5% = 105 atoms
-  * Commission = 105*80%*1% = 0.84 atoms
-  * Validator reward = 100 * 20% + Commission = 21.84 atoms
-  * Delegators rewards = 105 * 80% - Commission = 83.16 atoms (each delegator will be able to claim its portion of these rewards in proportion of their stake)
+  * The pool obtains R + R*5% = 105 ATOMs
+  * Commission = 105*80%*1% = 0.84 ATOMs
+  * Validator reward = 100 * 20% + Commission = 21.84 ATOMs
+  * Delegators rewards = 105 * 80% - Commission = 83.16 ATOMs (each delegator will be able to claim its portion of these rewards in proportion of their stake)
 * For each non-proposer validator
-  * The pool obtains R = 100 atoms
-  * Commission = 100*80%*1% = 0.8 atoms
-  * Validator reward = 100 * 20% + Commission = 20.8 atoms
-  * Delegators rewards = 100 * 80% - Commission = 79.2 atoms (each delegator will be able to claim its portion of these rewards in proportion of their stake)
+  * The pool obtains R = 100 ATOMs
+  * Commission = 100*80%*1% = 0.8 ATOMs
+  * Validator reward = 100 * 20% + Commission = 20.8 ATOMs
+  * Delegators rewards = 100 * 80% - Commission = 79.2 ATOMs (each delegator will be able to claim its portion of these rewards in proportion of their stake)
 
 ### What are the slashing conditions?
 
@@ -147,17 +156,19 @@ If a validator misbehaves, its bonded stake along with its delegator’s stake a
 * **Unavailability:** If a validator’s signature has not been included in the last X block, the validator will get slashed by a marginal amount proportional to X. If X is above a certain limit Y, then the validator will get unbonded
 * **Non-voting:** If a validator did not vote on a proposal and once the fault is reported by a someone, his stake will be a little slashed. He will also get a penalty. Once a validator gets a penalty, no additional penalty can be submitted for a given period (3 weeks). After this period, if a second penalty is submitted, the validator gets a second light slash and gets unbonded. If, after the first penalty, no other penalty is submitted for a 3 months period, then the penalty can be cleared by sending a special transaction.
 
+Note that even if a validator does not intentionally misbehaves, it can still be slashed if its node crashes, looses connectivity, gets DDOSed or if its private keys are compromised.
+
 ### Incentives for validator #101 to stake?
 
 Validator candidates that do not have enough total stake to be in the validator set will have to run validator operation (or at least be ready to) without getting any revenue. 
 
 There are solutions that are considered to mitigate this issue. For example, we could create a sub-layer of delegation. Validator candidate could delegate to existing validators while they’re trying to attract delegators, thereby generating revenue. At the same time, delegators already bonded to validators could signal their intention to switch to this validator candidate should it get enough stake to enter the validator set. When the validator candidate would get enough pledge, it would transition to a validator and all the delegator who pledged would join its staking pool.
 
-### Do validators need to self-bond atoms?
+### Do validators need to self-bond ATOMs?
 
-Delegators should want their validator to have self-bonded atoms in their staking pool; that is, bonded atoms of their own. In other words, validators should have skin-in-the-game. 
+Delegators should want their validator to have self-bonded ATOMs in their staking pool; that is, bonded ATOMs of their own. In other words, validators should have skin-in-the-game. 
 
-In order for delegators to have some guarantee about how much skin-in-the-game their validator has, the latter must signal a minimum amount of self-bonded atoms. If a validator's self-bond goes below the limit that it predefined, this delegator and all of its delegators will unbond. 
+In order for delegators to have some guarantee about how much skin-in-the-game their validator has, the latter must signal a minimum amount of self-bonded ATOMs. If a validator's self-bond goes below the limit that it predefined, this delegator and all of its delegators will unbond. 
 
 ### How to prevent concentration of stake in the hands of a few top validators?
 
