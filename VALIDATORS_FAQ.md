@@ -23,6 +23,7 @@ Delegators are Atoms holders who cannot, or do not want to, run validator operat
 
 Any participant in the network can signal that they want to become a validator by sending a “declare-candidacy” transaction, where they must fill out the following parameters:
 
+* Validator's PubKey: The validator must signal an account with which it will perform its validator's duties. The private key associated with PubKey is used to sign *prevotes* and *precommits*. This way, validators can have different accounts for validating and holding liquid funds.
 * Validator's name
 * Validator's website (Optional)
 * Validator's description (Optional)
@@ -59,11 +60,11 @@ Delegators are free to choose validators according to their own subjective crite
 * **Amount of delegated Atoms:** Total number of Atoms delegated to a validator. A high stake shows that the community trusts this validator, but it also means that this validator is a bigger target for hackers. Indeed, hackers are incentivized to hack bigger validators as they receive a reward proportionate to the stake of the validator they can prove to have compromised. Validators are expected to become less and less attractive as their amount of delegated Atoms grows.
 * **Track record:** Delegators will likely look at the track record of the validators they plan to delegate to. This includes seniority, past votes on proposals, historical average uptime and how often the node was compromised.
 
-Apart from these criteria that will be displayed in the Cosmos wallet’s UI, there will be a possibility for validators to signal a website address to complete their resume. Validators will need to build reputation one way or another to attract delegators. For example, it would be a good practice for validators to have their setup audited by third parties. Note though that Tendermint will not approve or conduct any audit itself.
+Apart from these criteria that will be displayed in the Cosmos wallet’s UI, there will be a possibility for validators to signal a website address to complete their resume. Validators will need to build reputation one way or another to attract delegators. For example, it would be a good practice for validators to have their setup audited by third parties. Note though that the Tendermint Team will not approve or conduct any audit itself.
 
 ### Do validators need to be publicly identified?
 
-No, they don’t. Each delegator will value validators based on objective and subjective criteria. Validators will be able (and are recommended) to register a website address when they nominate themselves so that they can advertise their operation as they see fit. Some delegators may prefer a website that clearly displays the team running the validator and their resume, while others might prefer anonymous validators with positive track records. Most likely both identified and anonymous validators will coexist in the validator set.
+No, they don’t. Each delegator will value validators based on their own criteria. Validators will be able (and are recommended) to register a website address when they nominate themselves so that they can advertise their operation as they see fit. Some delegators may prefer a website that clearly displays the team running the validator and their resume, while others might prefer anonymous validators with positive track records. Most likely both identified and anonymous validators will coexist in the validator set.
 
 ### What are the responsiblities of a validator?
 
