@@ -230,7 +230,7 @@ Validators should expect to run an HSM that supports ed25519 keys. Here are the 
  * Ledger Nano S
  * Potential options
  * Ledger BOLOS SGX enclave
- * Thales nCypher support
+ * Thales nShield support
  * Tendermint SGX enclave
 
 ### What can validators expect in terms of operations? 
