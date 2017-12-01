@@ -124,7 +124,7 @@ Let us take an example where we have 10 validators with equal staking power and 
 * Validator gets 20 Atoms
 * All delegators get 80 Atoms
 
-Then, each delegator can claim its part of the 80 Atoms in proportion to their stake in the validator’s staking pool.
+Then, each delegator can claim its part of the 80 Atoms in proportion to their stake in the validator’s staking pool. Note that the validator's commission is not applied on block provisions.
 
 ### How are fees distributed?
 
