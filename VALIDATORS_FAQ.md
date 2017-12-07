@@ -1,16 +1,18 @@
 # Validators FAQ
 
+*Disclaimer: This is work in progress. Mechanisms and values are susceptible to change* 
+
 ## General concepts
 
 ### What is a validator?
 
-The Cosmos Hub is based on Tendermint, which relies on a set of validators to secure the network. The role of validators is to run a full-node and participate in consensus by broadcasting votes which contain cryptographic signatures signed by their private key. Validators commit new blocks in the blockchain and receive rewards in exchange for their work. They must also participate in governance by voting on proposals. Validators are weighted according to their total stake.
+The Cosmos Hub is based on Tendermint, which relies on a set of validators to secure the network. The role of validators is to run a full-node and participate in consensus by broadcasting votes which contain cryptographic signatures signed by their private key. Validators commit new blocks in the blockchain and receive revenue in exchange for their work. They must also participate in governance by voting on proposals. Validators are weighted according to their total stake.
 
 ### What is 'staking'?
 
 The Cosmos Hub is a public Proof-Of-Stake (PoS) blockchain, meaning that validator's weight is determined by the amount of staking tokens (Atoms) bonded as collateral. These Atoms can be staked directly by the validator or delegated to them by Atom holders.
 Any user in the system can declare its intention to become a validator by sending a "declare-candidacy" transaction. From there, they become validator candidates.
-The weight (i.e. total stake) of a candidate determines wether or not it is a validator, and also how frequently this node will have to propose a block and how much reward it will obtain. Initially, only the top 100 validator candidates with the most weight will be validators. If validators double sign, are frequently offline or do not participate in governance, their staked Atoms (including Atoms of users that delegated to them) can be destroyed, or 'slashed'.
+The weight (i.e. total stake) of a candidate determines wether or not it is a validator, and also how frequently this node will have to propose a block and how much revenue it will obtain. Initially, only the top 100 validator candidates with the most weight will be validators. If validators double sign, are frequently offline or do not participate in governance, their staked Atoms (including Atoms of users that delegated to them) can be destroyed, or 'slashed'.
 
 ### What is a full-node?
 
@@ -19,9 +21,12 @@ Of course, it is possible and encouraged for any user to run full-nodes even if 
 
 ### What is a delegator?
 
-Delegators are Atom holders who cannot, or do not want to run validator operations themselves. Through the Cosmos UI, a user can delegate Atoms to a validator and obtain a part of its reward in exchange (for more detail on how rewards are distributed, see  **What is the incentive to stake?** and **What is a validator's commission?** sections below).
-Because they share rewards with their validators, delegators also share responsiblity. Should a validator misbehave, each of its delegators will be partially slashed in proportion to their stake. This is why delegators should perform due diligence on validator candidates before delegating, as well as spreading their stake over multiple validators.
+Delegators are Atom holders who cannot, or do not want to run validator operations themselves. Through the Cosmos UI, a user can delegate Atoms to a validator and obtain a part of its revenue in exchange (for more detail on how revenue is distributed, see  **What is the incentive to stake?** and **What is a validator's commission?** sections below).
+Because they share revenue with their validators, delegators also share responsiblity. Should a validator misbehave, each of its delegators will be partially slashed in proportion to their stake. This is why delegators should perform due diligence on validator candidates before delegating, as well as spreading their stake over multiple validators.
 Delegators play a critical role in the system, as they are responsible for choosing validators. Being a delegator is not a passive role: Delegators should actively monitor the actions of their validators and participate in governance.
+
+
+## Becoming a validator
 
 ### How to become a validator?
 
@@ -31,7 +36,7 @@ Any participant in the network can signal that they want to become a validator b
 * Validator's name
 * Validator's website (Optional)
 * Validator's description (Optional)
-* Initial commission rate: The commission rate on fees charged to any delegators
+* Initial commission rate: The commission rate on block provisions, block rewards and fees charged to any delegators
 * Maximum commission: The maximum commission rate which this validator candidate can charge
 * Commission change rate: The maximum daily increase of the validator candidate commission
 * Minimum self-bond amount: Minimum amount of Atoms the validator candidate need to have bonded at all time. If the validator's self-bonded stake falls below this limit, its entire staking pool will unbond.
@@ -72,9 +77,13 @@ There is no minimum. The top 100 validator candidates with the highest total sta
 Delegators are free to choose validators according to their own subjective criteria. This said, criteria anticipated to be important include:
 * **Amount of self-bonded Atoms:** Number of Atoms a validator self-bonded to its staking pool. A validator with higher amount of self-bonded Atoms has more skin in the game, making it more liable for its actions.
 * **Amount of delegated Atoms:** Total number of Atoms delegated to a validator. A high stake shows that the community trusts this validator, but it also means that this validator is a bigger target for hackers. Indeed, hackers are incentivized to hack bigger validators as they receive a reward proportionate to the stake of the validator they can prove to have compromised. Validators are expected to become less and less attractive as their amount of delegated Atoms grows.
+* **Commission rate:** Commission applied on revenue by validators before it is distributed to their delegators
 * **Track record:** Delegators will likely look at the track record of the validators they plan to delegate to. This includes seniority, past votes on proposals, historical average uptime and how often the node was compromised.
 
 Apart from these criteria that will be displayed in the Cosmos UI, there will be a possibility for validators to signal a website address to complete their resume. Validators will need to build reputation one way or another to attract delegators. For example, it would be a good practice for validators to have their setup audited by third parties. Note though, that the Tendermint Team will not approve or conduct any audit itself.
+
+
+## Validator directives
 
 ### Do validators need to be publicly identified?
 
@@ -98,7 +107,7 @@ Validators play a special role in the governance system. Being the pillars of th
 
 Staking Atoms can be thought of as a safety deposit on validation activities. When a validator or a delegator wants to retrieve part or all of their deposit, they send an unbonding transaction. Then, Atoms undergo a *three weeks unbonding period* during which they are liable to being slashed for potential misbehaviors committed by the validator before the unbonding process started.
 
-Validators, and by association delegators, receive Atom provisions, fee rewards, and the right to participate in governance. If a validator misbehaves, a certain portion of its total stake is slashed (the severity of the penalty depends on the type of misbehavior). This means that every user that bonded Atoms to this validator gets penalized in proportion to its stake. Delegators are therefore incentivized to delegate to validators that they anticipate will function safely.
+Validators, and by association delegators, receive block provisions, block rewards, fee rewards, and the right to participate in governance. If a validator misbehaves, a certain portion of its total stake is slashed (the severity of the penalty depends on the type of misbehavior). This means that every user that bonded Atoms to this validator gets penalized in proportion to its stake. Delegators are therefore incentivized to delegate to validators that they anticipate will function safely.
 
 ### Can a validator run away with its delegators' Atoms?
 
@@ -110,35 +119,43 @@ Even though delegated funds cannot be stolen by their validators, delegators are
 
 The validator that is selected to propose the next block is called proposer. Each proposer is selected deterministically, and the frequency of being chosen is equal to the relative total stake (where total stake = self-bonded stake + delegators stake) of the validator. For example, if the total bonded stake across all validators is 100 Atoms and a validator's total stake is 10 Atoms, then this validator will be chosen 10% of the time as the next proposer.
 
+### Will validators of the Cosmos Hub ever be required to validate other zones in the Cosmos ecosystem?
+
+Yes, they will. If governance decides so, validators of the Cosmos hub might have to validate other zones in the Cosmos ecosystem. For example, validators of the Cosmos hub will also validate the first public Ethermint zone. Of course, they will be compensated for it in the form of block rewards and transaction fees. These rewards will be paid in the native currency of the Ethermint zone, called Photons.
+
+
+## Staking and incentives
+
 ### What is the incentive to stake?
 
-Each member of a validator’s staking pool earns different types of rewards:
-* **Block provisions:** Native tokens of applications run by validators (e.g. Atoms) are inflated to produce block provisions. These provisions exist to incentivize Atom holders to bond their stake, as non-bonded Atom will be diluted over time. 
+Each member of a validator’s staking pool earns different types of revenue:
+* **Block provisions:** Native tokens of applications run by validators (e.g. Atoms on the Cosmos Hub) are inflated to produce block provisions. These provisions exist to incentivize Atom holders to bond their stake, as non-bonded Atom will be diluted over time. 
+* **Block rewards:** Block rewards are paid in Photons. Initial distribution of Photons will be hard spooned from Ethereum. This means Photons will be emitted 1:1 to Ether. 
 * **Transaction fees:** The Cosmos Hub maintains a whitelist of token that are accepted as fee payment. 
 
-These rewards are divided among validators' staking pools according to each validator’s weight. Then, they are divided among delegators in proportion to each delegator’s stake. Note that a commission on fee rewards for delegators is applied by the validator before they are distributed. However, no commission can be applied on block provisions (see below).
+This total revenue is divided among validators' staking pools according to each validator’s weight. Then, it is divided among delegators in proportion to each delegator’s stake. Note that a commission on delegators' revenue is applied by the validator before it is distributed. 
 
 ### What is the incentive to run a validator ?
 
-Validators earn proportionally more rewards than their delegators because of commissions on the fees that are collected. These fees can be collected not only in Atoms but in any token that has been whitelisted through governance. 
+Validators earn proportionally more revenue than their delegators because of commissions.
 
 Validators also play a major role in governance. If a delegator does not vote, it inherits the vote from its validator. This gives validators a major responsibility in the ecosystem.
 
 ### What is a validator's commission?
 
-Fee rewards received by a validator’s pool are split between the validator and its delegators. The validator can apply a commission on the part of the fees that goes to its delegators. This commission is set as a percentage. Each validator is free to set its initial commission, maximum daily commission change rate and maximum commission. The Cosmos Hub enforces the parameter that each validator sets. These parameters can only be defined when initially declaring candidacy. 
-
-Note that validators cannot set commission on block provisions. This is to prevent a continuous shift in distribution from delegators to validators which would increase the concentration of Atoms and ultimately weaken the security of the system.
+Revenue received by a validator’s pool is split between the validator and its delegators. The validator can apply a commission on the part of the revenue that goes to its delegators. This commission is set as a percentage. Each validator is free to set its initial commission, maximum daily commission change rate and maximum commission. The Cosmos Hub enforces the parameter that each validator sets. These parameters can only be defined when initially declaring candidacy. 
 
 ### How are block provisions distributed?
 
 Block provisions are distributed proportionally to all validators relative to their total stake. This means that even though each validator gains atoms with each provision, all validators will still maintain equal weight.
 
 Let us take an example where we have 10 validators with equal staking power and a commission rate of 1%. Let us also assume that the provision for a block is 1000 Atoms and that each validator has 20% of self-bonded Atoms. These tokens do not go directly to the proposer. Instead, they are evenly spread among validators. So now each validator’s pool has 100 Atoms. These 100 Atoms will be distributed according to each participant’s stake:
-* Validator gets 20 Atoms
-* All delegators get 80 Atoms
 
-Then, each delegator can claim its part of the 80 Atoms in proportion to their stake in the validator’s staking pool. Note that the validator's commission is not applied on block provisions.
+* Commission: 100*80%*1% = 0.8 Atoms
+* Validator gets: 100*20% + Commission = 20.8 Atoms
+* All delegators get: 100*80% - Commission = 79.2 Atoms
+
+Then, each delegator can claim its part of the 80 Atoms in proportion to their stake in the validator’s staking pool. Note that the validator's commission is not applied on block provisions. Note that block rewards (paid in Photons) are distributed according to the same mechanism.
 
 ### How are fees distributed?
 
@@ -160,13 +177,13 @@ We have to solve this simple equation to find the reward R for each validator:
 * For the proposer validator
   * The pool obtains R + R*5%: 105 Atoms
   * Commission: 105*80%*1% = 0.84 Atoms
-  * Validator reward: 100 * 20% + Commission = 21.84 Atoms
-  * Delegators rewards: 105 * 80% - Commission = 83.16 Atoms (each delegator will be able to claim its portion of these rewards in proportion to their stake)
+  * Validator's reward: 100 * 20% + Commission = 21.84 Atoms
+  * Delegators' rewards: 105 * 80% - Commission = 83.16 Atoms (each delegator will be able to claim its portion of these rewards in proportion to their stake)
 * For each non-proposer validator
   * The pool obtains R: 100 Atoms
   * Commission: 100*80%*1% = 0.8 Atoms
-  * Validator reward: 100 * 20% + Commission = 20.8 Atoms
-  * Delegators rewards: 100 * 80% - Commission = 79.2 Atoms (each delegator will be able to claim its portion of these rewards in proportion to their stake)
+  * Validator's reward: 100 * 20% + Commission = 20.8 Atoms
+  * Delegators' rewards: 100 * 80% - Commission = 79.2 Atoms (each delegator will be able to claim its portion of these rewards in proportion to their stake)
 
 ### What are the slashing conditions?
 
@@ -194,13 +211,8 @@ For now the community is expected to behave in a smart and self-preserving way. 
 * **Hack bounty:** This is an incentive for the community to hack validators. There will be bounties proportionate to the size of the validator, so that a validator becomes a bigger target as its stake grows.
 * **UI warning:** Users will be warned by the Cosmos UI if they want to delegate to a validator that already has a significant amount of staking power.
 
-### Will validators of the Cosmos Hub ever be required to validate other zones in the Cosmos ecosystem?
-
-Yes, they will. If governance decides so, validators of the Cosmos hub might have to validate other zones in the Cosmos ecosystem. For example, validators of the Cosmos hub will also validate the first public Ethermint zone. Of course, they will be compensated for it in the form of block provisions and transaction fees. These rewards will be paid in the native currency of the Ethermint zone, called `photons`.
-
 
 ## Technical requirements 
-
 
 ### What are hardware requirements?
 
