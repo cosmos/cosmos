@@ -36,7 +36,7 @@ Any participant in the network can signal that they want to become a validator b
 * Validator's name
 * Validator's website (Optional)
 * Validator's description (Optional)
-* Initial commission rate: The commission rate on block provisions, block rewards and fees charged to any delegators
+* Initial commission rate: The commission rate on block provisions, block rewards and fees charged to delegators
 * Maximum commission: The maximum commission rate which this validator candidate can charge
 * Commission change rate: The maximum daily increase of the validator candidate commission
 * Minimum self-bond amount: Minimum amount of Atoms the validator candidate need to have bonded at all time. If the validator's self-bonded stake falls below this limit, its entire staking pool will unbond.
@@ -121,7 +121,7 @@ The validator that is selected to propose the next block is called proposer. Eac
 
 ### Will validators of the Cosmos Hub ever be required to validate other zones in the Cosmos ecosystem?
 
-Yes, they will. If governance decides so, validators of the Cosmos hub might have to validate other zones in the Cosmos ecosystem. For example, validators of the Cosmos hub will also validate the first public Ethermint zone. Of course, they will be compensated for it in the form of block rewards and transaction fees. These rewards will be paid in the native currency of the Ethermint zone, called Photons.
+Yes, they will. Initially, validators of the Cosmos hub will also validate the first public Ethermint zone. If governance decides so, validators of the Cosmos hub may be required to validate additional zones in the Cosmos ecosystem. As the case with the Ethermint Zone, for each additional zone compensation is to be provided in the form of block rewards and transaction fees.
 
 
 ## Staking and incentives
@@ -130,10 +130,10 @@ Yes, they will. If governance decides so, validators of the Cosmos hub might hav
 
 Each member of a validator’s staking pool earns different types of revenue:
 * **Block provisions:** Native tokens of applications run by validators (e.g. Atoms on the Cosmos Hub) are inflated to produce block provisions. These provisions exist to incentivize Atom holders to bond their stake, as non-bonded Atom will be diluted over time. 
-* **Block rewards:** Block rewards are paid in Photons. Initial distribution of Photons will be hard spooned from Ethereum. This means Photons will be emitted 1:1 to Ether. 
+* **Block rewards:** For the Ethermint zone, block rewards are paid in Photons. Initial distribution of Photons will be hard spooned from Ethereum. This means Photons will be emitted 1:1 to Ether. 
 * **Transaction fees:** The Cosmos Hub maintains a whitelist of token that are accepted as fee payment. 
 
-This total revenue is divided among validators' staking pools according to each validator’s weight. Then, it is divided among delegators in proportion to each delegator’s stake. Note that a commission on delegators' revenue is applied by the validator before it is distributed. 
+This total revenue is divided among validators' staking pools according to each validator’s weight. Then, within each validator's staking pool the revenue is divided among delegators in proportion to each delegator’s stake. Note that a commission on delegators' revenue is applied by the validator before it is distributed. 
 
 ### What is the incentive to run a validator ?
 
@@ -143,7 +143,7 @@ Validators also play a major role in governance. If a delegator does not vote, i
 
 ### What is a validator's commission?
 
-Revenue received by a validator’s pool is split between the validator and its delegators. The validator can apply a commission on the part of the revenue that goes to its delegators. This commission is set as a percentage. Each validator is free to set its initial commission, maximum daily commission change rate and maximum commission. The Cosmos Hub enforces the parameter that each validator sets. These parameters can only be defined when initially declaring candidacy. 
+Revenue received by a validator’s pool is split between the validator and its delegators. The validator can apply a commission on the part of the revenue that goes to its delegators. This commission is set as a percentage. Each validator is free to set its initial commission, maximum daily commission change rate and maximum commission. The Cosmos Hub enforces the parameter that each validator sets. These parameters can only be defined when initially declaring candidacy, and may only be constrained further after being declared. 
 
 ### How are block provisions distributed?
 
