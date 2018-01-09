@@ -184,7 +184,7 @@ Each `Proposal` is identified by its unique `proposalID`.
 
 Additionaly, four lists will be linked to each proposal:
 - `DepositorList`: List of addresses that deposited on the proposal with their associated deposit
-- `VoterList`: List of addresses that voted **under each validator** with their associated option
+- `VotersList`: List of addresses that voted **under each validator** with their associated option
 - `InitVotingPowerList`: Snapshot of validators' voting power **when proposal enters voting period**
 - `MinusesList`: List of minuses for each validator. Used to compute validators' voting power when they cast a vote.
 
@@ -221,6 +221,9 @@ upon receiving txSubmitProposal from sender do
       proposal.LinkedProposal = txSubmitProposal.LinkedProposal // handle case where LinkedProposal is not specified
       proposal.Deposit = txSubmitProposal.InitialDeposit
       proposal.SubmitBlock = CurrentBlock
+      
+      create depositorsList from proposalID
+      initiate deposit of sender in depositorsList at txSubmitProposal.InitialDeposit
   
       if (txSubmitProposal.InitialDeposit < ActiveProcedure.MinDeposit) then  
         // MinDeposit is not reached
@@ -231,9 +234,16 @@ upon receiving txSubmitProposal from sender do
         // MinDeposit is reached
         
         proposal.VotingStartBlock = CurrentBlock
-        snapshot(ActiveProcedure.ProcedureNumber) // Save current procedure number in InitProcedureNumber
-        snapshot(TotalVotingPower)  // Save total voting power in InitTotalVotingPower
-        snapshot(ValidatorVotingPower)  // Save validators' voting power in InitVotingPowerList
+        
+        create  votersList,
+                initVotingPowerList,
+                minusesList,
+                initProcedureNumber,
+                initTotalVotingPower  from proposalID
+                                    
+        snapshot(ActiveProcedure.ProcedureNumber) // Save current procedure number in initProcedureNumber
+        snapshot(TotalVotingPower)  // Save total voting power in initTotalVotingPower
+        snapshot(ValidatorVotingPower)  // Save validators' voting power in initVotingPowerList
   
       return proposalID
 ```
@@ -274,7 +284,7 @@ upon receiving txDeposit from sender do
         throw
       
       else
-        retrieve proposal from txDeposit.ProposalID
+        retrieve proposal from txDeposit.ProposalID // retrieve throws if it fails
         
         if (proposal.Deposit >= ActiveProcedure.MinDeposit) then  
           // MinDeposit was reached
@@ -305,6 +315,13 @@ upon receiving txDeposit from sender do
               // MinDeposit is reached, vote opens
               
               proposal.VotingStartBlock = CurrentBlock
+              
+              create  votersList,
+                      initVotingPowerList,
+                      minusesList,
+                      initProcedureNumber,
+                      initTotalVotingPower  from proposalID
+              
               snapshot(ActiveProcedure.ProcedureNumber) // Save current procedure number in InitProcedureNumber
               snapshot(TotalVotingPower)  // Save total voting power in InitTotalVotingPower
               snapshot(ValidatorVotingPower)  // Save validators' voting power in InitVotingPowerList
@@ -504,20 +521,17 @@ Next is a pseudocode proposal of the way `TxVote` transactions can be handled:
                 // sender is the validator whose PubKey is txVote.ValidatorPubKey
 
                 retrieve initialVotingPower from InitVotingPowerList using txVote.ValidatorPubKey
+                
+                
+                if exists(MinusesList[txVote.ValidatorPubKey]) then
+                  // a minus exists for this validator's PubKey, decrease vote of validator by minus
 
-                if retrieve fails then
-                  throw
+                  proposal.Votes['txVote.Option'] += (initialVotingPower - MinusesList[txVote.ValidatorPubKey])
 
                 else
-                  if exists(MinusesList[txVote.ValidatorPubKey]) then
-                    // a minus exists for this validator's PubKey, decrease vote of validator by minus
+                  // a minus does not exist for this validator's PubKey, validator votes with full voting power
 
-                    proposal.Votes['txVote.Option'] += (initialVotingPower - MinusesList[txVote.ValidatorPubKey])
-
-                  else
-                    // a minus does not exist for this validator's PubKey, validator votes with full voting power
-
-                    proposal.Votes['txVote.Option'] += initialVotingPower
+                  proposal.Votes['txVote.Option'] += initialVotingPower
 
               add sender to votersList under txVote.ValidatorPubKey
 ```
@@ -588,8 +602,10 @@ And the associated pseudocode:
               else
                 // Validator PubKey is not in votersList, punish
                 
+                slash txGovernancePenalty.ValidatorPubKey of GovernancePenalty
+                add txGovernancePenalty.ValidatorPubKey to votersList // or other mean of avoiding double penalty
                 reward sender of GovernanceReward
-                slash txGovernancePenalty.ValidatorPubKey of GovernancePenalty                            
+                                            
 ```
 
 ## Future improvements (not in scope for MVP)
