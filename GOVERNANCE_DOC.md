@@ -376,7 +376,7 @@ And the associated pseudocode
               retrieve initProcedure from initProcedureNumber // get procedure that was active when vote opened
               
               if  (proposal.Category AND proposal.Votes['Yes']/initTotalVotingPower >= 2/3) OR
-                  (CurrentBlock > proposal.VotingStartBlock + initProcedure.VotingPeriod AND proposal.Votes['NoWithVeto']/(proposal.Votes['Yes']+proposal.Votes['No']+proposal.Votes['NoWithVeto']) < 1/3 AND           proposal.Votes['Yes']/(proposal.Votes['Yes']+proposal.Votes['No']+proposal.Votes['NoWithVeto']) > 1/2) then
+                  ((CurrentBlock > proposal.VotingStartBlock + initProcedure.VotingPeriod) AND (proposal.Votes['NoWithVeto']/(proposal.Votes['Yes']+proposal.Votes['No']+proposal.Votes['NoWithVeto']) < 1/3) AND           (proposal.Votes['Yes']/(proposal.Votes['Yes']+proposal.Votes['No']+proposal.Votes['NoWithVeto']) > 1/2)) then
                 
                 // Proposal was accepted either because
                 // Proposal was urgent and special condition was met
@@ -417,103 +417,109 @@ Next is a pseudocode proposal of the way `TxVote` transactions can be handled:
     if !correctlyFormatted(txDeposit) then  
       throw
     
-    else
-      retrieve initProcedureNumber from txVote.ProposalID    
-      retrieve initProcedure from initProcedureNumber // get procedure that was active when vote opened
-      
+    else   
       if !exists(txVote.proposalID) OR  
-         !initProcedure.OptionSet.includes(txVote.Option) OR 
-         !isValid(txVote.ValidatorPubKey) then 
          
          // Throws if
-         // proposalID does not exists OR if
-         // Option is not in Option Set of procedure that was active when vote opened OR if
-         // ValidatorPubKey is not the GovPubKey of a current validator
+         // proposalID does not exist
          
         throw
       
       else
-         retrieve votersList from txVote.ProposalID
+        retrieve initProcedureNumber from txVote.ProposalID    
+        retrieve initProcedure from initProcedureNumber // get procedure that was active when vote opened
+      
+        if  !initProcedure.OptionSet.includes(txVote.Option) OR 
+            !isValid(txVote.ValidatorPubKey) then 
          
-         if sender is in votersList under txVote.ValidatorPubKey then 
-          // sender has already voted with the Atoms bonded to ValidatorPubKey
+          // Throws if
+          // Option is not in Option Set of procedure that was active when vote opened OR if
+          // ValidatorPubKey is not the GovPubKey of a current validator
           
           throw
-         
-         else
-          retrieve proposal from txVote.ProposalID
-          retrieve InitTotalVotingPower from txVote.ProposalID
           
-          if  (proposal.VotingStartBlock < 0) OR  
-              (CurrentBlock > proposal.VotingStartBlock + initProcedure.VotingPeriod) OR 
-              (proposal.VotingStartBlock < lastBondingBlock(sender, txVote.ValidatorPubKey) OR   
-              (proposal.VotingStartBlock < lastUnbondingBlock(sender, txVote.ValidatorPubKey) OR   
-              (proposal.Category AND proposal.Votes['Yes']/InitTotalVotingPower >= 2/3) then   
-              
-              // Throws if
-              // Vote has not started OR if
-              // Vote had ended OR if
-              // sender bonded Atoms to ValidatorPubKey after start of vote OR if
-              // sender unbonded Atoms from ValidatorPubKey after start of vote OR if
-              // proposal is urgent and special condition is met, i.e. proposal is accepted and closed
-              
-            throw     
-          
-          else
-            // sender can vote, check if sender == validator and add sender to voter list
-            
-            if (sender is not equal to GovPubKey that corresponds to txVote.ValidatorPubKey)
-              // Here, sender is not the validator whose PubKey is txVote.ValidatorPubKey
-              
-              if sender does not have bonded Atoms to txVote.ValidatorPubKey then
-                throw
-              
-              else
-                if txVote.ValidatorPubKey is not in votersList under txVote.ValidatorPubKey then
-                  // Validator has not voted already
-                  
-                  if exists(MinusesList[txVote.ValidatorPubKey]) then
-                    // a minus already exists for this validator's PubKey, increase minus
-                    // by the amount of Atoms sender has bonded to ValidatorPubKey
-                    
-                    MinusesList[txVote.ValidatorPubKey] += sender.bondedAmountTo(txVote.ValidatorPubKey)
-                  
+        else
+           retrieve votersList from txVote.ProposalID
+
+           if sender is in votersList under txVote.ValidatorPubKey then 
+            // sender has already voted with the Atoms bonded to ValidatorPubKey
+
+            throw
+
+           else
+            retrieve proposal from txVote.ProposalID
+            retrieve InitTotalVotingPower from txVote.ProposalID
+
+            if  (proposal.VotingStartBlock < 0) OR  
+                (CurrentBlock > proposal.VotingStartBlock + initProcedure.VotingPeriod) OR 
+                (proposal.VotingStartBlock < lastBondingBlock(sender, txVote.ValidatorPubKey) OR   
+                (proposal.VotingStartBlock < lastUnbondingBlock(sender, txVote.ValidatorPubKey) OR   
+                (proposal.Category AND proposal.Votes['Yes']/InitTotalVotingPower >= 2/3) then   
+
+                // Throws if
+                // Vote has not started OR if
+                // Vote had ended OR if
+                // sender bonded Atoms to ValidatorPubKey after start of vote OR if
+                // sender unbonded Atoms from ValidatorPubKey after start of vote OR if
+                // proposal is urgent and special condition is met, i.e. proposal is accepted and closed
+
+              throw     
+
+            else
+              // sender can vote, check if sender == validator and add sender to voter list
+
+              if (sender is not equal to GovPubKey that corresponds to txVote.ValidatorPubKey)
+                // Here, sender is not the Governance PubKey of the validator whose PubKey is txVote.ValidatorPubKey
+
+                if sender does not have bonded Atoms to txVote.ValidatorPubKey then
+                  throw
+
+                else
+                  if txVote.ValidatorPubKey is not in votersList under txVote.ValidatorPubKey then
+                    // Validator has not voted already
+
+                    if exists(MinusesList[txVote.ValidatorPubKey]) then
+                      // a minus already exists for this validator's PubKey, increase minus
+                      // by the amount of Atoms sender has bonded to ValidatorPubKey
+
+                      MinusesList[txVote.ValidatorPubKey] += sender.bondedAmountTo(txVote.ValidatorPubKey)
+
+                    else
+                      // a minus does not already exist for this validator's PubKey, initialise minus
+                      // at the amount of Atoms sender has bonded to ValidatorPubKey
+
+                      MinusesList[txVote.ValidatorPubKey] = sender.bondedAmountTo(txVote.ValidatorPubKey)
+
                   else
-                    // a minus does not already exist for this validator's PubKey, initialise minus
-                    // at the amount of Atoms sender has bonded to ValidatorPubKey
-                    
-                    MinusesList[txVote.ValidatorPubKey] = sender.bondedAmountTo(txVote.ValidatorPubKey)
-                
+                    // Validator has already voted
+                    // Reduce option count chosen by validator by sender's bonded Amount
+
+                    retrieve validatorOption from votersList using txVote.ValidatorPubKey
+                    proposal.Votes['validatorOption'] -= sender.bondedAmountTo(txVote.ValidatorPubKey)
+
+                  // increase Option count chosen by sender by bonded Amount
+                  proposal.Votes['txVote.Option'] += sender.bondedAmountTo(txVote.ValidatorPubKey)
+
+              else 
+                // sender is the validator whose PubKey is txVote.ValidatorPubKey
+
+                retrieve initialVotingPower from InitVotingPowerList using txVote.ValidatorPubKey
+
+                if retrieve fails then
+                  throw
+
                 else
-                  // Validator has already voted
-                  // Reduce option count chosen by validator by sender's bonded Amount
-                  
-                  retrieve validatorOption from votersList using txVote.ValidatorPubKey
-                  proposal.Votes['validatorOption'] -= sender.bondedAmountTo(txVote.ValidatorPubKey)
-                
-                // increase Option count chosen by sender by bonded Amount
-                proposal.Votes['txVote.Option'] += sender.bondedAmountTo(txVote.ValidatorPubKey)
-            
-            else 
-              // sender is the validator whose PubKey is txVote.ValidatorPubKey
-              
-              retrieve initialVotingPower from InitVotingPowerList using txVote.ValidatorPubKey
-              
-              if retrieve fails then
-                throw
-              
-              else
-                if exists(MinusesList[txVote.ValidatorPubKey]) then
-                  // a minus exists for this validator's PubKey, decrease vote of validator by minus
-                  
-                  proposal.Votes['txVote.Option'] += (initialVotingPower - MinusesList[txVote.ValidatorPubKey])
-                
-                else
-                  // a minus does not exist for this validator's PubKey, validator votes with full voting power
-                  
-                  proposal.Votes['txVote.Option'] += initialVotingPower
-                  
-            add sender to votersList under txVote.ValidatorPubKey
+                  if exists(MinusesList[txVote.ValidatorPubKey]) then
+                    // a minus exists for this validator's PubKey, decrease vote of validator by minus
+
+                    proposal.Votes['txVote.Option'] += (initialVotingPower - MinusesList[txVote.ValidatorPubKey])
+
+                  else
+                    // a minus does not exist for this validator's PubKey, validator votes with full voting power
+
+                    proposal.Votes['txVote.Option'] += initialVotingPower
+
+              add sender to votersList under txVote.ValidatorPubKey
 ```
 
 ### Punishment for non-voting
@@ -586,7 +592,7 @@ And the associated pseudocode:
                 slash txGovernancePenalty.ValidatorPubKey of GovernancePenalty                            
 ```
 
-## Future improvements
+## Future improvements (not in scope for MVP)
 
 The current documentation only describes the minimum viable product for the governance module. Future improvements may include:
 
