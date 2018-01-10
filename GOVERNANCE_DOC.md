@@ -518,7 +518,8 @@ Next is a pseudocode proposal of the way `TxVote` transactions can be handled:
                   proposal.Votes['txVote.Option'] += sender.bondedAmountTo(txVote.ValidatorPubKey)
 
               else 
-                // sender is the validator whose PubKey is txVote.ValidatorPubKey
+                // sender is the Governance PubKey of the validator whose main PubKey is txVote.ValidatorPubKey
+                // i.e. sender == validator
 
                 retrieve initialVotingPower from InitVotingPowerList using txVote.ValidatorPubKey
                 
