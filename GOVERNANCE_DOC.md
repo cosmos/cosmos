@@ -1,6 +1,6 @@
 # Governance documentation
 
-*Disclaimer: This is work in progress. Mechanisms are susceptible to change*
+*Disclaimer: This is work in progress. Mechanisms are susceptible to change.*
 
 This document describes the high-level architecture of the governance module. The governance module allows bonded Atom holders to vote on proposals on a 1 bonded Atom 1 vote basis.
 
@@ -22,9 +22,9 @@ Any Atom holder, whether bonded or unbonded, can submit proposals by sending a `
 
 ### Proposal filter (minimum deposit)
 
-To prevent spam, proposals must be submitted with a deposit in Atoms. Voting period will not start as long as the proposal's deposit is inferior to the minimum deposit parameter `MinDeposit`.
+To prevent spam, proposals must be submitted with a deposit in Atoms. Voting period will not start as long as the proposal's deposit is smaller than the minimum deposit parameter `MinDeposit`.
 
-When a proposal is submitted, it has to be acompagnied by a deposit that must be strictly positive but that can be inferior to `MinDeposit`. Indeed, the submitter need not pay for the entire deposit on its own. If a proposal's deposit is strictly inferior to `MinDeposit`, other Atom holders can increase the proposal's deposit by sending a `TxDeposit` transaction. Once the proposals's deposit reaches `minDeposit`, it enters voting period. 
+When a proposal is submitted, it has to be accompagnied by a deposit that must be strictly positive but that can be inferior to `MinDeposit`. Indeed, the submitter need not pay for the entire deposit on its own. If a proposal's deposit is strictly inferior to `MinDeposit`, other Atom holders can increase the proposal's deposit by sending a `TxDeposit` transaction. Once the proposals's deposit reaches `minDeposit`, it enters voting period. 
 
 ### Deposit refund
 
@@ -34,15 +34,11 @@ There are two instances where Atom holders that deposited can claim back their d
 
 In such instances, Atom holders that deposited can send a `TxClaimDeposit` transaction to retrieve their share of the deposit.
 
-### Linked proposals
-
-When an Atom holder submits a proposal, it can link it to another proposal by specifying an existing `proposalID`. It can be useful in cases where the proposal is a fix or upgrade of a past proposal (for example).
-
 ### Proposal types
 
 In the initial version of the governance module, there are two types of proposal:
 - `PlainTextProposal`. All the proposals that do not involve a modification of the source code go under this type. For example, an opinion poll would use a proposal of type `PlainTextProposal`
-- `SoftwareUpgradeProposal`. If accepted, validators are expected to update their software in accordance with the proposal. They must do so by following a 2-steps process described in the **Software Upgrade** section below. Software upgrade roadmap may be discussed and agreed on via `PlainTextProposals`, but actual software upgrades must be performed via `SoftwareUpgradeProposals`.
+- `SoftwareUpgradeProposal`. If accepted, validators are expected to update their software in accordance with the proposal. They must do so by following a 2-steps process described in the [Software Upgrade](#software-upgrade) section below. Software upgrade roadmap may be discussed and agreed on via `PlainTextProposals`, but actual software upgrades must be performed via `SoftwareUpgradeProposals`.
 
 ### Proposal categories
 
@@ -50,7 +46,7 @@ There are two categories of proposal:
 - `Regular`
 - `Urgent`
 
-These two categories are strictly identical except that `Urgent` proposals can be accepted faster if a certain condition is met. For more information, see **Thresholds** section.
+These two categories are strictly identical except that `Urgent` proposals can be accepted faster if a certain condition is met. For more information, see [Threshold](#threshold) section.
 
 
 ## Vote
@@ -96,7 +92,7 @@ Initially, the threshold is set at 50% with a possibility to veto if more than 1
 If a delegator does not vote, it will inherit its validator vote.
 
 - If the delegator votes before its validator, it will not inherit from the validator's vote.
-- If the delegator votes after its validaotor, it will override its validator vote with its own vote. If the proposal is a `Urgent` proposal, it is possible that the vote will close before delegators have a chance to react and override their validator's vote. This is not a problem, as `Urgent` proposals require more than 2/3rd of the total voting power to pass before the end of the voting period. If more than 2/3rd of validators collude, they can censor the votes of delegators anyway. This is an inherent limit of byzantine fault tolerant systems. 
+- If the delegator votes after its validaotor, it will override its validator vote with its own vote. If the proposal is a `Urgent` proposal, it is possible that the vote will close before delegators have a chance to react and override their validator's vote. This is not a problem, as `Urgent` proposals require more than 2/3rd of the total voting power to pass before the end of the voting period. If more than 2/3rd of validators collude, they can censor the votes of delegators anyway.  
 
 ### Validator’s punishment for non-voting
 
@@ -164,7 +160,6 @@ type TxSubmitProposal struct {
   Type            string        //  Type of proposal. Initial set {PlainTextProposal, SoftwareUpgradeProposal}
   Category        bool          //  false=regular, true=urgent
   InitialDeposit  uint64        //  Initial deposit paid by sender. Must be strictly positive.
-  LinkedProposal  uint          //  Optional link to an existing ProposalID
 }
 
 type Proposal struct {
@@ -173,7 +168,6 @@ type Proposal struct {
   Type              string              //  Type of proposal. Initial set {PlainTextProposal, SoftwareUpgradeProposal}
   Category          bool                //  false=regular, true=urgent
   Deposit           uint64              //  Current deposit on this proposal. Initial value is set at InitialDeposit
-  LinkedProposal    uint                //  Optional link to an existing ProposalID
   SubmitBlock       uint64              //  Height of the block where TxSubmitProposal was included
   VotingStartBlock  uint64              //  Height of the block where MinDeposit was reached. -1 if MinDeposit is not reached.
   Votes             map[string]uint64   //  Votes for each option (Yes, No, NoWithVeto, Abstain)
@@ -218,7 +212,6 @@ upon receiving txSubmitProposal from sender do
       proposal.Description = txSubmitProposal.Description
       proposal.Type = txSubmitProposal.Type
       proposal.Category = txSubmitProposal.Category
-      proposal.LinkedProposal = txSubmitProposal.LinkedProposal // handle case where LinkedProposal is not specified
       proposal.Deposit = txSubmitProposal.InitialDeposit
       proposal.SubmitBlock = CurrentBlock
       
