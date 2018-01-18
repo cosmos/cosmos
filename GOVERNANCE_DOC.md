@@ -98,9 +98,9 @@ If a delegator does not vote, it will inherit its validator vote.
 
 Validators are required to vote on all proposals to ensure that results have legitimacy. Voting is part of validators' directives and failure to do it will result in a penalty. 
 
-If a validator’s address is not in the list of addresses that voted on a proposal and if the vote is closed (i.e. `MinDeposit` was reached and `Voting period` is over), then any user of the Hub can submit a `TxGovernancePenalty` that will result in a partial slash `GovernancePenalty` of the validator's stake. The user that submitted the `TxGovernancePenalty` transaction will receive `GovernanceReward` from the `GovernancePenalty`.
+If a validator’s address is not in the list of addresses that voted on a proposal and if the vote is closed (i.e. `MinDeposit` was reached and `Voting period` is over), then this validator will automatically be partially slashed of `GovernancePenalty`.
 
-*Note: Need to define values for `GovernancePenalty` and `GovernanceReward`*
+*Note: Need to define values for `GovernancePenalty`*
 
 **Exception:** If a proposal is a `Urgent` proposal and is accepted via the special condition of having a ratio of `Yes` votes to `InitTotalVotingPower` that exceeds 2/3, validators cannot be punished for not having voted on it. That is because the proposal will close as soon as the ratio exceeds 2/3, making it mechanically impossible for some validators to vote on it.
 
@@ -143,6 +143,7 @@ type Procedure struct {
   Threshold         uint64              //  Minimum value of Yes votes to No votes ratio for proposal to pass. Initial value: 0.5
   Veto              rational.Rational   //  Minimum value of Veto votes to Total votes ratio for proposal to be vetoed. Initial value: 1/3
   MaxDepositPeriod  uint64              //  Maximum period for Atom holders to deposit on a proposal. Initial value: 2 months
+  GovernancePenalty uint64              //  Penalty if validator does not vote
   
   ProcedureNumber   uint16              //  Incremented each time a new procedure is created
   IsActive          bool                //  If true, procedure is active. Only one procedure can have isActive true.
@@ -179,10 +180,12 @@ Each `Proposal` is identified by its unique `proposalID`.
 Additionaly, four lists will be linked to each proposal:
 - `DepositorList`: List of addresses that deposited on the proposal with their associated deposit
 - `VotersList`: List of addresses that voted **under each validator** with their associated option
-- `InitVotingPowerList`: Snapshot of validators' voting power **when proposal enters voting period**
+- `InitVotingPowerList`: Snapshot of validators' voting power **when proposal enters voting period** (only saves validators whose voting power is >0).
 - `MinusesList`: List of minuses for each validator. Used to compute validators' voting power when they cast a vote.
 
 Two final parameters, `InitTotalVotingPower` and `InitProcedureNumber` associated with `proposalID` will be saved when proposal enters voting period.
+
+We also introduce `ProposalProcessingQueue` which lists all the `ProposalIDs` of proposals that reached `MinDeposit` from oldest to newest. Each round, the oldest element of `ProposalProcessingQueue` is checked during `BeginBlock` to see if `CurrentBlock == VotingStartBlock + InitProcedure.VotingPeriod`. If it is, then the application checks if validators in `InitVotingPowerList` have voted and, if not, applies `GovernancePenalty`. After that proposal is ejected from `ProposalProcessingQueue` and the new first element of the queue is evaluated. Note that if a proposal is urgent and accepted under the special condition, its `ProposalID` must be ejected from `ProposalProcessingQueue`.
 
 A `TxSubmitProposal` transaction can be handled according to the following pseudocode
 
@@ -237,8 +240,48 @@ upon receiving txSubmitProposal from sender do
         snapshot(ActiveProcedure.ProcedureNumber) // Save current procedure number in initProcedureNumber
         snapshot(TotalVotingPower)  // Save total voting power in initTotalVotingPower
         snapshot(ValidatorVotingPower)  // Save validators' voting power in initVotingPowerList
+        
+        ProposalProcessingQueueEnd++
+        ProposalProcessingQueue[ProposalProcessingQueueEnd] = proposalID
   
       return proposalID
+```
+
+And the pseudocode for the `ProposalProcessingQueue`:
+
+```
+
+  in BeginBlock do 
+    
+    checkProposal()  
+    
+    
+    
+  func checkProposal()  
+    if (ProposalProcessingQueueBeginning == ProposalProcessingQueueEnd)
+      return
+
+    else
+      retrieve proposalID from ProposalProcessingQueue[ProposalProcessingQueueBeginning]
+      retrieve proposal from proposalID
+      retrieve initProcedureNumber from proposalID
+      retrieve initProcedure from initProcedureNumber
+
+      if (CurrentBlock == proposal.VotingStartBlock + initProcedure.VotingPeriod)
+        retrieve initVotingPowerList from proposalID
+        retrieve votersList from proposalID
+        retrieve validators from initVotingPowerList
+
+        for each validator in validators
+          if validator is not in votersList
+            slash validator by ActiveProcedure.GovernancePenalty
+
+        ProposalProcessingQueueBeginning++  // ProposalProcessingQueue will have a new element
+        checkProposal()
+
+      else
+        return
+          
 ```
 
 Once a proposal is submitted, if `Proposal.Deposit < ActiveProcedure.MinDeposit`, Atom holders can send `TxDeposit` transactions to increase the proposal's deposit.
@@ -318,6 +361,9 @@ upon receiving txDeposit from sender do
               snapshot(ActiveProcedure.ProcedureNumber) // Save current procedure number in InitProcedureNumber
               snapshot(TotalVotingPower)  // Save total voting power in InitTotalVotingPower
               snapshot(ValidatorVotingPower)  // Save validators' voting power in InitVotingPowerList
+              
+              ProposalProcessingQueueEnd++  // ProposalProcessingQueue will have a new element
+              ProposalProcessingQueue[ProposalProcessingQueueEnd] = txDeposit.ProposalID  
 ```
 
 Finally, if the proposal is accepted or `MinDeposit` was not reached before the end of the `MaximumDepositPeriod`, then Atom holders can send `TxClaimDeposit` transaction to claim their deposits.
@@ -477,6 +523,8 @@ Next is a pseudocode proposal of the way `TxVote` transactions can be handled:
 
             else
               // sender can vote, check if sender == validator and add sender to voter list
+              
+              add sender to votersList under txVote.ValidatorPubKey
 
               if (sender is not equal to GovPubKey that corresponds to txVote.ValidatorPubKey)
                 // Here, sender is not the Governance PubKey of the validator whose PubKey is txVote.ValidatorPubKey
@@ -526,81 +574,18 @@ Next is a pseudocode proposal of the way `TxVote` transactions can be handled:
                   // a minus does not exist for this validator's PubKey, validator votes with full voting power
 
                   proposal.Votes['txVote.Option'] += initialVotingPower
-
-              add sender to votersList under txVote.ValidatorPubKey
-```
-
-### Punishment for non-voting
-
-Any Atom holder can send a `TxGovernancePenalty` transaction.
-
-```Go
-  type TxGovernancePenalty struct {
-    ProposalID        uint            // ID of the proposal
-    ValidatorPubKey   crypto.PubKey   // Validator to be punished
-  }
-```
-
-And the associated pseudocode:
-
-```
-  // PSEUDOCODE //
-  // Check if TxGovernancePenalty is valid. If so, penalize validator and reward sender //
-
-  upon receiving txGovernancePenalty from sender do
-    // check if proposal is correctly formatted. Includes fee payment.    
-    
-    if !correctlyFormatted(txGovernancePenalty) then  
-      throw
-    
-    else
-      if !exists(txVote.proposalID) OR  
-         !isValid(txVote.ValidatorPubKey) then 
-         
-         // Throws if
-         // proposalID does not exists OR if
-         // ValidatorPubKey is not the GovPubKey of a current validator
-         
-        throw
-        
-      else
-        retrieve proposal from txGovernancePenalty.ProposalID
-        retrieve initProcedureNumber from txGovernancePenalty.ProposalID
-        retrieve initProcedure from initProcedureNumber
-        
-        if  (proposal.VotingStartBlock < 0) 
-          // Vote never started
-          
-          throw
-          
-        else
-          if (CurrentBlock <= proposal.VotingStartBlock + initProcedure.VotingPeriod)
-            // Vote is not over
-            
-            throw
-          
-          else
-            retrieve InitTotalVotingPower from txVote.ProposalID
-            
-            if (proposal.Category AND proposal.Votes[Yes]/InitTotalVotingPower >= 2/3)
-            // Proposal was urgent and special condition was met
-            
-              throw
-            
-            else
-              retrieve votersList from txVote.ProposalID
-              
-              if txGovernancePenalty.ValidatorPubKey is in votersList
-                throw
-              
-              else
-                // Validator PubKey is not in votersList, punish
+                  
+              if (proposal.Category AND proposal.Votes['Yes']/InitTotalVotingPower >= 2/3)
+                // after vote is counted, if proposal is urgent and special condition is met
+                // remove proposalID from ProposalProcessingQueue
                 
-                slash txGovernancePenalty.ValidatorPubKey of GovernancePenalty
-                add txGovernancePenalty.ValidatorPubKey to votersList // or other mean of avoiding double penalty
-                reward sender of GovernanceReward
-                                            
+                remove txVote.ProposalID from ProposalProcessingQueue
+                Rearrange ProposalProcessingQueue
+                ProposalProcessingQueueEnd--
+
+              
 ```
+
 
 ## Future improvements (not in scope for MVP)
 
