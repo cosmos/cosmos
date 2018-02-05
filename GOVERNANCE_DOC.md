@@ -30,7 +30,7 @@ When a proposal is submitted, it has to be accompagnied by a deposit that must b
 
 There are two instances where Atom holders that deposited can claim back their deposit:
 - If the proposal is accepted
-- If the proposal's deposit does not reach `MinDeposit` for a period longer than `mMxDepositPeriod` (initial value: 2 months). Then the proposal is considered closed and nobody can deposit on it anymore.
+- If the proposal's deposit does not reach `MinDeposit` for a period longer than `MaxDepositPeriod` (initial value: 2 months). Then the proposal is considered closed and nobody can deposit on it anymore.
 
 In such instances, Atom holders that deposited can send a `TxGovClaimDeposit` transaction to retrieve their share of the deposit.
 
@@ -81,11 +81,11 @@ In the initial version of the governance module, there will be no quorum enforce
 
 ### Threshold
 
-Threshold is defined as the minimum ratio of `Yes` votes to `No` votes for the proposal to be accepted.
+Threshold is defined as the minimum proportion of `Yes` votes (excluding `Abstain` votes) for the proposal to be accepted.
 
-Initially, the threshold is set at 50% with a possibility to veto if more than 1/3rd of votes (excluding `Abstain` votes) are `NoWithVeto` votes. This means that proposals are accepted is the ratio of `Yes` votes to `No` votes at the end of the voting period is superior to 50% and if the number of `NoWithVeto` votes is inferior to 1/3rd of total votes (excluding `Abstain`).
+Initially, the threshold is set at 50% with a possibility to veto if more than 1/3rd of votes (excluding `Abstain` votes) are `NoWithVeto` votes. This means that proposals are accepted if the proportion of `Yes` votes (excluding `Abstain` votes) at the end of the voting period is superior to 50% and if the proportion of `NoWithVeto` votes is inferior to 1/3 (excluding `Abstain` votes).
 
-`Urgent` proposals also work with the aforementioned threshold, except there is another condition that can accelerate the acceptance of the proposal. Namely, if the ratio of `Yes` votes to `InitTotalVotingPower` exceeds 2/3, `UrgentProposal` will be immediately accepted, even if the `Voting period` is not finished. `InitTotalVotingPower` is the total voting power of all bonded Atom holders at the moment when the vote opens.
+`Urgent` proposals also work with the aforementioned threshold, except there is another condition that can accelerate the acceptance of the proposal. Namely, if the ratio of `Yes` votes to `InitTotalVotingPower` exceeds 2:3, `UrgentProposal` will be immediately accepted, even if the `Voting period` is not finished. `InitTotalVotingPower` is the total voting power of all bonded Atom holders at the moment when the vote opens.
 
 ### Inheritance
 
@@ -102,7 +102,7 @@ If a validator’s address is not in the list of addresses that voted on a propo
 
 *Note: Need to define values for `GovernancePenalty`*
 
-**Exception:** If a proposal is a `Urgent` proposal and is accepted via the special condition of having a ratio of `Yes` votes to `InitTotalVotingPower` that exceeds 2/3, validators cannot be punished for not having voted on it. That is because the proposal will close as soon as the ratio exceeds 2/3, making it mechanically impossible for some validators to vote on it.
+**Exception:** If a proposal is a `Urgent` proposal and is accepted via the special condition of having a ratio of `Yes` votes to `InitTotalVotingPower` that exceeds 2:3, validators cannot be punished for not having voted on it. That is because the proposal will close as soon as the ratio exceeds 2:3, making it mechanically impossible for some validators to vote on it.
 
 ### Governance key and governance address
 
@@ -130,39 +130,33 @@ Once a block contains more than 2/3rd *precommits* where a common `SoftwareUpgra
 
 *Disclaimer: This is a suggestion. Only structs and pseudocode. Actual logic and implementation might widely differ*
 
-### Procedures
+### State
+
+#### Procedures
 
 `Procedures` define the rule according to which votes are run. There can only be one active procedure at any given time. If governance wants to change a procedure, either to modify a value or add/remove a parameter, a new procedure has to be created and the previous one rendered inactive.
 
 ```Go
 type Procedure struct {
-  VotingPeriod      int64              //  Length of the voting period. Initial value: 2 weeks
-  MinDeposit        int64              //  Minimum deposit for a proposal to enter voting period. 
+  VotingPeriod      int64               //  Length of the voting period. Initial value: 2 weeks
+  MinDeposit        int64               //  Minimum deposit for a proposal to enter voting period. 
   OptionSet         []string            //  Options available to voters. {Yes, No, NoWithVeto, Abstain}
   ProposalTypes     []string            //  Types available to submitters. {PlainTextProposal, SoftwareUpgradeProposal}
-  Threshold         int64              //  Minimum value of Yes votes to No votes ratio for proposal to pass. Initial value: 0.5
+  Threshold         rational.Rational   //  Minimum propotion of Yes votes for proposal to pass. Initial value: 0.5
   Veto              rational.Rational   //  Minimum value of Veto votes to Total votes ratio for proposal to be vetoed. Initial value: 1/3
-  MaxDepositPeriod  int64              //  Maximum period for Atom holders to deposit on a proposal. Initial value: 2 months
-  GovernancePenalty int64              //  Penalty if validator does not vote
+  MaxDepositPeriod  int64               //  Maximum period for Atom holders to deposit on a proposal. Initial value: 2 months
+  GovernancePenalty int64               //  Penalty if validator does not vote
   
-  ProcedureNumber   int16              //  Incremented each time a new procedure is created
+  ProcedureNumber   int16               //  Incremented each time a new procedure is created
   IsActive          bool                //  If true, procedure is active. Only one procedure can have isActive true.
 }
 ```
 
-### Proposals
+#### Proposals
 
-`Proposals` are item to be voted on. They can be submitted by any Atom holder via a `TxGovSubmitProposal` transaction.
+`Proposals` are item to be voted on. 
 
 ```Go
-type TxGovSubmitProposal struct {
-  Title           string        //  Title of the proposal
-  Description     string        //  Description of the proposal
-  Type            string        //  Type of proposal. Initial set {PlainTextProposal, SoftwareUpgradeProposal}
-  Category        bool          //  false=regular, true=urgent
-  InitialDeposit  int64        //  Initial deposit paid by sender. Must be strictly positive.
-}
-
 type Proposal struct {
   Title             string              //  Title of the proposal
   Description       string              //  Description of the proposal
@@ -183,69 +177,12 @@ Additionaly, four lists will be linked to each proposal:
 - `InitVotingPowerList`: Snapshot of validators' voting power **when proposal enters voting period** (only saves validators whose voting power is >0).
 - `MinusesList`: List of minuses for each validator. Used to compute validators' voting power when they cast a vote.
 
+*Note: Actual data structure will probably not be list. These lists are here to illustrate what needs to be stored, not how*
+
 Two final parameters, `InitTotalVotingPower` and `InitProcedureNumber` associated with `proposalID` will be saved when proposal enters voting period.
 
 We also introduce `ProposalProcessingQueue` which lists all the `ProposalIDs` of proposals that reached `MinDeposit` from oldest to newest. Each round, the oldest element of `ProposalProcessingQueue` is checked during `BeginBlock` to see if `CurrentBlock == VotingStartBlock + InitProcedure.VotingPeriod`. If it is, then the application checks if validators in `InitVotingPowerList` have voted and, if not, applies `GovernancePenalty`. After that proposal is ejected from `ProposalProcessingQueue` and the new first element of the queue is evaluated. Note that if a proposal is urgent and accepted under the special condition, its `ProposalID` must be ejected from `ProposalProcessingQueue`.
-
-A `TxGovSubmitProposal` transaction can be handled according to the following pseudocode
-
-```
-// PSEUDOCODE //
-// Check if TxGovSubmitProposal is valid. If it is, create proposal //
-
-upon receiving txGovSubmitProposal from sender do
-  // check if proposal is correctly formatted. Includes fee payment.
-  
-  if !correctlyFormatted(txGovSubmitProposal) then 
-    throw
-  
-  else
-    if (txGovSubmitProposal.InitialDeposit <= 0) OR (sender.AtomBalance < InitialDeposit) then 
-      // InitialDeposit is negative or null OR sender has insufficient funds
-      
-      throw
-    
-    else
-      sender.AtomBalance -= InitialDeposit
-      
-      proposalID = generate new proposalID
-      proposal = create new Proposal from proposalID
-      
-      proposal.Title = txGovSubmitProposal.Title
-      proposal.Description = txGovSubmitProposal.Description
-      proposal.Type = txGovSubmitProposal.Type
-      proposal.Category = txGovSubmitProposal.Category
-      proposal.Deposit = txGovSubmitProposal.InitialDeposit
-      proposal.SubmitBlock = CurrentBlock
-      
-      create depositorsList from proposalID
-      initiate deposit of sender in depositorsList at txGovSubmitProposal.InitialDeposit
-  
-      if (txGovSubmitProposal.InitialDeposit < ActiveProcedure.MinDeposit) then  
-        // MinDeposit is not reached
-        
-        proposal.VotingStartBlock = -1
-      
-      else  
-        // MinDeposit is reached
-        
-        proposal.VotingStartBlock = CurrentBlock
-        
-        create  votersList,
-                initVotingPowerList,
-                minusesList,
-                initProcedureNumber,
-                initTotalVotingPower  from proposalID
-                                    
-        snapshot(ActiveProcedure.ProcedureNumber) // Save current procedure number in initProcedureNumber
-        snapshot(TotalVotingPower)  // Save total voting power in initTotalVotingPower
-        snapshot(ValidatorVotingPower)  // Save validators' voting power in initVotingPowerList
-        
-        ProposalProcessingQueueEnd++
-        ProposalProcessingQueue[ProposalProcessingQueueEnd] = proposalID
-  
-      return proposalID
-```
+The beginning and the end of the `ProposalProcessingQueue` are identified using `ProposalProcessingQueueBeginning` and `ProposalProcessingQueueEnd`.
 
 And the pseudocode for the `ProposalProcessingQueue`:
 
@@ -282,6 +219,106 @@ And the pseudocode for the `ProposalProcessingQueue`:
         return          
 ```
 
+
+### Transactions
+
+#### Proposal Submission
+
+
+Proposals can be submitted by any Atom holder via a `TxGovSubmitProposal` transaction.
+
+```Go
+type TxGovSubmitProposal struct {
+  Title           string        //  Title of the proposal
+  Description     string        //  Description of the proposal
+  Type            string        //  Type of proposal. Initial set {PlainTextProposal, SoftwareUpgradeProposal}
+  Category        bool          //  false=regular, true=urgent
+  InitialDeposit  int64        //  Initial deposit paid by sender. Must be strictly positive.
+}
+```
+
+**State modifications:**
+- Create new `proposalID`
+- Initialise `Proposals` attributes
+- Create `DepositorsList`
+- Initialize deposit of sender in `DepositorsList`
+- Decrease balance of sender by `Deposit`
+- If `MinDeposit` is reached:
+  - create  `VotersList`
+  - create `InitVotingPowerList`
+  - create `MinusesList`
+  - create `InitProcedureNumber`
+  - create `InitTotalVotingPower`
+  - Increment `ProposalProcessingQueueEnd`
+  - `ProposalProcessingQueue[ProposalProcessingQueueEnd] == proposalId`
+  - Store snapshot of `ActiveProcedure.ProcedureNumber`
+  - Store snapshot of `TotalVotingPower`
+  - Store snapshot of `ValidatorVotingPower`
+
+A `TxGovSubmitProposal` transaction can be handled according to the following pseudocode
+
+```
+// PSEUDOCODE //
+// Check if TxGovSubmitProposal is valid. If it is, create proposal //
+
+upon receiving txGovSubmitProposal from sender do
+  // check if proposal is correctly formatted. Includes fee payment.
+  
+  if !correctlyFormatted(txGovSubmitProposal) then 
+    throw
+  
+  else
+    if (txGovSubmitProposal.InitialDeposit <= 0) OR (sender.AtomBalance < InitialDeposit) then 
+      // InitialDeposit is negative or null OR sender has insufficient funds
+      
+      throw
+    
+    else
+      sender.AtomBalance -= InitialDeposit
+      
+      proposalID = generate new proposalID
+      proposal = create new Proposal from proposalID
+      
+      proposal.Title = txGovSubmitProposal.Title
+      proposal.Description = txGovSubmitProposal.Description
+      proposal.Type = txGovSubmitProposal.Type
+      proposal.Category = txGovSubmitProposal.Category
+      proposal.Deposit = txGovSubmitProposal.InitialDeposit
+      proposal.SubmitBlock = CurrentBlock
+      
+      create depositorsList from proposalID
+      initialize deposit of sender in depositorsList at txGovSubmitProposal.InitialDeposit
+  
+      if (txGovSubmitProposal.InitialDeposit < ActiveProcedure.MinDeposit) then  
+        // MinDeposit is not reached
+        
+        proposal.VotingStartBlock = -1
+      
+      else  
+        // MinDeposit is reached
+        
+        proposal.VotingStartBlock = CurrentBlock
+        
+        create  votersList,
+                initVotingPowerList,
+                minusesList,
+                initProcedureNumber,
+                initTotalVotingPower  from proposalID
+                                    
+        snapshot(ActiveProcedure.ProcedureNumber) // Save current procedure number in initProcedureNumber
+        snapshot(TotalVotingPower)  // Save total voting power in initTotalVotingPower
+        snapshot(ValidatorVotingPower)  // Save validators' voting power in initVotingPowerList
+        
+        ProposalProcessingQueueEnd++
+        ProposalProcessingQueue[ProposalProcessingQueueEnd] = proposalID
+  
+      return proposalID
+```
+
+
+
+#### Deposit
+
 Once a proposal is submitted, if `Proposal.Deposit < ActiveProcedure.MinDeposit`, Atom holders can send `TxGovDeposit` transactions to increase the proposal's deposit.
 
 ```Go
@@ -290,6 +327,22 @@ type TxGovDeposit struct {
   Deposit       int64  // Number of Atoms to add to the proposal's deposit
 }
 ```
+
+**State modifications:**
+- Decrease balance of sender by `deposit`
+- Initialize or increase `deposit` of sender in `DepositorsList`
+- Increase `Proposal's deposit` by sender's `deposit`
+- If `MinDeposit` is reached:
+  - create  `VotersList`
+  - create `InitVotingPowerList`
+  - create `MinusesList`
+  - create `InitProcedureNumber`
+  - create `InitTotalVotingPower`
+  - Increment `ProposalProcessingQueueEnd`
+  - `ProposalProcessingQueue[ProposalProcessingQueueEnd] == proposalId`
+  - Store snapshot of `ActiveProcedure.ProcedureNumber`
+  - Store snapshot of `TotalVotingPower`
+  - Store snapshot of `ValidatorVotingPower`
 
 A `TxGovDeposit` transaction has to go through a number of checks to be valid. These checks are outlined in the following pseudocode.
 
@@ -362,6 +415,8 @@ upon receiving txGovDeposit from sender do
               ProposalProcessingQueue[ProposalProcessingQueueEnd] = txGovDeposit.ProposalID  
 ```
 
+#### Claiming deposit
+
 Finally, if the proposal is accepted or `MinDeposit` was not reached before the end of the `MaximumDepositPeriod`, then Atom holders can send `TxGovClaimDeposit` transaction to claim their deposits.
 
 ```Go
@@ -369,6 +424,11 @@ Finally, if the proposal is accepted or `MinDeposit` was not reached before the 
     ProposalID  int64
   }
 ```
+
+**State modifications:**
+If conditions are met, reimburse the deposit, i.e.
+- Increase `AtomBalance` of sender by `deposit`
+- Set `deposit` of sender in `DepositorsList` to 0
 
 And the associated pseudocode
 
@@ -442,7 +502,7 @@ And the associated pseudocode
 ```
 
 
-### Vote
+#### Vote
 
 Once `ActiveProcedure.MinDeposit` is reached, voting period starts. From there, bonded Atom holders are able to send `TxGovVote` transactions to cast their vote on the proposal.
 
@@ -454,8 +514,18 @@ Once `ActiveProcedure.MinDeposit` is reached, voting period starts. From there, 
   }
 ```
 
+**State modifications:**
+- If sender is not a validator and validator has not voted, initialize or increase minus of validator by sender's `voting power`
+- If sender is not a validator and validator has voted, decrease `proposal.Votes['validatorOption']` by sender's `voting power`
+- If sender is not a validator, increase `[proposal.Votes['txGovVote.Option']` by sender's `voting power`
+- If sender is a validator, increase `proposal.Votes['txGovVote.Option']` by validator's `InitialVotingPower - minus` (`minus` can be equal to 0)
+- If proposal is urgent and special condition is met, remove `ProposalID` from `ProposalProcessingQueue`, rearrange `ProposalProcessingQueue` and decrement `ProposalProcessingQueueEnd`
+
+
 Votes need to be tied to a validator in order to compute validator's voting power. If a delegator is bonded to multiple validators, it will have to send one transaction per validator (the UI should facilitate this so that multiple transactions can be sent in one "vote flow"). 
 If the sender is the validator itself, then it will input its own GovernancePubKey as `ValidatorPubKey`
+
+
 
 Next is a pseudocode proposal of the way `TxGovVote` transactions can be handled:
 
