@@ -106,7 +106,7 @@ If a validator’s address is not in the list of addresses that voted on a propo
 
 ### Governance key and governance address
 
-Validators can make use of an additional slot where they can designate a `Governance PubKey`. By default, a validator's `Governance PubKey` will be the same as its main PubKey. Validators can change this `Governance PubKey` by sending a `Change Governance PubKey` transaction signed by their main `Consensus PubKey`. From there, they will be able to sign vote using the `Governance PrivKey` associated with their `Governance PubKey`. The `Governance PubKey` can be changed at any moment.
+Validators can make use of an additional slot where they can designate a `Governance PubKey`. By default, a validator's `Governance PubKey` will be the same as its main PubKey. Validators can change this `Governance PubKey` by sending a `Change Governance PubKey` transaction signed by their main `Consensus PrivKey`. From there, they will be able to sign vote using the `Governance PrivKey` associated with their `Governance PubKey`. The `Governance PubKey` can be changed at any moment.
 
 
 ## Software Upgrade
