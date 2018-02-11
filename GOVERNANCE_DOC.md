@@ -22,9 +22,9 @@ Any Atom holder, whether bonded or unbonded, can submit proposals by sending a `
 
 ### Proposal filter (minimum deposit)
 
-To prevent spam, proposals must be submitted with a deposit in Atoms. Voting period will not start as long as the proposal's deposit is smaller than the minimum deposit parameter `MinDeposit`.
-
-When a proposal is submitted, it has to be accompagnied by a deposit that must be strictly positive but that can be inferior to `MinDeposit`. Indeed, the submitter need not pay for the entire deposit on its own. If a proposal's deposit is strictly inferior to `MinDeposit`, other Atom holders can increase the proposal's deposit by sending a `TxGovDeposit` transaction. Once the proposals's deposit reaches `minDeposit`, it enters voting period. 
+To prevent spam, proposals must be submitted with a `deposit` in Atoms such that `0 < deposit < MinDeposit`. 
+Other Atom holders can increase the proposal's deposit by sending a `TxGovDeposit` transaction. 
+Once the proposals's deposit reaches `MinDeposit`, it enters voting period. 
 
 ### Deposit refund
 
@@ -48,7 +48,6 @@ There are two categories of proposal:
 
 These two categories are strictly identical except that `Urgent` proposals can be accepted faster if a certain condition is met. For more information, see [Threshold](#threshold) section.
 
-
 ## Vote
 
 ### Participants
@@ -69,7 +68,7 @@ The initial option set includes the following options:
 - `NoWithVeto` 
 - `Abstain` 
 
-`NoWithVeto` counts as `No` but also adds a `Veto` vote. `Abstain` option allows voters to signal that they do not intend to vote in favor or against the proposal but accept the result of the vote. 
+`NoWithVeto` counts as `No` but also adds a `Veto` vote. `Abstain` allows voters to signal that they do not intend to vote in favor or against the proposal but accept the result of the vote. 
 
 *Note: from the UI, for urgent proposals we should maybe add a ‘Not Urgent’ option that casts a `NoWithVeto` vote.*
 
