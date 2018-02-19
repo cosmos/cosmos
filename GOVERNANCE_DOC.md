@@ -249,8 +249,6 @@ type TxGovSubmitProposal struct {
   - create `MinusesList`
   - Increment `ProposalProcessingQueueEnd`
   - `ProposalProcessingQueue[ProposalProcessingQueueEnd] == proposalId`
-  - Store snapshot of `ActiveProcedure.ProcedureNumber`
-  - Store snapshot of `TotalVotingPower`
   - Store snapshot of `ValidatorVotingPower`
 
 A `TxGovSubmitProposal` transaction can be handled according to the following pseudocode
@@ -338,8 +336,6 @@ type TxGovDeposit struct {
   - create `MinusesList`
   - Increment `ProposalProcessingQueueEnd`
   - `ProposalProcessingQueue[ProposalProcessingQueueEnd] == proposalId`
-  - Store snapshot of `ActiveProcedure.ProcedureNumber`
-  - Store snapshot of `TotalVotingPower`
   - Store snapshot of `ValidatorVotingPower`
 
 A `TxGovDeposit` transaction has to go through a number of checks to be valid. These checks are outlined in the following pseudocode.
