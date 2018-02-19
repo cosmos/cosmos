@@ -158,14 +158,17 @@ type Procedure struct {
 
 ```Go
 type Proposal struct {
-  Title             string              //  Title of the proposal
-  Description       string              //  Description of the proposal
-  Type              string              //  Type of proposal. Initial set {PlainTextProposal, SoftwareUpgradeProposal}
-  Category          bool                //  false=regular, true=urgent
-  Deposit           int64              //  Current deposit on this proposal. Initial value is set at InitialDeposit
-  SubmitBlock       int64              //  Height of the block where TxGovSubmitProposal was included
-  VotingStartBlock  int64              //  Height of the block where MinDeposit was reached. -1 if MinDeposit is not reached.
-  Votes             map[string]int64   //  Votes for each option (Yes, No, NoWithVeto, Abstain)
+  Title                 string              //  Title of the proposal
+  Description           string              //  Description of the proposal
+  Type                  string              //  Type of proposal. Initial set {PlainTextProposal, SoftwareUpgradeProposal}
+  Category              bool                //  false=regular, true=urgent
+  Deposit               int64               //  Current deposit on this proposal. Initial value is set at InitialDeposit
+  SubmitBlock           int64               //  Height of the block where TxGovSubmitProposal was included
+  
+  VotingStartBlock      int64               //  Height of the block where MinDeposit was reached. -1 if MinDeposit is not reached
+  InitTotalVotingPower  int64               //  Total voting power when proposal enters voting period (default 0)
+  InitProcedureNumber   int16               //  Procedure number of the active procedure when proposal enters voting period (default -1)
+  Votes                 map[string]int64    //  Votes for each option (Yes, No, NoWithVeto, Abstain)
 }
 ```
 
@@ -178,8 +181,6 @@ Additionaly, four lists will be linked to each proposal:
 - `MinusesList`: List of minuses for each validator. Used to compute validators' voting power when they cast a vote.
 
 *Note: Actual data structure will probably not be list. These lists are here to illustrate what needs to be stored, not how*
-
-Two final parameters, `InitTotalVotingPower` and `InitProcedureNumber` associated with `proposalID` will be saved when proposal enters voting period.
 
 We also introduce `ProposalProcessingQueue` which lists all the `ProposalIDs` of proposals that reached `MinDeposit` from oldest to newest. Each round, the oldest element of `ProposalProcessingQueue` is checked during `BeginBlock` to see if `CurrentBlock == VotingStartBlock + InitProcedure.VotingPeriod`. If it is, then the application checks if validators in `InitVotingPowerList` have voted and, if not, applies `GovernancePenalty`. After that proposal is ejected from `ProposalProcessingQueue` and the new first element of the queue is evaluated. Note that if a proposal is urgent and accepted under the special condition, its `ProposalID` must be ejected from `ProposalProcessingQueue`.
 The beginning and the end of the `ProposalProcessingQueue` are identified using `ProposalProcessingQueueBeginning` and `ProposalProcessingQueueEnd`.
@@ -200,8 +201,7 @@ And the pseudocode for the `ProposalProcessingQueue`:
     else
       retrieve proposalID from ProposalProcessingQueue[ProposalProcessingQueueBeginning]
       retrieve proposal from proposalID
-      retrieve initProcedureNumber from proposalID
-      retrieve initProcedure from initProcedureNumber
+      retrieve initProcedure from proposal.InitProcedureNumber
 
       if (CurrentBlock == proposal.VotingStartBlock + initProcedure.VotingPeriod)
         retrieve initVotingPowerList from proposalID
@@ -247,8 +247,6 @@ type TxGovSubmitProposal struct {
   - create  `VotersList`
   - create `InitVotingPowerList`
   - create `MinusesList`
-  - create `InitProcedureNumber`
-  - create `InitTotalVotingPower`
   - Increment `ProposalProcessingQueueEnd`
   - `ProposalProcessingQueue[ProposalProcessingQueueEnd] == proposalId`
   - Store snapshot of `ActiveProcedure.ProcedureNumber`
@@ -293,11 +291,15 @@ upon receiving txGovSubmitProposal from sender do
         // MinDeposit is not reached
         
         proposal.VotingStartBlock = -1
+        proposal.InitTotalVotingPower = 0
+        proposal.InitProcedureNumber = -1
       
       else  
         // MinDeposit is reached
         
         proposal.VotingStartBlock = CurrentBlock
+        proposal.InitTotalVotingPower = TotalVotingPower
+        proposal.InitProcedureNumber = ActiveProcedure.ProcedureNumber
         
         create  votersList,
                 initVotingPowerList,
@@ -305,8 +307,6 @@ upon receiving txGovSubmitProposal from sender do
                 initProcedureNumber,
                 initTotalVotingPower  from proposalID
                                     
-        snapshot(ActiveProcedure.ProcedureNumber) // Save current procedure number in initProcedureNumber
-        snapshot(TotalVotingPower)  // Save total voting power in initTotalVotingPower
         snapshot(ValidatorVotingPower)  // Save validators' voting power in initVotingPowerList
         
         ProposalProcessingQueueEnd++
@@ -336,8 +336,6 @@ type TxGovDeposit struct {
   - create  `VotersList`
   - create `InitVotingPowerList`
   - create `MinusesList`
-  - create `InitProcedureNumber`
-  - create `InitTotalVotingPower`
   - Increment `ProposalProcessingQueueEnd`
   - `ProposalProcessingQueue[ProposalProcessingQueueEnd] == proposalId`
   - Store snapshot of `ActiveProcedure.ProcedureNumber`
@@ -400,6 +398,8 @@ upon receiving txGovDeposit from sender do
               // MinDeposit is reached, vote opens
               
               proposal.VotingStartBlock = CurrentBlock
+              proposal.InitTotalVotingPower = TotalVotingPower
+              proposal.InitProcedureNumber = ActiveProcedure.ProcedureNumber
               
               create  votersList,
                       initVotingPowerList,
@@ -407,8 +407,6 @@ upon receiving txGovDeposit from sender do
                       initProcedureNumber,
                       initTotalVotingPower  from proposalID
               
-              snapshot(ActiveProcedure.ProcedureNumber) // Save current procedure number in InitProcedureNumber
-              snapshot(TotalVotingPower)  // Save total voting power in InitTotalVotingPower
               snapshot(ValidatorVotingPower)  // Save validators' voting power in InitVotingPowerList
               
               ProposalProcessingQueueEnd++  // ProposalProcessingQueue will have a new element
@@ -482,13 +480,11 @@ And the associated pseudocode
                 
             else
               // Vote started
+                
+              retrieve initProcedure from proposal.InitProcedureNumber // get procedure that was active when vote opened
               
-              retrieve initTotalVotingPower from txGovClaimDeposit.ProposalID
-              retrieve initProcedureNumber from txGovClaimDeposit.ProposalID    
-              retrieve initProcedure from initProcedureNumber // get procedure that was active when vote opened
-              
-              if  (proposal.Category AND proposal.Votes['Yes']/initTotalVotingPower >= 2/3) OR
-                  ((CurrentBlock > proposal.VotingStartBlock + initProcedure.VotingPeriod) AND (proposal.Votes['NoWithVeto']/(proposal.Votes['Yes']+proposal.Votes['No']+proposal.Votes['NoWithVeto']) < 1/3) AND           (proposal.Votes['Yes']/(proposal.Votes['Yes']+proposal.Votes['No']+proposal.Votes['NoWithVeto']) > 1/2)) then
+              if  (proposal.Category AND proposal.Votes['Yes']/proposal.InitTotalVotingPower >= 2/3) OR
+                  ((CurrentBlock > proposal.VotingStartBlock + initProcedure.VotingPeriod) AND (proposal.Votes['NoWithVeto']/(proposal.Votes['Yes']+proposal.Votes['No']+proposal.Votes['NoWithVeto']) < 1/3) AND (proposal.Votes['Yes']/(proposal.Votes['Yes']+proposal.Votes['No']+proposal.Votes['NoWithVeto']) > 1/2)) then
                 
                 // Proposal was accepted either because
                 // Proposal was urgent and special condition was met
@@ -548,8 +544,8 @@ Next is a pseudocode proposal of the way `TxGovVote` transactions can be handled
         throw
       
       else
-        retrieve initProcedureNumber from txGovVote.ProposalID    
-        retrieve initProcedure from initProcedureNumber // get procedure that was active when vote opened
+        retrieve proposal from txGovVote.ProposalID
+        retrieve initProcedure from proposal.InitProcedureNumber // get procedure that was active when vote opened
       
         if  !initProcedure.OptionSet.includes(txGovVote.Option) OR 
             !isValid(txGovVote.ValidatorPubKey) then 
@@ -569,14 +565,11 @@ Next is a pseudocode proposal of the way `TxGovVote` transactions can be handled
             throw
 
            else
-            retrieve proposal from txGovVote.ProposalID
-            retrieve InitTotalVotingPower from txGovVote.ProposalID
-
             if  (proposal.VotingStartBlock < 0) OR  
                 (CurrentBlock > proposal.VotingStartBlock + initProcedure.VotingPeriod) OR 
                 (proposal.VotingStartBlock < lastBondingBlock(sender, txGovVote.ValidatorPubKey) OR   
                 (proposal.VotingStartBlock < lastUnbondingBlock(sender, txGovVote.ValidatorPubKey) OR   
-                (proposal.Category AND proposal.Votes['Yes']/InitTotalVotingPower >= 2/3) then   
+                (proposal.Category AND proposal.Votes['Yes']/proposal.InitTotalVotingPower >= 2/3) then   
 
                 // Throws if
                 // Vote has not started OR if
@@ -641,7 +634,7 @@ Next is a pseudocode proposal of the way `TxGovVote` transactions can be handled
 
                   proposal.Votes['txGovVote.Option'] += initialVotingPower
                   
-              if (proposal.Category AND proposal.Votes['Yes']/InitTotalVotingPower >= 2/3)
+              if (proposal.Category AND proposal.Votes['Yes']/proposal.InitTotalVotingPower >= 2/3)
                 // after vote is counted, if proposal is urgent and special condition is met
                 // remove proposalID from ProposalProcessingQueue
                 
