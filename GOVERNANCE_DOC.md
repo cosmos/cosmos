@@ -152,6 +152,9 @@ type Procedure struct {
 }
 ```
 
+**Store**:
+- `Procedures`: a mapping `map[int16]Procedure` of procedures indexed by their `ProcedureNumber`
+
 #### Proposals
 
 `Proposals` are item to be voted on. 
@@ -172,51 +175,66 @@ type Proposal struct {
 }
 ```
 
-Each `Proposal` is identified by its unique `proposalID`. 
+We also introduce a type `ValidatorGovInfo`
 
-Additionaly, four lists will be linked to each proposal:
-- `DepositorList`: List of addresses that deposited on the proposal with their associated deposit
-- `VotersList`: List of addresses that voted **under each validator** with their associated option
-- `InitVotingPowerList`: Snapshot of validators' voting power **when proposal enters voting period** (only saves validators whose voting power is >0).
-- `MinusesList`: List of minuses for each validator. Used to compute validators' voting power when they cast a vote.
+```Go
+type ValidatorGovInfo struct {
+  InitVotingPower     int64   //  Voting power of validator when proposal enters voting period
+  Minus               int64   //  Minus of validator, used to compute validator's voting power
+}
+```
 
-*Note: Actual data structure will probably not be list. These lists are here to illustrate what needs to be stored, not how*
+**Store:**
 
-We also introduce `ProposalProcessingQueue` which lists all the `ProposalIDs` of proposals that reached `MinDeposit` from oldest to newest. Each round, the oldest element of `ProposalProcessingQueue` is checked during `BeginBlock` to see if `CurrentBlock == VotingStartBlock + InitProcedure.VotingPeriod`. If it is, then the application checks if validators in `InitVotingPowerList` have voted and, if not, applies `GovernancePenalty`. After that proposal is ejected from `ProposalProcessingQueue` and the new first element of the queue is evaluated. Note that if a proposal is urgent and accepted under the special condition, its `ProposalID` must be ejected from `ProposalProcessingQueue`.
-The beginning and the end of the `ProposalProcessingQueue` are identified using `ProposalProcessingQueueBeginning` and `ProposalProcessingQueueEnd`.
+- `Proposals`: A mapping `map[int64]Proposal` of proposals indexed by their `proposalID`
+- `Deposits`: A mapping `map[[]byte]int64` of deposits indexed by `<proposalID>:<depositorPubKey>` as `[]byte`. Given a `proposalID` and a `PubKey`, returns deposit (`nil` if `PubKey` has not deposited)
+- `Options`: A mapping `map[[]byte]string` of options indexed by `<proposalID>:<voterPubKey>` as `[]byte`. Given a `proposalID` and a `PubKey`, returns option chosen by this `PubKey` (`nil` if `PubKey` has not voted)
+- `ValidatorGovInfos`: A mapping `map[[]byte]ValidatorGovInfo` of validator's governance infos indexed by `<proposalID>:<validatorGovPubKey>`. Returns `nil` if proposal has not entered voting period or if `PubKey` was not the governance public key of a validator when proposal entered voting period.
+- `ProposalProcessingQueue`: A queue `queue[proposalID]` containing all the `ProposalIDs` of proposals that reached `MinDeposit`. Each round, the oldest element of `ProposalProcessingQueue` is checked during `BeginBlock` to see if `CurrentBlock == VotingStartBlock + InitProcedure.VotingPeriod`. If it is, then the application checks if validators in `InitVotingPowerList` have voted and, if not, applies `GovernancePenalty`. After that proposal is ejected from `ProposalProcessingQueue` and the next element of the queue is evaluated. Note that if a proposal is urgent and accepted under the special condition, its `ProposalID` must be ejected from `ProposalProcessingQueue`.
+
+*Note: Actual data structure may differ*
 
 And the pseudocode for the `ProposalProcessingQueue`:
 
 ```
   in BeginBlock do 
     
-    checkProposal()  
+    checkProposal()  // First call of the recursive function 
     
     
-    
+  // Recursive function. First call in BeginBlock
   func checkProposal()  
-    if (ProposalProcessingQueueBeginning == ProposalProcessingQueueEnd)
+    if (ProposalProcessingQueue.Peek() == nil)
       return
 
     else
-      retrieve proposalID from ProposalProcessingQueue[ProposalProcessingQueueBeginning]
-      retrieve proposal from proposalID
-      retrieve initProcedure from proposal.InitProcedureNumber
+      proposalID = ProposalProcessingQueue.Peek()
+      proposal = load(store, Proposals, proposalID)
+      initProcedure = load(store, Procedures, proposal.InitProcedureNumber)
 
-      if (CurrentBlock == proposal.VotingStartBlock + initProcedure.VotingPeriod)
-        retrieve initVotingPowerList from proposalID
-        retrieve votersList from proposalID
-        retrieve validators from initVotingPowerList
+      if (proposal.Category AND proposal.Votes['Yes']/proposal.InitTotalVotingPower >= 2/3)
 
-        for each validator in validators
-          if validator is not in votersList
-            slash validator by ActiveProcedure.GovernancePenalty
+        // proposal was urgent and accepted under the special condition
+        // no punishment
 
-        ProposalProcessingQueueBeginning++  // ProposalProcessingQueue will have a new element
+        ProposalProcessingQueue.pop()
         checkProposal()
 
-      else
-        return          
+       else if (CurrentBlock == proposal.VotingStartBlock + initProcedure.VotingPeriod)
+
+        for each validator in CurrentBondedValidators
+          validatorGovInfo = load(store, ValidatorGovInfos, validator.GovPubKey)
+          
+          if (validatorGovInfo.InitVotingPower != nil)
+            // validator was bonded when vote started
+
+            validatorOption = load(store, Options, validator.GovPubKey)
+            if (validatorOption == nil)
+              // validator did not vote
+              slash validator by ActiveProcedure.GovernancePenalty
+
+        ProposalProcessingQueue.pop()
+        checkProposal()        
 ```
 
 
@@ -247,8 +265,7 @@ type TxGovSubmitProposal struct {
   - create  `VotersList`
   - create `InitVotingPowerList`
   - create `MinusesList`
-  - Increment `ProposalProcessingQueueEnd`
-  - `ProposalProcessingQueue[ProposalProcessingQueueEnd] == proposalId`
+  - Push `proposalID` in  `ProposalProcessingQueueEnd`
   - Store snapshot of `ValidatorVotingPower`
 
 A `TxGovSubmitProposal` transaction can be handled according to the following pseudocode
@@ -307,8 +324,7 @@ upon receiving txGovSubmitProposal from sender do
                                     
         snapshot(ValidatorVotingPower)  // Save validators' voting power in initVotingPowerList
         
-        ProposalProcessingQueueEnd++
-        ProposalProcessingQueue[ProposalProcessingQueueEnd] = proposalID
+        ProposalProcessingQueue.push(proposalID)
   
       return proposalID
 ```
@@ -334,8 +350,7 @@ type TxGovDeposit struct {
   - create  `VotersList`
   - create `InitVotingPowerList`
   - create `MinusesList`
-  - Increment `ProposalProcessingQueueEnd`
-  - `ProposalProcessingQueue[ProposalProcessingQueueEnd] == proposalId`
+  - Push `proposalID` in `ProposalProcessingQueueEnd`
   - Store snapshot of `ValidatorVotingPower`
 
 A `TxGovDeposit` transaction has to go through a number of checks to be valid. These checks are outlined in the following pseudocode.
@@ -405,8 +420,7 @@ upon receiving txGovDeposit from sender do
               
               snapshot(ValidatorVotingPower)  // Save validators' voting power in InitVotingPowerList
               
-              ProposalProcessingQueueEnd++  // ProposalProcessingQueue will have a new element
-              ProposalProcessingQueue[ProposalProcessingQueueEnd] = txGovDeposit.ProposalID  
+              ProposalProcessingQueue.push(txGovDeposit.ProposalID)  
 ```
 
 #### Claiming deposit
@@ -511,8 +525,6 @@ Once `ActiveProcedure.MinDeposit` is reached, voting period starts. From there, 
 - If sender is not a validator and validator has voted, decrease `proposal.Votes['validatorOption']` by sender's `voting power`
 - If sender is not a validator, increase `[proposal.Votes['txGovVote.Option']` by sender's `voting power`
 - If sender is a validator, increase `proposal.Votes['txGovVote.Option']` by validator's `InitialVotingPower - minus` (`minus` can be equal to 0)
-- If proposal is urgent and special condition is met, remove `ProposalID` from `ProposalProcessingQueue`, rearrange `ProposalProcessingQueue` and decrement `ProposalProcessingQueueEnd`
-
 
 Votes need to be tied to a validator in order to compute validator's voting power. If a delegator is bonded to multiple validators, it will have to send one transaction per validator (the UI should facilitate this so that multiple transactions can be sent in one "vote flow"). 
 If the sender is the validator itself, then it will input its own GovernancePubKey as `ValidatorPubKey`
@@ -629,14 +641,7 @@ Next is a pseudocode proposal of the way `TxGovVote` transactions can be handled
                   // a minus does not exist for this validator's PubKey, validator votes with full voting power
 
                   proposal.Votes['txGovVote.Option'] += initialVotingPower
-                  
-              if (proposal.Category AND proposal.Votes['Yes']/proposal.InitTotalVotingPower >= 2/3)
-                // after vote is counted, if proposal is urgent and special condition is met
-                // remove proposalID from ProposalProcessingQueue
-                
-                remove txGovVote.ProposalID from ProposalProcessingQueue
-                Rearrange ProposalProcessingQueue
-                ProposalProcessingQueueEnd--            
+                           
 ```
 
 
