@@ -36,7 +36,7 @@ Any participant in the network can signal that they want to become a validator b
 * Validator's name
 * Validator's website (Optional)
 * Validator's description (Optional)
-* Initial commission rate: The commission rate on block provisions, block rewards and fees charged to delegators
+* Initial commission rate: The commission rate on block rewards and fees charged to delegators
 * Maximum commission: The maximum commission rate which this validator candidate can charge
 * Commission change rate: The maximum daily increase of the validator candidate commission
 * Minimum self-bond amount: Minimum amount of Atoms the validator candidate need to have bonded at all time. If the validator's self-bonded stake falls below this limit, its entire staking pool will unbond.
@@ -107,7 +107,7 @@ Validators play a special role in the governance system. Being the pillars of th
 
 Staking Atoms can be thought of as a safety deposit on validation activities. When a validator or a delegator wants to retrieve part or all of their deposit, they send an unbonding transaction. Then, Atoms undergo a *three weeks unbonding period* during which they are liable to being slashed for potential misbehaviors committed by the validator before the unbonding process started.
 
-Validators, and by association delegators, receive block provisions, block rewards, fee rewards, and the right to participate in governance. If a validator misbehaves, a certain portion of its total stake is slashed (the severity of the penalty depends on the type of misbehavior). This means that every user that bonded Atoms to this validator gets penalized in proportion to its stake. Delegators are therefore incentivized to delegate to validators that they anticipate will function safely.
+Validators, and by association delegators, receive new Atoms from Atom expansion, block rewards, fee rewards, and the right to participate in governance. If a validator misbehaves, a certain portion of its total stake is slashed (the severity of the penalty depends on the type of misbehavior). This means that every user that bonded Atoms to this validator gets penalized in proportion to its stake. Delegators are therefore incentivized to delegate to validators that they anticipate will function safely.
 
 ### Can a validator run away with its delegators' Atoms?
 
@@ -129,11 +129,11 @@ Yes, they will. Initially, validators of the Cosmos hub will also validate the f
 ### What is the incentive to stake?
 
 Each member of a validator’s staking pool earns different types of revenue:
-* **Block provisions:** Native tokens of applications run by validators (e.g. Atoms on the Cosmos Hub) are inflated to produce block provisions. These provisions exist to incentivize Atom holders to bond their stake, as non-bonded Atom will be diluted over time. 
+* **Atom expansion:** Native tokens of applications run by validators (e.g. Atoms on the Cosmos Hub) are inflated to produce new units. These new Atoms exist to incentivize Atom holders to bond their stake, as non-bonded Atom will be diluted over time. 
 * **Block rewards:** For the Ethermint zone, block rewards are paid in Photons. Initial distribution of Photons will be hard spooned from Ethereum. This means Photons will be emitted 1:1 to Ether. 
 * **Transaction fees:** The Cosmos Hub maintains a whitelist of token that are accepted as fee payment. 
 
-This total revenue is divided among validators' staking pools according to each validator’s weight. Then, within each validator's staking pool the revenue is divided among delegators in proportion to each delegator’s stake. Note that a commission on delegators' block rewards and transactions fees is applied by the validator before it is distributed. This commission does not apply on block provisions.
+This total revenue is divided among validators' staking pools according to each validator’s weight. Then, within each validator's staking pool the revenue is divided among delegators in proportion to each delegator’s stake. Note that a commission on delegators' block rewards and transactions fees is applied by the validator before it is distributed. This commission does not apply on Atom expansion.
 
 ### What is the incentive to run a validator ?
 
@@ -145,15 +145,15 @@ Validators also play a major role in governance. If a delegator does not vote, i
 
 Revenue received by a validator’s pool is split between the validator and its delegators. The validator can apply a commission on the part of the block rewards and transaction fees that goes to its delegators. This commission is set as a percentage. Each validator is free to set its initial commission, maximum daily commission change rate and maximum commission. The Cosmos Hub enforces the parameter that each validator sets. These parameters can only be defined when initially declaring candidacy, and may only be constrained further after being declared. 
 
-### How are block provisions distributed?
+### How is Atom expansion distributed?
 
-Block provisions (in Atoms) are distributed proportionally to all validators relative to their total stake. This means that even though each validator gains atoms with each provision, all validators will still maintain equal weight.
+Atom expansion is distributed proportionally to all validators relative to their total stake. This means that even though each validator gains atoms with each expansion, all validators will still maintain equal weight.
 
-In order to prevent Atom distribution to shift from delegators to validators over time, the validator's commission will not apply on block provisions.
+In order to prevent Atom distribution to shift from delegators to validators over time, the validator's commission will not apply on Atom expansion.
 
 ### How are block rewards distributed
 
-Block rewards are also distributed proportionally to all validators. However, contrary to block provisions, validators can apply a commission on the block rewards they receive. 
+Block rewards are also distributed proportionally to all validators. However, contrary to Atom expansion, validators can apply a commission on the block rewards they receive. 
 
 Let us take an example where we have 10 validators with equal staking power and a commission rate of 1%. Let us also assume that the block reward for a block is 1000 Photons and that each validator has 20% of self-bonded Atoms. These tokens do not go directly to the proposer. Instead, they are evenly spread among validators. So now each validator’s pool has 100 Photons. These 100 Photons will be distributed according to each participant’s stake:
 
