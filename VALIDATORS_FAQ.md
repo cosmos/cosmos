@@ -77,7 +77,7 @@ There is no minimum. The top 100 validator candidates with the highest total sta
 Delegators are free to choose validators according to their own subjective criteria. This said, criteria anticipated to be important include:
 * **Amount of self-bonded Atoms:** Number of Atoms a validator self-bonded to its staking pool. A validator with higher amount of self-bonded Atoms has more skin in the game, making it more liable for its actions.
 * **Amount of delegated Atoms:** Total number of Atoms delegated to a validator. A high stake shows that the community trusts this validator, but it also means that this validator is a bigger target for hackers. Indeed, hackers are incentivized to hack bigger validators as they receive a reward proportionate to the stake of the validator they can prove to have compromised. Validators are expected to become less and less attractive as their amount of delegated Atoms grows.
-* **Commission rate:** Commission applied on revenue by validators before it is distributed to their delegators
+* **Commission rate:** Commission applied on block rewards and transaction fees by validators before it is distributed to their delegators
 * **Track record:** Delegators will likely look at the track record of the validators they plan to delegate to. This includes seniority, past votes on proposals, historical average uptime and how often the node was compromised.
 
 Apart from these criteria that will be displayed in the Cosmos UI, there will be a possibility for validators to signal a website address to complete their resume. Validators will need to build reputation one way or another to attract delegators. For example, it would be a good practice for validators to have their setup audited by third parties. Note though, that the Tendermint Team will not approve or conduct any audit itself.
@@ -133,29 +133,35 @@ Each member of a validator’s staking pool earns different types of revenue:
 * **Block rewards:** For the Ethermint zone, block rewards are paid in Photons. Initial distribution of Photons will be hard spooned from Ethereum. This means Photons will be emitted 1:1 to Ether. 
 * **Transaction fees:** The Cosmos Hub maintains a whitelist of token that are accepted as fee payment. 
 
-This total revenue is divided among validators' staking pools according to each validator’s weight. Then, within each validator's staking pool the revenue is divided among delegators in proportion to each delegator’s stake. Note that a commission on delegators' revenue is applied by the validator before it is distributed. 
+This total revenue is divided among validators' staking pools according to each validator’s weight. Then, within each validator's staking pool the revenue is divided among delegators in proportion to each delegator’s stake. Note that a commission on delegators' block rewards and transactions fees is applied by the validator before it is distributed. This commission does not apply on block provisions.
 
 ### What is the incentive to run a validator ?
 
-Validators earn proportionally more revenue than their delegators because of commissions.
+Validators earn proportionally more block rewards and transaction fees than their delegators because of commissions.
 
 Validators also play a major role in governance. If a delegator does not vote, it inherits the vote from its validator. This gives validators a major responsibility in the ecosystem.
 
 ### What is a validator's commission?
 
-Revenue received by a validator’s pool is split between the validator and its delegators. The validator can apply a commission on the part of the revenue that goes to its delegators. This commission is set as a percentage. Each validator is free to set its initial commission, maximum daily commission change rate and maximum commission. The Cosmos Hub enforces the parameter that each validator sets. These parameters can only be defined when initially declaring candidacy, and may only be constrained further after being declared. 
+Revenue received by a validator’s pool is split between the validator and its delegators. The validator can apply a commission on the part of the block rewards and transaction fees that goes to its delegators. This commission is set as a percentage. Each validator is free to set its initial commission, maximum daily commission change rate and maximum commission. The Cosmos Hub enforces the parameter that each validator sets. These parameters can only be defined when initially declaring candidacy, and may only be constrained further after being declared. 
 
 ### How are block provisions distributed?
 
-Block provisions are distributed proportionally to all validators relative to their total stake. This means that even though each validator gains atoms with each provision, all validators will still maintain equal weight.
+Block provisions (in Atoms) are distributed proportionally to all validators relative to their total stake. This means that even though each validator gains atoms with each provision, all validators will still maintain equal weight.
 
-Let us take an example where we have 10 validators with equal staking power and a commission rate of 1%. Let us also assume that the provision for a block is 1000 Atoms and that each validator has 20% of self-bonded Atoms. These tokens do not go directly to the proposer. Instead, they are evenly spread among validators. So now each validator’s pool has 100 Atoms. These 100 Atoms will be distributed according to each participant’s stake:
+In order to prevent Atom distribution to shift from delegators to validators over time, the validator's commission will not apply on block provisions.
 
-* Commission: 100*80%*1% = 0.8 Atoms
-* Validator gets: 100*20% + Commission = 20.8 Atoms
-* All delegators get: 100*80% - Commission = 79.2 Atoms
+### How are block rewards distributed
 
-Then, each delegator can claim its part of the 79.2 Atoms in proportion to their stake in the validator’s staking pool. Note that the validator's commission is not applied on block provisions. Note that block rewards (paid in Photons) are distributed according to the same mechanism.
+Block rewards are also distributed proportionally to all validators. However, contrary to block provisions, validators can apply a commission on the block rewards they receive. 
+
+Let us take an example where we have 10 validators with equal staking power and a commission rate of 1%. Let us also assume that the block reward for a block is 1000 Photons and that each validator has 20% of self-bonded Atoms. These tokens do not go directly to the proposer. Instead, they are evenly spread among validators. So now each validator’s pool has 100 Photons. These 100 Photons will be distributed according to each participant’s stake:
+
+* Commission: 100*80%*1% = 0.8 Photons
+* Validator gets: 100*20% + Commission = 20.8 Photons
+* All delegators get: 100*80% - Commission = 79.2 Photon
+
+Then, each delegator can claim its part of the 79.2 Photons in proportion to their stake in the validator’s staking pool. 
 
 ### How are fees distributed?
 
