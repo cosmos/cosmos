@@ -12,7 +12,7 @@ The Cosmos Hub is based on Tendermint, which relies on a set of validators to se
 
 The Cosmos Hub is a public Proof-Of-Stake (PoS) blockchain, meaning that validator's weight is determined by the amount of staking tokens (Atoms) bonded as collateral. These Atoms can be staked directly by the validator or delegated to them by Atom holders.
 Any user in the system can declare its intention to become a validator by sending a "declare-candidacy" transaction. From there, they become validator candidates.
-The weight (i.e. total stake) of a candidate determines wether or not it is a validator, and also how frequently this node will have to propose a block and how much revenue it will obtain. Initially, only the top 100 validator candidates with the most weight will be validators. If validators double sign, are frequently offline or do not participate in governance, their staked Atoms (including Atoms of users that delegated to them) can be destroyed, or 'slashed'.
+The weight (i.e. total stake) of a candidate determines whether or not it is a validator, and also how frequently this node will have to propose a block and how much revenue it will obtain. Initially, only the top 100 validator candidates with the most weight will be validators. If validators double sign, are frequently offline or do not participate in governance, their staked Atoms (including Atoms of users that delegated to them) can be destroyed, or 'slashed'.
 
 ### What is a full-node?
 
@@ -22,8 +22,8 @@ Of course, it is possible and encouraged for any user to run full-nodes even if 
 ### What is a delegator?
 
 Delegators are Atom holders who cannot, or do not want to run validator operations themselves. Through the Cosmos UI, a user can delegate Atoms to a validator and obtain a part of its revenue in exchange (for more detail on how revenue is distributed, see  **What is the incentive to stake?** and **What is a validator's commission?** sections below).
-Because they share revenue with their validators, delegators also share responsiblity. Should a validator misbehave, each of its delegators will be partially slashed in proportion to their stake. This is why delegators should perform due diligence on validator candidates before delegating, as well as spreading their stake over multiple validators.
-Delegators play a critical role in the system, as they are responsible for choosing validators. Being a delegator is not a passive role: Delegators should actively monitor the actions of their validators and participate in governance.
+Because they share revenue with their validators, delegators also share responsibility. Should a validator misbehave, each of its delegators will be partially slashed in proportion to their stake. This is why delegators should perform due diligence on validator candidates before delegating, as well as spreading their stake over multiple validators.
+Delegators play a critical role in the system, as they are responsible for choosing validators. Being a delegator is not a passive role: delegators should actively monitor the actions of their validators and participate in governance.
 
 
 ## Becoming a validator
@@ -181,13 +181,13 @@ We have to solve this simple equation to find the reward R for each validator:
 `9*R + R + R*5% = 1005 ⇔ R = 1005/10.05 = 100`
 
 * For the proposer validator
-  * The pool obtains R + R*5%: 105 Atoms
-  * Commission: 105*80%*1% = 0.84 Atoms
+  * The pool obtains R + R\*5%: 105 Atoms
+  * Commission: 105\*80%\*1% = 0.84 Atoms
   * Validator's reward: 100 * 20% + Commission = 21.84 Atoms
   * Delegators' rewards: 105 * 80% - Commission = 83.16 Atoms (each delegator will be able to claim its portion of these rewards in proportion to their stake)
 * For each non-proposer validator
   * The pool obtains R: 100 Atoms
-  * Commission: 100*80%*1% = 0.8 Atoms
+  * Commission: 100\*80%\*1% = 0.8 Atoms
   * Validator's reward: 100 * 20% + Commission = 20.8 Atoms
   * Delegators' rewards: 100 * 80% - Commission = 79.2 Atoms (each delegator will be able to claim its portion of these rewards in proportion to their stake)
 
@@ -233,7 +233,7 @@ In addition to running a Cosmos Hub node, validators should develop monitoring, 
 
 The Cosmos network has the capacity for very high throughput relative to chains like Ethereum or Bitcoin.
 We recommend that the data center nodes only connect to trusted full-nodes in the cloud or other validators that know each other socially. This relieves the data center node from the burden of mitigating denial-of-service attacks.
-Ultimately, as the network becomes more heavily used, multigigabyte per day bandwidth is very realistic.
+Ultimately, as the network becomes more heavily used, multi-gigabyte per day bandwidth is very realistic.
 
 ### What does running a validator imply in terms of logistics? 
 
