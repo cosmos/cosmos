@@ -2,4 +2,4 @@
 * [Whitepaper](WHITEPAPER.md)
 * [Crowdfund Plan](PLAN.md)
 * [Faq](FAQ.md)
-* [Rocket.Chat](https://cosmos.rocket.chat/)
+* [Riot.Chat](https://riot.im/app/#/room/#cosmos:matrix.org)
