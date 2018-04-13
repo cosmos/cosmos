@@ -1,3 +1,5 @@
+## ToC
+
 * [Purpose](PURPOSE.md)
 * [Whitepaper](WHITEPAPER.md)
 * [Crowdfund Plan](PLAN.md)
