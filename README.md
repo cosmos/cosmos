@@ -4,7 +4,7 @@
 * [Whitepaper](WHITEPAPER.md)
 * [Crowdfund Plan](PLAN.md)
 * [Faq](FAQ.md)
-* [Rocket.Chat](https://cosmos.rocket.chat/)
+* [Chat](https://cosmos.network/community)
 
 ### Disambiguation
 
