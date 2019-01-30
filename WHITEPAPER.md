@@ -424,7 +424,7 @@ acknowledgement](https://raw.githubusercontent.com/gnuclear/atom-whitepaper/mast
 transaction must be posted on "Hub" with the block-hash of "Zone1" (or on
 "Zone2" with the block-hash of "Hub").
 
-_See [IBCBlockCommitTx](#ibcblockcommittx) and [IBCPacketTx](#ibcpacketcommit)
+_See [IBCBlockCommitTx](#ibcblockcommittx) and [IBCPacketTx](#ibcpackettx)
 for for more information on the two IBC transaction types._
 
 ## Use Cases ###################################################################
