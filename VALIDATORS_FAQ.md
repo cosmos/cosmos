@@ -155,7 +155,7 @@ Let us take an example where we have 10 validators with equal staking power and 
 * Validator gets: 100*20% + Commission = 20.8 Atoms
 * All delegators get: 100*80% - Commission = 79.2 Atoms
 
-Then, each delegator can claim its part of the 80 Atoms in proportion to their stake in the validator’s staking pool. Note that the validator's commission is not applied on block provisions. Note that block rewards (paid in Photons) are distributed according to the same mechanism.
+Then, each delegator can claim its part of the 79.2 Atoms in proportion to their stake in the validator’s staking pool. Note that the validator's commission is not applied on block provisions. Note that block rewards (paid in Photons) are distributed according to the same mechanism.
 
 ### How are fees distributed?
 
@@ -177,7 +177,7 @@ We have to solve this simple equation to find the reward R for each validator:
 * For the proposer validator
   * The pool obtains R + R*5%: 105 Atoms
   * Commission: 105*80%*1% = 0.84 Atoms
-  * Validator's reward: 100 * 20% + Commission = 21.84 Atoms
+  * Validator's reward: 105 * 20% + Commission = 21.84 Atoms
   * Delegators' rewards: 105 * 80% - Commission = 83.16 Atoms (each delegator will be able to claim its portion of these rewards in proportion to their stake)
 * For each non-proposer validator
   * The pool obtains R: 100 Atoms

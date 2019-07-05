@@ -4,7 +4,7 @@
 Jae Kwon jae@tendermint.com<br/>
 Ethan Buchman ethan@tendermint.com
 
-For discussions, [join our Slack](http://forum.tendermint.com:3000/)!
+For discussions, [join our chat](https://riot.im/app/#/room/#cosmos:matrix.org)!
 
 _NOTE: If you can read this on GitHub, then we're still actively developing this
 document.  Please check regularly for updates!_
@@ -424,7 +424,7 @@ acknowledgement](https://raw.githubusercontent.com/gnuclear/atom-whitepaper/mast
 transaction must be posted on "Hub" with the block-hash of "Zone1" (or on
 "Zone2" with the block-hash of "Hub").
 
-_See [IBCBlockCommitTx](#ibcblockcommittx) and [IBCPacketTx](#ibcpacketcommit)
+_See [IBCBlockCommitTx](#ibcblockcommittx) and [IBCPacketTx](#ibcpackettx)
 for for more information on the two IBC transaction types._
 
 ## Use Cases ###################################################################
