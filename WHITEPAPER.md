@@ -406,7 +406,7 @@ bidirectional stream of proof-of-existence datagrams (transactions).
 
 The IBC protocol can naturally be defined using two types of transactions: an
 `IBCBlockCommitTx` transaction, which allows a blockchain to prove to any
-observer of its most recent block-hash, and an `IBCPacketTx` transaction, which
+observer the existance of the blockchian's most recent block-hash, and an `IBCPacketTx` transaction, which
 allows a blockchain to prove to any observer that the given packet was indeed
 published by the sender's application, via a Merkle-proof to the recent
 block-hash.
