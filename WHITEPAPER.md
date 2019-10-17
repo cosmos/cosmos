@@ -366,7 +366,7 @@ must be committed by the sender, hub, and receiver blockchains.
 Since the Cosmos Hub acts as the central ledger for the whole
 system, the security of the Hub is of paramount importance.  While each
 zone may be a Tendermint blockchain that is secured by as few as 4 (or even
-less if BFT consensus is not needed), the Hub must be secured by a globally
+less if BFT consensus is not needed) validators, the Hub must be secured by a globally
 decentralized set of validators that can withstand the most severe attack
 scenarios, such as a continental network partition or a nation-state sponsored
 attack.
