@@ -1285,7 +1285,7 @@ validator set, and for the application to receive the block information, such as
 the height and the commit votes.
 
 ABCI requests/responses are simple Protobuf messages.  Check out the [schema
-file](https://github.com/tendermint/abci/blob/master/types/types.proto).
+file](https://github.com/tendermint/tendermint/blob/master/abci/types/types.proto).
 
 ##### AppendTx
   * __Arguments__:
@@ -1372,7 +1372,7 @@ connection, or Key="mode", Value="consensus" for a consensus connection.
     Signals the end of a block.  Called prior to each Commit after all
 transactions
 
-See [the ABCI repository](https://github.com/tendermint/abci#message-types) for more details.
+See [the ABCI documentation](https://docs.tendermint.com/master/spec/abci/abci.html) for more details.
 
 ### IBC Packet Delivery Acknowledgement
 
@@ -1644,7 +1644,7 @@ wording, especially under the ABCI section
 [14]: https://interledger.org/rfcs/0001-interledger-architecture/
 [15]: https://blockstream.com/sidechains.pdf
 [16]: https://blog.ethereum.org/2015/08/01/introducing-casper-friendly-ghost/
-[17]: https://github.com/tendermint/abci
+[17]: https://github.com/tendermint/tendermint/tree/master/abci
 [18]: https://github.com/ethereum/EIPs/issues/53
 [19]: http://www.ds.ewi.tudelft.nl/fileadmin/pds/papers/PerformanceAnalysisOfLibswift.pdf
 [20]: http://groups.csail.mit.edu/tds/papers/Lynch/jacm88.pdf
@@ -1667,7 +1667,7 @@ wording, especially under the ABCI section
 * [14] Interledger: https://interledger.org/rfcs/0001-interledger-architecture/
 * [15] Sidechains: https://blockstream.com/sidechains.pdf
 * [16] Casper: https://blog.ethereum.org/2015/08/01/introducing-casper-friendly-ghost/
-* [17] ABCI: https://github.com/tendermint/abci
+* [17] ABCI: https://github.com/tendermint/tendermint/tree/master/abci
 * [18] Ethereum Sharding: https://github.com/ethereum/EIPs/issues/53
 * [19] LibSwift: http://www.ds.ewi.tudelft.nl/fileadmin/pds/papers/PerformanceAnalysisOfLibswift.pdf
 * [20] DLS: http://groups.csail.mit.edu/tds/papers/Lynch/jacm88.pdf
