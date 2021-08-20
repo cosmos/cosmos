@@ -121,7 +121,7 @@ The validator that is selected to propose the next block is called proposer. Eac
 
 ### Will validators of the Cosmos Hub ever be required to validate other zones in the Cosmos ecosystem?
 
-Yes, they will. Initially, validators of the Cosmos hub will also validate the first public Ethermint zone. If governance decides so, validators of the Cosmos hub may be required to validate additional zones in the Cosmos ecosystem. As the case with the Ethermint Zone, for each additional zone compensation is to be provided in the form of block rewards and transaction fees.
+If governance decides, validators of the Cosmos hub may be required to validate additional zones in the Cosmos ecosystem. For each additional zone, compensation is to be provided in the form of block rewards and transaction fees.
 
 
 ## Staking and incentives
