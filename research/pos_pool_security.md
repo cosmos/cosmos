@@ -42,7 +42,7 @@ Consider the following Tendermint instances:
    - In order to compromise the safety of the system at least 1/3 of the
      validator nodes must be byzsantine, 2 validator nodes
    - To compromise a single validator node, at least 1/3 of the pool's nodes
-     must be compramised, 2 nodes
+     must be compromised, 2 nodes
    - In total, under an optimally densely arrangement the minimum number of
      nodes for the safety of the network to be compromised is 4 nodes:
      - Pool 1: (4 non-byzantine nodes) = non-byzantine
