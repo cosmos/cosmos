@@ -122,23 +122,23 @@ well suited for scaling public proof-of-stake blockchains.  Blockchains with oth
 
 The first zone on Cosmos is called the Cosmos Hub. The Cosmos Hub is a
 multi-asset proof-of-stake cryptocurrency with a simple governance mechanism
-which enables the network to adapt and upgrade.  In addition, the Cosmos Hub can be
+that enables the network to adapt and upgrade.  In addition, the Cosmos Hub can be
 extended by connecting other zones.
 
 The hub and zones of the Cosmos network communicate with each other via an
 inter-blockchain communication (IBC) protocol, a kind of virtual UDP or TCP for
 blockchains.  Tokens can be transferred from one zone to another securely and
 quickly without the need for exchange liquidity between zones.  Instead, all
-inter-zone token transfers go through the Cosmos Hub, which keeps track of the
+inter-zone token transfers go through the Cosmos Hub that keeps track of the
 total amount of tokens held by each zone.  The hub isolates each zone from the
 failure of other zones.  Because anyone can connect a new zone to the Cosmos Hub,
-zones allow for future-compatibility with new blockchain innovations.
+zones allow for future compatibility with new blockchain innovations.
 
-With Cosmos interoperability between blockchains can be achieved. The potential of an internet of value, where assets are issued and controlled by different sets of validators, yet can be moved and exchanged seamlessly between blockchains without relying on trusted third parties can be realized.
+With Cosmos, interoperability between blockchains can be achieved. The potential of an internet of value, where assets are issued and controlled by different sets of validators, yet can be moved and exchanged seamlessly between blockchains without relying on trusted third parties can be realized.
 
 ## Tendermint ##################################################################
 
-In this section we describe the Tendermint consensus protocol and the interface
+In this section, we describe the Tendermint consensus protocol and the interface
 used to build applications with it. For more details, see the [appendix](#appendix).
 
 ### Validators
@@ -172,8 +172,8 @@ or move on to the next round. The proposer for a round is chosen
 deterministically from the ordered list of validators, in proportion to their
 voting power.
 
-The full details of the protocol are described
-[here](https://github.com/tendermint/tendermint/wiki/Byzantine-Consensus-Algorithm).
+For full details of the protocol, see  
+[Tendermint Core (BFT Consensus)](https://github.com/tendermint/tendermint/wiki/Byzantine-Consensus-Algorithm).
 
 Tendermint’s security derives from its use of optimal Byzantine fault-tolerance
 via super-majority (>⅔) voting and a locking mechanism.  Together, they ensure
@@ -253,10 +253,10 @@ classical BFT consensus algorithms like Tendermint
 
 The first blockchain in this network will be the Cosmos Hub.  The Cosmos Hub
 connects to many other blockchains (or _zones_) via a novel inter-blockchain
-communication protocol.  The Cosmos Hub tracks numerous token types and keeps
+communication protocol.  The Cosmos Hub tracks numerous token types and keeps a 
 record of the total number of tokens in each connected zone.  Tokens can be
 transferred from one zone to another securely and quickly without the need for
-a liquid exchange between zones, because all inter-zone coin transfers go
+a liquid exchange between zones because all inter-zone coin transfers go
 through the Cosmos Hub.
 
 This architecture solves many problems that the blockchain space faces today,
@@ -320,7 +320,7 @@ constitution that govern the policies of the Cosmos Hub.  The constitution
 allows for cohesion among the stakeholders on issues such as theft
 and bugs (such as TheDAO incident), allowing for quicker and cleaner resolution.
 
-Each zone can also have their own constitution and governance mechanism as well.
+Each zone can also have their own constitution and governance mechanism.
 For example, the Cosmos Hub could have a constitution that enforces immutability
 at the Hub (no roll-backs, save for bugs of the Cosmos Hub node implementation),
 while each zone can set their own policies regarding roll-backs.
@@ -399,7 +399,7 @@ there are three blockchains, "Zone1", "Zone2", and "Hub", and we wish for
 "Zone1" to produce a packet destined for "Zone2" going through "Hub". To move a
 packet from one blockchain to another, a proof is posted on the
 receiving chain. The proof states that the sending chain published a packet for the alleged
-destination. For the receiving chain to check this proof, it must be able keep
+destination. For the receiving chain to check this proof, it must be able to keep
 up with the sender's block headers.  This mechanism is similar to that used by
 sidechains, which requires two interacting chains to be aware of one another via a
 bidirectional stream of proof-of-existence datagrams (transactions).
@@ -425,7 +425,7 @@ transaction must be posted on "Hub" with the block-hash of "Zone1" (or on
 "Zone2" with the block-hash of "Hub").
 
 _See [IBCBlockCommitTx](#ibcblockcommittx) and [IBCPacketTx](#ibcpackettx)
-for for more information on the two IBC transaction types._
+for more information on the two IBC transaction types._
 
 ## Use Cases ###################################################################
 
@@ -551,7 +551,7 @@ Hub's governance system.
 
 Solving the scaling problem is an open issue for Ethereum.  Currently,
 Ethereum nodes process every single transaction and also store all the states.
-[link](https://docs.google.com/presentation/d/1CjD0W4l4-CwHKUvfF5Vlps76fKLEC6pIwu1a_kC_YRQ/mobilepresent?slide=id.gd284b9333_0_28).
+See [Ethereum 2.0 Scaling](https://docs.google.com/presentation/d/1CjD0W4l4-CwHKUvfF5Vlps76fKLEC6pIwu1a_kC_YRQ/mobilepresent?slide=id.gd284b9333_0_28).
 
 Since Tendermint can commit blocks much faster than Ethereum's proof-of-work,
 EVM zones powered by Tendermint consensus and operating on bridged-ether can
@@ -582,7 +582,7 @@ time.
 
 Zones can also serve as blockchain-backed versions of enterprise and government
 systems, where pieces of a particular service that are traditionally run by an
-organization or group of organizations are instead run as a ABCI application on
+organization or group of organizations are instead run as an ABCI application on
 a certain zone, which allows it to inherit the security and interoperability of the
 public Cosmos network without sacrificing control over the underlying service.
 Thus, Cosmos may offer the best of both worlds for organizations looking to
@@ -723,14 +723,13 @@ become inactive, and lose `ValidatorTimeoutPenalty` (DEFAULT 1%) of its stake.
 
 Some "malicious" behavior does not produce obviously discernible evidence on the
 blockchain. In these cases, the validators can coordinate out of band to force
-the timeout of these malicious validators, if there is a supermajority
+the timeout of these malicious validators, if there is a super-majority
 consensus.
 
 In situations where the Cosmos Hub halts due to a ≥⅓ coalition of voting power
 going offline, or in situations where a ≥⅓ coalition of voting power censor
 evidence of malicious behavior from entering the blockchain, the hub must
-recover with a hard-fork reorg-proposal.  (Link to "Forks and Censorship
-Attacks").
+recover with a hard-fork reorg-proposal. See [Overcoming Forks and Censorship Attacks](#overcoming-forks-and-censorship-attacks).
 
 ### Transaction Fees
 
@@ -1237,7 +1236,7 @@ signed.
 Assuming that the external coordination medium and protocol is robust, it
 follows that forks are less of a concern than censorship attacks.
 
-In addition to forks and censorship, which require ≥⅓ Byzantine voting power, a
+In addition to forks and censorship that require ≥⅓ Byzantine voting power, a
 coalition of >⅔ voting power may commit arbitrary, invalid state.  This is
 characteristic of any (BFT) consensus system. Unlike double-signing, which
 creates forks with easily verifiable evidence, detecting commitment of an
@@ -1468,7 +1467,7 @@ timeout](https://raw.githubusercontent.com/gnuclear/atom-whitepaper/master/msc/i
 ### Merkle Tree & Proof Specification
 
 There are two types of Merkle trees supported in the Tendermint/Cosmos
-ecosystem: The Simple Tree, and the IAVL+ Tree.
+ecosystem: The Simple Tree and the IAVL+ Tree.
 
 #### Simple Tree
 
