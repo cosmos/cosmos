@@ -377,7 +377,7 @@ A Cosmos zone is an independent blockchain that exchanges IBC messages with the
 Hub.  From the Hub's perspective, a zone is a multi-asset dynamic-membership
 multi-signature account that can send and receive tokens using IBC packets. Like
 a cryptocurrency account, a zone cannot transfer more tokens than it has, but
-can receive tokens from others who have them. A zone may be designated as an
+can receive tokens from others who have them. A zone may be designated as a
 "source" of one or more token types, granting it the power to inflate that token
 supply.
 
