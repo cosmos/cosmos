@@ -173,7 +173,7 @@ deterministically from the ordered list of validators, in proportion to their
 voting power.
 
 The full details of the protocol are described
-[here](https://github.com/tendermint/tendermint/wiki/Byzantine-Consensus-Algorithm).
+[here](https://github.com/tendermint/tendermint/blob/master/spec/consensus/consensus.md).
 
 Tendermint’s security derives from its use of optimal Byzantine fault-tolerance
 via super-majority (>⅔) voting and a locking mechanism.  Together, they ensure
@@ -1117,7 +1117,7 @@ cannot contribute to evidence to PreCommit something else.  This ensures both
 safety and liveness of the consensus algorithm.
 
 The full details of the protocol are described
-[here](https://github.com/tendermint/tendermint/wiki/Byzantine-Consensus-Algorithm).
+[here](https://github.com/tendermint/tendermint/blob/master/spec/consensus/consensus.md).
 
 ### Tendermint Light Clients
 
@@ -1630,7 +1630,7 @@ wording, especially under the ABCI section
 
 [1]: https://bitcoin.org/bitcoin.pdf
 [2]: http://zerocash-project.org/paper
-[3]: https://github.com/ethereum/wiki/wiki/White-Paper
+[3]: https://ethereum.org/en/whitepaper/
 [4]: https://download.slock.it/public/DAO/WhitePaper.pdf
 [5]: https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki
 [6]: https://arxiv.org/pdf/1510.02037v2.pdf
@@ -1649,11 +1649,11 @@ wording, especially under the ABCI section
 [19]: http://www.ds.ewi.tudelft.nl/fileadmin/pds/papers/PerformanceAnalysisOfLibswift.pdf
 [20]: http://groups.csail.mit.edu/tds/papers/Lynch/jacm88.pdf
 [21]: https://en.bitcoin.it/wiki/Thin_Client_Security
-[22]: http://vitalik.ca/files/mauve_paper.html
+[22]: https://web.archive.org/web/20160917175856/https://vitalik.ca/files/mauve_paper3.html
 
 * [1] Bitcoin: https://bitcoin.org/bitcoin.pdf
 * [2] ZeroCash: http://zerocash-project.org/paper
-* [3] Ethereum: https://github.com/ethereum/wiki/wiki/White-Paper
+* [3] Ethereum: https://ethereum.org/en/whitepaper/
 * [4] TheDAO: https://download.slock.it/public/DAO/WhitePaper.pdf
 * [5] Segregated Witness: https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki
 * [6] BitcoinNG: https://arxiv.org/pdf/1510.02037v2.pdf
@@ -1672,7 +1672,7 @@ wording, especially under the ABCI section
 * [19] LibSwift: http://www.ds.ewi.tudelft.nl/fileadmin/pds/papers/PerformanceAnalysisOfLibswift.pdf
 * [20] DLS: http://groups.csail.mit.edu/tds/papers/Lynch/jacm88.pdf
 * [21] Thin Client Security: https://en.bitcoin.it/wiki/Thin_Client_Security
-* [22] Ethereum 2.0 Mauve Paper: http://vitalik.ca/files/mauve_paper.html
+* [22] Ethereum 2.0 Mauve Paper: https://web.archive.org/web/20160917175856/https://vitalik.ca/files/mauve_paper3.html
 
 #### Unsorted links
 
