@@ -82,7 +82,7 @@ cheat.
 Even "leaderless" consensus systems suffer from various forms of cheating.  For
 some systems, such as Swirld's hash-graph system, the one who has more control
 over the network, or one who has more connections to peers, has greater power
-to determine the order of transactions.  TODO: also mention other attemps.
+to determine the order of transactions.  TODO: also mention other attempts.
 
 Both problems are fundamental to the nature of distributed ledgers -- a global
 distributed ledger cannot make any final decisions (about the order of

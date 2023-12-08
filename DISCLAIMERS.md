@@ -14,7 +14,7 @@
 Tendermint Core, bugs in the Cosmos Hub ABCI application, bugs in client or
 wallet software, etc.
 
-* There may be irreconciliable differences among atom holders that cause the
+* There may be irreconcilable differences among atom holders that cause the
   Cosmos Hub blockchain to split (hard-fork) into two or more blockchains.  This
 may cause economic harm for end-users and related services such as
 crypto-exchanges .
