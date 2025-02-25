@@ -1,4 +1,4 @@
-print "Compute atoms for validators and delegators over time"
+print("Compute atoms for validators and delegators over time")
 import math
 
 atomsVal = 0.000    # starting atoms for validator
@@ -7,7 +7,7 @@ atomsAll = 1.0      #
 inflation = 0.3     # 30% inflation
 inflationLg = math.log(1.0 + inflation) # for exponential
 exponential = True  # exponential
-commission = 0.10   # 5% commission
+commission = 0.10   # 10% commission
 numBlocksPerYear = 1000
 
 for year in range(0,50):
