@@ -1,25 +1,36 @@
-# IBC (inter-blockchain communication) message sequence chart
+# IBC (Inter-Blockchain Communication) Success Scenario: Zone1 -> Zone2
 
 msc {
 
-   # The entities
-   Zone1, Hub, Zone2;
+    # The entities (Relayer is the key off-chain process)
+    Zone1 [ label="Source Chain (Zone1)"], Relayer, Zone2 [ label="Destination Chain (Zone2)"];
 
-   |||;
+    ||| Phase 1: Packet Sent (Zone1 -> Zone2) |||
 
-   Zone1 -> Hub [ label = "IBCBlockCommitTx\nchainID=Zone1,height=100"];
-   Zone1 -> Hub [ label = "IBCPacketTx\nfrom=Zone1,status=AckPending"];
+    # 1. User/App on Zone1 triggers the SendPacket
+    Zone1 => Zone1 [ label = "App: Commit SendPacket(Data)"];
+    
+    # 2. Relayer updates client on Zone2 with Zone1's header/proof
+    Relayer -> Zone1 [ label = "Query Zone1 Header (H_Z1)"];
+    Relayer => Zone2 [ label = "MsgUpdateClient(H_Z1)"];
 
-   Hub -> Zone2 [ label = "IBCBlockCommitTx\nchainID=Hub,height=300"];
-   Hub -> Zone2 [ label = "IBCPacketTx\nfrom=Hub,status=AckPending"];
+    # 3. Relayer relays the packet to Zone2 using the proof from Zone1's commitment
+    Relayer => Zone2 [ label = "MsgRecvPacket(Proof_H_Z1(packet))", note = "Packet received and processed on Zone2"];
+    
+    ||| Phase 2: Acknowledgment Sent (Zone2 -> Zone1) |||
+    
+    # 4. Zone2 application processes the packet and commits the acknowledgment (ACK)
+    Zone2 => Zone2 [ label = "App: Commit Acknowledgement(ACK)"];
+    
+    # 5. Relayer updates client on Zone1 with Zone2's header/proof
+    Relayer -> Zone2 [ label = "Query Zone2 Header (H_Z2)"];
+    Relayer => Zone1 [ label = "MsgUpdateClient(H_Z2)"];
 
-   |||;
+    # 6. Relayer relays the ACK to Zone1 using the proof from Zone2's commitment
+    Relayer => Zone1 [ label = "MsgAcknowledgement(Proof_H_Z2(ACK))", note = "ACK verified on Zone1"];
+    
+    ||| Finalization |||
 
-   Zone2 -> Hub [ label = "IBCBlockCommitTx\nchainID=Zone2,height=400"];
-   Zone2 -> Hub [ label = "IBCPacketTx\nfrom=Zone2,status=AckSent"];
-
-   |||;
-
-   Hub -> Zone2 [ label = "IBCBlockCommitTx\nchainID=Hub,height=301"];
-   Hub -> Zone2 [ label = "IBCPacketTx\nfrom=Hub,status=AckReceived"];
+    # 7. Zone1 verifies the ACK and deletes the local packet commitment
+    Zone1 => Zone1 [ label = "Core: Delete Packet Commitment", note = "Transfer finalized and locked funds released on Zone1"];
 }
