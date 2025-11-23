@@ -1,29 +1,42 @@
-# IBC (inter-blockchain communication) message sequence chart
+# IBC (Inter-Blockchain Communication) Timeout Scenario
 
 msc {
 
-   # The entities
-   Zone1, Hub, Zone2;
+    # The entities (A Relayer is a key off-chain process in IBC)
+    Zone1 [ label="Source Chain (Zone1)"], Relayer, Zone2 [ label="Destination Chain (Zone2)"];
 
-   |||;
+    ||| Initializing Packet Transfer (Zone1 -> Zone2) |||
 
-   Zone1 -> Hub [ label = "IBCBlockCommitTx\nchainID=Zone1,height=100"];
-   Zone1 -> Hub [ label = "IBCPacketTx\nfrom=Zone1,status=AckPending"];
+    # 1. Zone1 commits the packet data to its state (SendPacket)
+    Zone1 => Zone1 [ label = "App: Commit SendPacket(data)"];
+    
+    # 2. Relayer updates the client on Zone2 with Zone1's latest header
+    Relayer -> Zone1 [ label = "Query Zone1 Header (H_Z1)"];
+    Relayer => Zone2 [ label = "MsgUpdateClient(H_Z1)"];
 
-   Hub -> Zone2 [ label = "IBCBlockCommitTx\nchainID=Hub,height=300"];
-   Hub -> Zone2 [ label = "IBCPacketTx\nfrom=Hub,status=AckPending"];
+    # 3. Relayer relays the packet to Zone2 using the proof from Zone1's commitment
+    Relayer => Zone2 [ label = "MsgRecvPacket(Proof_H_Z1(packet))", note = "Packet received and processed on Zone2"];
+    
+    ||| Acknowledgment Fails (Timeout Occurs) |||
 
-   |||;
+    # 4. Zone2 commits the acknowledgment (ACK)
+    Zone2 => Zone2 [ label = "App: Commit AcknowledgePacket(ACK)"];
+    
+    # 5. Relayer attempts to relay the ACK but fails or is too slow.
+    #    The message is grayed out/aborted as it fails due to timeout logic later.
+    Relayer -x Zone1 [ label = "MsgAcknowledgePacket(Proof_H_Z2(ACK))", textcolor="gray", linecolor="gray", note = "Relayer fails to submit ACK on time."];
 
-   Zone2 -x Hub [ label = "IBCBlockCommitTx\nchainID=Zone2,height=400", textcolor="gray", linecolor="gray"];
-   Zone2 -x Hub [ label = "IBCPacketTx\nfrom=Zone2,status=AckSent", textcolor="gray", linecolor="gray"];
+    ||| Timeout Logic Executes |||
 
-   |||;
+    # A sufficient amount of time passes, exceeding the packet's defined timeout.
+    --- [ label = "Timeout Period Elapses"];
+    
+    # 6. Relayer checks if the packet has timed out on Zone1
+    Relayer -> Zone1 [ label = "Query Zone1 Header (H_Z1_Timeout)"];
+    Relayer -> Zone2 [ label = "Query Zone2 Header (H_Z2_Timeout)"];
 
-   --- [ label = "Timeout"];
-
-   |||;
-
-   Hub -> Zone1 [ label = "IBCBlockCommitTx\nchainID=Hub,height=351"];
-   Hub -> Zone1 [ label = "IBCPacketTx\nfrom=Hub,status=Timeout"];
+    # 7. Relayer executes the Timeout proof on Zone1.
+    #    The proof requires showing that the ACK has NOT been committed on Zone2 
+    #    OR that the block height/timestamp has been exceeded.
+    Relayer => Zone1 [ label = "MsgTimeout(Proof_H_Z2(No_ACK))", note = "Packet times out. Escrowed tokens released/state reverted."];
 }
