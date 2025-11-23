@@ -1,167 +1,63 @@
-# Cosmos Distributed Exchange
+# 🚀 The Cosmos Distributed Exchange (DEX) Blueprint
 
-A major use-case for Cosmos is the Cosmos Distributed Exchange.
+This document outlines a **Hybrid Distributed Exchange (DEX)** model within the Cosmos ecosystem. This design is engineered to offer the **speed and efficiency of centralized exchanges (CEXs)** while maintaining **distributed, trustless custody** of user funds.
 
-_NOTE: This document assumes an understanding of the Cosmos hub and zone
-architecture._ For clarity we refer to tokens like "bitcoin" and "ether", but
-in reality these tokens are referring not to actual bitcoins and ethers
-themselves, but 2-way pegged versions of these tokens, as issued by a Bitcoin
-peg or an Ethereum peg zone.
+---
 
-## Distributed vs Decentralized
+## 1. Terminology and Custody
 
-We make a distinction between a distributed exchange and a decentralized
-exchange.
+### Distributed vs. Decentralized
 
-A decentralized exchange refers to exchanges based on atom-cross-chain
-transactions, or similar techniques where the exchange of two tokens between
-two parties are each settled on their respective ledgers.  For example,
-dogecoins on the Dogecoin blockchain, and litecoins on the Litecoin blockchain,
-as matched by some third-party off-chain trade-matching service.  Another
-technique may rely on lightning networks, or linked payment channels.  In
-general, decentralized exchanges require both parties to a trade to be online.
+The blueprint distinguishes between two concepts:
 
-In contrast, a distributed exchange refers to exchanges based on
-distributed-ledger technology (aka blockchains).  The orders of traders are
-signed and committed to a blockchain, where validators (or in the case of PoW
-chains, miners) agree on the order of order transactions and execute orders on
-the trader's behalf.  In a distributed exchange, a trader can submit a limit
-order and go offline; the blockchain can execute these orders on behalf of the
-trader even if the trader's computer/client goes offline.
+* **Decentralized Exchange (DEX):** Relies on **atomic cross-chain swaps** or linked payment channels (e.g., Lightning). This approach requires **both parties to be online simultaneously** for settlement.
+* **Distributed Exchange (DEX):** Uses a **distributed ledger (blockchain)** where orders are signed and committed to the chain. Validators execute orders on the trader's behalf, allowing the trader to **submit an order and go offline**.
 
-## Distributed Custody
+### Key Assumption: Pegged Tokens
 
-The biggest problem with centralized exchanges is that they take custody of the
-traders' funds.  A long history of centralized cryptocurrency exchange hacks
-has shown that this is unacceptably insecure.  And yet, traders continue to use
-centralized exchanges because they don't have a better option -- the
-convenience, speed, and volume of centralized exchanges has thus far been hard
-to beat.
+All tokens exchanged (e.g., Bitcoin, Ether) are assumed to be **2-way pegged versions** issued by corresponding peg zones and transferred via **Inter-Blockchain Communication (IBC)**.
 
-This document is a blueprint for a more secure system that has the main
-advantages of a centralized exchange without the drawbacks of centralized
-(insecure) custody of trader funds.
+### Distributed Custody
 
-## The Naive Solution
+The primary goal is to solve the insecurity inherent in centralized custody. In this model, **no single CEX or entity holds custody** of user funds; the funds remain secured by the underlying Distributed Ledger (the DEX Zone).
 
-Given the Cosmos architecture, a simple solution to the exchange problem can be
-created as follows: create a distributed exchange zone (the Cosmos Dex, or Dex
-for short) that attaches to the Cosmos Hub and let it accept any type of token
-from the Cosmos Hub.  From the perspective of the Dex zone, the Hub zone is the
-"parent" custodian of funds, and the Hub is delegating limited control to the
-Dex such that the Dex can process trade orders however it wants.
+---
 
-To maximize security and Byzantine fault-tolerance, the Dex can share the same
-validator set as the Hub.  How the Hub and Dex coordinate validator set changes
-and the details of the PoS system is beyond the scope of this document.
+## 2. The Naive Solution and Its Flaws
 
-## Problems with the Naive Solution
+A simple approach (the "Naive Solution") would be to create a DEX Zone sharing the Cosmos Hub's validator set. This approach fails due to fundamental issues inherent to global distributed consensus:
 
-The problem with this solution is twofold.  First, even if the DEX were powered
-by Tendermint (or any fork-accountable BFT middleware), a global distributed
-validator set will necessarily take some time to commit blocks.  It is known
-that any BFT algorithm in the partially-synchronous or asynchronous context
-that can tolerate up to 1/3 of Byzantine voting power requires at least 2
-rounds of signature communication to come to consensus (e.g. commit a block to
-finality). When the ledger's validators are distributed globally, and when
-there are many validators (both desirable qualities for a secure distributed
-exchange), the block-times will be significant, on the order of 1 second due to
-the limited speed of light.
+### 🛑 Problems with Global Consensus
 
-What traders want, on the other hand, is "instant" trade matching akin to what
-centralized exchanges are already providing -- orders confirmed or matched on
-the order of milliseconds.
+* **Slow Finality:** Byzantine Fault Tolerance (BFT) algorithms require at least 2 rounds of communication, leading to block finality times of approximately **1 second ($\approx 1s$)** due to global latency (speed of light). This fails to meet the **millisecond** matching speeds required by high-volume traders.
+* **Validator Cheating (MEV/Front-Running):** Round-robin block proposers have the power to **order transactions (order manipulation)** within a block, creating opportunities for unfair trading advantages (Maximal Extractable Value).
 
-The other problem is that a distributed ledger allows for validators to "cheat"
-by determining the order of transactions.  In the case of Tendermint, each
-round-robin block proposer has a chance to order transactions however it wishes
-within each proposed block.  Although each validator may get a "fair"
-chance to "cheat", it doesn't change the fact that every validator gets to
-cheat.
+These fundamental problems necessitate a hybrid approach.
 
-Even "leaderless" consensus systems suffer from various forms of cheating.  For
-some systems, such as Swirld's hash-graph system, the one who has more control
-over the network, or one who has more connections to peers, has greater power
-to determine the order of transactions.  TODO: also mention other attemps.
+---
 
-Both problems are fundamental to the nature of distributed ledgers -- a global
-distributed ledger cannot make any final decisions (about the order of
-transactions) on the order of milliseconds.
+## 3. The Hybrid Solution: Centralized Speed, Distributed Security
 
-## The Hybrid Solution
+The Hybrid Solution integrates the speed of Centralized Exchanges (CEXs) for order matching while delegating final settlement and custody to the secure DEX blockchain.
 
-Rather than letting round-robin block proposers, control over the network, or
-any other metric/heuristic determine the order of transactions, we let
-centralized exchanges (from here-on referred to as CEX's) be responsible for
-determining the order of transactions within their "subledger".
+### ⚙️ Operational Flow
 
-For a trader to trade on the DEX, first the trader must deposit funds to the
-CEX's subledger by submitting a signed transaction onto the DEX.  Once the
-transaction is committed by the DEX, the trader has funds in "semi-custody" by
-the CEX.
+1.  **Deposit:** The trader submits a signed transaction to the DEX, depositing funds into the CEX's designated **"Subledger"** on the DEX chain.
+2.  **Semi-Custody:** Funds are now in **"semi-custody"** by the CEX's subledger, meaning they can only be traded or moved with the **trader's explicit signature**.
+3.  **Trading (Off-Chain):** The trader submits signed trade orders directly to the **CEX off-chain**.
+4.  **Sequencing:** The CEX sequences and signs these orders, generating a receipt that includes the current time $T$, an incrementing sequence number $S$, and the hash of the previous order $H$.
+5.  **Commitment (On-Chain):** The CEX must commit these sequenced, signed orders onto the DEX ledger **sequentially and promptly** (e.g., within 1 minute).
 
-Then, the trader can submit trade orders to the CEX.  Orders submitted to the
-CEX are signed by the trader.  The CEX responds with a receipt which is a
-signed message which includes the order, the current time T, an incrementing
-sequence number S, and hash H of the previous order (from potentially another
-trader with sequence number S-1).
+### 🛡️ Security and Incentives
 
-All orders signed by the CEX should eventually (e.g. within 1 minute) get
-committed onto the underlying DEX ledger.  The orders must be in incrementing
-sequence order, and all the hashes must match the previous order's hash.
+* **Fund Security:** A CEX **cannot** withdraw or trade funds without the trader's signature. The worst a misbehaving CEX can do is execute an order the trader already authorized.
+* **Malfeasance Prevention (Slashing):** Both traders and CEXs are required to deposit **collateral** on the DEX. Collateral can be slashed (punished) if a CEX:
+    * Signs two conflicting orders with the same sequence number.
+    * Submits an invalid order (e.g., where the trader lacked funds).
+    * Fails to commit transactions to the DEX in a timely manner.
+* **Trader Exit Mechanism:** Traders can freely switch CEXs by submitting an **"exit" transaction** directly to the DEX ledger, **without the CEX's cooperation**.
+    * **Locktime:** Exits take effect after a locktime (e.g., **10 minutes**). This delay is crucial to prevent the trader from maliciously withdrawing funds that are already committed to an executed trade by the CEX. A conflicting trade submitted by the CEX during this window can lead to the trader being penalized.
 
-Users can also withdraw funds from the CEX's subledger onto the the base DEX or
-another CEX's subledger by signing a withdrawal transaction and submitting it
-to the CEX for sequencing and signing, just like any order transaction.  As
-we'll see in the next section, the CEX's cooperation is not necessary to
-withdraw funds from the subledger.
+### Conclusion
 
-### Security
-
-We assume that both traders and CEX's have some collateral deposited on the DEX
-ledger.  When evidence of malfeasance is detected (e.g. the CEX signing two
-conflicting orders with the same sequence number, or the CEX not committing
-transactions in a timely manner onto the DEX), these actors can be punished by
-slashing the collateral.
-
-All validators of the DEX ledger must validate the orders of all subledgers. If
-a CEX is found to have submitted an invalid order (e.g. signed the market order
-of a trader even though the trader doesn't have any funds in the subledger),
-then the CEX can be punished as described above.  In addition, subledger
-transactions that do not increment the subledger's last sequence number by 1
-are considered invalid transactions.
-
-If a trader is not satisfied with the performance or service of one CEX
- (e.g. it feels that it is not receiving a receipt in a timely manner),
-it can move its funds over to the "semi-custody" of another CEX, all via
-transactions that are posted onto the underlying DEX ledger.  These "exit"
-transactions do not need to be signed by the corresponding CEX.  Exit
-transactions do not take effect immediately, but rather take effect after some
-time limit (e.g. 10 minutes).  This locktime prevents traders from withdrawing
-funds away from a CEX's subledger when in fact the trader's funds had been
-matched by some other order signed by the CEX with someone else.  If after a
-trader submits an exit transaction, the CEX signs and submits a conflicting
-order by the same trader (e.g. a market/limit order) in timely fashion (e.g.
-within 1 minute), then the trader is considered to be malicious, and could be
-punished.
-
-Most importantly, no CEX has custody of any trader's funds.  No funds may be
-withdrawn (moved out of a subledger) or traded without the express permission
-of the trader (as evidenced by the trader's signature). The worst a CEX could do
-is match an order, which the trader wanted to do anyways.
-Recall that all validators of the DEX validate all the
-transactions of all subledgers, enforcing the rules of the system.
-
-We incentivize third-party pen testers to hack into the validators and publish
-their success as soon as possible, as described in the Cosmos whitepaper.
-Since the DEX is a distributed/mass-replicated BFT ledger, a single CEX
-validator getting hacked does not affect the security of the overall system.
-
-## Conclusion
-
-The distributed exchange system described here allows centralized exchanges to
-match orders centrally while keeping the custody of funds in a distributed
-ledger -- a hybrid that expresses the best of both worlds.  Centralized
-exchanges can compete with each other for market volume, and yet the funds are
-not held in central custody by anyone, and thus is significantly more secure
-than any existing centralized exchanges today.
+This Hybrid DEX system allows CEXs to compete on **order matching speed (milliseconds)** while guaranteeing **distributed, non-custodial security** for trader funds, validated by the replicated, BFT-secured DEX ledger.
