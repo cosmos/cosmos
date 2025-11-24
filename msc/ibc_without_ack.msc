@@ -1,16 +1,40 @@
-# IBC (inter-blockchain communication) message sequence chart
-
 msc {
+    # The entities involved in the Inter-Blockchain Communication (IBC) process
+    Zone1 [label="Source Chain (Zone1)"], Hub [label="Routing Chain (Hub)"], Zone2 [label="Destination Chain (Zone2)"];
 
-   # The entities
-   Zone1, Hub, Zone2;
+    # --- Phase 1 & 2: Forward Path (Packet Delivery) ---
+    ||| [label="Phase 1: Packet Commitment (Zone1 -> Hub)"] |||
+    
+    # 1a. Zone1 proves its current state to the Hub.
+    Zone1 => Hub [ label = "MsgUpdateClient(Zone1 header @ 100)"];
+    
+    # 1b. Zone1 sends the packet data (Commitment proof is placed on Zone1).
+    Zone1 => Hub [ label = "MsgSendPacket (Packet from Z1)"];
 
-   |||;
+    ||| [label="Phase 2: Packet Execution (Hub -> Zone2)"] |||
+    
+    # 2a. Hub proves its state to Zone2.
+    Hub => Zone2 [ label = "MsgUpdateClient(Hub header @ 300)"];
+    
+    # 2b. Hub relays the packet data and the Hub's commitment proof to Zone2.
+    # Zone2 processes the packet logic (e.g., mints tokens).
+    Hub => Zone2 [ label = "MsgRecvPacket (Packet from Z1, Status=Processing)"];
 
-   Zone1 -> Hub [ label = "IBCBlockCommitTx\nchainID=Zone1,height=100"];
-   Zone1 -> Hub [ label = "IBCPacketTx\nfrom=Zone1,status=NoAck"];
+    # --- Phase 3 & 4: Reverse Path (Acknowledgement/Proof) ---
+    ||| [label="Phase 3: Acknowledgement Commitment (Zone2 -> Hub)"] |||
 
-   Hub -> Zone2 [ label = "IBCBlockCommitTx\nchainID=Hub,height=300"];
-   Hub -> Zone2 [ label = "IBCPacketTx\nfrom=Hub,status=NoAck"];
+    # 3a. Zone2 proves its state (containing the ACK result) to the Hub.
+    Zone2 => Hub [ label = "MsgUpdateClient(Zone2 header @ 400)"];
+    
+    # 3b. Zone2 sends the Acknowledgement proof to the Hub.
+    Zone2 => Hub [ label = "MsgAcknowledgement (ACK from Z2, Status=Committed)"];
 
+    ||| [label="Phase 4: Packet Finalization (Hub -> Zone1)"] |||
+    
+    # 4a. Hub proves its state (containing the ACK commitment) to Zone1.
+    Hub => Zone1 [ label = "MsgUpdateClient(Hub header @ 301)"];
+    
+    # 4b. Hub relays the Acknowledgement proof back to Zone1. 
+    # Zone1 verifies the proof and finalizes the transaction (e.g., unlocks funds).
+    Hub => Zone1 [ label = "MsgAcknowledgement (ACK from Z2, Status=Finalized)"];
 }
