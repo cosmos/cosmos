@@ -1,25 +1,43 @@
-# IBC (inter-blockchain communication) message sequence chart
-
 msc {
+    # The entities involved in the Inter-Blockchain Communication (IBC) process
+    Zone1 [label="Source Chain (Zone1)"], Hub [label="Routing Chain (Hub)"], Zone2 [label="Destination Chain (Zone2)"];
 
-   # The entities
-   Zone1, Hub, Zone2;
+    # 1. Packet Relay: Zone1 sends a packet to the Hub.
+    ||| [label="Phase 1: Packet Commitment (Zone1 -> Hub)"] |||
+    
+    # Zone1 submits the current block commit (header) to prove its state.
+    Zone1 => Hub [ label = "MsgUpdateClient(Zone1 header @ 100)"];
+    
+    # Zone1 commits the packet data locally and submits the commitment proof to the Hub.
+    Zone1 => Hub [ label = "MsgSendPacket (Packet from Z1, status=Committed)"];
 
-   |||;
+    # 2. Packet Relay: Hub routes the packet to Zone2.
+    ||| [label="Phase 2: Packet Execution (Hub -> Zone2)"] |||
+    
+    # Hub submits its block commit to Zone2 to prove the existence of the packet commitment.
+    Hub => Zone2 [ label = "MsgUpdateClient(Hub header @ 300)"];
+    
+    # Hub relays the packet data and the Hub's commitment proof to Zone2.
+    # Zone2 processes the packet.
+    Hub => Zone2 [ label = "MsgRecvPacket (Packet from Z1, status=Received)"];
 
-   Zone1 -> Hub [ label = "IBCBlockCommitTx\nchainID=Zone1,height=100"];
-   Zone1 -> Hub [ label = "IBCPacketTx\nfrom=Zone1,status=AckPending"];
+    # 3. Acknowledgement Relay: Zone2 acknowledges the packet and sends the proof back.
+    ||| [label="Phase 3: Acknowledgement Commitment (Zone2 -> Hub)"] |||
 
-   Hub -> Zone2 [ label = "IBCBlockCommitTx\nchainID=Hub,height=300"];
-   Hub -> Zone2 [ label = "IBCPacketTx\nfrom=Hub,status=AckPending"];
+    # Zone2 submits its block commit to Hub.
+    Zone2 => Hub [ label = "MsgUpdateClient(Zone2 header @ 400)"];
+    
+    # Zone2 commits the ACK result (success/failure) locally and submits the commitment proof to the Hub.
+    # The acknowledgement is the proof that the packet was processed.
+    Zone2 => Hub [ label = "MsgAcknowledgement (ACK from Z2, status=Processed)"];
 
-   |||;
-
-   Zone2 -> Hub [ label = "IBCBlockCommitTx\nchainID=Zone2,height=400"];
-   Zone2 -> Hub [ label = "IBCPacketTx\nfrom=Zone2,status=AckSent"];
-
-   |||;
-
-   Hub -> Zone2 [ label = "IBCBlockCommitTx\nchainID=Hub,height=301"];
-   Hub -> Zone2 [ label = "IBCPacketTx\nfrom=Hub,status=AckReceived"];
+    # 4. Finalization: Hub relays the acknowledgement back to Zone1.
+    ||| [label="Phase 4: Packet Finalization (Hub -> Zone1)"] |||
+    
+    # Hub submits its block commit to Zone1.
+    Hub => Zone1 [ label = "MsgUpdateClient(Hub header @ 301)"];
+    
+    # Hub relays the Acknowledgement proof to Zone1. Zone1 verifies the ACK 
+    # and finalizes the original packet transaction (e.g., mints the token).
+    Hub => Zone1 [ label = "MsgTimeout/MsgAcknowledgement (ACK from Z2, status=Finalized)"];
 }
