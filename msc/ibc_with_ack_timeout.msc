@@ -1,29 +1,38 @@
-# IBC (inter-blockchain communication) message sequence chart
-
 msc {
 
-   # The entities
-   Zone1, Hub, Zone2;
+    # The entities (Blockchains)
+    Zone1, Hub, Zone2;
 
-   |||;
+    ||| "Initial Packet Send (Zone1 -> Hub -> Zone2)";
 
-   Zone1 -> Hub [ label = "IBCBlockCommitTx\nchainID=Zone1,height=100"];
-   Zone1 -> Hub [ label = "IBCPacketTx\nfrom=Zone1,status=AckPending"];
+    # Relayer relays Zone1's block header to Hub (MsgUpdateClient)
+    Zone1 => Hub [ label = "MsgUpdateClient(Zone1_Header:100)"];
 
-   Hub -> Zone2 [ label = "IBCBlockCommitTx\nchainID=Hub,height=300"];
-   Hub -> Zone2 [ label = "IBCPacketTx\nfrom=Hub,status=AckPending"];
+    # Relayer relays the packet committed on Zone1 to Hub (MsgRecvPacket)
+    Zone1 => Hub [ label = "MsgRecvPacket(Packet_A)\nSourceChain=Zone1"];
 
-   |||;
+    # Hub processes the packet, commits the state change, and commits Hub's block header to Zone2
+    Hub => Zone2 [ label = "MsgUpdateClient(Hub_Header:300)"];
 
-   Zone2 -x Hub [ label = "IBCBlockCommitTx\nchainID=Zone2,height=400", textcolor="gray", linecolor="gray"];
-   Zone2 -x Hub [ label = "IBCPacketTx\nfrom=Zone2,status=AckSent", textcolor="gray", linecolor="gray"];
+    # Relayer relays the packet (now received by Hub) to Zone2 (MsgRecvPacket)
+    Hub => Zone2 [ label = "MsgRecvPacket(Packet_A)\nSourceChain=Hub"];
 
-   |||;
+    ||| "Acknowledgement Attempt (Zone2 -> Hub)";
 
-   --- [ label = "Timeout"];
+    # Zone2 processes Packet A, commits the result, and tries to send the ACK back to Hub.
+    # The ACK transaction fails to reach Hub (or is maliciously withheld/dropped).
+    Zone2 -x Hub [ label = "MsgAcknowledgement\nACK_Txn_Failed/Dropped", textcolor="gray", linecolor="gray"];
 
-   |||;
+    |||;
 
-   Hub -> Zone1 [ label = "IBCBlockCommitTx\nchainID=Hub,height=351"];
-   Hub -> Zone1 [ label = "IBCPacketTx\nfrom=Hub,status=Timeout"];
+    --- [ label = "Timeout Height Reached on Zone1's Client on Hub"];
+
+    ||| "Timeout Processing (Hub -> Zone1)";
+
+    # Relayer updates Zone1's client on Hub to a height (e.g., 351) that is beyond Packet A's timeout height.
+    Hub => Zone1 [ label = "MsgUpdateClient(Hub_Header:351)"];
+
+    # Relayer submits proof that Zone2 (the destination chain) did not receive or process the packet
+    # before the timeout height was reached, effectively reversing the packet state on Zone1.
+    Hub => Zone1 [ label = "MsgTimeout(Packet_A_Proof)\nStatus=Reverted"];
 }
